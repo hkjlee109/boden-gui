@@ -11,9 +11,16 @@
                           device:(id<MTLDevice>)device {
     self = [self init];
     if(self) {
-       _backend = std::make_unique<boden::backend_t>((__bridge CA::MetalDrawable*)drawable);
+        _backend = std::make_unique<boden::backend_t>(
+            (__bridge CA::MetalDrawable*)drawable,
+            (__bridge MTL::Device*)device
+        );
     }
     return self;
+}
+
+- (void)draw {
+    _backend->draw();
 }
 
 @end

@@ -6,4 +6,6 @@
 - (instancetype)initWithDrawable:(id<CAMetalDrawable>)drawable
                           device:(id<MTLDevice>)device;
 
+- (void)draw;
+
 @end

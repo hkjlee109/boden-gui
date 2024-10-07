@@ -1,6 +1,6 @@
 #import "WindowController.h"
 
-#import "ViewController.h"
+#import "AppViewController.h"
 
 @interface WindowController ()
 
@@ -21,9 +21,9 @@
         
         panel.floatingPanel = YES;
         panel.titlebarAppearsTransparent = YES;
-        [panel setFrame:NSMakeRect(0, 0, 720, 480) display:YES animate:NO];
+        [panel setFrame:NSMakeRect(0, 0, 1200, 720) display:YES animate:NO];
         
-        ViewController* controller = [ViewController new];
+        AppViewController* controller = [AppViewController new];
 
         [panel setContentViewController:controller];
         [panel setRestorable:NO];

@@ -15,6 +15,11 @@ file(GLOB_RECURSE SOURCES *.mm *.h)
 
 add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${SOURCES})
 # target_link_libraries(${PROJECT_NAME} ${COCOA_LIBRARY})
+
+target_include_directories(${PROJECT_NAME} PUBLIC 
+    ../boden-gui/deps/metal-cpp
+)
+
 target_link_libraries(${PROJECT_NAME}
         "boden-gui"
         "-framework Metal"
