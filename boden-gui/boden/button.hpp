@@ -4,7 +4,8 @@
 
 namespace boden {
 
-class button_t {
+class button_t
+{
 public:
     button_t();
     ~button_t();

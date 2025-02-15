@@ -1,21 +1,17 @@
 #pragma once
 
-#include "Metal/Metal.hpp"
-#include "QuartzCore/CAMetalDrawable.hpp"
-
 namespace boden {
 
-class renderer_t {
+class renderer_t
+{
 public:
-    renderer_t(CA::MetalDrawable* drawable, MTL::Device* device);
-    ~renderer_t();
+    renderer_t();
+    virtual ~renderer_t();
     
-    void draw_rect();
+    virtual void draw_rect();
     
 private:
-    CA::MetalDrawable* _drawable;
-    MTL::Device* _device;
-    MTL::CommandQueue* _commandQueue;
+    virtual void setup_pipeline();
 };
 
 } // boden

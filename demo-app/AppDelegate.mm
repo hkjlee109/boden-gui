@@ -17,10 +17,8 @@
     [_windowController.window orderFront:self];
 }
 
-
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
 }
-
 
 - (BOOL)applicationSupportsSecureRestorableState:(NSApplication *)app {
     return YES;

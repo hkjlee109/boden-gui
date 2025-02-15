@@ -2,22 +2,18 @@
 
 namespace boden {
 
-backend_t::backend_t(
-    CA::MetalDrawable* drawable,
-    MTL::Device* device
-) {
-    _renderer = std::make_unique<boden::renderer_t>(
-        drawable,
-        device
-    );
-
+backend_t::backend_t(std::unique_ptr<boden::renderer_t> renderer) :
+    _renderer{std::move(renderer)}
+{
     _button = std::make_unique<boden::button_t>();
 }
 
-backend_t::~backend_t() {
+backend_t::~backend_t()
+{
 }
 
-void backend_t::draw() {
+void backend_t::draw()
+{
     _button->draw(*_renderer);
 }
 
