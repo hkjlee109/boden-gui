@@ -26,7 +26,11 @@ metal_renderer_t::~metal_renderer_t()
     _commandQueue->release();
 }
 
-void metal_renderer_t::draw_rect()
+void metal_renderer_t::begin_paint()
+{
+}
+
+void metal_renderer_t::end_paint()
 {
     MTL::CommandBuffer* commandBuffer = _commandQueue->commandBuffer();
     MTL::RenderPassDescriptor* descriptor = MTL::RenderPassDescriptor::alloc()->init();
@@ -52,7 +56,7 @@ void metal_renderer_t::draw_rect()
     
     encoder->setRenderPipelineState(_pipeline);
     encoder->setVertexBuffer(vertexBuffer, 0, 0);
-    encoder->drawPrimitives(MTL::PrimitiveTypeTriangleStrip, 0, 3, 1);
+    encoder->drawPrimitives(MTL::PrimitiveTypeTriangle, 0, 3, 1);
     
     encoder->endEncoding();
     commandBuffer->presentDrawable(_drawable);
@@ -60,6 +64,10 @@ void metal_renderer_t::draw_rect()
     
     descriptor->release();
     vertexBuffer->release();
+}
+
+void metal_renderer_t::draw_rect()
+{
 }
 
 void metal_renderer_t::setup_pipeline()
@@ -86,13 +94,13 @@ void metal_renderer_t::setup_pipeline()
         return inVertex.color;
     } 
     )", NS::StringEncoding::UTF8StringEncoding);
-    NS::Error* error = nullptr;
-    MTL::Library* library = _device->newLibrary(source, nullptr, &error);
+    NS::Error *error = nullptr;
+    MTL::Library *library = _device->newLibrary(source, nullptr, &error);
     
-    MTL::Function* vertexFunction = library->newFunction(NS::String::string("vertex_main", NS::UTF8StringEncoding));
-    MTL::Function* fragmentFunction = library->newFunction(NS::String::string("fragment_main", NS::UTF8StringEncoding));
+    MTL::Function *vertexFunction = library->newFunction(NS::String::string("vertex_main", NS::UTF8StringEncoding));
+    MTL::Function *fragmentFunction = library->newFunction(NS::String::string("fragment_main", NS::UTF8StringEncoding));
     
-    MTL::RenderPipelineDescriptor* pipelineDescriptor = MTL::RenderPipelineDescriptor::alloc()->init();
+    MTL::RenderPipelineDescriptor *pipelineDescriptor = MTL::RenderPipelineDescriptor::alloc()->init();
     pipelineDescriptor->setVertexFunction(vertexFunction);
     pipelineDescriptor->setFragmentFunction(fragmentFunction);
     pipelineDescriptor->colorAttachments()->object(0)->setPixelFormat(MTL::PixelFormatBGRA8Unorm);

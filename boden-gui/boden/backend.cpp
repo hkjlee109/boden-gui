@@ -14,7 +14,9 @@ backend_t::~backend_t()
 
 void backend_t::draw()
 {
+    _renderer->begin_paint();
     _button->draw(*_renderer);
+    _renderer->end_paint();
 }
 
 } // boden

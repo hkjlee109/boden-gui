@@ -13,6 +13,9 @@ class renderer_t
 public:
     renderer_t();
     virtual ~renderer_t();
+
+    virtual void begin_paint();
+    virtual void end_paint();
     
     virtual void draw_rect();
 

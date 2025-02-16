@@ -16,7 +16,10 @@ public:
     metal_renderer_t(CA::MetalDrawable* drawable, MTL::Device* device);
     ~metal_renderer_t();
     
-    void draw_rect();
+    void begin_paint() override;
+    void end_paint() override;
+    
+    void draw_rect() override;
     
 private:
     void setup_pipeline();
