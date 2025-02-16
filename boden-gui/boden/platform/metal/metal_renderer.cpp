@@ -38,8 +38,8 @@ void metal_renderer_t::draw_rect()
     MTL::RenderCommandEncoder* encoder = commandBuffer->renderCommandEncoder(descriptor);
     
     typedef struct {
-        vector_float4 position;
-        vector_float4 color;
+        boden::math::vec4_t position;
+        boden::math::vec4_t color;
     } MBEVertex;
     
     MBEVertex vertices[] = {

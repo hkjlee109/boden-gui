@@ -19,8 +19,4 @@ void renderer_t::draw_rect()
 {
 }
 
-void renderer_t::setup_pipeline()
-{
-}
-
 } // boden

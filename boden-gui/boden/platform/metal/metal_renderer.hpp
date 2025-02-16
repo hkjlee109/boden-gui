@@ -1,6 +1,7 @@
 #pragma once
 
-#include "boden/renderer.hpp"
+#include <boden/math/vec.hpp>
+#include <boden/renderer.hpp>
 
 #include "Metal/Metal.hpp"
 #include "QuartzCore/CAMetalDrawable.hpp"
