@@ -22,11 +22,14 @@ public:
     void draw_rect() override;
     
 private:
+    void setup_depth_stencil();
     void setup_pipeline();
+
     CA::MetalDrawable *_drawable;
     MTL::Device *_device;
     MTL::CommandQueue *_commandQueue;
     MTL::RenderPipelineState *_pipeline;
+    MTL::DepthStencilState *_depthStencilState;
 };
 
 } // metal
