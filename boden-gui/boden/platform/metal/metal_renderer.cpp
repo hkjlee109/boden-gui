@@ -23,6 +23,7 @@ metal_renderer_t::metal_renderer_t(
 {
     setup_pipeline();
     setup_depth_stencil();
+    setup_default_texture();
 }
 
 metal_renderer_t::~metal_renderer_t()
@@ -45,16 +46,23 @@ void metal_renderer_t::end_paint()
     
     descriptor->colorAttachments()->object(0)->setTexture(_drawable->texture());
     descriptor->colorAttachments()->object(0)->setLoadAction(MTL::LoadActionClear);
-    descriptor->colorAttachments()->object(0)->setClearColor(MTL::ClearColor::Make(0.0, 0.0, 1.0, 1.0));
+    descriptor->colorAttachments()->object(0)->setClearColor(MTL::ClearColor::Make(0.45f, 0.55f, 0.60f, 1.00f));
 
     MTL::RenderCommandEncoder *encoder = commandBuffer->renderCommandEncoder(descriptor);
 
-    boden::draw::draw_vertex_t vertices[] = {
-        { .position = {  600,  0 }, .uv = { 1.0, 1.0 }, .color = 0 },
-        { .position = {  0, 300 }, .uv = { 1.0, 1.0 }, .color = 0 },
-        { .position = { 1200, 300 }, .uv = { 1.0, 1.0 }, .color = 0 },
-    };
+    // boden::draw::draw_vertex_t vertices[] = {
+    //     { .position = {  600,  0 }, .uv = { 0.5, 0.0 }, .color = 0xFFFFFFFF },
+    //     { .position = {  0, 300 }, .uv = { 0.0, 1.0 }, .color = 0xFF0000FF },
+    //     { .position = { 1200, 300 }, .uv = { 1.0, 1.0 }, .color = 0xFFFF0000 },
+    // };
     
+    boden::draw::draw_vertex_t vertices[] = {
+        { .position = {  0,  0 }, .uv = { 0, 0 }, .color = 0xFF0000FF },
+        { .position = {  0, 300 }, .uv = { 0, 0 }, .color = 0xFF00FF00 },
+        { .position = { 1200, 0 }, .uv = { 0, 0 }, .color = 0xFFFF0000 },
+        { .position = { 1200, 300 }, .uv = { 0, 0 }, .color = 0xFF00FFFF },
+    };
+
     MTL::Buffer *vertexBuffer = _device->newBuffer(vertices, sizeof(vertices), MTL::ResourceStorageModeShared);
     
     
@@ -104,10 +112,11 @@ void metal_renderer_t::end_paint()
     };
     encoder->setScissorRect(scissorRect);
 
+    encoder->setFragmentTexture(_texture, 0);
     
     encoder->setRenderPipelineState(_pipeline);
     encoder->setVertexBuffer(vertexBuffer, 0, 0);
-    encoder->drawPrimitives(MTL::PrimitiveTypeTriangle, 0, 3, 1);
+    encoder->drawPrimitives(MTL::PrimitiveTypeTriangleStrip, 0, 4, 1);
     
     encoder->endEncoding();
     commandBuffer->presentDrawable(_drawable);
@@ -127,6 +136,19 @@ void metal_renderer_t::setup_depth_stencil()
     depthStencilDescriptor->setDepthCompareFunction(MTL::CompareFunctionAlways);
     depthStencilDescriptor->setDepthWriteEnabled(false);
     _depthStencilState = _device->newDepthStencilState(depthStencilDescriptor);
+}
+
+void metal_renderer_t::setup_default_texture()
+{
+    MTL::TextureDescriptor *textureDescriptor = MTL::TextureDescriptor::alloc()->init();
+    textureDescriptor->setPixelFormat(MTL::PixelFormatRGBA8Unorm);
+    textureDescriptor->setWidth(1);
+    textureDescriptor->setHeight(1);
+    textureDescriptor->setUsage(MTL::TextureUsageShaderRead);
+    _texture = _device->newTexture(textureDescriptor);
+    uint8_t whitePixel[4] = {255, 255, 255, 255};
+    MTL::Region region = MTL::Region::Make3D(0, 0, 0, 1, 1, 1);
+    _texture->replaceRegion(region, 0, whitePixel, 4);
 }
 
 void metal_renderer_t::setup_pipeline()
@@ -168,6 +190,7 @@ void metal_renderer_t::setup_pipeline()
     ) {
         constexpr sampler linearSampler(coord::normalized, min_filter::linear, mag_filter::linear, mip_filter::linear);
         half4 texColor = texture.sample(linearSampler, in.texCoords);
+    
         return half4(in.color) * texColor;
     }
     )", NS::StringEncoding::UTF8StringEncoding);
@@ -209,7 +232,18 @@ void metal_renderer_t::setup_pipeline()
     pipelineDescriptor->setVertexFunction(vertexFunction);
     pipelineDescriptor->setFragmentFunction(fragmentFunction);
     pipelineDescriptor->setVertexDescriptor(vertexDescriptor);
+    pipelineDescriptor->setRasterSampleCount(1);
     pipelineDescriptor->colorAttachments()->object(0)->setPixelFormat(MTL::PixelFormatBGRA8Unorm);
+    
+   pipelineDescriptor->colorAttachments()->object(0)->setBlendingEnabled(true);
+   pipelineDescriptor->colorAttachments()->object(0)->setRgbBlendOperation(MTL::BlendOperationAdd);
+   pipelineDescriptor->colorAttachments()->object(0)->setSourceRGBBlendFactor(MTL::BlendFactorSourceAlpha);
+   pipelineDescriptor->colorAttachments()->object(0)->setDestinationRGBBlendFactor(MTL::BlendFactorOneMinusSourceAlpha);
+   pipelineDescriptor->colorAttachments()->object(0)->setAlphaBlendOperation(MTL::BlendOperationAdd);
+    pipelineDescriptor->colorAttachments()->object(0)->setSourceAlphaBlendFactor(MTL::BlendFactorOne);
+   pipelineDescriptor->colorAttachments()->object(0)->setDestinationAlphaBlendFactor(MTL::BlendFactorOneMinusSourceAlpha);
+   pipelineDescriptor->setDepthAttachmentPixelFormat(MTL::PixelFormatInvalid);
+   pipelineDescriptor->setStencilAttachmentPixelFormat(MTL::PixelFormatInvalid);
     
     _pipeline = _device->newRenderPipelineState(pipelineDescriptor, &error);
     if(_pipeline == nullptr)

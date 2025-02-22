@@ -24,12 +24,14 @@ public:
 private:
     void setup_depth_stencil();
     void setup_pipeline();
+    void setup_default_texture();
 
     CA::MetalDrawable *_drawable;
     MTL::Device *_device;
     MTL::CommandQueue *_commandQueue;
     MTL::RenderPipelineState *_pipeline;
     MTL::DepthStencilState *_depthStencilState;
+    MTL::Texture *_texture;
 };
 
 } // metal
