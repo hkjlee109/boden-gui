@@ -6,8 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		BF9759C92D6C9DA6000E9A16 /* libboden-gui.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF9759C82D6C9DA6000E9A16 /* libboden-gui.a */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		BF9757F22D6C7871000E9A16 /* boden-gui-osx.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "boden-gui-osx.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF9759C82D6C9DA6000E9A16 /* libboden-gui.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboden-gui.a"; path = "../../build/lib/libboden-gui.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -23,6 +28,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF9759C92D6C9DA6000E9A16 /* libboden-gui.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -33,6 +39,7 @@
 			isa = PBXGroup;
 			children = (
 				BF9757F42D6C7871000E9A16 /* boden-gui-osx */,
+				BF9759C72D6C9DA6000E9A16 /* Frameworks */,
 				BF9757F32D6C7871000E9A16 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -43,6 +50,14 @@
 				BF9757F22D6C7871000E9A16 /* boden-gui-osx.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		BF9759C72D6C9DA6000E9A16 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BF9759C82D6C9DA6000E9A16 /* libboden-gui.a */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -251,12 +266,14 @@
 				DEVELOPMENT_TEAM = 5NJ6RQ9QCA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../boden-gui/boden/";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../../build/lib";
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.kartoffelsoft.boden-gui-osx";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -276,12 +293,14 @@
 				DEVELOPMENT_TEAM = 5NJ6RQ9QCA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../boden-gui/boden/";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../../build/lib";
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.kartoffelsoft.boden-gui-osx";
 				PRODUCT_NAME = "$(TARGET_NAME)";
