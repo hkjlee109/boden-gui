@@ -8,31 +8,27 @@
 #include <simd/simd.h>
 #include <iostream>
 
-namespace boden {
 namespace platform {
-namespace metal {
 
-metal_renderer_t::metal_renderer_t(
-    CA::MetalDrawable* drawable,
-    MTL::Device* device
-) :
-    renderer_t(),
-    _drawable{drawable},
-    _device{device},
-    _commandQueue{_device->newCommandQueue()}
+metal_renderer_t::metal_renderer_t(CA::MetalDrawable* drawable,
+                                   MTL::Device* device)
+    : renderer_t(),
+      _drawable{drawable},
+      _device{device},
+      _command_queue{nullptr, [](MTL::CommandQueue *ptr) { if (ptr) ptr->release(); }},
+      _render_pipeline{nullptr, [](MTL::RenderPipelineState *ptr) { if (ptr) ptr->release(); }},
+      _depth_stencil_state{nullptr, [](MTL::DepthStencilState *ptr) { if (ptr) ptr->release(); }},
+      _texture{nullptr, [](MTL::Texture *ptr) { if (ptr) ptr->release(); }}
 {
-    setup_pipeline();
-    setup_depth_stencil();
+    _command_queue.reset(_device->newCommandQueue());
+    
+    setup_render_pipeline();
+    setup_depth_stencil_state();
     setup_default_texture();
 }
 
 metal_renderer_t::~metal_renderer_t()
 {
-    if(_drawable)           _drawable->release();
-    if(_device)             _device->release();
-    if(_commandQueue)       _commandQueue->release();
-    if(_pipeline)           _pipeline->release();
-    if(_depthStencilState)  _depthStencilState->release();
 }
 
 void metal_renderer_t::begin_paint()
@@ -41,20 +37,14 @@ void metal_renderer_t::begin_paint()
 
 void metal_renderer_t::end_paint()
 {
-    MTL::CommandBuffer *commandBuffer = _commandQueue->commandBuffer();
+    MTL::CommandBuffer *command_buffer = _command_queue->commandBuffer();
     MTL::RenderPassDescriptor *descriptor = MTL::RenderPassDescriptor::alloc()->init();
     
     descriptor->colorAttachments()->object(0)->setTexture(_drawable->texture());
     descriptor->colorAttachments()->object(0)->setLoadAction(MTL::LoadActionClear);
     descriptor->colorAttachments()->object(0)->setClearColor(MTL::ClearColor::Make(0.45f, 0.55f, 0.60f, 1.00f));
 
-    MTL::RenderCommandEncoder *encoder = commandBuffer->renderCommandEncoder(descriptor);
-
-    // boden::draw::draw_vertex_t vertices[] = {
-    //     { .position = {  600,  0 }, .uv = { 0.5, 0.0 }, .color = 0xFFFFFFFF },
-    //     { .position = {  0, 300 }, .uv = { 0.0, 1.0 }, .color = 0xFF0000FF },
-    //     { .position = { 1200, 300 }, .uv = { 1.0, 1.0 }, .color = 0xFFFF0000 },
-    // };
+    MTL::RenderCommandEncoder *encoder = command_buffer->renderCommandEncoder(descriptor);
     
     boden::draw::draw_vertex_t vertices[] = {
         { .position = {  0,  0 }, .uv = { 0, 0 }, .color = 0xFF0000FF },
@@ -63,7 +53,7 @@ void metal_renderer_t::end_paint()
         { .position = { 1200, 300 }, .uv = { 0, 0 }, .color = 0xFF00FFFF },
     };
 
-    MTL::Buffer *vertexBuffer = _device->newBuffer(vertices, sizeof(vertices), MTL::ResourceStorageModeShared);
+    MTL::Buffer *vertex_buffer = _device->newBuffer(vertices, sizeof(vertices), MTL::ResourceStorageModeShared);
     
     
     
@@ -72,7 +62,7 @@ void metal_renderer_t::end_paint()
     
     
     encoder->setCullMode(MTL::CullModeNone);
-    encoder->setDepthStencilState(_depthStencilState);
+    encoder->setDepthStencilState(_depth_stencil_state.get());
 
     MTL::Viewport viewport =
     {
@@ -107,51 +97,51 @@ void metal_renderer_t::end_paint()
     {
         .x = 0,
         .y = 0,
-        .width = 1200,
-        .height = 720
+        .width = 640,
+        .height = 480
     };
     encoder->setScissorRect(scissorRect);
 
-    encoder->setFragmentTexture(_texture, 0);
+    encoder->setFragmentTexture(_texture.get(), 0);
     
-    encoder->setRenderPipelineState(_pipeline);
-    encoder->setVertexBuffer(vertexBuffer, 0, 0);
+    encoder->setRenderPipelineState(_render_pipeline.get());
+    encoder->setVertexBuffer(vertex_buffer, 0, 0);
     encoder->drawPrimitives(MTL::PrimitiveTypeTriangleStrip, 0, 4, 1);
     
     encoder->endEncoding();
-    commandBuffer->presentDrawable(_drawable);
-    commandBuffer->commit();
+    command_buffer->presentDrawable(_drawable);
+    command_buffer->commit();
     
     descriptor->release();
-    vertexBuffer->release();
+    vertex_buffer->release();
 }
 
 void metal_renderer_t::draw_rect()
 {
 }
 
-void metal_renderer_t::setup_depth_stencil()
+void metal_renderer_t::setup_depth_stencil_state()
 {
-    MTL::DepthStencilDescriptor *depthStencilDescriptor = MTL::DepthStencilDescriptor::alloc()->init();
-    depthStencilDescriptor->setDepthCompareFunction(MTL::CompareFunctionAlways);
-    depthStencilDescriptor->setDepthWriteEnabled(false);
-    _depthStencilState = _device->newDepthStencilState(depthStencilDescriptor);
+    MTL::DepthStencilDescriptor *descriptor = MTL::DepthStencilDescriptor::alloc()->init();
+    descriptor->setDepthCompareFunction(MTL::CompareFunctionAlways);
+    descriptor->setDepthWriteEnabled(false);
+    _depth_stencil_state.reset(_device->newDepthStencilState(descriptor));
 }
 
 void metal_renderer_t::setup_default_texture()
 {
-    MTL::TextureDescriptor *textureDescriptor = MTL::TextureDescriptor::alloc()->init();
-    textureDescriptor->setPixelFormat(MTL::PixelFormatRGBA8Unorm);
-    textureDescriptor->setWidth(1);
-    textureDescriptor->setHeight(1);
-    textureDescriptor->setUsage(MTL::TextureUsageShaderRead);
-    _texture = _device->newTexture(textureDescriptor);
+    MTL::TextureDescriptor *descriptor = MTL::TextureDescriptor::alloc()->init();
+    descriptor->setPixelFormat(MTL::PixelFormatRGBA8Unorm);
+    descriptor->setWidth(1);
+    descriptor->setHeight(1);
+    descriptor->setUsage(MTL::TextureUsageShaderRead);
+    _texture.reset(_device->newTexture(descriptor));
     uint8_t whitePixel[4] = {255, 255, 255, 255};
     MTL::Region region = MTL::Region::Make3D(0, 0, 0, 1, 1, 1);
     _texture->replaceRegion(region, 0, whitePixel, 4);
 }
 
-void metal_renderer_t::setup_pipeline()
+void metal_renderer_t::setup_render_pipeline()
 {
     NS::String *source = NS::String::alloc()->init(R"(
     #include <metal_stdlib>
@@ -235,18 +225,18 @@ void metal_renderer_t::setup_pipeline()
     pipelineDescriptor->setRasterSampleCount(1);
     pipelineDescriptor->colorAttachments()->object(0)->setPixelFormat(MTL::PixelFormatBGRA8Unorm);
     
-   pipelineDescriptor->colorAttachments()->object(0)->setBlendingEnabled(true);
-   pipelineDescriptor->colorAttachments()->object(0)->setRgbBlendOperation(MTL::BlendOperationAdd);
-   pipelineDescriptor->colorAttachments()->object(0)->setSourceRGBBlendFactor(MTL::BlendFactorSourceAlpha);
-   pipelineDescriptor->colorAttachments()->object(0)->setDestinationRGBBlendFactor(MTL::BlendFactorOneMinusSourceAlpha);
-   pipelineDescriptor->colorAttachments()->object(0)->setAlphaBlendOperation(MTL::BlendOperationAdd);
+    pipelineDescriptor->colorAttachments()->object(0)->setBlendingEnabled(true);
+    pipelineDescriptor->colorAttachments()->object(0)->setRgbBlendOperation(MTL::BlendOperationAdd);
+    pipelineDescriptor->colorAttachments()->object(0)->setSourceRGBBlendFactor(MTL::BlendFactorSourceAlpha);
+    pipelineDescriptor->colorAttachments()->object(0)->setDestinationRGBBlendFactor(MTL::BlendFactorOneMinusSourceAlpha);
+    pipelineDescriptor->colorAttachments()->object(0)->setAlphaBlendOperation(MTL::BlendOperationAdd);
     pipelineDescriptor->colorAttachments()->object(0)->setSourceAlphaBlendFactor(MTL::BlendFactorOne);
-   pipelineDescriptor->colorAttachments()->object(0)->setDestinationAlphaBlendFactor(MTL::BlendFactorOneMinusSourceAlpha);
-   pipelineDescriptor->setDepthAttachmentPixelFormat(MTL::PixelFormatInvalid);
-   pipelineDescriptor->setStencilAttachmentPixelFormat(MTL::PixelFormatInvalid);
+    pipelineDescriptor->colorAttachments()->object(0)->setDestinationAlphaBlendFactor(MTL::BlendFactorOneMinusSourceAlpha);
+    pipelineDescriptor->setDepthAttachmentPixelFormat(MTL::PixelFormatInvalid);
+    pipelineDescriptor->setStencilAttachmentPixelFormat(MTL::PixelFormatInvalid);
     
-    _pipeline = _device->newRenderPipelineState(pipelineDescriptor, &error);
-    if(_pipeline == nullptr)
+    _render_pipeline.reset(_device->newRenderPipelineState(pipelineDescriptor, &error));
+    if(_render_pipeline == nullptr)
     {
         std::cout << "Error: failed to create Metal pipeline state: " << error << std::endl;
         if(vertexDescriptor) vertexDescriptor->release();
@@ -264,6 +254,4 @@ void metal_renderer_t::setup_pipeline()
     library->release();
 }
 
-} // metal
 } // platform
-} // boden

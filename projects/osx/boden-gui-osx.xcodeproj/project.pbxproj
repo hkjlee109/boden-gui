@@ -7,10 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BF17A67C2D73419000477794 /* main_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF17A67A2D73419000477794 /* main_view.cpp */; };
 		BF9759C92D6C9DA6000E9A16 /* libboden-gui.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF9759C82D6C9DA6000E9A16 /* libboden-gui.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BF17A6792D73419000477794 /* main_view.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = main_view.hpp; sourceTree = "<group>"; };
+		BF17A67A2D73419000477794 /* main_view.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main_view.cpp; sourceTree = "<group>"; };
 		BF9757F22D6C7871000E9A16 /* boden-gui-osx.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "boden-gui-osx.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF9759C82D6C9DA6000E9A16 /* libboden-gui.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboden-gui.a"; path = "../../build/lib/libboden-gui.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -18,7 +21,15 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		BF9757F42D6C7871000E9A16 /* boden-gui-osx */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			explicitFileTypes = {
+				ViewController.mm = sourcecode.cpp.objcpp;
+			};
 			path = "boden-gui-osx";
+			sourceTree = "<group>";
+		};
+		BF975AA32D6CA522000E9A16 /* deps */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = deps;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -35,9 +46,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BF17A67B2D73419000477794 /* app */ = {
+			isa = PBXGroup;
+			children = (
+				BF17A6792D73419000477794 /* main_view.hpp */,
+				BF17A67A2D73419000477794 /* main_view.cpp */,
+			);
+			name = app;
+			path = ../../app/app;
+			sourceTree = "<group>";
+		};
 		BF9757E92D6C7871000E9A16 = {
 			isa = PBXGroup;
 			children = (
+				BF17A67B2D73419000477794 /* app */,
+				BF975AA32D6CA522000E9A16 /* deps */,
 				BF9757F42D6C7871000E9A16 /* boden-gui-osx */,
 				BF9759C72D6C9DA6000E9A16 /* Frameworks */,
 				BF9757F32D6C7871000E9A16 /* Products */,
@@ -77,6 +100,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				BF9757F42D6C7871000E9A16 /* boden-gui-osx */,
+				BF975AA32D6CA522000E9A16 /* deps */,
 			);
 			name = "boden-gui-osx";
 			packageProductDependencies = (
@@ -133,6 +157,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF17A67C2D73419000477794 /* main_view.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -266,7 +291,11 @@
 				DEVELOPMENT_TEAM = 5NJ6RQ9QCA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../boden-gui/boden/";
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../boden-gui/",
+					"$(SRCROOT)/deps/metal-cpp/",
+					"$(SRCROOT)/../../app",
+				);
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -293,7 +322,11 @@
 				DEVELOPMENT_TEAM = 5NJ6RQ9QCA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../boden-gui/boden/";
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../../boden-gui/",
+					"$(SRCROOT)/deps/metal-cpp/",
+					"$(SRCROOT)/../../app",
+				);
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
 				LD_RUNPATH_SEARCH_PATHS = (
