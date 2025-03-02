@@ -6,7 +6,7 @@
 namespace boden {
 namespace draw {
 
-struct draw_vertex_t
+struct vertex_t
 {
     boden::math::vec2_t position;
     boden::math::vec2_t uv;

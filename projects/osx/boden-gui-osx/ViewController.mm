@@ -48,9 +48,16 @@
 
 - (void)drawInMTKView:(nonnull MTKView *)view {
     NSLog(@"# drawInMTKView");
-    boden::context_t ctx{_renderer.get(),
-                         (boden::surface_handle_t)(__bridge CA::MetalDrawable *)self.mtkView.currentDrawable};
+    boden::context_t ctx;
+    ctx.renderer = _renderer.get();
+    ctx.surface_handle = (boden::surface_handle_t)(__bridge CA::MetalDrawable *)self.mtkView.currentDrawable;
     
+    ctx.display_size = boden::math::vec2_t{(float)(self.view.bounds.size.width),
+                                           (float)(self.view.bounds.size.height)};
+
+    CGFloat scale = self.view.window.screen.backingScaleFactor ?: NSScreen.mainScreen.backingScaleFactor;
+    ctx.display_scale = boden::math::vec2_t{(float)scale, (float)scale};
+
     _main_view->draw(ctx);
 }
 

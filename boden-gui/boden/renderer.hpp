@@ -2,9 +2,9 @@
 
 #include <boden/context.hpp>
 #include <boden/math/vec.hpp>
-#include <boden/draw/draw_command.hpp>
-#include <boden/draw/draw_index.hpp>
-#include <boden/draw/draw_vertex.hpp>
+#include <boden/draw/command.hpp>
+#include <boden/draw/index.hpp>
+#include <boden/draw/vertex.hpp>
 #include <vector>
 
 namespace boden {
@@ -21,9 +21,9 @@ public:
     virtual void draw_rect();
 
 private:
-    std::vector<boden::draw::draw_command_t> commands;
-    std::vector<boden::draw::draw_vertex_t> vertices;
-    std::vector<boden::draw::draw_index_t> indices;
+    std::vector<boden::draw::command_t> commands;
+    std::vector<boden::draw::vertex_t> vertices;
+    std::vector<boden::draw::index_t> indices;
 };
 
 } // boden

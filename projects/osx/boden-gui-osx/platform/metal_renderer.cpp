@@ -4,7 +4,7 @@
 
 #include "metal_renderer.hpp"
 
-#include <boden/draw/draw_vertex.hpp>
+#include <boden/draw/vertex.hpp>
 #include <simd/simd.h>
 #include <iostream>
 
@@ -46,11 +46,11 @@ void metal_renderer_t::end_draw(boden::context_t &ctx)
 
     MTL::RenderCommandEncoder *encoder = command_buffer->renderCommandEncoder(descriptor);
     
-    boden::draw::draw_vertex_t vertices[] = {
+    boden::draw::vertex_t vertices[] = {
         { .position = {  0,  0 }, .uv = { 0, 0 }, .color = 0xFF0000FF },
-        { .position = {  0, 240 }, .uv = { 0, 0 }, .color = 0xFF00FF00 },
+        { .position = {  0, 480 }, .uv = { 0, 0 }, .color = 0xFF00FF00 },
         { .position = { 640, 0 }, .uv = { 0, 0 }, .color = 0xFFFF0000 },
-        { .position = { 640, 240 }, .uv = { 0, 0 }, .color = 0xFF00FFFF },
+        { .position = { 640, 480 }, .uv = { 0, 0 }, .color = 0xFF00FFFF },
     };
 
     MTL::Buffer *vertex_buffer = _device->newBuffer(vertices, sizeof(vertices), MTL::ResourceStorageModeShared);
@@ -68,17 +68,17 @@ void metal_renderer_t::end_draw(boden::context_t &ctx)
     {
         .originX = 0.0,
         .originY = 0.0,
-        .width = (double)(640),
-        .height = (double)(480),
+        .width = (double)(ctx.display_size.x),
+        .height = (double)(ctx.display_size.y),
         .znear = 0.0,
         .zfar = 1.0
     };
     encoder->setViewport(viewport);
     
     float L = 0;
-    float R = 640;
+    float R = ctx.display_size.x;
     float T = 0;
-    float B = 480;
+    float B = ctx.display_size.y;
     float N = (float)viewport.znear;
     float F = (float)viewport.zfar;
     const float ortho_projection[4][4] =
@@ -97,8 +97,8 @@ void metal_renderer_t::end_draw(boden::context_t &ctx)
     {
         .x = 0,
         .y = 0,
-        .width = 640,
-        .height = 480
+        .width = (NS::UInteger)ctx.display_size.x,
+        .height = (NS::UInteger)ctx.display_size.y
     };
     encoder->setScissorRect(scissorRect);
 
@@ -205,18 +205,18 @@ void metal_renderer_t::setup_render_pipeline()
     }
     
     MTL::VertexDescriptor *vertexDescriptor = MTL::VertexDescriptor::alloc()->init();
-    vertexDescriptor->attributes()->object(0)->setOffset(offsetof(boden::draw::draw_vertex_t, position));
+    vertexDescriptor->attributes()->object(0)->setOffset(offsetof(boden::draw::vertex_t, position));
     vertexDescriptor->attributes()->object(0)->setFormat(MTL::VertexFormatFloat2);
     vertexDescriptor->attributes()->object(0)->setBufferIndex(0);
-    vertexDescriptor->attributes()->object(1)->setOffset(offsetof(boden::draw::draw_vertex_t, uv));
+    vertexDescriptor->attributes()->object(1)->setOffset(offsetof(boden::draw::vertex_t, uv));
     vertexDescriptor->attributes()->object(1)->setFormat(MTL::VertexFormatFloat2);
     vertexDescriptor->attributes()->object(1)->setBufferIndex(0);
-    vertexDescriptor->attributes()->object(2)->setOffset(offsetof(boden::draw::draw_vertex_t, color));
+    vertexDescriptor->attributes()->object(2)->setOffset(offsetof(boden::draw::vertex_t, color));
     vertexDescriptor->attributes()->object(2)->setFormat(MTL::VertexFormatUChar4);
     vertexDescriptor->attributes()->object(2)->setBufferIndex(0);
     vertexDescriptor->layouts()->object(0)->setStepRate(1);
     vertexDescriptor->layouts()->object(0)->setStepFunction(MTL::VertexStepFunctionPerVertex);
-    vertexDescriptor->layouts()->object(0)->setStride(sizeof(boden::draw::draw_vertex_t));
+    vertexDescriptor->layouts()->object(0)->setStride(sizeof(boden::draw::vertex_t));
 
     MTL::RenderPipelineDescriptor *pipelineDescriptor = MTL::RenderPipelineDescriptor::alloc()->init();
     pipelineDescriptor->setVertexFunction(vertexFunction);
