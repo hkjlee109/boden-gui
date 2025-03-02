@@ -10,10 +10,8 @@
 
 namespace platform {
 
-metal_renderer_t::metal_renderer_t(CA::MetalDrawable* drawable,
-                                   MTL::Device* device)
-    : renderer_t(),
-      _drawable{drawable},
+metal_renderer_t::metal_renderer_t(MTL::Device* device)
+    : boden::renderer_t(),
       _device{device},
       _command_queue{nullptr, [](MTL::CommandQueue *ptr) { if (ptr) ptr->release(); }},
       _render_pipeline{nullptr, [](MTL::RenderPipelineState *ptr) { if (ptr) ptr->release(); }},
@@ -31,16 +29,18 @@ metal_renderer_t::~metal_renderer_t()
 {
 }
 
-void metal_renderer_t::begin_paint()
+void metal_renderer_t::begin_draw(boden::context_t &ctx)
 {
 }
 
-void metal_renderer_t::end_paint()
+void metal_renderer_t::end_draw(boden::context_t &ctx)
 {
+    CA::MetalDrawable *surface = reinterpret_cast<CA::MetalDrawable *>(ctx.surface_handle);
+    
     MTL::CommandBuffer *command_buffer = _command_queue->commandBuffer();
     MTL::RenderPassDescriptor *descriptor = MTL::RenderPassDescriptor::alloc()->init();
     
-    descriptor->colorAttachments()->object(0)->setTexture(_drawable->texture());
+    descriptor->colorAttachments()->object(0)->setTexture(surface->texture());
     descriptor->colorAttachments()->object(0)->setLoadAction(MTL::LoadActionClear);
     descriptor->colorAttachments()->object(0)->setClearColor(MTL::ClearColor::Make(0.45f, 0.55f, 0.60f, 1.00f));
 
@@ -48,9 +48,9 @@ void metal_renderer_t::end_paint()
     
     boden::draw::draw_vertex_t vertices[] = {
         { .position = {  0,  0 }, .uv = { 0, 0 }, .color = 0xFF0000FF },
-        { .position = {  0, 300 }, .uv = { 0, 0 }, .color = 0xFF00FF00 },
-        { .position = { 1200, 0 }, .uv = { 0, 0 }, .color = 0xFFFF0000 },
-        { .position = { 1200, 300 }, .uv = { 0, 0 }, .color = 0xFF00FFFF },
+        { .position = {  0, 240 }, .uv = { 0, 0 }, .color = 0xFF00FF00 },
+        { .position = { 640, 0 }, .uv = { 0, 0 }, .color = 0xFFFF0000 },
+        { .position = { 640, 240 }, .uv = { 0, 0 }, .color = 0xFF00FFFF },
     };
 
     MTL::Buffer *vertex_buffer = _device->newBuffer(vertices, sizeof(vertices), MTL::ResourceStorageModeShared);
@@ -68,17 +68,17 @@ void metal_renderer_t::end_paint()
     {
         .originX = 0.0,
         .originY = 0.0,
-        .width = (double)(1200),
-        .height = (double)(720),
+        .width = (double)(640),
+        .height = (double)(480),
         .znear = 0.0,
         .zfar = 1.0
     };
     encoder->setViewport(viewport);
     
     float L = 0;
-    float R = 1200;
+    float R = 640;
     float T = 0;
-    float B = 720;
+    float B = 480;
     float N = (float)viewport.znear;
     float F = (float)viewport.zfar;
     const float ortho_projection[4][4] =
@@ -109,7 +109,7 @@ void metal_renderer_t::end_paint()
     encoder->drawPrimitives(MTL::PrimitiveTypeTriangleStrip, 0, 4, 1);
     
     encoder->endEncoding();
-    command_buffer->presentDrawable(_drawable);
+    command_buffer->presentDrawable(surface);
     command_buffer->commit();
     
     descriptor->release();

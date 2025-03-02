@@ -1,5 +1,6 @@
 #pragma once
 
+#include <boden/context.hpp>
 #include <boden/math/vec.hpp>
 #include <boden/draw/draw_command.hpp>
 #include <boden/draw/draw_index.hpp>
@@ -14,8 +15,8 @@ public:
     renderer_t();
     virtual ~renderer_t();
 
-    virtual void begin_paint();
-    virtual void end_paint();
+    virtual void begin_draw(boden::context_t &ctx);
+    virtual void end_draw(boden::context_t &ctx);
     
     virtual void draw_rect();
 

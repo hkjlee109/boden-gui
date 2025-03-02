@@ -15,11 +15,11 @@ renderer_t::~renderer_t()
 {
 }
 
-void renderer_t::begin_paint()
+void renderer_t::begin_draw(boden::context_t &ctx)
 {
 }
 
-void renderer_t::end_paint()
+void renderer_t::end_draw(boden::context_t &ctx)
 {
 }
 

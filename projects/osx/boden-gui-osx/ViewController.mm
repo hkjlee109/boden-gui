@@ -2,6 +2,7 @@
 
 #import "platform/metal_renderer.hpp"
 #import <app/main_view.hpp>
+#import <boden/context.hpp>
 
 @interface ViewController() <NSWindowDelegate, MTKViewDelegate>
 
@@ -25,10 +26,9 @@
     
     self.mtkView.device = MTLCreateSystemDefaultDevice();
     self.mtkView.delegate = self;
-    
+
     _main_view = std::make_unique<app::main_view_t>();
-    _renderer = std::make_unique<platform::metal_renderer_t>((__bridge CA::MetalDrawable*)self.mtkView.currentDrawable,
-                                                             (__bridge MTL::Device *)self.mtkView.device);
+    _renderer = std::make_unique<platform::metal_renderer_t>((__bridge MTL::Device *)self.mtkView.device);
 }
 
 - (void)viewWillAppear {
@@ -48,7 +48,10 @@
 
 - (void)drawInMTKView:(nonnull MTKView *)view {
     NSLog(@"# drawInMTKView");
-    _main_view->draw(_renderer.get());
+    boden::context_t ctx{_renderer.get(),
+                         (boden::surface_handle_t)(__bridge CA::MetalDrawable *)self.mtkView.currentDrawable};
+    
+    _main_view->draw(ctx);
 }
 
 - (void)mtkView:(nonnull MTKView *)view drawableSizeWillChange:(CGSize)size {

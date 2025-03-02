@@ -1,16 +1,16 @@
 #pragma once
 
-#include <boden/renderer.hpp>
+#include <boden/view.hpp>
 
 namespace app {
 
-class main_view_t
+class main_view_t : public boden::view_t
 {
 public:
     main_view_t();
     ~main_view_t();
     
-    void draw(boden::renderer_t *renderer);
+    void draw(boden::context_t &ctx) override;
     
 private:
 };

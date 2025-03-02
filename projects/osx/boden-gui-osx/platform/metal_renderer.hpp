@@ -1,5 +1,6 @@
 #pragma once
 
+#include <boden/context.hpp>
 #include <boden/math/vec.hpp>
 #include <boden/renderer.hpp>
 
@@ -16,11 +17,11 @@ using texture_ref_t = std::unique_ptr<MTL::Texture, void(*)(MTL::Texture *)>;
 class metal_renderer_t : public boden::renderer_t
 {
 public:
-    metal_renderer_t(CA::MetalDrawable* drawable, MTL::Device* device);
+    metal_renderer_t(MTL::Device* device);
     ~metal_renderer_t();
     
-    void begin_paint() override;
-    void end_paint() override;
+    void begin_draw(boden::context_t &ctx) override;
+    void end_draw(boden::context_t &ctx) override;
     
     void draw_rect() override;
     
@@ -29,7 +30,6 @@ private:
     void setup_render_pipeline();
     void setup_default_texture();
 
-    CA::MetalDrawable *_drawable;
     MTL::Device *_device;
     
     command_queue_ref_t _command_queue;

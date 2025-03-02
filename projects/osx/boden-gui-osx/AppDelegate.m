@@ -11,7 +11,7 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     window = [[NSWindow alloc] initWithContentRect:NSMakeRect(0, 0, 640, 480)
-                                         styleMask:NSWindowStyleMaskTitled|NSWindowStyleMaskClosable
+                                         styleMask:NSWindowStyleMaskTitled|NSWindowStyleMaskClosable|NSWindowStyleMaskResizable
                                            backing:NSBackingStoreBuffered
                                              defer:YES];
     window.contentViewController = [ViewController new];
