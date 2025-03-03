@@ -25,8 +25,9 @@
     [super viewDidLoad];
     
     self.mtkView.device = MTLCreateSystemDefaultDevice();
+    self.mtkView.enableSetNeedsDisplay = YES;
     self.mtkView.delegate = self;
-
+    
     _main_view = std::make_unique<app::main_view_t>();
     _renderer = std::make_unique<platform::metal_renderer_t>((__bridge MTL::Device *)self.mtkView.device);
 }

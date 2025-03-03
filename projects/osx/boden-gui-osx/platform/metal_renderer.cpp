@@ -48,9 +48,9 @@ void metal_renderer_t::end_draw(boden::context_t &ctx)
     
     boden::draw::vertex_t vertices[] = {
         { .position = {  0,  0 }, .uv = { 0, 0 }, .color = 0xFF0000FF },
-        { .position = {  0, 480 }, .uv = { 0, 0 }, .color = 0xFF00FF00 },
-        { .position = { 640, 0 }, .uv = { 0, 0 }, .color = 0xFFFF0000 },
-        { .position = { 640, 480 }, .uv = { 0, 0 }, .color = 0xFF00FFFF },
+        { .position = {  0, 480 * ctx.display_scale.y }, .uv = { 0, 0 }, .color = 0xFF00FF00 },
+        { .position = { 640 * ctx.display_scale.x, 0 }, .uv = { 0, 0 }, .color = 0xFFFF0000 },
+        { .position = { 640 * ctx.display_scale.x, 480 * ctx.display_scale.y }, .uv = { 0, 0 }, .color = 0xFF00FFFF },
     };
 
     MTL::Buffer *vertex_buffer = _device->newBuffer(vertices, sizeof(vertices), MTL::ResourceStorageModeShared);
@@ -68,17 +68,17 @@ void metal_renderer_t::end_draw(boden::context_t &ctx)
     {
         .originX = 0.0,
         .originY = 0.0,
-        .width = (double)(ctx.display_size.x),
-        .height = (double)(ctx.display_size.y),
+        .width = (double)(ctx.display_size.x * ctx.display_scale.x),
+        .height = (double)(ctx.display_size.y * ctx.display_scale.y),
         .znear = 0.0,
         .zfar = 1.0
     };
     encoder->setViewport(viewport);
     
     float L = 0;
-    float R = ctx.display_size.x;
+    float R = ctx.display_size.x * ctx.display_scale.x;
     float T = 0;
-    float B = ctx.display_size.y;
+    float B = ctx.display_size.y * ctx.display_scale.y;
     float N = (float)viewport.znear;
     float F = (float)viewport.zfar;
     const float ortho_projection[4][4] =
@@ -97,8 +97,8 @@ void metal_renderer_t::end_draw(boden::context_t &ctx)
     {
         .x = 0,
         .y = 0,
-        .width = (NS::UInteger)ctx.display_size.x,
-        .height = (NS::UInteger)ctx.display_size.y
+        .width = (NS::UInteger)(ctx.display_size.x * ctx.display_scale.x),
+        .height = (NS::UInteger)(ctx.display_size.y * ctx.display_scale.y)
     };
     encoder->setScissorRect(scissorRect);
 

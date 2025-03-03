@@ -15,7 +15,7 @@ main_view_t::~main_view_t()
 
 void main_view_t::draw(boden::context_t &ctx)
 {
-    ctx.renderer->end_draw(ctx);
+    ctx.renderer->begin_draw(ctx);
     
     ctx.renderer->end_draw(ctx);
 }
