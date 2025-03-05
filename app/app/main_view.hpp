@@ -1,6 +1,8 @@
 #pragma once
 
 #include <boden/view.hpp>
+#include <boden/button.hpp>
+#include <memory>
 
 namespace app {
 
@@ -13,6 +15,7 @@ public:
     void draw(boden::context_t &ctx) override;
     
 private:
+    std::shared_ptr<boden::button_t> _button;
 };
 
 } // app

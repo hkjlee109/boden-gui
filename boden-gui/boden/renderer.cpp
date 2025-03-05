@@ -23,8 +23,19 @@ void renderer_t::end_draw(boden::context_t &ctx)
 {
 }
 
-void renderer_t::draw_rect()
+void renderer_t::add_rect(boden::geometry::vec2_t &min, boden::geometry::vec2_t &max)
 {
+
+}
+
+void renderer_t::path_line_to(boden::geometry::vec2_t &to)
+{
+
+}
+
+void renderer_t::path_stroke()
+{
+
 }
 
 } // boden

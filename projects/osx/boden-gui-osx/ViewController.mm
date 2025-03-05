@@ -27,7 +27,7 @@
     self.mtkView.device = MTLCreateSystemDefaultDevice();
     self.mtkView.enableSetNeedsDisplay = YES;
     self.mtkView.delegate = self;
-    
+
     _main_view = std::make_unique<app::main_view_t>();
     _renderer = std::make_unique<platform::metal_renderer_t>((__bridge MTL::Device *)self.mtkView.device);
 }
@@ -53,11 +53,11 @@
     ctx.renderer = _renderer.get();
     ctx.surface_handle = (boden::surface_handle_t)(__bridge CA::MetalDrawable *)self.mtkView.currentDrawable;
     
-    ctx.display_size = boden::math::vec2_t{(float)(self.view.bounds.size.width),
-                                           (float)(self.view.bounds.size.height)};
+    ctx.display_size = boden::geometry::size_t{(float)(self.view.bounds.size.width),
+                                               (float)(self.view.bounds.size.height)};
 
     CGFloat scale = self.view.window.screen.backingScaleFactor ?: NSScreen.mainScreen.backingScaleFactor;
-    ctx.display_scale = boden::math::vec2_t{(float)scale, (float)scale};
+    ctx.display_scale = boden::geometry::vec2_t{(float)scale, (float)scale};
 
     _main_view->draw(ctx);
 }

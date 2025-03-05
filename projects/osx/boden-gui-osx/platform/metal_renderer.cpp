@@ -68,17 +68,17 @@ void metal_renderer_t::end_draw(boden::context_t &ctx)
     {
         .originX = 0.0,
         .originY = 0.0,
-        .width = (double)(ctx.display_size.x * ctx.display_scale.x),
-        .height = (double)(ctx.display_size.y * ctx.display_scale.y),
+        .width = (double)(ctx.display_size.width * ctx.display_scale.x),
+        .height = (double)(ctx.display_size.height * ctx.display_scale.y),
         .znear = 0.0,
         .zfar = 1.0
     };
     encoder->setViewport(viewport);
     
     float L = 0;
-    float R = ctx.display_size.x * ctx.display_scale.x;
+    float R = ctx.display_size.width * ctx.display_scale.x;
     float T = 0;
-    float B = ctx.display_size.y * ctx.display_scale.y;
+    float B = ctx.display_size.height * ctx.display_scale.y;
     float N = (float)viewport.znear;
     float F = (float)viewport.zfar;
     const float ortho_projection[4][4] =
@@ -97,8 +97,8 @@ void metal_renderer_t::end_draw(boden::context_t &ctx)
     {
         .x = 0,
         .y = 0,
-        .width = (NS::UInteger)(ctx.display_size.x * ctx.display_scale.x),
-        .height = (NS::UInteger)(ctx.display_size.y * ctx.display_scale.y)
+        .width = (NS::UInteger)(ctx.display_size.width * ctx.display_scale.x),
+        .height = (NS::UInteger)(ctx.display_size.height * ctx.display_scale.y)
     };
     encoder->setScissorRect(scissorRect);
 
@@ -114,10 +114,6 @@ void metal_renderer_t::end_draw(boden::context_t &ctx)
     
     descriptor->release();
     vertex_buffer->release();
-}
-
-void metal_renderer_t::draw_rect()
-{
 }
 
 void metal_renderer_t::setup_depth_stencil_state()

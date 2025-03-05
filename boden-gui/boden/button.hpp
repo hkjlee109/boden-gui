@@ -1,18 +1,24 @@
 #pragma once
 
-#include "renderer.hpp"
+#include <boden/context.hpp>
+#include <boden/geometry/rect.hpp>
+#include <boden/view.hpp>
 
 namespace boden {
 
-class button_t
+class button_t : public view_t
 {
 public:
     button_t();
     ~button_t();
     
-    void draw(boden::renderer_t& renderer);
-    
+    button_t(boden::geometry::rect_t frame);
+
+    virtual void draw(boden::context_t &context) override;
+
 private:
+    boden::geometry::rect_t _bounds;
+    boden::geometry::rect_t _frame;
 };
 
 } // boden

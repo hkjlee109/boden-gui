@@ -1,7 +1,7 @@
 #pragma once
 
 #include <boden/context.hpp>
-#include <boden/math/vec.hpp>
+#include <boden/geometry/vec.hpp>
 #include <boden/renderer.hpp>
 
 #include <Metal/Metal.hpp>
@@ -22,8 +22,6 @@ public:
     
     void begin_draw(boden::context_t &ctx) override;
     void end_draw(boden::context_t &ctx) override;
-    
-    void draw_rect() override;
     
 private:
     void setup_depth_stencil_state();
