@@ -8,9 +8,9 @@ namespace app {
 main_view_t::main_view_t()
     : boden::view_t()
 {
-    _button = std::make_shared<boden::button_t>(boden::geometry::rect_t(0, 0, 100, 50));
+    button_ = std::make_shared<boden::button_t>(boden::geometry::rect_t(100, 100, 100, 50));
 
-    subviews.push_back(_button);
+    subviews.push_back(button_);
 }
 
 main_view_t::~main_view_t()

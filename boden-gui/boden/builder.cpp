@@ -1,4 +1,5 @@
 #include "builder.hpp"
+#include <boden/math/normalize.hpp>
 
 namespace boden {
 
@@ -18,12 +19,40 @@ void builder_t::add_rect(const boden::geometry::vec2_t &p1, const boden::geometr
     path.push_back(p2);
     path.emplace_back(p2.x, p1.x);
 
-    add_polyline(path);
+    add_polyline(path, 10.0);
 }
 
-void builder_t::add_polyline(const std::vector<boden::geometry::vec2_t> &pts)
+void builder_t::add_polyline(const std::vector<boden::geometry::vec2_t> &path, float thickness)
 {
+    int count = path.size();
 
+    for (int i1 = 0; i1 < count; i1++)
+    {
+        const int i2 = (i1 + 1) == count ? 0 : i1 + 1;
+        const boden::geometry::vec2_t &p1 = path[i1];
+        const boden::geometry::vec2_t &p2 = path[i2];
+
+        float dx = p2.x - p1.x;
+        float dy = p2.y - p1.y;
+        boden::math::normalize_float_2(dx, dy);
+        dx *= (thickness * 0.5f);
+        dy *= (thickness * 0.5f);
+
+        commands.emplace_back(4, vertices.size());
+
+        vertices.emplace_back(boden::geometry::vec2_t{p1.x + dy, p1.y - dx}, 
+                               boden::geometry::vec2_t{0, 0}, 
+                               0xFF0000FF);
+        vertices.emplace_back(boden::geometry::vec2_t{p2.x + dy, p2.y - dx}, 
+                               boden::geometry::vec2_t{0, 0}, 
+                               0xFF0000FF);
+        vertices.emplace_back(boden::geometry::vec2_t{p1.x - dy, p1.y + dx}, 
+                               boden::geometry::vec2_t{0, 0}, 
+                               0xFF0000FF);
+        vertices.emplace_back(boden::geometry::vec2_t{p2.x - dy, p2.y + dx}, 
+                               boden::geometry::vec2_t{0, 0}, 
+                               0xFF0000FF);
+    }
 }
 
 } // boden

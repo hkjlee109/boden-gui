@@ -14,12 +14,12 @@ public:
     ~builder_t();
     
     void add_rect(const boden::geometry::vec2_t &p1, const boden::geometry::vec2_t &p2);
-    void add_polyline(const std::vector<boden::geometry::vec2_t> &path);
+    void add_polyline(const std::vector<boden::geometry::vec2_t> &path, float thickness);
     
+    std::vector<boden::draw::command_t> commands;
+    std::vector<boden::draw::vertex_t> vertices;
+
 private:
-    std::vector<boden::draw::command_t> _commands;
-    std::vector<boden::draw::vertex_t> _vertices;
-    std::vector<boden::geometry::vec2_t> _path;
 };
 
 } // boden

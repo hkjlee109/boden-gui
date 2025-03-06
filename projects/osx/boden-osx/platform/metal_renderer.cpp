@@ -46,20 +46,9 @@ void metal_renderer_t::end_draw(boden::context_t &ctx)
 
     MTL::RenderCommandEncoder *encoder = command_buffer->renderCommandEncoder(descriptor);
     
-    boden::draw::vertex_t vertices[] = {
-        { .position = {  0,  0 }, .uv = { 0, 0 }, .color = 0xFF0000FF },
-        { .position = {  0, 480 * ctx.display_scale.y }, .uv = { 0, 0 }, .color = 0xFF00FF00 },
-        { .position = { 640 * ctx.display_scale.x, 0 }, .uv = { 0, 0 }, .color = 0xFFFF0000 },
-        { .position = { 640 * ctx.display_scale.x, 480 * ctx.display_scale.y }, .uv = { 0, 0 }, .color = 0xFF00FFFF },
-    };
-
-    MTL::Buffer *vertex_buffer = _device->newBuffer(vertices, sizeof(vertices), MTL::ResourceStorageModeShared);
-    
-    
-    
-    
-    
-    
+    MTL::Buffer *vertex_buffer = _device->newBuffer(builder.vertices.data(),
+                                                    builder.vertices.size() * sizeof(boden::draw::vertex_t),
+                                                    MTL::ResourceStorageModeShared);
     
     encoder->setCullMode(MTL::CullModeNone);
     encoder->setDepthStencilState(_depth_stencil_state.get());
@@ -91,22 +80,23 @@ void metal_renderer_t::end_draw(boden::context_t &ctx)
 
     encoder->setVertexBytes(&ortho_projection, sizeof(ortho_projection), 1);
     
-    
-    
-    MTL::ScissorRect scissorRect =
+    for(const boden::draw::command_t &command : builder.commands)
     {
-        .x = 0,
-        .y = 0,
-        .width = (NS::UInteger)(ctx.display_size.width * ctx.display_scale.x),
-        .height = (NS::UInteger)(ctx.display_size.height * ctx.display_scale.y)
-    };
-    encoder->setScissorRect(scissorRect);
-
-    encoder->setFragmentTexture(_texture.get(), 0);
-    
-    encoder->setRenderPipelineState(_render_pipeline.get());
-    encoder->setVertexBuffer(vertex_buffer, 0, 0);
-    encoder->drawPrimitives(MTL::PrimitiveTypeTriangleStrip, 0, 4, 1);
+        MTL::ScissorRect scissorRect =
+        {
+            .x = 0,
+            .y = 0,
+            .width = (NS::UInteger)(ctx.display_size.width * ctx.display_scale.x),
+            .height = (NS::UInteger)(ctx.display_size.height * ctx.display_scale.y)
+        };
+        encoder->setScissorRect(scissorRect);
+        
+        encoder->setFragmentTexture(_texture.get(), 0);
+        
+        encoder->setRenderPipelineState(_render_pipeline.get());
+        encoder->setVertexBuffer(vertex_buffer, 0, 0);
+        encoder->drawPrimitives(MTL::PrimitiveTypeTriangleStrip, command.vertex_offset, command.vertex_count, 1);
+    }
     
     encoder->endEncoding();
     command_buffer->presentDrawable(surface);

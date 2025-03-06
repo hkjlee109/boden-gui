@@ -17,8 +17,8 @@ public:
     virtual void draw(boden::context_t &context) override;
 
 private:
-    boden::geometry::rect_t _bounds;
-    boden::geometry::rect_t _frame;
+    boden::geometry::rect_t bounds_;
+    boden::geometry::rect_t frame_;
 };
 
 } // boden

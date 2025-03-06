@@ -15,7 +15,7 @@ public:
     void draw(boden::context_t &ctx) override;
     
 private:
-    std::shared_ptr<boden::button_t> _button;
+    std::shared_ptr<boden::button_t> button_;
 };
 
 } // app
