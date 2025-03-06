@@ -23,7 +23,8 @@ button_t::button_t(boden::geometry::rect_t frame)
 
 void button_t::draw(boden::context_t &ctx)
 {
-
+    ctx.renderer->builder.add_rect({_frame.origin.x, _frame.origin.y}, 
+                                   {_frame.origin.x + _frame.size.width, _frame.origin.y + _frame.size.height});
 }
 
 } // boden
