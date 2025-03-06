@@ -13,7 +13,9 @@ public:
     builder_t();
     ~builder_t();
     
-    void add_rect(const boden::geometry::vec2_t &p1, const boden::geometry::vec2_t &p2);
+    void add_rect(const boden::geometry::vec2_t &p1, 
+                  const boden::geometry::vec2_t &p2, 
+                  float thickness);
     void add_polyline(const std::vector<boden::geometry::vec2_t> &path, float thickness);
     
     std::vector<boden::draw::command_t> commands;

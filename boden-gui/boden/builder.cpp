@@ -11,15 +11,19 @@ builder_t::~builder_t()
 {
 }
 
-void builder_t::add_rect(const boden::geometry::vec2_t &p1, const boden::geometry::vec2_t &p2)
+void builder_t::add_rect(const boden::geometry::vec2_t &p1, 
+                         const boden::geometry::vec2_t &p2, 
+                         float thickness)
 {
+    if(thickness <= 0) return;
+
     std::vector<boden::geometry::vec2_t> path;
     path.push_back(p1);
     path.emplace_back(p1.x, p2.y);
     path.push_back(p2);
     path.emplace_back(p2.x, p1.x);
 
-    add_polyline(path, 10.0);
+    add_polyline(path, thickness);
 }
 
 void builder_t::add_polyline(const std::vector<boden::geometry::vec2_t> &path, float thickness)

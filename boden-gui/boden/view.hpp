@@ -1,6 +1,7 @@
 #pragma once
 
 #include <boden/context.hpp>
+#include <boden/layer.hpp>
 #include <vector>
 
 namespace boden {
@@ -13,7 +14,7 @@ public:
 
     virtual void draw(boden::context_t &ctx) = 0;
 
-protected:
+    boden::layer_t layer;
     std::vector<std::shared_ptr<boden::view_t>> subviews;
 };
 

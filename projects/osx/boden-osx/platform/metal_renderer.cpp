@@ -179,64 +179,64 @@ void metal_renderer_t::setup_render_pipeline()
         return;
     }
     
-    MTL::Function *vertexFunction = library->newFunction(NS::String::string("vertex_main", NS::UTF8StringEncoding));
-    MTL::Function *fragmentFunction = library->newFunction(NS::String::string("fragment_main", NS::UTF8StringEncoding));
-    if(vertexFunction == nullptr || fragmentFunction == nullptr)
+    MTL::Function *vertex_func = library->newFunction(NS::String::string("vertex_main", NS::UTF8StringEncoding));
+    MTL::Function *fragment_func = library->newFunction(NS::String::string("fragment_main", NS::UTF8StringEncoding));
+    if(vertex_func == nullptr || fragment_func == nullptr)
     {
         std::cout << "Error: failed to find Metal shader functions in library: " << error << std::endl;
-        if(vertexFunction) vertexFunction->release();
-        if(fragmentFunction) fragmentFunction->release();
+        if(vertex_func) vertex_func->release();
+        if(fragment_func) fragment_func->release();
         library->release();
         return;
     }
     
-    MTL::VertexDescriptor *vertexDescriptor = MTL::VertexDescriptor::alloc()->init();
-    vertexDescriptor->attributes()->object(0)->setOffset(offsetof(boden::draw::vertex_t, position));
-    vertexDescriptor->attributes()->object(0)->setFormat(MTL::VertexFormatFloat2);
-    vertexDescriptor->attributes()->object(0)->setBufferIndex(0);
-    vertexDescriptor->attributes()->object(1)->setOffset(offsetof(boden::draw::vertex_t, uv));
-    vertexDescriptor->attributes()->object(1)->setFormat(MTL::VertexFormatFloat2);
-    vertexDescriptor->attributes()->object(1)->setBufferIndex(0);
-    vertexDescriptor->attributes()->object(2)->setOffset(offsetof(boden::draw::vertex_t, color));
-    vertexDescriptor->attributes()->object(2)->setFormat(MTL::VertexFormatUChar4);
-    vertexDescriptor->attributes()->object(2)->setBufferIndex(0);
-    vertexDescriptor->layouts()->object(0)->setStepRate(1);
-    vertexDescriptor->layouts()->object(0)->setStepFunction(MTL::VertexStepFunctionPerVertex);
-    vertexDescriptor->layouts()->object(0)->setStride(sizeof(boden::draw::vertex_t));
+    MTL::VertexDescriptor *vertex_desc = MTL::VertexDescriptor::alloc()->init();
+    vertex_desc->attributes()->object(0)->setOffset(offsetof(boden::draw::vertex_t, position));
+    vertex_desc->attributes()->object(0)->setFormat(MTL::VertexFormatFloat2);
+    vertex_desc->attributes()->object(0)->setBufferIndex(0);
+    vertex_desc->attributes()->object(1)->setOffset(offsetof(boden::draw::vertex_t, uv));
+    vertex_desc->attributes()->object(1)->setFormat(MTL::VertexFormatFloat2);
+    vertex_desc->attributes()->object(1)->setBufferIndex(0);
+    vertex_desc->attributes()->object(2)->setOffset(offsetof(boden::draw::vertex_t, color));
+    vertex_desc->attributes()->object(2)->setFormat(MTL::VertexFormatUChar4);
+    vertex_desc->attributes()->object(2)->setBufferIndex(0);
+    vertex_desc->layouts()->object(0)->setStepRate(1);
+    vertex_desc->layouts()->object(0)->setStepFunction(MTL::VertexStepFunctionPerVertex);
+    vertex_desc->layouts()->object(0)->setStride(sizeof(boden::draw::vertex_t));
 
-    MTL::RenderPipelineDescriptor *pipelineDescriptor = MTL::RenderPipelineDescriptor::alloc()->init();
-    pipelineDescriptor->setVertexFunction(vertexFunction);
-    pipelineDescriptor->setFragmentFunction(fragmentFunction);
-    pipelineDescriptor->setVertexDescriptor(vertexDescriptor);
-    pipelineDescriptor->setRasterSampleCount(1);
-    pipelineDescriptor->colorAttachments()->object(0)->setPixelFormat(MTL::PixelFormatBGRA8Unorm);
+    MTL::RenderPipelineDescriptor *pipeline_desc = MTL::RenderPipelineDescriptor::alloc()->init();
+    pipeline_desc->setVertexFunction(vertex_func);
+    pipeline_desc->setFragmentFunction(fragment_func);
+    pipeline_desc->setVertexDescriptor(vertex_desc);
+    pipeline_desc->setRasterSampleCount(1);
+    pipeline_desc->colorAttachments()->object(0)->setPixelFormat(MTL::PixelFormatBGRA8Unorm);
     
-    pipelineDescriptor->colorAttachments()->object(0)->setBlendingEnabled(true);
-    pipelineDescriptor->colorAttachments()->object(0)->setRgbBlendOperation(MTL::BlendOperationAdd);
-    pipelineDescriptor->colorAttachments()->object(0)->setSourceRGBBlendFactor(MTL::BlendFactorSourceAlpha);
-    pipelineDescriptor->colorAttachments()->object(0)->setDestinationRGBBlendFactor(MTL::BlendFactorOneMinusSourceAlpha);
-    pipelineDescriptor->colorAttachments()->object(0)->setAlphaBlendOperation(MTL::BlendOperationAdd);
-    pipelineDescriptor->colorAttachments()->object(0)->setSourceAlphaBlendFactor(MTL::BlendFactorOne);
-    pipelineDescriptor->colorAttachments()->object(0)->setDestinationAlphaBlendFactor(MTL::BlendFactorOneMinusSourceAlpha);
-    pipelineDescriptor->setDepthAttachmentPixelFormat(MTL::PixelFormatInvalid);
-    pipelineDescriptor->setStencilAttachmentPixelFormat(MTL::PixelFormatInvalid);
+    pipeline_desc->colorAttachments()->object(0)->setBlendingEnabled(true);
+    pipeline_desc->colorAttachments()->object(0)->setRgbBlendOperation(MTL::BlendOperationAdd);
+    pipeline_desc->colorAttachments()->object(0)->setSourceRGBBlendFactor(MTL::BlendFactorSourceAlpha);
+    pipeline_desc->colorAttachments()->object(0)->setDestinationRGBBlendFactor(MTL::BlendFactorOneMinusSourceAlpha);
+    pipeline_desc->colorAttachments()->object(0)->setAlphaBlendOperation(MTL::BlendOperationAdd);
+    pipeline_desc->colorAttachments()->object(0)->setSourceAlphaBlendFactor(MTL::BlendFactorOne);
+    pipeline_desc->colorAttachments()->object(0)->setDestinationAlphaBlendFactor(MTL::BlendFactorOneMinusSourceAlpha);
+    pipeline_desc->setDepthAttachmentPixelFormat(MTL::PixelFormatInvalid);
+    pipeline_desc->setStencilAttachmentPixelFormat(MTL::PixelFormatInvalid);
     
-    _render_pipeline.reset(_device->newRenderPipelineState(pipelineDescriptor, &error));
+    _render_pipeline.reset(_device->newRenderPipelineState(pipeline_desc, &error));
     if(_render_pipeline == nullptr)
     {
         std::cout << "Error: failed to create Metal pipeline state: " << error << std::endl;
-        if(vertexDescriptor) vertexDescriptor->release();
-        if(pipelineDescriptor) pipelineDescriptor->release();
-        vertexFunction->release();
-        fragmentFunction->release();
+        if(vertex_desc) vertex_desc->release();
+        if(pipeline_desc) pipeline_desc->release();
+        vertex_func->release();
+        fragment_func->release();
         library->release();
         return;
     }
     
-    vertexDescriptor->release();
-    pipelineDescriptor->release();
-    vertexFunction->release();
-    fragmentFunction->release();
+    vertex_desc->release();
+    pipeline_desc->release();
+    vertex_func->release();
+    fragment_func->release();
     library->release();
 }
 
