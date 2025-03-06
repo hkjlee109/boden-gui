@@ -2,7 +2,7 @@
 
 #include <boden/builder.hpp>
 #include <boden/context.hpp>
-#include <boden/geometry/vec.hpp>
+#include <boden/layout/vec.hpp>
 #include <boden/draw/command.hpp>
 #include <boden/draw/vertex.hpp>
 #include <vector>

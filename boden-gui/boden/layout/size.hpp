@@ -1,7 +1,7 @@
 #pragma once
 
 namespace boden {
-namespace geometry {
+namespace layout {
 
 struct size_t
 {
@@ -10,5 +10,5 @@ struct size_t
     float width, height;
 };
 
-} // geometry
+} // layout
 } // boden

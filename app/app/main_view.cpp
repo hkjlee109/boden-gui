@@ -1,6 +1,6 @@
 #include "main_view.hpp"
 
-#include <boden/geometry/rect.hpp>
+#include <boden/layout/rect.hpp>
 #include <boden/renderer.hpp>
 
 namespace app {
@@ -8,7 +8,7 @@ namespace app {
 main_view_t::main_view_t()
     : boden::view_t()
 {
-    button_ = std::make_shared<boden::button_t>(boden::geometry::rect_t(100, 100, 100, 50));
+    button_ = std::make_shared<boden::button_t>(boden::layout::rect_t(100, 100, 100, 50));
     button_->layer.border_width = 4;
 
     subviews.push_back(button_);

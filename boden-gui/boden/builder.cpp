@@ -11,30 +11,33 @@ builder_t::~builder_t()
 {
 }
 
-void builder_t::add_rect(const boden::geometry::vec2_t &p1, 
-                         const boden::geometry::vec2_t &p2, 
+void builder_t::add_rect(const boden::layout::vec2_t &p1, 
+                         const boden::layout::vec2_t &p2, 
+                         const boden::layout::color_t &color, 
                          float thickness)
 {
     if(thickness <= 0) return;
 
-    std::vector<boden::geometry::vec2_t> path;
+    std::vector<boden::layout::vec2_t> path;
     path.push_back(p1);
     path.emplace_back(p1.x, p2.y);
     path.push_back(p2);
     path.emplace_back(p2.x, p1.x);
 
-    add_polyline(path, thickness);
+    add_polyline(path, color, thickness);
 }
 
-void builder_t::add_polyline(const std::vector<boden::geometry::vec2_t> &path, float thickness)
+void builder_t::add_polyline(const std::vector<boden::layout::vec2_t> &path, 
+                             const boden::layout::color_t &color, 
+                             float thickness)
 {
     int count = path.size();
 
     for (int i1 = 0; i1 < count; i1++)
     {
         const int i2 = (i1 + 1) == count ? 0 : i1 + 1;
-        const boden::geometry::vec2_t &p1 = path[i1];
-        const boden::geometry::vec2_t &p2 = path[i2];
+        const boden::layout::vec2_t &p1 = path[i1];
+        const boden::layout::vec2_t &p2 = path[i2];
 
         float dx = p2.x - p1.x;
         float dy = p2.y - p1.y;
@@ -44,18 +47,18 @@ void builder_t::add_polyline(const std::vector<boden::geometry::vec2_t> &path, f
 
         commands.emplace_back(4, vertices.size());
 
-        vertices.emplace_back(boden::geometry::vec2_t{p1.x + dy, p1.y - dx}, 
-                               boden::geometry::vec2_t{0, 0}, 
-                               0xFF0000FF);
-        vertices.emplace_back(boden::geometry::vec2_t{p2.x + dy, p2.y - dx}, 
-                               boden::geometry::vec2_t{0, 0}, 
-                               0xFF0000FF);
-        vertices.emplace_back(boden::geometry::vec2_t{p1.x - dy, p1.y + dx}, 
-                               boden::geometry::vec2_t{0, 0}, 
-                               0xFF0000FF);
-        vertices.emplace_back(boden::geometry::vec2_t{p2.x - dy, p2.y + dx}, 
-                               boden::geometry::vec2_t{0, 0}, 
-                               0xFF0000FF);
+        vertices.emplace_back(boden::layout::vec2_t{p1.x + dy, p1.y - dx}, 
+                               boden::layout::vec2_t{0, 0}, 
+                               color);
+        vertices.emplace_back(boden::layout::vec2_t{p2.x + dy, p2.y - dx}, 
+                               boden::layout::vec2_t{0, 0}, 
+                               color);
+        vertices.emplace_back(boden::layout::vec2_t{p1.x - dy, p1.y + dx}, 
+                               boden::layout::vec2_t{0, 0}, 
+                               color);
+        vertices.emplace_back(boden::layout::vec2_t{p2.x - dy, p2.y + dx}, 
+                               boden::layout::vec2_t{0, 0}, 
+                               color);
     }
 }
 

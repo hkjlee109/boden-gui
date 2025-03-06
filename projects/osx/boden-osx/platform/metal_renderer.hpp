@@ -1,7 +1,7 @@
 #pragma once
 
 #include <boden/context.hpp>
-#include <boden/geometry/vec.hpp>
+#include <boden/layout/vec.hpp>
 #include <boden/renderer.hpp>
 
 #include <Metal/Metal.hpp>

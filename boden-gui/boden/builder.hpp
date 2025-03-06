@@ -1,6 +1,7 @@
 #pragma once
 
-#include <boden/geometry/vec.hpp>
+#include <boden/layout/color.hpp>
+#include <boden/layout/vec.hpp>
 #include <boden/draw/command.hpp>
 #include <boden/draw/vertex.hpp>
 #include <vector>
@@ -13,10 +14,14 @@ public:
     builder_t();
     ~builder_t();
     
-    void add_rect(const boden::geometry::vec2_t &p1, 
-                  const boden::geometry::vec2_t &p2, 
+    void add_rect(const boden::layout::vec2_t &p1, 
+                  const boden::layout::vec2_t &p2,
+                  const boden::layout::color_t &color, 
                   float thickness);
-    void add_polyline(const std::vector<boden::geometry::vec2_t> &path, float thickness);
+
+    void add_polyline(const std::vector<boden::layout::vec2_t> &path, 
+                      const boden::layout::color_t &color, 
+                      float thickness);
     
     std::vector<boden::draw::command_t> commands;
     std::vector<boden::draw::vertex_t> vertices;

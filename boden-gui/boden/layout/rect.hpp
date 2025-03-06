@@ -1,10 +1,10 @@
 #pragma once
 
-#include <boden/geometry/point.hpp>
-#include <boden/geometry/size.hpp>
+#include <boden/layout/point.hpp>
+#include <boden/layout/size.hpp>
 
 namespace boden {
-namespace geometry {
+namespace layout {
 
 struct rect_t
 {
@@ -12,9 +12,9 @@ struct rect_t
     constexpr rect_t(float _x, float _y, float _width, float _height) 
         : origin(_x, _y), size(_width, _height) {}
     
-    boden::geometry::point_t origin;
-    boden::geometry::size_t size;
+    boden::layout::point_t origin;
+    boden::layout::size_t size;
 };
 
-} // geometry
+} // layout
 } // boden

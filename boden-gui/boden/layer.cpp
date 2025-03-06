@@ -3,7 +3,8 @@
 namespace boden {
 
 layer_t::layer_t()
-    : border_width{0}
+    : border_color{},
+      border_width{0} 
 {
 }
 

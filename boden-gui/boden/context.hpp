@@ -1,7 +1,7 @@
 #pragma once
 
-#include <boden/geometry/size.hpp>
-#include <boden/geometry/vec.hpp>
+#include <boden/layout/size.hpp>
+#include <boden/layout/vec.hpp>
 #include <cstdint>
 
 namespace boden {
@@ -15,8 +15,8 @@ struct context_t
     renderer_t *renderer;
     surface_handle_t surface_handle;
     
-    boden::geometry::size_t display_size;
-    boden::geometry::vec2_t display_scale;
+    boden::layout::size_t display_size;
+    boden::layout::vec2_t display_scale;
 };
     
 } // boden

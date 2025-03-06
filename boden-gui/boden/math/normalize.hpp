@@ -1,7 +1,7 @@
 #pragma once
 
-#include <boden/geometry/point.hpp>
-#include <boden/geometry/size.hpp>
+#include <boden/layout/point.hpp>
+#include <boden/layout/size.hpp>
 #include <math.h>
 
 namespace boden {
