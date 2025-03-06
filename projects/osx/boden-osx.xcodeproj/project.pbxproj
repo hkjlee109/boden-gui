@@ -14,17 +14,17 @@
 /* Begin PBXFileReference section */
 		BF17A6792D73419000477794 /* main_view.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = main_view.hpp; sourceTree = "<group>"; };
 		BF17A67A2D73419000477794 /* main_view.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main_view.cpp; sourceTree = "<group>"; };
-		BF9757F22D6C7871000E9A16 /* boden-gui-osx.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "boden-gui-osx.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF9757F22D6C7871000E9A16 /* boden-osx.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "boden-osx.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF9759C82D6C9DA6000E9A16 /* libboden-gui.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboden-gui.a"; path = "../../build/lib/libboden-gui.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		BF9757F42D6C7871000E9A16 /* boden-gui-osx */ = {
+		BF9757F42D6C7871000E9A16 /* boden-osx */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			explicitFileTypes = {
 				ViewController.mm = sourcecode.cpp.objcpp;
 			};
-			path = "boden-gui-osx";
+			path = "boden-osx";
 			sourceTree = "<group>";
 		};
 		BF975AA32D6CA522000E9A16 /* deps */ = {
@@ -61,7 +61,7 @@
 			children = (
 				BF17A67B2D73419000477794 /* app */,
 				BF975AA32D6CA522000E9A16 /* deps */,
-				BF9757F42D6C7871000E9A16 /* boden-gui-osx */,
+				BF9757F42D6C7871000E9A16 /* boden-osx */,
 				BF9759C72D6C9DA6000E9A16 /* Frameworks */,
 				BF9757F32D6C7871000E9A16 /* Products */,
 			);
@@ -70,7 +70,7 @@
 		BF9757F32D6C7871000E9A16 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				BF9757F22D6C7871000E9A16 /* boden-gui-osx.app */,
+				BF9757F22D6C7871000E9A16 /* boden-osx.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -86,9 +86,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		BF9757F12D6C7871000E9A16 /* boden-gui-osx */ = {
+		BF9757F12D6C7871000E9A16 /* boden-osx */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = BF9758052D6C7873000E9A16 /* Build configuration list for PBXNativeTarget "boden-gui-osx" */;
+			buildConfigurationList = BF9758052D6C7873000E9A16 /* Build configuration list for PBXNativeTarget "boden-osx" */;
 			buildPhases = (
 				BF9757EE2D6C7871000E9A16 /* Sources */,
 				BF9757EF2D6C7871000E9A16 /* Frameworks */,
@@ -99,14 +99,14 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				BF9757F42D6C7871000E9A16 /* boden-gui-osx */,
+				BF9757F42D6C7871000E9A16 /* boden-osx */,
 				BF975AA32D6CA522000E9A16 /* deps */,
 			);
-			name = "boden-gui-osx";
+			name = "boden-osx";
 			packageProductDependencies = (
 			);
 			productName = "boden-gui-osx";
-			productReference = BF9757F22D6C7871000E9A16 /* boden-gui-osx.app */;
+			productReference = BF9757F22D6C7871000E9A16 /* boden-osx.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -123,7 +123,7 @@
 					};
 				};
 			};
-			buildConfigurationList = BF9757ED2D6C7871000E9A16 /* Build configuration list for PBXProject "boden-gui-osx" */;
+			buildConfigurationList = BF9757ED2D6C7871000E9A16 /* Build configuration list for PBXProject "boden-osx" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -137,7 +137,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				BF9757F12D6C7871000E9A16 /* boden-gui-osx */,
+				BF9757F12D6C7871000E9A16 /* boden-osx */,
 			);
 		};
 /* End PBXProject section */
@@ -284,7 +284,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "boden-gui-osx/boden_gui_osx.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "boden-osx/boden-osx.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -304,7 +304,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../../build/lib";
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.kartoffelsoft.boden-gui-osx";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.kartoffelsoft.boden-osx";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 			};
@@ -315,7 +315,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "boden-gui-osx/boden_gui_osx.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "boden-osx/boden-osx.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -335,7 +335,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../../build/lib";
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.kartoffelsoft.boden-gui-osx";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.kartoffelsoft.boden-osx";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 			};
@@ -344,7 +344,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		BF9757ED2D6C7871000E9A16 /* Build configuration list for PBXProject "boden-gui-osx" */ = {
+		BF9757ED2D6C7871000E9A16 /* Build configuration list for PBXProject "boden-osx" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BF9758032D6C7873000E9A16 /* Debug */,
@@ -353,7 +353,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		BF9758052D6C7873000E9A16 /* Build configuration list for PBXNativeTarget "boden-gui-osx" */ = {
+		BF9758052D6C7873000E9A16 /* Build configuration list for PBXNativeTarget "boden-osx" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BF9758062D6C7873000E9A16 /* Debug */,
