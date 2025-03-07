@@ -1,7 +1,9 @@
 #import "ViewController.h"
 
+#import "platform/metal_image_library.hpp"
 #import "platform/metal_renderer.hpp"
 #import <app/main_view.hpp>
+#import <boden/asset/image_library_ref.hpp>
 #import <boden/context.hpp>
 
 @interface ViewController() <NSWindowDelegate, MTKViewDelegate>
@@ -11,10 +13,11 @@
 @implementation ViewController {
     std::unique_ptr<app::main_view_t> _main_view;
     std::unique_ptr<platform::metal_renderer_t> _renderer;
+    std::unique_ptr<boden::asset::image_library_ref_t> _image_library;
 }
 
 - (MTKView*)mtkView {
-    return (MTKView*)self.view;
+    return (MTKView *)self.view;
 }
 
 - (CAMetalLayer*)metalLayer {
@@ -30,6 +33,15 @@
 
     _main_view = std::make_unique<app::main_view_t>();
     _renderer = std::make_unique<platform::metal_renderer_t>((__bridge MTL::Device *)self.mtkView.device);
+    
+    platform::metal_image_library_t *metal_image_library{new platform::metal_image_library_t((__bridge MTL::Device *)self.mtkView.device)};
+    
+    metal_image_library->load_image(
+        "settings",
+        [[NSBundle mainBundle] pathForResource:@"settings" ofType:@"png"].UTF8String
+    );
+    
+    _image_library = std::make_unique<boden::asset::image_library_ref_t>(metal_image_library);
 }
 
 - (void)viewWillAppear {

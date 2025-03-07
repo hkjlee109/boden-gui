@@ -7,12 +7,7 @@ file(GLOB_RECURSE SOURCES *.cpp *.hpp)
 
 add_library(boden-gui ${SOURCES})
 
-target_include_directories(${PROJECT_NAME} PUBLIC 
-    .
-    deps/metal-cpp
-)
-
-target_link_libraries(${PROJECT_NAME} PUBLIC
-    "-framework Metal"
-    "-framework MetalKit"
+target_include_directories(${PROJECT_NAME} 
+    PUBLIC .
+    PRIVATE ${CMAKE_SOURCE_DIR}/deps/stb
 )
