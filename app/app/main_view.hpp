@@ -2,6 +2,7 @@
 
 #include <boden/view.hpp>
 #include <boden/button.hpp>
+#include <boden/image_view.hpp>
 #include <memory>
 
 namespace app {
@@ -15,7 +16,8 @@ public:
     void draw(boden::context_t &ctx) override;
     
 private:
-    std::shared_ptr<boden::button_t> button_;
+    std::shared_ptr<boden::button_t> _button;
+    std::shared_ptr<boden::image_view_t> _image_view;
 };
 
 } // app
