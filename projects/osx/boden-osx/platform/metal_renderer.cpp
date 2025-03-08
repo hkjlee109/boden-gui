@@ -27,10 +27,13 @@ metal_renderer_t::~metal_renderer_t()
 
 void metal_renderer_t::begin_draw(boden::context_t &ctx)
 {
+    boden::renderer_t::begin_draw(ctx);
 }
 
 void metal_renderer_t::end_draw(boden::context_t &ctx)
 {
+    boden::renderer_t::end_draw(ctx);
+    
     CA::MetalDrawable *surface = reinterpret_cast<CA::MetalDrawable *>(ctx.surface_handle);
     
     MTL::CommandBuffer *command_buffer = _command_queue->commandBuffer();

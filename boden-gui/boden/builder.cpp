@@ -81,4 +81,10 @@ void builder_t::add_image(boden::asset::texture_id_t tid,
         0xff000000);
 }
 
+void builder_t::reset()
+{
+    commands.clear();
+    vertices.clear();
+}
+
 } // boden

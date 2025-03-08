@@ -28,6 +28,8 @@ public:
                    const boden::layout::vec2_t &p1, 
                    const boden::layout::vec2_t &p2);
 
+    void reset();
+    
     std::vector<boden::draw::command_t> commands;
     std::vector<boden::draw::vertex_t> vertices;
 
