@@ -5,5 +5,7 @@ project(boden-gui)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
-add_subdirectory(boden-gui)
+enable_testing()
+add_subdirectory(tools/googletest)
 
+add_subdirectory(boden-gui)
