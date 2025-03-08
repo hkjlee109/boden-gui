@@ -23,6 +23,9 @@ image_view_t::image_view_t(boden::layout::rect_t frame)
 
 void image_view_t::draw(boden::context_t &ctx)
 {
+    ctx.renderer->builder.add_image(image->texture_id, 
+                                    {_frame.origin.x, _frame.origin.y}, 
+                                    {_frame.origin.x + _frame.size.width, _frame.origin.y + _frame.size.height});
 }
 
 } // boden

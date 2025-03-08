@@ -13,7 +13,7 @@ main_view_t::main_view_t()
     subviews.push_back(_button);
     
     _image_view = std::make_shared<boden::image_view_t>(boden::layout::rect_t(300, 300, 150, 150));
-    _image_view->image.reset(new boden::image_t());
+    _image_view->image.reset(new boden::image_t("settings"));
     subviews.push_back(_image_view);
 }
 

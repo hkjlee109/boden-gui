@@ -1,5 +1,6 @@
 #pragma once
 
+#include <boden/asset/texture_id.hpp>
 #include <boden/layout/color.hpp>
 #include <boden/layout/vec.hpp>
 #include <boden/draw/command.hpp>
@@ -23,6 +24,10 @@ public:
                       const boden::layout::color_t &color, 
                       float thickness);
     
+    void add_image(boden::asset::texture_id_t tid,
+                   const boden::layout::vec2_t &p1, 
+                   const boden::layout::vec2_t &p2);
+
     std::vector<boden::draw::command_t> commands;
     std::vector<boden::draw::vertex_t> vertices;
 

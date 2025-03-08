@@ -87,7 +87,11 @@ void metal_renderer_t::end_draw(boden::context_t &ctx)
         };
         encoder->setScissorRect(scissorRect);
         
-        encoder->setFragmentTexture(_texture.get(), 0);
+        if(command.texture_id) {
+            encoder->setFragmentTexture(reinterpret_cast<MTL::Texture *>(command.texture_id), 0);
+        } else {
+            encoder->setFragmentTexture(_texture.get(), 0);
+        }
         
         encoder->setRenderPipelineState(_render_pipeline.get());
         encoder->setVertexBuffer(vertex_buffer, 0, 0);

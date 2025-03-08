@@ -3,7 +3,7 @@
 
 namespace platform {
 
-metal_image_library_t::metal_image_library_t(MTL::Device* device)
+metal_image_library_t::metal_image_library_t(MTL::Device *device)
     : boden::asset::image_library_t(),
       _device{device}
 {
@@ -23,7 +23,7 @@ metal_image_library_t::~metal_image_library_t()
     _image_inventory.clear();
 }
 
-bool metal_image_library_t::load_image(const char* key, const char* full_path)
+bool metal_image_library_t::load_image(const char *name, const char *full_path)
 {
     boden::asset::stb_ref_t stb(full_path);
     
@@ -40,7 +40,7 @@ bool metal_image_library_t::load_image(const char* key, const char* full_path)
         MTL::Region region = MTL::Region::Make2D(0, 0, stb.width, stb.height);
         texture->replaceRegion(region, 0, stb.data, stb.width * stb.number_of_channels);
 
-        _image_inventory[key] = (uint64_t)texture;
+        _image_inventory[name] = reinterpret_cast<boden::asset::texture_id_t>(texture);
 
         return true;
     }
@@ -48,9 +48,9 @@ bool metal_image_library_t::load_image(const char* key, const char* full_path)
     return false;
 }
 
-uint64_t metal_image_library_t::get_image(const char* key)
+boden::asset::texture_id_t metal_image_library_t::get_image(const char *name)
 {
-    return 0;
+    return reinterpret_cast<boden::asset::texture_id_t>(_image_inventory[name]);
 }
 
 } // platform

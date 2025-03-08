@@ -31,9 +31,6 @@
     self.mtkView.enableSetNeedsDisplay = YES;
     self.mtkView.delegate = self;
 
-    _main_view = std::make_unique<app::main_view_t>();
-    _renderer = std::make_unique<platform::metal_renderer_t>((__bridge MTL::Device *)self.mtkView.device);
-    
     platform::metal_image_library_t *metal_image_library{new platform::metal_image_library_t((__bridge MTL::Device *)self.mtkView.device)};
     
     metal_image_library->load_image(
@@ -42,6 +39,8 @@
     );
     
     _image_library = std::make_unique<boden::asset::image_library_ref_t>(metal_image_library);
+    _main_view = std::make_unique<app::main_view_t>();
+    _renderer = std::make_unique<platform::metal_renderer_t>((__bridge MTL::Device *)self.mtkView.device);
 }
 
 - (void)viewWillAppear {

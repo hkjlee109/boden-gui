@@ -62,4 +62,23 @@ void builder_t::add_polyline(const std::vector<boden::layout::vec2_t> &path,
     }
 }
 
+void builder_t::add_image(boden::asset::texture_id_t tid,
+                          const boden::layout::vec2_t &p1,
+                          const boden::layout::vec2_t &p2)
+{
+    commands.emplace_back(4, vertices.size(), tid);
+    vertices.emplace_back(boden::layout::vec2_t{p1.x, p1.y}, 
+        boden::layout::vec2_t{0, 0}, 
+        0xff000000);
+    vertices.emplace_back(boden::layout::vec2_t{p2.x, p1.y}, 
+        boden::layout::vec2_t{1, 0}, 
+        0xff000000);
+    vertices.emplace_back(boden::layout::vec2_t{p1.x, p2.y}, 
+        boden::layout::vec2_t{0, 1}, 
+        0xff000000);
+    vertices.emplace_back(boden::layout::vec2_t{p2.x, p2.y}, 
+        boden::layout::vec2_t{1, 1}, 
+        0xff000000);
+}
+
 } // boden

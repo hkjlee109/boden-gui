@@ -1,6 +1,7 @@
 #pragma once
 
 #include <boden/asset/image_library.hpp>
+#include <boden/asset/texture_id.hpp>
 #include <Metal/Metal.hpp>
 
 namespace platform {
@@ -12,7 +13,7 @@ public:
     ~metal_image_library_t();
     
     bool load_image(const char *key, const char *full_path) override;
-    uint64_t get_image(const char *key) override;
+    boden::asset::texture_id_t get_image(const char *name) override;
 
 private:
     MTL::Device *_device;
