@@ -26,10 +26,11 @@ public:
     
     void add_image(boden::asset::texture_id_t tid,
                    const boden::layout::vec2_t &p1, 
-                   const boden::layout::vec2_t &p2);
+                   const boden::layout::vec2_t &p2,
+                   const boden::layout::color_t &color);
 
     void reset();
-    
+
     std::vector<boden::draw::command_t> commands;
     std::vector<boden::draw::vertex_t> vertices;
 

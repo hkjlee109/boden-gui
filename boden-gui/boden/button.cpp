@@ -4,20 +4,16 @@
 namespace boden {
 
 button_t::button_t()
-    : view_t(),
-      _bounds{0, 0, 0, 0},
-      _frame{0, 0, 0, 0}
+    : view_t()
+{
+}
+
+button_t::button_t(const boden::layout::rect_t &frame)
+    : view_t{frame}
 {
 }
 
 button_t::~button_t()
-{
-}
-
-button_t::button_t(boden::layout::rect_t frame)
-    : view_t(),
-      _bounds{0, 0, frame.size.width, frame.size.height},
-      _frame{frame}
 {
 }
 

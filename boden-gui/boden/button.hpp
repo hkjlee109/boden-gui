@@ -10,15 +10,12 @@ class button_t : public view_t
 {
 public:
     button_t();
-    ~button_t();
-    
-    button_t(boden::layout::rect_t frame);
+    button_t(const boden::layout::rect_t &frame);
+    virtual ~button_t();
 
     virtual void draw(boden::context_t &context) override;
 
 private:
-    boden::layout::rect_t _bounds;
-    boden::layout::rect_t _frame;
 };
 
 } // boden

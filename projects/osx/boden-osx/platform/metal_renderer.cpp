@@ -44,6 +44,8 @@ void metal_renderer_t::end_draw(boden::context_t &ctx)
     descriptor->colorAttachments()->object(0)->setClearColor(MTL::ClearColor::Make(0.45f, 0.55f, 0.60f, 1.00f));
 
     MTL::RenderCommandEncoder *encoder = command_buffer->renderCommandEncoder(descriptor);
+    encoder->pushDebugGroup(NS::String::string("Boden Gui rendering",
+                                               NS::StringEncoding::UTF8StringEncoding));
     
     MTL::Buffer *vertex_buffer = _device->newBuffer(builder.vertices.data(),
                                                     builder.vertices.size() * sizeof(boden::draw::vertex_t),
@@ -101,7 +103,9 @@ void metal_renderer_t::end_draw(boden::context_t &ctx)
         encoder->drawPrimitives(MTL::PrimitiveTypeTriangleStrip, command.vertex_offset, command.vertex_count, 1);
     }
     
+    encoder->popDebugGroup();
     encoder->endEncoding();
+    
     command_buffer->presentDrawable(surface);
     command_buffer->commit();
     
