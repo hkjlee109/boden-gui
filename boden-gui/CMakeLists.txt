@@ -9,9 +9,7 @@ add_library(boden-gui ${SOURCES})
 
 target_include_directories(${PROJECT_NAME} 
     PUBLIC .
-#   PRIVATE ${CMAKE_SOURCE_DIR}/deps/stb
 )
 
-enable_testing()
 add_subdirectory(tools/googletest)
-# add_subdirectory(tests)
+add_subdirectory(tests)

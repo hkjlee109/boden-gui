@@ -3,4 +3,8 @@
 ```
 mkdir build
 cd build
-cmake .. -G Xcode
+cmake ..
+make
+
+ctest -V
+```

@@ -16,5 +16,4 @@ struct BuilderTests: public testing::Test
 
 TEST_F(BuilderTests, FirstTest) 
 {
-
 }
