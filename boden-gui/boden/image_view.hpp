@@ -16,9 +16,13 @@ public:
     
     virtual void draw(boden::context_t &context) override;
 
-    std::unique_ptr<boden::image_t> image;
+    void set_image(std::unique_ptr<boden::image_t> image);
+    void set_tint_color(const boden::layout::color_t &color);
+
+    const boden::layout::color_t & get_tint_color() const;
 
 private:
+    std::unique_ptr<boden::image_t> _image;
     boden::layout::color_t _tint_color;
 };
 

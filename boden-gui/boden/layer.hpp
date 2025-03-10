@@ -4,7 +4,7 @@
 
 namespace boden {
 
-class layer_t
+struct layer_t
 {
 public:
     layer_t();

@@ -16,12 +16,17 @@ public:
 
     virtual void draw(boden::context_t &ctx) = 0;
 
-    boden::layer_t layer;
-    std::vector<std::shared_ptr<boden::view_t>> subviews;
+    void set_layer_border_width(float width);
+
+    const boden::layout::color_t & get_layer_border_color() const;
+    float get_layer_border_width() const;
 
 protected:
+    boden::layer_t _layer;
     boden::layout::rect_t _bounds;
     boden::layout::rect_t _frame;
+
+    std::vector<std::shared_ptr<boden::view_t>> _subviews;
 };
 
 } // boden

@@ -4,7 +4,7 @@
 
 namespace boden {
 
-class image_t
+struct image_t
 {
 public:
     image_t(const char *name);
