@@ -45,7 +45,7 @@ void builder_t::add_polyline(const std::vector<boden::layout::vec2_t> &path,
         dx *= (thickness * 0.5f);
         dy *= (thickness * 0.5f);
 
-        commands.emplace_back(4, vertices.size());
+        commands.emplace_back(4, vertices.size(), get_clip_rect_top());
 
         vertices.emplace_back(boden::layout::vec2_t{p1.x + dy, p1.y - dx}, 
                                boden::layout::vec2_t{0, 0}, 
@@ -67,7 +67,7 @@ void builder_t::add_image(boden::asset::texture_id_t tid,
                           const boden::layout::vec2_t &p2,
                           const boden::layout::color_t &color)
 {
-    commands.emplace_back(4, vertices.size(), tid);
+    commands.emplace_back(4, vertices.size(), get_clip_rect_top(), tid);
     vertices.emplace_back(boden::layout::vec2_t{p1.x, p1.y}, 
         boden::layout::vec2_t{0, 0}, 
         color);
@@ -82,10 +82,26 @@ void builder_t::add_image(boden::asset::texture_id_t tid,
         color);
 }
 
+void builder_t::push_clip_rect(const boden::layout::rect_t &rect)
+{
+    _clip_rect_stack.push_back(rect);
+}
+
+void builder_t::pop_clip_rect()
+{
+    _clip_rect_stack.pop_back();
+}
+
+const boden::layout::rect_t & builder_t::get_clip_rect_top() const
+{
+    return _clip_rect_stack.back();
+}
+
 void builder_t::reset()
 {
     commands.clear();
     vertices.clear();
+    _clip_rect_stack.clear();
 }
 
 } // boden

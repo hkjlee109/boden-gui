@@ -59,9 +59,9 @@
 		BF9757E92D6C7871000E9A16 = {
 			isa = PBXGroup;
 			children = (
+				BF9757F42D6C7871000E9A16 /* boden-osx */,
 				BF17A67B2D73419000477794 /* app */,
 				BF975AA32D6CA522000E9A16 /* deps */,
-				BF9757F42D6C7871000E9A16 /* boden-osx */,
 				BF9759C72D6C9DA6000E9A16 /* Frameworks */,
 				BF9757F32D6C7871000E9A16 /* Products */,
 			);

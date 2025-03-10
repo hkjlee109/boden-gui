@@ -85,10 +85,10 @@ void metal_renderer_t::end_draw(boden::context_t &ctx)
     {
         MTL::ScissorRect scissorRect =
         {
-            .x = 0,
-            .y = 0,
-            .width = (NS::UInteger)(ctx.display_size.width * ctx.display_scale.x),
-            .height = (NS::UInteger)(ctx.display_size.height * ctx.display_scale.y)
+            .x = (NS::UInteger)(command.clip_rect.origin.x),
+            .y = (NS::UInteger)(command.clip_rect.origin.y),
+            .width = (NS::UInteger)(command.clip_rect.size.width),
+            .height = (NS::UInteger)(command.clip_rect.size.height)
         };
         encoder->setScissorRect(scissorRect);
         
