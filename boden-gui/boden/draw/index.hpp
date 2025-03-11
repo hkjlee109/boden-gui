@@ -5,7 +5,7 @@
 namespace boden {
 namespace draw {
 
-typedef uint16_t index_t;  
+typedef uint32_t index_t;  
 
 } // draw
 } // boden

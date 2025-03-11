@@ -5,6 +5,7 @@
 #include <boden/layout/rect.hpp>
 #include <boden/layout/vec.hpp>
 #include <boden/draw/command.hpp>
+#include <boden/draw/index.hpp>
 #include <boden/draw/vertex.hpp>
 #include <vector>
 
@@ -37,6 +38,7 @@ public:
     void reset();
 
     std::vector<boden::draw::command_t> commands;
+    std::vector<boden::draw::index_t> indices;
     std::vector<boden::draw::vertex_t> vertices;
 
 private:

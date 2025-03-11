@@ -1,5 +1,6 @@
 #include "metal_renderer.hpp"
 
+#include <boden/draw/index.hpp>
 #include <boden/draw/vertex.hpp>
 #include <simd/simd.h>
 #include <iostream>
@@ -51,6 +52,10 @@ void metal_renderer_t::end_draw(boden::context_t &ctx)
                                                     builder.vertices.size() * sizeof(boden::draw::vertex_t),
                                                     MTL::ResourceStorageModeShared);
     
+    MTL::Buffer *index_buffer = _device->newBuffer(builder.indices.data(),
+                                                    builder.indices.size() * sizeof(boden::draw::index_t),
+                                                    MTL::ResourceStorageModeShared);
+ 
     encoder->setCullMode(MTL::CullModeNone);
     encoder->setDepthStencilState(_depth_stencil_state.get());
 
@@ -100,7 +105,11 @@ void metal_renderer_t::end_draw(boden::context_t &ctx)
         
         encoder->setRenderPipelineState(_render_pipeline.get());
         encoder->setVertexBuffer(vertex_buffer, 0, 0);
-        encoder->drawPrimitives(MTL::PrimitiveTypeTriangleStrip, command.vertex_offset, command.vertex_count, 1);
+        encoder->drawIndexedPrimitives(MTL::PrimitiveTypeTriangleStrip,
+                                       command.count,
+                                       MTL::IndexTypeUInt32,
+                                       index_buffer,
+                                       command.index_buffer_offset * sizeof(boden::draw::index_t));
     }
     
     encoder->popDebugGroup();
