@@ -18,6 +18,11 @@ view_t::~view_t()
 {
 }
 
+float view_t::get_layer_border_width() const
+{
+    return _layer.border_width;
+}
+
 void view_t::set_layer_border_width(float width)
 {
     _layer.border_width = width;
@@ -26,11 +31,6 @@ void view_t::set_layer_border_width(float width)
 const boden::layout::color_t & view_t::get_layer_border_color() const 
 {
     return _layer.border_color;
-}
-
-float view_t::get_layer_border_width() const
-{
-    return _layer.border_width;
 }
 
 } // boden

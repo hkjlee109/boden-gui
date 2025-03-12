@@ -1,11 +1,14 @@
 #include "metal_renderer.hpp"
 
+#include "metal_buffer_manager.hpp"
 #include <boden/draw/index.hpp>
 #include <boden/draw/vertex.hpp>
 #include <simd/simd.h>
 #include <iostream>
 
 namespace platform {
+
+static platform::metal_buffer_manager_t buffer_manager;
 
 metal_renderer_t::metal_renderer_t(MTL::Device* device)
     : boden::renderer_t(),
@@ -48,16 +51,22 @@ void metal_renderer_t::end_draw(boden::context_t &ctx)
     encoder->pushDebugGroup(NS::String::string("Boden Gui rendering",
                                                NS::StringEncoding::UTF8StringEncoding));
     
-    MTL::Buffer *vertex_buffer = _device->newBuffer(builder.vertices.data(),
-                                                    builder.vertices.size() * sizeof(boden::draw::vertex_t),
-                                                    MTL::ResourceStorageModeShared);
+    metal_buffer_ref_t vertex_buffer = buffer_manager.dequeueReusableBuffer(_device,
+                                                                            builder.vertices.size() * sizeof(boden::draw::vertex_t));
+    metal_buffer_ref_t index_buffer = buffer_manager.dequeueReusableBuffer(_device,
+                                                                           builder.indices.size() * sizeof(boden::draw::index_t));
     
-    MTL::Buffer *index_buffer = _device->newBuffer(builder.indices.data(),
-                                                    builder.indices.size() * sizeof(boden::draw::index_t),
-                                                    MTL::ResourceStorageModeShared);
- 
+    memcpy((char*)vertex_buffer->get_buffer()->contents(),
+           builder.vertices.data(),
+           builder.vertices.size() * sizeof(boden::draw::vertex_t));
+    memcpy((char*)index_buffer->get_buffer()->contents(),
+           builder.indices.data(),
+           builder.indices.size() * sizeof(boden::draw::index_t));
+
     encoder->setCullMode(MTL::CullModeNone);
     encoder->setDepthStencilState(_depth_stencil_state.get());
+    encoder->setRenderPipelineState(_render_pipeline.get());
+    encoder->setVertexBuffer(vertex_buffer->get_buffer(), 0, 0);
 
     MTL::Viewport viewport =
     {
@@ -103,14 +112,17 @@ void metal_renderer_t::end_draw(boden::context_t &ctx)
             encoder->setFragmentTexture(_texture.get(), 0);
         }
         
-        encoder->setRenderPipelineState(_render_pipeline.get());
-        encoder->setVertexBuffer(vertex_buffer, 0, 0);
         encoder->drawIndexedPrimitives(MTL::PrimitiveTypeTriangleStrip,
                                        command.count,
                                        MTL::IndexTypeUInt32,
-                                       index_buffer,
+                                       index_buffer->get_buffer(),
                                        command.index_buffer_offset * sizeof(boden::draw::index_t));
     }
+    
+    command_buffer->addCompletedHandler([vertex_buffer, index_buffer](MTL::CommandBuffer* buffer) {
+        buffer_manager.queueReusableBuffer(vertex_buffer);
+        buffer_manager.queueReusableBuffer(index_buffer);
+    });
     
     encoder->popDebugGroup();
     encoder->endEncoding();
@@ -119,7 +131,6 @@ void metal_renderer_t::end_draw(boden::context_t &ctx)
     command_buffer->commit();
     
     descriptor->release();
-    vertex_buffer->release();
 }
 
 void metal_renderer_t::setup_depth_stencil_state()
