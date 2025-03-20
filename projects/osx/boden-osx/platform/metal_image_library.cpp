@@ -13,7 +13,7 @@ metal_image_library_t::~metal_image_library_t()
 {
     for (auto &pair : _image_inventory)
     {
-        MTL::Texture* texture = reinterpret_cast<MTL::Texture*>(pair.second);
+        MTL::Texture *texture = reinterpret_cast<MTL::Texture *>(pair.second);
 
         if(texture) {
             texture->release();
@@ -29,14 +29,14 @@ bool metal_image_library_t::load_image(const char *name, const char *full_path)
     
     if(stb)
     {
-        MTL::TextureDescriptor* texture_desc = MTL::TextureDescriptor::alloc()->init();
-        texture_desc->setTextureType(MTL::TextureType2D);
-        texture_desc->setPixelFormat(MTL::PixelFormatRGBA8Unorm);
-        texture_desc->setWidth(stb.width);
-        texture_desc->setHeight(stb.height);
-        texture_desc->setMipmapLevelCount(1);
+        MTL::TextureDescriptor *desc = MTL::TextureDescriptor::alloc()->init();
+        desc->setTextureType(MTL::TextureType2D);
+        desc->setPixelFormat(MTL::PixelFormatRGBA8Unorm);
+        desc->setWidth(stb.width);
+        desc->setHeight(stb.height);
+        desc->setMipmapLevelCount(1);
 
-        MTL::Texture *texture = _device->newTexture(texture_desc);
+        MTL::Texture *texture = _device->newTexture(desc);
         MTL::Region region = MTL::Region::Make2D(0, 0, stb.width, stb.height);
         texture->replaceRegion(region, 0, stb.data, stb.width * stb.number_of_channels);
 
