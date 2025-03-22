@@ -41,13 +41,13 @@ void metal_renderer_t::end_draw(boden::context_t &ctx)
     CA::MetalDrawable *surface = reinterpret_cast<CA::MetalDrawable *>(ctx.surface_handle);
     
     MTL::CommandBuffer *command_buffer = _command_queue->commandBuffer();
-    MTL::RenderPassDescriptor *descriptor = MTL::RenderPassDescriptor::alloc()->init();
+    MTL::RenderPassDescriptor *render_pass_desc = MTL::RenderPassDescriptor::alloc()->init();
     
-    descriptor->colorAttachments()->object(0)->setTexture(surface->texture());
-    descriptor->colorAttachments()->object(0)->setLoadAction(MTL::LoadActionClear);
-    descriptor->colorAttachments()->object(0)->setClearColor(MTL::ClearColor::Make(0.45f, 0.55f, 0.60f, 1.00f));
+    render_pass_desc->colorAttachments()->object(0)->setTexture(surface->texture());
+    render_pass_desc->colorAttachments()->object(0)->setLoadAction(MTL::LoadActionClear);
+    render_pass_desc->colorAttachments()->object(0)->setClearColor(MTL::ClearColor::Make(0.45f, 0.55f, 0.60f, 1.00f));
 
-    MTL::RenderCommandEncoder *encoder = command_buffer->renderCommandEncoder(descriptor);
+    MTL::RenderCommandEncoder *encoder = command_buffer->renderCommandEncoder(render_pass_desc);
     encoder->pushDebugGroup(NS::String::string("Boden Gui rendering",
                                                NS::StringEncoding::UTF8StringEncoding));
     
@@ -99,16 +99,19 @@ void metal_renderer_t::end_draw(boden::context_t &ctx)
     {
         MTL::ScissorRect scissorRect =
         {
-            .x = (NS::UInteger)(command.clip_rect.origin.x),
-            .y = (NS::UInteger)(command.clip_rect.origin.y),
-            .width = (NS::UInteger)(command.clip_rect.size.width),
-            .height = (NS::UInteger)(command.clip_rect.size.height)
+            .x = (NS::UInteger)command.clip_rect.origin.x,
+            .y = (NS::UInteger)command.clip_rect.origin.y,
+            .width = (NS::UInteger)command.clip_rect.size.width,
+            .height = (NS::UInteger)command.clip_rect.size.height
         };
         encoder->setScissorRect(scissorRect);
         
-        if(command.texture_id) {
+        if(command.texture_id) 
+        {
             encoder->setFragmentTexture(reinterpret_cast<MTL::Texture *>(command.texture_id), 0);
-        } else {
+        } 
+        else 
+        {
             encoder->setFragmentTexture(_texture.get(), 0);
         }
         
@@ -119,7 +122,8 @@ void metal_renderer_t::end_draw(boden::context_t &ctx)
                                        command.index_buffer_offset * sizeof(boden::draw::index_t));
     }
     
-    command_buffer->addCompletedHandler([vertex_buffer, index_buffer](MTL::CommandBuffer* buffer) {
+    command_buffer->addCompletedHandler([vertex_buffer, index_buffer](MTL::CommandBuffer* buffer) 
+    {
         buffer_manager.queueReusableBuffer(vertex_buffer);
         buffer_manager.queueReusableBuffer(index_buffer);
     });
@@ -130,24 +134,24 @@ void metal_renderer_t::end_draw(boden::context_t &ctx)
     command_buffer->presentDrawable(surface);
     command_buffer->commit();
     
-    descriptor->release();
+    render_pass_desc->release();
 }
 
 void metal_renderer_t::setup_depth_stencil_state()
 {
-    MTL::DepthStencilDescriptor *descriptor = MTL::DepthStencilDescriptor::alloc()->init();
-    descriptor->setDepthCompareFunction(MTL::CompareFunctionAlways);
-    descriptor->setDepthWriteEnabled(false);
+    MTL::DepthStencilDescriptor *desc = MTL::DepthStencilDescriptor::alloc()->init();
+    desc->setDepthCompareFunction(MTL::CompareFunctionAlways);
+    desc->setDepthWriteEnabled(false);
     _depth_stencil_state.reset(_device->newDepthStencilState(descriptor));
 }
 
 void metal_renderer_t::setup_default_texture()
 {
-    MTL::TextureDescriptor *descriptor = MTL::TextureDescriptor::alloc()->init();
-    descriptor->setPixelFormat(MTL::PixelFormatRGBA8Unorm);
-    descriptor->setWidth(1);
-    descriptor->setHeight(1);
-    descriptor->setUsage(MTL::TextureUsageShaderRead);
+    MTL::TextureDescriptor *desc = MTL::TextureDescriptor::alloc()->init();
+    desc->setPixelFormat(MTL::PixelFormatRGBA8Unorm);
+    desc->setWidth(1);
+    desc->setHeight(1);
+    desc->setUsage(MTL::TextureUsageShaderRead);
     _texture.reset(_device->newTexture(descriptor));
     uint8_t whitePixel[4] = {255, 255, 255, 255};
     MTL::Region region = MTL::Region::Make3D(0, 0, 0, 1, 1, 1);
@@ -160,26 +164,28 @@ void metal_renderer_t::setup_render_pipeline()
     #include <metal_stdlib>
     using namespace metal;
     
-    struct Uniforms {
+    struct Uniforms 
+    {
         float4x4 projectionMatrix;
     };
     
-    struct VertexIn {
+    struct VertexIn 
+    {
         float2 position  [[attribute(0)]];
         float2 texCoords [[attribute(1)]];
         uchar4 color     [[attribute(2)]];
     };
     
-    struct VertexOut {
+    struct VertexOut 
+    {
         float4 position [[position]];
         float2 texCoords;
         float4 color;
     };
     
-    vertex VertexOut vertex_main(
-        VertexIn in [[stage_in]],
-        constant Uniforms &uniforms [[buffer(1)]]
-    ) {
+    vertex VertexOut vertex_main(VertexIn in [[stage_in]],
+                                 constant Uniforms &uniforms [[buffer(1)]]) 
+    {
         VertexOut out;
         out.position = uniforms.projectionMatrix * float4(in.position, 0, 1);
         out.texCoords = in.texCoords;
@@ -187,10 +193,9 @@ void metal_renderer_t::setup_render_pipeline()
         return out;
     }
 
-    fragment half4 fragment_main(
-        VertexOut in [[stage_in]],
-        texture2d<half, access::sample> texture [[texture(0)]]
-    ) {
+    fragment half4 fragment_main(VertexOut in [[stage_in]],
+                                 texture2d<half, access::sample> texture [[texture(0)]]) 
+    {
         constexpr sampler linearSampler(coord::normalized, min_filter::linear, mag_filter::linear, mip_filter::linear);
         half4 texColor = texture.sample(linearSampler, in.texCoords);
     

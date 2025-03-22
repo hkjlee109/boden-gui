@@ -47,7 +47,8 @@ metal_buffer_ref_t metal_buffer_manager_t::dequeueReusableBuffer(MTL::Device* de
         }
     }
 
-    if(best) {
+    if(best) 
+    {
         _cache.erase(std::remove(_cache.begin(), _cache.end(), best), _cache.end());
         best->set_last_reuse_time(now);
         return best;
