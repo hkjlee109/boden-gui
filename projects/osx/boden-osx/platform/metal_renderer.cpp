@@ -142,7 +142,7 @@ void metal_renderer_t::setup_depth_stencil_state()
     MTL::DepthStencilDescriptor *desc = MTL::DepthStencilDescriptor::alloc()->init();
     desc->setDepthCompareFunction(MTL::CompareFunctionAlways);
     desc->setDepthWriteEnabled(false);
-    _depth_stencil_state.reset(_device->newDepthStencilState(descriptor));
+    _depth_stencil_state.reset(_device->newDepthStencilState(desc));
 }
 
 void metal_renderer_t::setup_default_texture()
@@ -152,7 +152,7 @@ void metal_renderer_t::setup_default_texture()
     desc->setWidth(1);
     desc->setHeight(1);
     desc->setUsage(MTL::TextureUsageShaderRead);
-    _texture.reset(_device->newTexture(descriptor));
+    _texture.reset(_device->newTexture(desc));
     uint8_t whitePixel[4] = {255, 255, 255, 255};
     MTL::Region region = MTL::Region::Make3D(0, 0, 0, 1, 1, 1);
     _texture->replaceRegion(region, 0, whitePixel, 4);

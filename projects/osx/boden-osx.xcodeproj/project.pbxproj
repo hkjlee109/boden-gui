@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BF17A67C2D73419000477794 /* main_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF17A67A2D73419000477794 /* main_view.cpp */; };
+		BF17A67C2D73419000477794 /* main_view_controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF17A67A2D73419000477794 /* main_view_controller.cpp */; };
 		BF9759C92D6C9DA6000E9A16 /* libboden-gui.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF9759C82D6C9DA6000E9A16 /* libboden-gui.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		BF17A6792D73419000477794 /* main_view.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = main_view.hpp; sourceTree = "<group>"; };
-		BF17A67A2D73419000477794 /* main_view.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main_view.cpp; sourceTree = "<group>"; };
+		BF17A6792D73419000477794 /* main_view_controller.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = main_view_controller.hpp; sourceTree = "<group>"; };
+		BF17A67A2D73419000477794 /* main_view_controller.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main_view_controller.cpp; sourceTree = "<group>"; };
 		BF9757F22D6C7871000E9A16 /* boden-osx.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "boden-osx.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF9759C82D6C9DA6000E9A16 /* libboden-gui.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboden-gui.a"; path = "../../build/lib/libboden-gui.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -49,8 +49,8 @@
 		BF17A67B2D73419000477794 /* app */ = {
 			isa = PBXGroup;
 			children = (
-				BF17A6792D73419000477794 /* main_view.hpp */,
-				BF17A67A2D73419000477794 /* main_view.cpp */,
+				BF17A6792D73419000477794 /* main_view_controller.hpp */,
+				BF17A67A2D73419000477794 /* main_view_controller.cpp */,
 			);
 			name = app;
 			path = ../../app/app;
@@ -157,7 +157,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF17A67C2D73419000477794 /* main_view.cpp in Sources */,
+				BF17A67C2D73419000477794 /* main_view_controller.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

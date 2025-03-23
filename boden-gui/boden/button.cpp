@@ -4,12 +4,12 @@
 namespace boden {
 
 button_t::button_t()
-    : view_t()
+    : control_t{}
 {
 }
 
 button_t::button_t(const boden::layout::rect_t &frame)
-    : view_t{frame}
+    : control_t{frame}
 {
 }
 

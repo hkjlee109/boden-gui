@@ -18,19 +18,33 @@ view_t::~view_t()
 {
 }
 
+void view_t::draw(boden::context_t &ctx)
+{
+}
+
+void view_t::add_subview(const std::shared_ptr<boden::view_t> &view)
+{
+    _subviews.push_back(view);
+}
+
 float view_t::get_layer_border_width() const
 {
     return _layer.border_width;
 }
 
-void view_t::set_layer_border_width(float width)
-{
-    _layer.border_width = width;
-}
-
 const boden::layout::color_t & view_t::get_layer_border_color() const 
 {
     return _layer.border_color;
+}
+
+const std::vector<std::shared_ptr<boden::view_t>> & view_t::get_subviews() const
+{
+    return _subviews;
+}
+
+void view_t::set_layer_border_width(float width)
+{
+    _layer.border_width = width;
 }
 
 } // boden

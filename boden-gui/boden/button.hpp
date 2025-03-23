@@ -2,11 +2,11 @@
 
 #include <boden/context.hpp>
 #include <boden/layout/rect.hpp>
-#include <boden/view.hpp>
+#include <boden/control.hpp>
 
 namespace boden {
 
-class button_t : public view_t
+class button_t : public control_t
 {
 public:
     button_t();

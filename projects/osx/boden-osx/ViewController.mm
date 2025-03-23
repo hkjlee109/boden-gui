@@ -2,7 +2,7 @@
 
 #import "platform/metal_image_library.hpp"
 #import "platform/metal_renderer.hpp"
-#import <app/main_view.hpp>
+#import <app/main_view_controller.hpp>
 #import <boden/asset/image_library_ref.hpp>
 #import <boden/context.hpp>
 
@@ -11,7 +11,7 @@
 @end
 
 @implementation ViewController {
-    std::unique_ptr<app::main_view_t> _main_view;
+    std::unique_ptr<app::main_view_controller_t> _main_view_controller;
     std::unique_ptr<platform::metal_renderer_t> _renderer;
     std::unique_ptr<boden::asset::image_library_ref_t> _image_library;
 }
@@ -39,7 +39,7 @@
     );
     
     _image_library = std::make_unique<boden::asset::image_library_ref_t>(metal_image_library);
-    _main_view = std::make_unique<app::main_view_t>();
+    _main_view_controller = std::make_unique<app::main_view_controller_t>();
     _renderer = std::make_unique<platform::metal_renderer_t>((__bridge MTL::Device *)self.mtkView.device);
 }
 
@@ -70,7 +70,7 @@
     CGFloat scale = self.view.window.screen.backingScaleFactor ?: NSScreen.mainScreen.backingScaleFactor;
     ctx.display_scale = boden::layout::vec2_t{(float)scale, (float)scale};
 
-    _main_view->draw(ctx);
+    _main_view_controller->draw(ctx);
 }
 
 - (void)mtkView:(nonnull MTKView *)view drawableSizeWillChange:(CGSize)size {
