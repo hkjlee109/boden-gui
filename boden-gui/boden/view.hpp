@@ -1,13 +1,14 @@
 #pragma once
 
 #include <boden/context.hpp>
+#include <boden/responder.hpp>
 #include <boden/layer.hpp>
 #include <boden/layout/rect.hpp>
 #include <vector>
 
 namespace boden {
 
-class view_t
+class view_t : public responder_t, public std::enable_shared_from_this<boden::view_t> 
 {
 public:
     view_t();

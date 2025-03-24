@@ -85,12 +85,15 @@ void metal_renderer_t::end_draw(boden::context_t &ctx)
     float B = ctx.display_size.height * ctx.display_scale.y;
     float N = (float)viewport.znear;
     float F = (float)viewport.zfar;
+    float X = ctx.display_scale.x;
+    float Y = ctx.display_scale.y;
+    
     const float ortho_projection[4][4] =
     {
-        { 2.0f/(R-L),   0.0f,           0.0f,   0.0f },
-        { 0.0f,         2.0f/(T-B),     0.0f,   0.0f },
-        { 0.0f,         0.0f,        1/(F-N),   0.0f },
-        { (R+L)/(L-R),  (T+B)/(B-T), N/(F-N),   1.0f },
+        { (2.0f * X)/(R-L),   0.0f,                 0.0f,   0.0f },
+        { 0.0f,               (2.0f * Y)/(T-B),     0.0f,   0.0f },
+        { 0.0f,               0.0f,                 1/(F-N),   0.0f },
+        { (R+L)/(L-R),        (T+B)/(B-T),          N/(F-N),   1.0f },
     };
 
     encoder->setVertexBytes(&ortho_projection, sizeof(ortho_projection), 1);
@@ -99,10 +102,10 @@ void metal_renderer_t::end_draw(boden::context_t &ctx)
     {
         MTL::ScissorRect scissorRect =
         {
-            .x = (NS::UInteger)command.clip_rect.origin.x,
-            .y = (NS::UInteger)command.clip_rect.origin.y,
-            .width = (NS::UInteger)command.clip_rect.size.width,
-            .height = (NS::UInteger)command.clip_rect.size.height
+            .x = (NS::UInteger)(command.clip_rect.origin.x * ctx.display_scale.x),
+            .y = (NS::UInteger)(command.clip_rect.origin.y * ctx.display_scale.y),
+            .width = (NS::UInteger)(command.clip_rect.size.width * ctx.display_scale.x),
+            .height = (NS::UInteger)(command.clip_rect.size.height * ctx.display_scale.y)
         };
         encoder->setScissorRect(scissorRect);
         

@@ -32,4 +32,10 @@ void button_t::draw(boden::context_t &ctx)
     ctx.renderer->builder.pop_clip_rect();
 }
 
+
+void button_t::mouse_down(const boden::event_t &ev)
+{
+    printf("HI\n");
+}
+
 } // boden

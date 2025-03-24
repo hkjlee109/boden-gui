@@ -14,6 +14,12 @@ struct rect_t
     
     boden::layout::point_t origin;
     boden::layout::size_t size;
+
+    bool contains(const boden::layout::point_t &point) const
+    {
+        return (point.x >= origin.x && point.x <= (origin.x + size.width) &&
+                point.y >= origin.y && point.y <= (origin.y + size.height));
+    }
 };
 
 } // layout

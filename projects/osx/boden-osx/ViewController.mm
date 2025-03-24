@@ -41,7 +41,7 @@
     );
     
     _image_library = std::make_unique<boden::asset::image_library_ref_t>(metal_image_library);
-    _main_view_controller = std::make_unique<app::main_view_controller_t>();
+    _main_view_controller = std::make_unique<app::main_view_controller_t>(boden::layout::rect_t{0, 0, 640, 480});
     _renderer = std::make_unique<platform::metal_renderer_t>((__bridge MTL::Device *)self.mtkView.device);
 }
 
@@ -62,10 +62,12 @@
     boden::event_t out_event;
     platform::utils_t::convert_to_event((__bridge void *)event, &out_event);
     
-    NSPoint point = [self.view.window convertPointToBacking:[event locationInWindow]];
-    out_event.location = boden::layout::point_t(point.x, point.y);
-    
-    _main_view_controller->mouse_down(out_event);
+    out_event.location.y = self.view.frame.size.height - out_event.location.y;
+
+    std::shared_ptr<boden::view_t> target = _main_view_controller->get_view().hit_test(out_event.location);
+    if(target == nullptr) return;
+
+    target->mouse_down(out_event);
 }
 
 #pragma mark MTKViewDelegate

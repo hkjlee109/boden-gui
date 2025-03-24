@@ -13,7 +13,7 @@ public:
     virtual ~control_t();
 
     // void add_target()
-
+    
 private:
 };
 

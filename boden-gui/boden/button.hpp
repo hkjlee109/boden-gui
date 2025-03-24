@@ -14,6 +14,7 @@ public:
     virtual ~button_t();
 
     virtual void draw(boden::context_t &context) override;
+    virtual void mouse_down(const boden::event_t &ev) override;
 
 private:
 };
