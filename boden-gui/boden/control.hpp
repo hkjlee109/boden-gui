@@ -12,6 +12,8 @@ public:
     control_t(const boden::layout::rect_t &frame);
     virtual ~control_t();
 
+    // void add_target()
+
 private:
 };
 

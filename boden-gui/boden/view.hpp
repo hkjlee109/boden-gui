@@ -15,6 +15,7 @@ public:
     virtual ~view_t();
 
     virtual void draw(boden::context_t &ctx);
+    virtual std::shared_ptr<boden::view_t> hit_test(boden::layout::point_t point);
 
     void add_subview(const std::shared_ptr<boden::view_t> &view);
 

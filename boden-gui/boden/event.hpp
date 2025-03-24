@@ -1,14 +1,12 @@
 #pragma once
 
+#include <boden/layout/point.hpp>
+
 namespace boden {
 
-class event_t
+struct event_t
 {
-public:
-    event_t();
-    virtual ~event_t();
-
-private:
+    boden::layout::point_t location;
 };
 
 } // boden

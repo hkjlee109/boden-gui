@@ -2,9 +2,11 @@
 
 #import "platform/metal_image_library.hpp"
 #import "platform/metal_renderer.hpp"
+#import "platform/utils.hpp"
 #import <app/main_view_controller.hpp>
 #import <boden/asset/image_library_ref.hpp>
 #import <boden/context.hpp>
+#import <boden/event.hpp>
 
 @interface ViewController() <NSWindowDelegate, MTKViewDelegate>
 
@@ -54,6 +56,16 @@
 
 - (void)loadView {
     self.view = [[MTKView alloc] initWithFrame:CGRectMake(0, 0, 640, 480)];
+}
+
+- (void)mouseDown:(NSEvent *)event {
+    boden::event_t out_event;
+    platform::utils_t::convert_to_event((__bridge void *)event, &out_event);
+    
+    NSPoint point = [self.view.window convertPointToBacking:[event locationInWindow]];
+    out_event.location = boden::layout::point_t(point.x, point.y);
+    
+    _main_view_controller->mouse_down(out_event);
 }
 
 #pragma mark MTKViewDelegate

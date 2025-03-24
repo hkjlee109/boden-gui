@@ -22,6 +22,11 @@ void view_t::draw(boden::context_t &ctx)
 {
 }
 
+std::shared_ptr<boden::view_t> view_t::hit_test(boden::layout::point_t point)
+{
+    return nullptr;
+}
+
 void view_t::add_subview(const std::shared_ptr<boden::view_t> &view)
 {
     _subviews.push_back(view);
