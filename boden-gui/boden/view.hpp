@@ -21,15 +21,19 @@ public:
     void add_subview(const std::shared_ptr<boden::view_t> &view);
 
     float get_layer_border_width() const;
+    void set_layer_border_width(float width);
+
     const boden::layout::color_t & get_layer_border_color() const;
     const std::vector<std::shared_ptr<boden::view_t>> & get_subviews() const;
 
-    void set_layer_border_width(float width);
+    bool is_hidden() const;
+    void set_hidden(bool hidden);
 
 protected:
     boden::layer_t _layer;
     boden::layout::rect_t _bounds;
     boden::layout::rect_t _frame;
+    bool _hidden;
 
     std::vector<std::shared_ptr<boden::view_t>> _subviews;
 };

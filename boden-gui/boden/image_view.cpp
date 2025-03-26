@@ -20,6 +20,11 @@ image_view_t::~image_view_t()
 
 void image_view_t::draw(boden::context_t &ctx)
 {
+    if(_hidden) 
+    {
+        return;
+    }
+    
     ctx.renderer->builder.push_clip_rect({_frame.origin.x, _frame.origin.y, _frame.size.width, _frame.size.height});
     
     ctx.renderer->builder.add_image(_image->texture_id, 

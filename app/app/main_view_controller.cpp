@@ -45,7 +45,6 @@ void main_view_controller_t::init()
     _button->add_target(this,
                         &main_view_controller_t::on_button_click,
                         boden::control_event_t::touch_down);
-    
     _view->add_subview(_button);
     
     _image_view = std::make_shared<boden::image_view_t>(boden::layout::rect_t(300, 300, 60, 60));
