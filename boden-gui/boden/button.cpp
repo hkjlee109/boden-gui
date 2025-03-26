@@ -35,7 +35,8 @@ void button_t::draw(boden::context_t &ctx)
 
 void button_t::mouse_down(const boden::event_t &ev)
 {
-    printf("HI\n");
+    auto actions = get_actions();
+    actions[control_event_t::touch_down]();
 }
 
 } // boden

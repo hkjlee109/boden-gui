@@ -15,7 +15,8 @@ metal_image_library_t::~metal_image_library_t()
     {
         MTL::Texture *texture = reinterpret_cast<MTL::Texture *>(pair.second);
 
-        if(texture) {
+        if(texture)
+        {
             texture->release();
         }
     }

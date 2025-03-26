@@ -17,9 +17,13 @@ public:
     
     void draw(boden::context_t &ctx);
     
+    void on_button_click();
+    
 private:
     std::shared_ptr<boden::button_t> _button;
     std::shared_ptr<boden::image_view_t> _image_view;
+    
+    void init();
 };
 
 } // app
