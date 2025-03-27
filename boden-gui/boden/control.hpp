@@ -24,13 +24,17 @@ public:
     template <typename T>
     void add_target(T* target, void (T::*method)(), control_event_t event)
     {
-        _actions[event] = std::bind(method, target);
+        _actions[event].push_back(std::bind(method, target));
     }
 
-    const std::unordered_map<control_event_t, std::function<void()>> & get_actions() const;
+    void send_actions(control_event_t event);
+
+    bool is_enabled() const;
+    void set_enabled(bool enabled);
 
 private:
-    std::unordered_map<control_event_t, std::function<void()>> _actions;
+    std::unordered_map<control_event_t, std::vector<std::function<void()>>> _actions;
+    bool _enabled;
 };
 
 } // boden
