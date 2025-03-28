@@ -7,6 +7,7 @@
 #import <boden/asset/image_library_ref.hpp>
 #import <boden/context.hpp>
 #import <boden/event.hpp>
+#import <boden/image.hpp>
 
 @interface ViewController() <NSWindowDelegate, MTKViewDelegate>
 
@@ -35,10 +36,10 @@
 
     platform::metal_image_library_t *metal_image_library{new platform::metal_image_library_t((__bridge MTL::Device *)self.mtkView.device)};
     
-    metal_image_library->load_image(
-        "settings",
-        [[NSBundle mainBundle] pathForResource:@"settings" ofType:@"png"].UTF8String
-    );
+    NSImage* nsimage = [NSImage imageWithSystemSymbolName:@"gearshape" accessibilityDescription:nil];
+    boden::image_t image;
+    platform::utils_t::convert_to_image((__bridge void *)nsimage, &image);
+    metal_image_library->load_image("gearshape", image);
     
     _image_library = std::make_unique<boden::asset::image_library_ref_t>(metal_image_library);
     _main_view_controller = std::make_unique<app::main_view_controller_t>(boden::layout::rect_t{0, 0, 640, 480});

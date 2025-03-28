@@ -24,9 +24,9 @@ metal_image_library_t::~metal_image_library_t()
     _image_inventory.clear();
 }
 
-bool metal_image_library_t::load_image(const char *name, const char *full_path)
+bool metal_image_library_t::load_image(const std::string &name, const std::string &full_path)
 {
-    boden::asset::stb_ref_t stb(full_path);
+    boden::asset::stb_ref_t stb(full_path.c_str());
     
     if(stb)
     {
@@ -47,6 +47,24 @@ bool metal_image_library_t::load_image(const char *name, const char *full_path)
     }
     
     return false;
+}
+
+bool metal_image_library_t::load_image(const std::string &name, const boden::image_t &image)
+{
+    MTL::TextureDescriptor *desc = MTL::TextureDescriptor::alloc()->init();
+    desc->setTextureType(MTL::TextureType2D);
+    desc->setPixelFormat(MTL::PixelFormatRGBA8Unorm);
+    desc->setWidth(image.size.width);
+    desc->setHeight(image.size.height);
+    desc->setMipmapLevelCount(1);
+
+    MTL::Texture *texture = _device->newTexture(desc);
+    MTL::Region region = MTL::Region::Make2D(0, 0, image.size.width, image.size.height);
+    texture->replaceRegion(region, 0, image.data.data(), image.size.width * 4);
+
+    _image_inventory[name] = reinterpret_cast<boden::asset::texture_id_t>(texture);
+
+    return true;
 }
 
 boden::asset::texture_id_t metal_image_library_t::get_image(const char *name)

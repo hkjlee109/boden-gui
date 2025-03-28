@@ -4,6 +4,10 @@
 
 namespace boden {
 
+image_t::image_t()
+{
+}
+
 image_t::image_t(const char *name)
 {
     if(boden::asset::image_library_t *library = boden::asset::image_library_ref_t::get_instance())
