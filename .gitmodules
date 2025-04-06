@@ -1,6 +1,3 @@
 [submodule "boden-gui/tools/googletest"]
 	path = boden-gui/tools/googletest
 	url = https://github.com/google/googletest
-[submodule "projects/www/deps/emscripten"]
-	path = projects/www/deps/emscripten
-	url = https://github.com/emscripten-core/emscripten
