@@ -24,8 +24,8 @@ struct command_t
     uint32_t index_buffer_offset;
     uint32_t vertex_buffer_offset;
 
-    boden::asset::texture_id_t texture_id;
     boden::layout::rect_t clip_rect;
+    boden::asset::texture_id_t texture_id;
 };
 
 } // draw
