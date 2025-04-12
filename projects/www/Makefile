@@ -7,11 +7,11 @@ BODEN_GUI_DIR := ../../boden-gui
 BODEN_GUI_BUILD_DIR := $(BUILD_DIR)/boden-gui
 BODEN_GUI_TARGET := $(BODEN_GUI_BUILD_DIR)/libboden-gui.a
 
-APP_DIR := ../../app/app
+APP_DIR := ../../app
 APP_BUILD_DIR := $(BUILD_DIR)/app
-APP_TARGET := $(APP_BUILD_DIR)/libapp
-APP_SRCS := $(wildcard $(APP_DIR)/*.cpp)
-APP_OBJS := $(APP_SRCS:$(APP_DIR)/%.cpp=$(APP_BUILD_DIR)/%.o)
+APP_TARGET := $(APP_BUILD_DIR)/libapp.a
+APP_SRCS := $(wildcard $(APP_DIR)/**/*.cpp)
+APP_OBJS := $(APP_SRCS:$(APP_DIR)/**/%.cpp=$(APP_BUILD_DIR)/%.o)
 
 WWW_TARGET := $(BUILD_DIR)/boden-www.js
 WWW_SRCS := $(wildcard platform/*.cpp)
@@ -41,7 +41,16 @@ $(APP_BUILD_DIR)/%.o: $(APP_DIR)/%.cpp
 
 $(WWW_TARGET): 
 	@echo "Building boden-www..."
-	$(CXX) -lembind -I$(BODEN_GUI_DIR) -I../../app -L$(BODEN_GUI_BUILD_DIR) -lboden-gui -o $(WWW_TARGET) --js-library platform/library.js ${WWW_SRCS}
+	$(CXX) -lembind \
+        -I$(BODEN_GUI_DIR) \
+        -I$(APP_DIR) \
+        -L$(BODEN_GUI_BUILD_DIR) \
+        -L$(APP_BUILD_DIR) \
+        -lboden-gui \
+        -lapp \
+        -o $(WWW_TARGET) \
+        --js-library platform/library.js \
+        ${WWW_SRCS}
 
 clean:
 	rm -rf $(BUILD_DIR)
