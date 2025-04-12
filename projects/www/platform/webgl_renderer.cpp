@@ -1,7 +1,6 @@
 #include "webgl_renderer.hpp"
 
-extern "C" 
-{
+namespace platform {
     
 webgl_renderer_t::webgl_renderer_t()
 {
@@ -13,6 +12,14 @@ webgl_renderer_t::~webgl_renderer_t()
 
 }
 
-int increment(int value) { return value + 1; }
+void webgl_renderer_t::begin_draw(boden::context_t &ctx)
+{
 
 }
+
+void webgl_renderer_t::end_draw(boden::context_t &ctx)
+{
+    
+}
+
+} // platform

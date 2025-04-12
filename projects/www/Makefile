@@ -33,9 +33,9 @@ $(APP_BUILD_DIR)/%.o: $(APP_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -I$(BODEN_GUI_LIB_INCLUDE_DIR) -c $< -o $@
 	@echo "Compiled $< successfully."
 
-$(WWW_TARGET):
+$(WWW_TARGET): $(BODEN_GUI_LIB)
 	@echo "Building boden-www..."
-	${EMCC} -lembind -o $(WWW_TARGET) --js-library platform/library.js ${WWW_SRCS}
+	${EMCC} -lembind -I$(BODEN_GUI_LIB_INCLUDE_DIR) -L../../build/lib/ -lboden-gui -o $(WWW_TARGET) --js-library platform/library.js ${WWW_SRCS}
 
 clean:
 	rm -rf $(BUILD_DIR)
