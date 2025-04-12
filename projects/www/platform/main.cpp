@@ -9,6 +9,6 @@ EMSCRIPTEN_BINDINGS(main)
 {
     emscripten::value_object<boden::context_t>("context_t");
 
-    emscripten::class_<app::main_view_controller_t>("main_view_controller")
+    emscripten::class_<app::main_view_controller_t>("main_view_controller_t")
         .constructor<>();
 }

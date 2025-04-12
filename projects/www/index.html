@@ -2,11 +2,26 @@
 <html>
     <script src="./build/boden-www.js"></script>
     <script>
+        let renderer;
+        let main_view_controller;
+
         addOnPostRun(function() { 
             console.log('# Starting... ');
-            var renderer = new Module.webgl_renderer_t();
-            
-            console.log(instance);
+            renderer = new Module.webgl_renderer_t();
+            main_view_controller = new Module.main_view_controller_t();
+
+            console.log(renderer);
+            console.log(main_view_controller);
+
+            if(renderer) {
+                renderer.delete();
+                renderer = null;
+            }
+        
+            if(main_view_controller) {
+                main_view_controller.delete();
+                main_view_controller = null;
+            }
         });
     </script>
 
