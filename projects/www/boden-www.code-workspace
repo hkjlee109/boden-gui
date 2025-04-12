@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../app"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"iostream": "cpp"
+		},
+		"liveServer.settings.port": 5501,
+		"liveServer.settings.multiRootWorkspaceName": "www"
+	}
+}
