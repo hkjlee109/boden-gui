@@ -1,19 +1,19 @@
-#ifndef WEBGL_RENDERER_HPP
-#define WEBGL_RENDERER_HPP
+#pragma once
 
-#ifdef __EMSCRIPTEN__
 #include <emscripten.h>
+#include <emscripten/bind.h>
 EMSCRIPTEN_KEEPALIVE
-#endif
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+extern "C" 
+{
 
+class webgl_renderer_t
+{
+public:
+    webgl_renderer_t();
+    ~webgl_renderer_t();
+};
+    
 int increment(int value);
 
-#ifdef __cplusplus
 }
-#endif
-
-#endif

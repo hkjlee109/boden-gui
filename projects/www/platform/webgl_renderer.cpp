@@ -1,11 +1,18 @@
 #include "webgl_renderer.hpp"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+extern "C" 
+{
+    
+webgl_renderer_t::webgl_renderer_t()
+{
+
+}
+
+webgl_renderer_t::~webgl_renderer_t()
+{
+
+}
 
 int increment(int value) { return value + 1; }
 
-#ifdef __cplusplus
 }
-#endif
