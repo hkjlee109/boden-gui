@@ -3,6 +3,7 @@
 #include "webgl_renderer.hpp"
 
 #include <boden/context.hpp>
+#include <boden/draw/command.hpp>
 #include <boden/layout/point.hpp>
 #include <boden/layout/rect.hpp>
 #include <boden/layout/size.hpp>
