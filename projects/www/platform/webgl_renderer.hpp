@@ -20,6 +20,7 @@ public:
 EMSCRIPTEN_BINDINGS(webgl_renderer) 
 {
     emscripten::class_<boden::renderer_t>("renderer_t");
+
     emscripten::class_<webgl_renderer_t, emscripten::base<boden::renderer_t>>("webgl_renderer_t")
         .constructor<>()
         .function("begin_draw", &webgl_renderer_t::begin_draw);

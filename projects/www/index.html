@@ -8,11 +8,19 @@
         addOnPostRun(function() { 
             console.log('# Starting... ');
             renderer = new Module.webgl_renderer_t();
-            main_view_controller = new Module.main_view_controller_t();
+
+            let rect = new Module.rect_t(0, 0, 640, 480);
+            main_view_controller = new Module.main_view_controller_t(rect);
+            rect.delete();
+            
+            let context = new Module.context_t();
+            context.renderer = renderer;
 
             console.log(renderer);
             console.log(main_view_controller);
 
+            context.delete();
+ 
             if(renderer) {
                 renderer.delete();
                 renderer = null;
