@@ -28,6 +28,8 @@ $(BODEN_GUI_TARGET):
 $(TARGET): 
 	@echo "Building boden-www..."
 	$(CXX) -lembind \
+        -sMODULARIZE=1 \
+        -sEXPORT_ES6=1 \
         -I$(BODEN_GUI_DIR) \
         -I$(APP_DIR) \
         -L$(BODEN_GUI_BUILD_DIR) \

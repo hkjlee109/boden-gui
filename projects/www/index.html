@@ -1,37 +1,6 @@
 <!DOCTYPE html>
 <html>
-    <script src="./build/boden-www.js"></script>
     <script src="main.js" type="module"></script>
-    <script>
-        let renderer;
-        let main_view_controller;
-
-        addOnPostRun(function() { 
-            console.log('# Starting... ');
-            renderer = new Module.webgl_renderer_t();
-
-            let rect = new Module.rect_t(0, 0, 640, 480);
-            main_view_controller = new Module.main_view_controller_t(rect);
-            rect.delete();
-            
-            let context = new Module.context_t();
-            context.renderer = renderer;
-
-            main_view_controller.draw(context);
-
-            context.delete();
- 
-            if(renderer) {
-                renderer.delete();
-                renderer = null;
-            }
-        
-            if(main_view_controller) {
-                main_view_controller.delete();
-                main_view_controller = null;
-            }
-        });
-    </script>
 
     <body>
         <canvas id="gl-canvas" width="640" height="480"></canvas>
