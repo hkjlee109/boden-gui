@@ -79,6 +79,8 @@ addToLibrary({
             ]);
         }
         console.log(vertices);
+
+        Module.webgl_render();
     }
     
 });

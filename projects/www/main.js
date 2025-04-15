@@ -1,10 +1,10 @@
-import { setup as webgl_setup } from "./webgl/index.js"
+import * as webgl from "./webgl/index.js"
 
 import createModule from './build/boden-www.js';
 
 createModule().then((Module) => {
-    Module.webgl_setup = webgl_setup;
-
+    Module.webgl_render = webgl.render;
+    
     main(Module);
 });
 
@@ -22,8 +22,8 @@ function main(module) {
         return;
     }
 
-    webgl_setup(gl);
-    
+    webgl.setup(gl);
+
     renderer = new module.webgl_renderer_t();
 
     let rect = new module.rect_t(0, 0, 640, 480);
