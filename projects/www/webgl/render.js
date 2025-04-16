@@ -14,26 +14,32 @@ function render(commands, indices, vertices) {
     gl.clearColor(0.45, 0.55, 0.6, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT);
 
-    var vertices_only = [];
-    var colors_only = [];
+    var positions = [];
+    var texCoords = [];
+    var colors = [];
+
     for (let i = 0; i < vertices.length; i++) {
-        vertices_only = vertices_only.concat(vertices[i][0].position_x, vertices[i][0].position_y);
+        positions = positions.concat(vertices[i][0].position_x, vertices[i][0].position_y);
+        texCoords = texCoords.concat(vertices[i][1].uv_x, vertices[i][1].uv_y);
 
         const a = (vertices[i][2] >> 24) & 0xFF;
         const r = (vertices[i][2] >> 16) & 0xFF;
         const g = (vertices[i][2] >> 8)  & 0xFF;
         const b = vertices[i][2] & 0xFF;
-        colors_only = colors_only.concat(r, g, b, a);
+        colors = colors.concat(r, g, b, a);
     }
 
-    const vertexBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+    const positionBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
 
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices_only), gl.STATIC_DRAW);
+    const texCoordBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, texCoordBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(texCoords), gl.STATIC_DRAW);
 
     const colorBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors_only), gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
 
     const indexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
@@ -51,16 +57,27 @@ function render(commands, indices, vertices) {
 
     const renderProgram = getRenderProgram();
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
     gl.vertexAttribPointer(
-        renderProgram.attribLocations.vertex, // index
-        2,                                    // size
-        gl.FLOAT,                             // type
-        false,                                // normalized
-        0,                                    // stride
-        0                                     // offset
+        renderProgram.attribLocations.position, // index
+        2,                                      // size
+        gl.FLOAT,                               // type
+        false,                                  // normalized
+        0,                                      // stride
+        0                                       // offset
     );
-    gl.enableVertexAttribArray(renderProgram.attribLocations.vertex);
+    gl.enableVertexAttribArray(renderProgram.attribLocations.position);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, texCoordBuffer);
+    gl.vertexAttribPointer(
+        renderProgram.attribLocations.texCoord, // index
+        2,                                      // size
+        gl.FLOAT,                               // type
+        false,                                  // normalized
+        0,                                      // stride
+        0                                       // offset
+    );
+    gl.enableVertexAttribArray(renderProgram.attribLocations.texCoord);
 
     gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
     gl.vertexAttribPointer(

@@ -1,21 +1,25 @@
 import { setRenderProgram } from "./render-program.js"
 
 function setup(gl) {
-    const vsSource = `
-        attribute vec2 vertexIn;
+    const vertexSource = `
+        attribute vec2 positionIn;
+        attribute vec2 texCoordIn;
         attribute vec4 colorIn;
 
         uniform mat4 projectionMatrix;
 
+        varying lowp vec2 texCoordOut;
         varying lowp vec4 colorOut;
 
         void main() {
-            gl_Position = projectionMatrix * vec4(vertexIn, 0.0, 1.0);
+            gl_Position = projectionMatrix * vec4(positionIn, 0.0, 1.0);
+            texCoordOut = texCoordIn;
             colorOut = colorIn / 255.0;
         }
     `;
 
-    const fsSource = `
+    const fragmentSource = `
+        varying lowp vec2 texCoordOut;
         varying lowp vec4 colorOut;
 
         void main() {
@@ -23,8 +27,8 @@ function setup(gl) {
         }
     `;
 
-    const vertexShader = loadShader(gl, gl.VERTEX_SHADER, vsSource);
-    const fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fsSource);
+    const vertexShader = loadShader(gl, gl.VERTEX_SHADER, vertexSource);
+    const fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fragmentSource);
 
     const shaderProgram = gl.createProgram();
     gl.attachShader(shaderProgram, vertexShader);
@@ -43,7 +47,8 @@ function setup(gl) {
     const renderProgram = {
         program: shaderProgram,
         attribLocations: {
-            vertex: gl.getAttribLocation(shaderProgram, "vertexIn"),
+            position: gl.getAttribLocation(shaderProgram, "positionIn"),
+            texCoord: gl.getAttribLocation(shaderProgram, "texCoordIn"),
             color: gl.getAttribLocation(shaderProgram, "colorIn"),
         },
         uniformLocations: {
