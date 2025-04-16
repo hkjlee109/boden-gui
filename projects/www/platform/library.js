@@ -80,7 +80,7 @@ addToLibrary({
         }
         console.log(vertices);
 
-        Module.webgl_render();
+        Module.webgl_render(gl, commands, indices, vertices);
     }
     
 });

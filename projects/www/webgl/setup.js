@@ -1,24 +1,25 @@
+import { setRenderProgram } from "./render-program.js"
+
 function setup(gl) {
     const vsSource = `
-        attribute vec4 aVertexPosition;
-        attribute vec4 aVertexColor;
+        attribute vec4 vertexIn;
+        attribute vec4 colorIn;
 
-        uniform mat4 uModelViewMatrix;
-        uniform mat4 uProjectionMatrix;
+        uniform mat4 projectionMatrix;
 
-        varying lowp vec4 vColor;
+        varying lowp vec4 colorOut;
 
         void main() {
-            gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
-            vColor = aVertexColor;
+            gl_Position = projectionMatrix * vertexIn;
+            colorOut = colorIn;
         }
     `;
 
     const fsSource = `
-        varying lowp vec4 vColor;
+        varying lowp vec4 colorOut;
 
         void main() {
-            gl_FragColor = vColor;
+            gl_FragColor = colorOut;
         }
     `;
 
@@ -39,20 +40,18 @@ function setup(gl) {
         return;
     }
 
-    const programInfo = {
+    const renderProgram = {
         program: shaderProgram,
         attribLocations: {
-            vertexPosition: gl.getAttribLocation(shaderProgram, "aVertexPosition"),
-            vertexColor: gl.getAttribLocation(shaderProgram, "aVertexColor"),
+            vertex: gl.getAttribLocation(shaderProgram, "vertexIn"),
+            color: gl.getAttribLocation(shaderProgram, "colorIn"),
         },
         uniformLocations: {
-            projectionMatrix: gl.getUniformLocation(
-                shaderProgram,
-                "uProjectionMatrix"
-            ),
-            modelViewMatrix: gl.getUniformLocation(shaderProgram, "uModelViewMatrix"),
+            projectionMatrix: gl.getUniformLocation(shaderProgram, "projectionMatrix")
         },
     };
+
+    setRenderProgram(renderProgram);
 }
 
 function loadShader(gl, type, source) {
