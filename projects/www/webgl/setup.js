@@ -2,7 +2,7 @@ import { setRenderProgram } from "./render-program.js"
 
 function setup(gl) {
     const vsSource = `
-        attribute vec4 vertexIn;
+        attribute vec2 vertexIn;
         attribute vec4 colorIn;
 
         uniform mat4 projectionMatrix;
@@ -10,8 +10,8 @@ function setup(gl) {
         varying lowp vec4 colorOut;
 
         void main() {
-            gl_Position = projectionMatrix * vertexIn;
-            colorOut = colorIn;
+            gl_Position = projectionMatrix * vec4(vertexIn, 0.0, 1.0);
+            colorOut = colorIn / 255.0;
         }
     `;
 

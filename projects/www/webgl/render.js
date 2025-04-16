@@ -1,14 +1,23 @@
 import { getRenderProgram } from "./render-program.js"
 
-function render(gl, commands, indices, vertices) {
+function render(commands, indices, vertices) {
     console.log("# render");
-    
-    const renderProgram = getRenderProgram();
+
+    const canvas = document.querySelector("#gl-canvas");
+    const gl = canvas.getContext("webgl");
+
+    if(gl === null) {
+        alert("Unable to initialize WebGL. Your browser or machine may not support it.");
+        return;
+    }
+
+    gl.clearColor(0.45, 0.55, 0.6, 1.0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
 
     var vertices_only = [];
     var colors_only = [];
     for (let i = 0; i < vertices.length; i++) {
-        vertices_only = vertices_only.concat(vertices[i][0].position_x, vertices[i][0].position_y, 0);
+        vertices_only = vertices_only.concat(vertices[i][0].position_x, vertices[i][0].position_y);
 
         const a = (vertices[i][2] >> 24) & 0xFF;
         const r = (vertices[i][2] >> 16) & 0xFF;
@@ -30,11 +39,6 @@ function render(gl, commands, indices, vertices) {
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
 
-    gl.clearColor(0.45, 0.5, 0.6, 1.0);
-    gl.clearDepth(1.0);
-
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
     const left = 0;
     const right = gl.canvas.clientWidth;
     const bottom = gl.canvas.clientHeight;
@@ -45,10 +49,12 @@ function render(gl, commands, indices, vertices) {
     const projectionMatrix = mat4.create();
     mat4.ortho(projectionMatrix, left, right, bottom, top, near, far);
 
+    const renderProgram = getRenderProgram();
+
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
     gl.vertexAttribPointer(
         renderProgram.attribLocations.vertex, // index
-        3,                                    // size
+        2,                                    // size
         gl.FLOAT,                             // type
         false,                                // normalized
         0,                                    // stride
