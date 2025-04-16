@@ -1,37 +1,33 @@
 import { getRenderProgram } from "./render-program.js"
 
-function render(gl, commands_ig, indices_ig, vertices_ig) {
+function render(gl, commands, indices, vertices) {
     console.log("# render");
     
     const renderProgram = getRenderProgram();
 
+    var vertices_only = [];
+    var colors_only = [];
+    for (let i = 0; i < vertices.length; i++) {
+        vertices_only = vertices_only.concat(vertices[i][0].position_x, vertices[i][0].position_y, 0);
+
+        const a = (vertices[i][2] >> 24) & 0xFF;
+        const r = (vertices[i][2] >> 16) & 0xFF;
+        const g = (vertices[i][2] >> 8)  & 0xFF;
+        const b = vertices[i][2] & 0xFF;
+        colors_only = colors_only.concat(r, g, b, a);
+    }
+
     const vertexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-    const vertices = [
-        101, 100,  0,  
-        101, 150,  0,
-         99, 100,  0,
-         99, 150,  0,
-    ];
 
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices_only), gl.STATIC_DRAW);
 
     const colorBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
-    const colors = [
-        1.0, 1.0, 0.0, 1.0,
-        1.0, 1.0, 0.0, 1.0,
-        1.0, 1.0, 0.0, 1.0,
-        1.0, 1.0, 0.0, 1.0
-    ];
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors_only), gl.STATIC_DRAW);
 
     const indexBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-    const indices = [
-        0, 1, 2, 
-        0, 2, 3
-    ];
     gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
 
     gl.clearColor(0.45, 0.5, 0.6, 1.0);
@@ -82,10 +78,12 @@ function render(gl, commands_ig, indices_ig, vertices_ig) {
     );
 
     {
-        const offset = 0;
-        const vertexCount = 6;
-        const type = gl.UNSIGNED_SHORT;
-        gl.drawElements(gl.TRIANGLE_STRIP, vertexCount, type, offset);
+        for (let i = 0; i < commands.length; i++) {
+            const offset = commands[i][1];
+            const count = commands[i][0];
+            const type = gl.UNSIGNED_SHORT;
+            gl.drawElements(gl.TRIANGLE_STRIP, count, type, offset);
+        }
     }
 }
 
