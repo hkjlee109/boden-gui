@@ -1,4 +1,5 @@
 import { setRenderProgram } from "./render-program.js"
+import { init as initDefautTexture } from "./default-texture.js"
 
 function setup(gl) {
     const vertexSource = `
@@ -56,6 +57,7 @@ function setup(gl) {
         },
     };
 
+    initDefautTexture(gl);
     setRenderProgram(renderProgram);
 }
 
