@@ -16,7 +16,7 @@ public:
     ~webgl_image_library_t();
     
     bool load_image_from_path(const std::string &name, const std::string &path) override;
-    boden::asset::texture_id_t get_image(const char *name) override;
+    boden::asset::texture_id_t get_texture_id(const char *name) override;
 
 private:
 };
