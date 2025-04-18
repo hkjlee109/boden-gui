@@ -1,7 +1,7 @@
 import { getRenderProgram } from "./render-program.js"
 import { getTexture } from "./image-library.js"
 
-function render(commands, indices, vertices) {
+async function render(commands, indices, vertices) {
     console.log("# render");
 
     const canvas = document.querySelector("#gl-canvas");
@@ -109,16 +109,15 @@ function render(commands, indices, vertices) {
             const type = gl.UNSIGNED_SHORT;
 
             if(textureId) {
-                // const texture = getTexture(textureId);
-                // gl.activeTexture(gl.TEXTURE1);
-                // gl.bindTexture(gl.TEXTURE_2D, texture);
-                // gl.uniform1i(renderProgram.uniformLocations.texture, 1);
+                const texture = getTexture(textureId);
+                gl.activeTexture(gl.TEXTURE1);
+                gl.bindTexture(gl.TEXTURE_2D, texture);
+                gl.uniform1i(renderProgram.uniformLocations.texture, 1);
             } else {
-                console.log("0 texture");
                 gl.uniform1i(renderProgram.uniformLocations.texture, 0);
             }
 
-            gl.drawElements(gl.TRIANGLE_STRIP, count, type, offset);
+            gl.drawElements(gl.TRIANGLE_STRIP, count, type, offset*2);
         }
     }
 }

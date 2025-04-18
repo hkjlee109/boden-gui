@@ -24,6 +24,9 @@ async function main(module) {
         return;
     }
     
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
     await webgl.loadImageFromPath(gl, 'gearshape', './images/gearshape.png');
 
     webgl.setup(gl);
