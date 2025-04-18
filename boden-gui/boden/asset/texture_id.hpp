@@ -5,7 +5,7 @@
 namespace boden {
 namespace asset {
 
-using texture_id_t = uint64_t;
+using texture_id_t = uint32_t;
 
 } // asset
 } // boden

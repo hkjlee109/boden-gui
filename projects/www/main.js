@@ -10,6 +10,7 @@ createModule().then((Module) => {
 
 let renderer;
 let main_view_controller;
+let image_library_ref;
 
 function main(module) {
     console.log('# Starting... ');
@@ -23,6 +24,9 @@ function main(module) {
     }
 
     webgl.setup(gl);
+
+    let image_library = new module.webgl_image_library_t();
+    image_library_ref = new module.image_library_ref_t(image_library);
 
     renderer = new module.webgl_renderer_t();
 

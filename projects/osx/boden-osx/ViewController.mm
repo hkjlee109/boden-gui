@@ -39,7 +39,7 @@
     NSImage* nsimage = [NSImage imageWithSystemSymbolName:@"gearshape" accessibilityDescription:nil];
     boden::image_t image;
     platform::utils_t::convert_to_image((__bridge void *)nsimage, &image);
-    metal_image_library->load_image("gearshape", image);
+    metal_image_library->load_image_from_data("gearshape", image);
     
     _image_library = std::make_unique<boden::asset::image_library_ref_t>(metal_image_library);
     _main_view_controller = std::make_unique<app::main_view_controller_t>(boden::layout::rect_t{0, 0, 640, 480});

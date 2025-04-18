@@ -20,11 +20,15 @@ function setup(gl) {
     `;
 
     const fragmentSource = `
+        precision mediump float;
+        uniform sampler2D texture;
+
         varying lowp vec2 texCoordOut;
         varying lowp vec4 colorOut;
 
         void main() {
-            gl_FragColor = colorOut;
+            vec4 texColor = texture2D(texture, texCoordOut);
+            gl_FragColor = colorOut * texColor;
         }
     `;
 
@@ -53,7 +57,8 @@ function setup(gl) {
             color: gl.getAttribLocation(shaderProgram, "colorIn"),
         },
         uniformLocations: {
-            projectionMatrix: gl.getUniformLocation(shaderProgram, "projectionMatrix")
+            projectionMatrix: gl.getUniformLocation(shaderProgram, "projectionMatrix"),
+            texture: gl.getUniformLocation(shaderProgram, "texture"),
         },
     };
 

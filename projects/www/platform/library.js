@@ -21,22 +21,21 @@ addToLibrary({
          */
         var commands = [];
         for (let i = 0; i < commands_count; i++) {
-            let count = HEAP32[(commands_addr >> 2) + i * 10];           
-            let index_buffer_offset = HEAP32[(commands_addr >> 2) + i * 10 + 1];  
-            let vertex_buffer_offset = HEAP32[(commands_addr >> 2) + i * 10 + 2];
-            let clip_rect_origin_x = HEAPF32[(commands_addr >> 2) + i * 10 + 3];
-            let clip_rect_origin_y = HEAPF32[(commands_addr >> 2) + i * 10 + 4];
-            let clip_rect_size_width = HEAPF32[(commands_addr >> 2) + i * 10 + 5];
-            let clip_rect_size_height = HEAPF32[(commands_addr >> 2) + i * 10 + 6];
-            let texture_id_low = HEAPU32[(commands_addr >> 2) + i * 10 + 7]; 
-            let texture_id_high = HEAPU32[(commands_addr >> 2) + i * 10 + 8];
+            let count = HEAP32[(commands_addr >> 2) + i * 8];           
+            let index_buffer_offset = HEAP32[(commands_addr >> 2) + i * 8 + 1];  
+            let vertex_buffer_offset = HEAP32[(commands_addr >> 2) + i * 8 + 2];
+            let clip_rect_origin_x = HEAPF32[(commands_addr >> 2) + i * 8 + 3];
+            let clip_rect_origin_y = HEAPF32[(commands_addr >> 2) + i * 8 + 4];
+            let clip_rect_size_width = HEAPF32[(commands_addr >> 2) + i * 8 + 5];
+            let clip_rect_size_height = HEAPF32[(commands_addr >> 2) + i * 8 + 6];
+            let texture_id = HEAPU32[(commands_addr >> 2) + i * 8 + 7]; 
 
             commands.push([
                 count,
                 index_buffer_offset,
                 vertex_buffer_offset,
                 [{clip_rect_origin_x, clip_rect_origin_y}, {clip_rect_size_width,  clip_rect_size_height}],
-                (BigInt(texture_id_high) << 32n) | BigInt(texture_id_low)
+                texture_id
             ]);
         }
         console.log(commands);

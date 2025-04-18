@@ -24,9 +24,9 @@ metal_image_library_t::~metal_image_library_t()
     _image_inventory.clear();
 }
 
-bool metal_image_library_t::load_image(const std::string &name, const std::string &full_path)
+bool metal_image_library_t::load_image_from_path(const std::string &name, const std::string &path)
 {
-    boden::asset::stb_ref_t stb(full_path.c_str());
+    boden::asset::stb_ref_t stb(path.c_str());
     
     if(stb)
     {
@@ -49,7 +49,7 @@ bool metal_image_library_t::load_image(const std::string &name, const std::strin
     return false;
 }
 
-bool metal_image_library_t::load_image(const std::string &name, const boden::image_t &image)
+bool metal_image_library_t::load_image_from_data(const std::string &name, const boden::image_t &image)
 {
     MTL::TextureDescriptor *desc = MTL::TextureDescriptor::alloc()->init();
     desc->setTextureType(MTL::TextureType2D);

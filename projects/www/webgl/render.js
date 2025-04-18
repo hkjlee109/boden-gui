@@ -100,10 +100,13 @@ function render(commands, indices, vertices) {
         projectionMatrix
     );
 
+    gl.uniform1i(renderProgram.uniformLocations.texture, 0);
+
     {
-        for (let i = 0; i < commands.length; i++) {
+        for(let i = 0; i < commands.length; i++) {
             const offset = commands[i][1];
             const count = commands[i][0];
+            console.log('texture_id: ' + commands[i][4]);
             const type = gl.UNSIGNED_SHORT;
             gl.drawElements(gl.TRIANGLE_STRIP, count, type, offset);
         }

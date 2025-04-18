@@ -6,6 +6,7 @@ function init(gl) {
     }
 
     defaultTexture = gl.createTexture();
+    gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, defaultTexture);
   
     const whitePixel = new Uint8Array([255, 255, 255, 255]);
@@ -31,7 +32,7 @@ function init(gl) {
 function getDefaultTexture() {
     return defaultTexture;
 }
-  
+
 export { 
     init,
     getDefaultTexture 
