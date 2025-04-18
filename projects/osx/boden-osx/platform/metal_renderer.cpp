@@ -10,9 +10,10 @@ namespace platform {
 
 static platform::metal_buffer_manager_t buffer_manager;
 
-metal_renderer_t::metal_renderer_t(MTL::Device* device)
+metal_renderer_t::metal_renderer_t(MTL::Device* device, metal_image_library_t *image_library)
     : boden::renderer_t(),
       _device{device},
+      _image_library{image_library},
       _command_queue{nullptr, [](MTL::CommandQueue *ptr) { if (ptr) ptr->release(); }},
       _render_pipeline{nullptr, [](MTL::RenderPipelineState *ptr) { if (ptr) ptr->release(); }},
       _depth_stencil_state{nullptr, [](MTL::DepthStencilState *ptr) { if (ptr) ptr->release(); }},
@@ -111,8 +112,9 @@ void metal_renderer_t::end_draw(boden::context_t &ctx)
         
         if(command.texture_id) 
         {
-            encoder->setFragmentTexture(reinterpret_cast<MTL::Texture *>(command.texture_id), 0);
-        } 
+            encoder->setFragmentTexture(_image_library->get_metal_texture(command.texture_id), 0);
+            
+        }
         else 
         {
             encoder->setFragmentTexture(_texture.get(), 0);

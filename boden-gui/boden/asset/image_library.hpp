@@ -16,7 +16,7 @@ public:
 
     virtual bool load_image_from_path(const std::string &name, const std::string &path);
     virtual bool load_image_from_data(const std::string &name, const boden::image_t &image);
-    virtual boden::asset::texture_id_t get_image(const char* name) = 0;
+    virtual boden::asset::texture_id_t get_texture_id(const char* name) = 0;
     
 protected:
     std::unordered_map<std::string, boden::asset::texture_id_t> _image_inventory;

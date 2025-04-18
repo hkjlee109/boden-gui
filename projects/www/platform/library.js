@@ -69,6 +69,12 @@ addToLibrary({
         console.log(vertices);
 
         Module.webgl_render(commands, indices, vertices);
+    },
+
+    lib_get_texture_id: function(_name) {
+        const name = UTF8ToString(_name);
+        const id = Module.webgl_get_texture_id(name);
+        return id;
     }
     
 });

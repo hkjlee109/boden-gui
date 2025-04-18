@@ -1,4 +1,5 @@
 import { getRenderProgram } from "./render-program.js"
+import { getTexture } from "./image-library.js"
 
 function render(commands, indices, vertices) {
     console.log("# render");
@@ -100,14 +101,23 @@ function render(commands, indices, vertices) {
         projectionMatrix
     );
 
-    gl.uniform1i(renderProgram.uniformLocations.texture, 0);
-
     {
         for(let i = 0; i < commands.length; i++) {
             const offset = commands[i][1];
             const count = commands[i][0];
-            console.log('texture_id: ' + commands[i][4]);
+            const textureId = commands[i][4];
             const type = gl.UNSIGNED_SHORT;
+
+            if(textureId) {
+                // const texture = getTexture(textureId);
+                // gl.activeTexture(gl.TEXTURE1);
+                // gl.bindTexture(gl.TEXTURE_2D, texture);
+                // gl.uniform1i(renderProgram.uniformLocations.texture, 1);
+            } else {
+                console.log("0 texture");
+                gl.uniform1i(renderProgram.uniformLocations.texture, 0);
+            }
+
             gl.drawElements(gl.TRIANGLE_STRIP, count, type, offset);
         }
     }

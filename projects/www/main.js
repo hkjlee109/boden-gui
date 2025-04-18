@@ -4,6 +4,7 @@ import createModule from './build/boden-www.js';
 
 createModule().then((Module) => {
     Module.webgl_render = webgl.render;
+    Module.webgl_get_texture_id = webgl.getTextureId;
     
     main(Module);
 });
@@ -12,7 +13,7 @@ let renderer;
 let main_view_controller;
 let image_library_ref;
 
-function main(module) {
+async function main(module) {
     console.log('# Starting... ');
 
     const canvas = document.querySelector("#gl-canvas");
@@ -22,6 +23,8 @@ function main(module) {
         alert("Unable to initialize WebGL. Your browser or machine may not support it.");
         return;
     }
+    
+    await webgl.loadImageFromPath(gl, 'gearshape', './images/gearshape.png');
 
     webgl.setup(gl);
 

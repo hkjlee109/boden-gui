@@ -11,7 +11,7 @@ metal_image_library_t::metal_image_library_t(MTL::Device *device)
 
 metal_image_library_t::~metal_image_library_t()
 {
-    for (auto &pair : _image_inventory)
+    for (auto &pair : _textures)
     {
         MTL::Texture *texture = reinterpret_cast<MTL::Texture *>(pair.second);
 
@@ -21,6 +21,7 @@ metal_image_library_t::~metal_image_library_t()
         }
     }
 
+    _textures.clear();
     _image_inventory.clear();
 }
 
@@ -40,8 +41,9 @@ bool metal_image_library_t::load_image_from_path(const std::string &name, const 
         MTL::Texture *texture = _device->newTexture(desc);
         MTL::Region region = MTL::Region::Make2D(0, 0, stb.width, stb.height);
         texture->replaceRegion(region, 0, stb.data, stb.width * stb.number_of_channels);
-
-        _image_inventory[name] = reinterpret_cast<boden::asset::texture_id_t>(texture);
+        
+        _textures[++_last_texture_id] = texture;
+        _image_inventory[name] = _last_texture_id;
 
         return true;
     }
@@ -62,14 +64,20 @@ bool metal_image_library_t::load_image_from_data(const std::string &name, const 
     MTL::Region region = MTL::Region::Make2D(0, 0, image.size.width, image.size.height);
     texture->replaceRegion(region, 0, image.data.data(), image.size.width * 4);
 
-    _image_inventory[name] = reinterpret_cast<boden::asset::texture_id_t>(texture);
-
+    _textures[++_last_texture_id] = texture;
+    _image_inventory[name] = _last_texture_id;
+    
     return true;
 }
 
-boden::asset::texture_id_t metal_image_library_t::get_image(const char *name)
+boden::asset::texture_id_t metal_image_library_t::get_texture_id(const char *name)
 {
-    return reinterpret_cast<boden::asset::texture_id_t>(_image_inventory[name]);
+    return _image_inventory[name];
+}
+
+MTL::Texture * metal_image_library_t::get_metal_texture(boden::asset::texture_id_t texture_id)
+{
+    return _textures[texture_id];
 }
 
 } // platform

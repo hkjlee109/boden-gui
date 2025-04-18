@@ -43,7 +43,7 @@
     
     _image_library = std::make_unique<boden::asset::image_library_ref_t>(metal_image_library);
     _main_view_controller = std::make_unique<app::main_view_controller_t>(boden::layout::rect_t{0, 0, 640, 480});
-    _renderer = std::make_unique<platform::metal_renderer_t>((__bridge MTL::Device *)self.mtkView.device);
+    _renderer = std::make_unique<platform::metal_renderer_t>((__bridge MTL::Device *)self.mtkView.device, metal_image_library);
 }
 
 - (void)viewWillAppear {
