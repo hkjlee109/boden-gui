@@ -24,9 +24,9 @@ async function render(commands, indices, vertices) {
         texCoords = texCoords.concat(vertices[i][1].uv_x, vertices[i][1].uv_y);
 
         const a = (vertices[i][2] >> 24) & 0xFF;
-        const r = (vertices[i][2] >> 16) & 0xFF;
+        const b = (vertices[i][2] >> 16) & 0xFF;
         const g = (vertices[i][2] >> 8)  & 0xFF;
-        const b = vertices[i][2] & 0xFF;
+        const r = vertices[i][2] & 0xFF;
         colors = colors.concat(r, g, b, a);
     }
 

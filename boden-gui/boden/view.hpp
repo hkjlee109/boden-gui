@@ -24,6 +24,8 @@ public:
     void set_layer_border_width(float width);
 
     const boden::layout::color_t & get_layer_border_color() const;
+    void set_layer_border_color(const boden::layout::color_t &color);
+
     const std::vector<std::shared_ptr<boden::view_t>> & get_subviews() const;
 
     bool is_hidden() const;

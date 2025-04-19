@@ -74,6 +74,11 @@ const boden::layout::color_t & view_t::get_layer_border_color() const
     return _layer.border_color;
 }
 
+void view_t::set_layer_border_color(const boden::layout::color_t &color)
+{
+    _layer.border_color = color;
+}
+
 const std::vector<std::shared_ptr<boden::view_t>> & view_t::get_subviews() const
 {
     return _subviews;
