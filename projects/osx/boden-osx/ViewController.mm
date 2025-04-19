@@ -36,7 +36,8 @@
 
     platform::metal_image_library_t *metal_image_library{new platform::metal_image_library_t((__bridge MTL::Device *)self.mtkView.device)};
     
-    NSImage* nsimage = [NSImage imageWithSystemSymbolName:@"gearshape" accessibilityDescription:nil];
+//    NSImage* nsimage = [NSImage imageWithSystemSymbolName:@"gearshape" accessibilityDescription:nil];
+    NSImage* nsimage = [NSImage imageNamed:@"gearshape"];
     boden::image_t image;
     platform::utils_t::convert_to_image((__bridge void *)nsimage, &image);
     metal_image_library->load_image_from_data("gearshape", image);
