@@ -1,17 +1,17 @@
-#include "metal_image_library.hpp"
+#include "mtl_image_library.hpp"
 #include <boden/asset/stb_ref.hpp>
 
 namespace platform {
 
-metal_image_library_t::metal_image_library_t(MTL::Device *device)
+mtl_image_library_t::mtl_image_library_t(MTL::Device *device)
     : boden::asset::image_library_t(),
       _device{device}
 {
 }
 
-metal_image_library_t::~metal_image_library_t()
+mtl_image_library_t::~mtl_image_library_t()
 {
-    for (auto &pair : _textures)
+    for(auto &pair : _textures)
     {
         MTL::Texture *texture = reinterpret_cast<MTL::Texture *>(pair.second);
 
@@ -25,7 +25,7 @@ metal_image_library_t::~metal_image_library_t()
     _image_inventory.clear();
 }
 
-bool metal_image_library_t::load_image_from_path(const std::string &name, const std::string &path)
+bool mtl_image_library_t::load_image_from_path(const std::string &name, const std::string &path)
 {
     boden::asset::stb_ref_t stb(path.c_str());
     
@@ -51,7 +51,7 @@ bool metal_image_library_t::load_image_from_path(const std::string &name, const 
     return false;
 }
 
-bool metal_image_library_t::load_image_from_data(const std::string &name, const boden::image_t &image)
+bool mtl_image_library_t::load_image_from_data(const std::string &name, const boden::image_t &image)
 {
     MTL::TextureDescriptor *desc = MTL::TextureDescriptor::alloc()->init();
     desc->setTextureType(MTL::TextureType2D);
@@ -70,12 +70,12 @@ bool metal_image_library_t::load_image_from_data(const std::string &name, const 
     return true;
 }
 
-boden::asset::texture_id_t metal_image_library_t::get_texture_id(const char *name)
+boden::asset::texture_id_t mtl_image_library_t::get_texture_id(const char *name)
 {
     return _image_inventory[name];
 }
 
-MTL::Texture * metal_image_library_t::get_metal_texture(boden::asset::texture_id_t texture_id)
+MTL::Texture * mtl_image_library_t::get_mtl_texture(boden::asset::texture_id_t texture_id)
 {
     return _textures[texture_id];
 }

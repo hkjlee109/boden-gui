@@ -7,18 +7,18 @@
 
 namespace platform {
 
-struct metal_buffer_t;
-using metal_buffer_ref_t = std::shared_ptr<platform::metal_buffer_t>;
+struct mtl_buffer_t;
+using mtl_buffer_ref_t = std::shared_ptr<platform::mtl_buffer_t>;
 
-struct metal_buffer_t
+struct mtl_buffer_t
 {
-    metal_buffer_t(MTL::Buffer *buffer)
+    mtl_buffer_t(MTL::Buffer *buffer)
         : _buffer{buffer},
           _last_reuse_time{0}
     {
     }
     
-    ~metal_buffer_t()
+    ~mtl_buffer_t()
     {
         if(_buffer)
         {
@@ -46,17 +46,17 @@ private:
     uint64_t _last_reuse_time;
 };
 
-class metal_buffer_manager_t
+class mtl_buffer_manager_t
 {
 public:
-    metal_buffer_manager_t();
-    ~metal_buffer_manager_t();
+    mtl_buffer_manager_t();
+    ~mtl_buffer_manager_t();
     
-    metal_buffer_ref_t dequeueReusableBuffer(MTL::Device* device, uint64_t length);
-    void queueReusableBuffer(metal_buffer_ref_t buffer);
+    mtl_buffer_ref_t dequeueReusableBuffer(MTL::Device *device, uint64_t length);
+    void queueReusableBuffer(mtl_buffer_ref_t buffer);
 
 private:
-    std::vector<metal_buffer_ref_t> _cache;
+    std::vector<mtl_buffer_ref_t> _cache;
     std::mutex _cache_mutex;
     
     uint64_t _last_purge_time;

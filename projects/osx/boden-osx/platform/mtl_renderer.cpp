@@ -1,6 +1,6 @@
-#include "metal_renderer.hpp"
+#include "mtl_renderer.hpp"
 
-#include "metal_buffer_manager.hpp"
+#include "mtl_buffer_manager.hpp"
 #include <boden/draw/index.hpp>
 #include <boden/draw/vertex.hpp>
 #include <simd/simd.h>
@@ -8,34 +8,34 @@
 
 namespace platform {
 
-static platform::metal_buffer_manager_t buffer_manager;
+static platform::mtl_buffer_manager_t buffer_manager;
 
-metal_renderer_t::metal_renderer_t(MTL::Device* device, metal_image_library_t *image_library)
+mtl_renderer_t::mtl_renderer_t(MTL::Device* device, mtl_image_library_t *image_library)
     : boden::renderer_t(),
       _device{device},
       _image_library{image_library},
       _command_queue{nullptr, [](MTL::CommandQueue *ptr) { if (ptr) ptr->release(); }},
       _render_pipeline{nullptr, [](MTL::RenderPipelineState *ptr) { if (ptr) ptr->release(); }},
-      _depth_stencil_state{nullptr, [](MTL::DepthStencilState *ptr) { if (ptr) ptr->release(); }},
+      _depth_stencil{nullptr, [](MTL::DepthStencilState *ptr) { if (ptr) ptr->release(); }},
       _texture{nullptr, [](MTL::Texture *ptr) { if (ptr) ptr->release(); }}
 {
     _command_queue.reset(_device->newCommandQueue());
     
     setup_render_pipeline();
-    setup_depth_stencil_state();
+    setup_depth_stencil();
     setup_default_texture();
 }
 
-metal_renderer_t::~metal_renderer_t()
+mtl_renderer_t::~mtl_renderer_t()
 {
 }
 
-void metal_renderer_t::begin_draw(boden::context_t &ctx)
+void mtl_renderer_t::begin_draw(boden::context_t &ctx)
 {
     boden::renderer_t::begin_draw(ctx);
 }
 
-void metal_renderer_t::end_draw(boden::context_t &ctx)
+void mtl_renderer_t::end_draw(boden::context_t &ctx)
 {
     boden::renderer_t::end_draw(ctx);
     
@@ -52,9 +52,9 @@ void metal_renderer_t::end_draw(boden::context_t &ctx)
     encoder->pushDebugGroup(NS::String::string("Boden Gui rendering",
                                                NS::StringEncoding::UTF8StringEncoding));
     
-    metal_buffer_ref_t vertex_buffer = buffer_manager.dequeueReusableBuffer(_device,
+    mtl_buffer_ref_t vertex_buffer = buffer_manager.dequeueReusableBuffer(_device,
                                                                             builder.vertices.size() * sizeof(boden::draw::vertex_t));
-    metal_buffer_ref_t index_buffer = buffer_manager.dequeueReusableBuffer(_device,
+    mtl_buffer_ref_t index_buffer = buffer_manager.dequeueReusableBuffer(_device,
                                                                            builder.indices.size() * sizeof(boden::draw::index_t));
     
     memcpy((char*)vertex_buffer->get_buffer()->contents(),
@@ -65,7 +65,7 @@ void metal_renderer_t::end_draw(boden::context_t &ctx)
            builder.indices.size() * sizeof(boden::draw::index_t));
 
     encoder->setCullMode(MTL::CullModeNone);
-    encoder->setDepthStencilState(_depth_stencil_state.get());
+    encoder->setDepthStencilState(_depth_stencil.get());
     encoder->setRenderPipelineState(_render_pipeline.get());
     encoder->setVertexBuffer(vertex_buffer->get_buffer(), 0, 0);
 
@@ -112,7 +112,7 @@ void metal_renderer_t::end_draw(boden::context_t &ctx)
         
         if(command.texture_id) 
         {
-            encoder->setFragmentTexture(_image_library->get_metal_texture(command.texture_id), 0);
+            encoder->setFragmentTexture(_image_library->get_mtl_texture(command.texture_id), 0);
             
         }
         else 
@@ -142,15 +142,15 @@ void metal_renderer_t::end_draw(boden::context_t &ctx)
     render_pass_desc->release();
 }
 
-void metal_renderer_t::setup_depth_stencil_state()
+void mtl_renderer_t::setup_depth_stencil()
 {
     MTL::DepthStencilDescriptor *desc = MTL::DepthStencilDescriptor::alloc()->init();
     desc->setDepthCompareFunction(MTL::CompareFunctionAlways);
     desc->setDepthWriteEnabled(false);
-    _depth_stencil_state.reset(_device->newDepthStencilState(desc));
+    _depth_stencil.reset(_device->newDepthStencilState(desc));
 }
 
-void metal_renderer_t::setup_default_texture()
+void mtl_renderer_t::setup_default_texture()
 {
     MTL::TextureDescriptor *desc = MTL::TextureDescriptor::alloc()->init();
     desc->setPixelFormat(MTL::PixelFormatRGBA8Unorm);
@@ -163,7 +163,7 @@ void metal_renderer_t::setup_default_texture()
     _texture->replaceRegion(region, 0, whitePixel, 4);
 }
 
-void metal_renderer_t::setup_render_pipeline()
+void mtl_renderer_t::setup_render_pipeline()
 {
     NS::String *source = NS::String::alloc()->init(R"(
     #include <metal_stdlib>

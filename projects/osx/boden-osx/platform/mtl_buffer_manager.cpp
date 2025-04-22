@@ -1,18 +1,18 @@
-#include "metal_buffer_manager.hpp"
+#include "mtl_buffer_manager.hpp"
 
 namespace platform {
 
-metal_buffer_manager_t::metal_buffer_manager_t()
+mtl_buffer_manager_t::mtl_buffer_manager_t()
     : _last_purge_time{0}
 {
 }
 
-metal_buffer_manager_t::~metal_buffer_manager_t()
+mtl_buffer_manager_t::~mtl_buffer_manager_t()
 {
 
 }
 
-metal_buffer_ref_t metal_buffer_manager_t::dequeueReusableBuffer(MTL::Device* device, uint64_t length)
+mtl_buffer_ref_t mtl_buffer_manager_t::dequeueReusableBuffer(MTL::Device *device, uint64_t length)
 {
     uint64_t now = (double)(clock_gettime_nsec_np(CLOCK_UPTIME_RAW) / 1e9);
     
@@ -20,9 +20,9 @@ metal_buffer_ref_t metal_buffer_manager_t::dequeueReusableBuffer(MTL::Device* de
     
     if(now - _last_purge_time > 1)
     {
-        std::vector<metal_buffer_ref_t> survivors;
+        std::vector<mtl_buffer_ref_t> survivors;
 
-        for(const metal_buffer_ref_t &buffer : _cache)
+        for(const mtl_buffer_ref_t &buffer : _cache)
         {
             if(buffer->get_last_reuse_time() > _last_purge_time)
             {
@@ -34,7 +34,7 @@ metal_buffer_ref_t metal_buffer_manager_t::dequeueReusableBuffer(MTL::Device* de
         _last_purge_time = now;
     }
     
-    std::shared_ptr<platform::metal_buffer_t> best = nullptr;
+    std::shared_ptr<platform::mtl_buffer_t> best = nullptr;
     for (const auto &candidate : _cache)
     {
         if(candidate->get_buffer()->length() >= length)
@@ -54,12 +54,12 @@ metal_buffer_ref_t metal_buffer_manager_t::dequeueReusableBuffer(MTL::Device* de
         return best;
     }
     
-    std::shared_ptr<platform::metal_buffer_t> buffer = std::make_shared<platform::metal_buffer_t>(device->newBuffer(length, MTL::ResourceStorageModeShared));
+    std::shared_ptr<platform::mtl_buffer_t> buffer = std::make_shared<platform::mtl_buffer_t>(device->newBuffer(length, MTL::ResourceStorageModeShared));
 
     return buffer;
 }
 
-void metal_buffer_manager_t::queueReusableBuffer(metal_buffer_ref_t buffer)
+void mtl_buffer_manager_t::queueReusableBuffer(mtl_buffer_ref_t buffer)
 {
     std::lock_guard<std::mutex> lock(_cache_mutex);
     _cache.push_back(buffer);
