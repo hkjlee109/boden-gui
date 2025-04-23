@@ -18,21 +18,21 @@ image_view_t::~image_view_t()
 {
 }
 
-void image_view_t::draw(boden::context_t &ctx)
+void image_view_t::draw(boden::builder_t &builder)
 {
     if(_hidden) 
     {
         return;
     }
     
-    ctx.renderer->builder.push_clip_rect({_frame.origin.x, _frame.origin.y, _frame.size.width, _frame.size.height});
+    builder.push_clip_rect({_frame.origin.x, _frame.origin.y, _frame.size.width, _frame.size.height});
     
-    ctx.renderer->builder.add_image(_image->texture_id, 
-                                    {_frame.origin.x, _frame.origin.y}, 
-                                    {_frame.origin.x + _frame.size.width, _frame.origin.y + _frame.size.height},
-                                    _tint_color);
+    builder.add_image(_image->texture_id, 
+                      {_frame.origin.x, _frame.origin.y}, 
+                      {_frame.origin.x + _frame.size.width, _frame.origin.y + _frame.size.height},
+                      _tint_color);
 
-    ctx.renderer->builder.pop_clip_rect();
+    builder.pop_clip_rect();
 }
 
 void image_view_t::set_image(std::unique_ptr<boden::image_t> image)

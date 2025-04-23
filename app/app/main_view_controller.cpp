@@ -27,7 +27,7 @@ void main_view_controller_t::draw(boden::context_t &ctx)
     
     for(const std::shared_ptr<boden::view_t> &view : _view->get_subviews())
     {
-        view->draw(ctx);
+        view->draw(ctx.renderer->builder);
     }
 
     ctx.renderer->end_draw(ctx);

@@ -46,7 +46,7 @@ void mtl_renderer_t::begin_draw(boden::context_t &ctx)
 
     desc->colorAttachments()->object(0)->setTexture(_surface->texture());
     desc->colorAttachments()->object(0)->setLoadAction(MTL::LoadActionClear);
-    desc->colorAttachments()->object(0)->setClearColor(MTL::ClearColor::Make(0.0f, 0.0f, 0.0f, 0.0f));
+    desc->colorAttachments()->object(0)->setClearColor(MTL::ClearColor::Make(0.45f, 0.55f, 0.6f, 1.0f));
     
     _encoder = _command_buffer->renderCommandEncoder(desc);
     desc->release();

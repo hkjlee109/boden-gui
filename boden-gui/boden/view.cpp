@@ -22,7 +22,7 @@ view_t::~view_t()
 {
 }
 
-void view_t::draw(boden::context_t &ctx)
+void view_t::draw(boden::builder_t &builder)
 {
 }
 

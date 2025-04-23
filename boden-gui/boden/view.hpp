@@ -1,6 +1,6 @@
 #pragma once
 
-#include <boden/context.hpp>
+#include <boden/builder.hpp>
 #include <boden/responder.hpp>
 #include <boden/layer.hpp>
 #include <boden/layout/rect.hpp>
@@ -15,7 +15,7 @@ public:
     view_t(const boden::layout::rect_t &frame);
     virtual ~view_t();
 
-    virtual void draw(boden::context_t &ctx);
+    virtual void draw(boden::builder_t &builder);
     virtual std::shared_ptr<boden::view_t> hit_test(boden::layout::point_t point);
 
     void add_subview(const std::shared_ptr<boden::view_t> &view);
