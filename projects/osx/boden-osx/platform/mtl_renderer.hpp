@@ -37,6 +37,11 @@ private:
     pipeline_ref_t _render_pipeline;
     depth_stencil_ref_t _depth_stencil;
     texture_ref_t _texture;
+    
+    CA::MetalDrawable *_surface;
+    boden::layout::vec2_t _display_scale;
+    MTL::CommandBuffer *_command_buffer;
+    MTL::RenderCommandEncoder *_encoder;
 };
 
 } // platform

@@ -17,7 +17,11 @@ mtl_renderer_t::mtl_renderer_t(MTL::Device* device, mtl_image_library_t *image_l
       _command_queue{nullptr, [](MTL::CommandQueue *ptr) { if (ptr) ptr->release(); }},
       _render_pipeline{nullptr, [](MTL::RenderPipelineState *ptr) { if (ptr) ptr->release(); }},
       _depth_stencil{nullptr, [](MTL::DepthStencilState *ptr) { if (ptr) ptr->release(); }},
-      _texture{nullptr, [](MTL::Texture *ptr) { if (ptr) ptr->release(); }}
+      _texture{nullptr, [](MTL::Texture *ptr) { if (ptr) ptr->release(); }},
+      _surface{nullptr},
+      _display_scale{},
+      _command_buffer{nullptr},
+      _encoder{nullptr}
 {
     _command_queue.reset(_device->newCommandQueue());
     
@@ -33,42 +37,27 @@ mtl_renderer_t::~mtl_renderer_t()
 void mtl_renderer_t::begin_draw(boden::context_t &ctx)
 {
     boden::renderer_t::begin_draw(ctx);
-}
+    
+    _surface = reinterpret_cast<CA::MetalDrawable *>(ctx.surface_handle);
+    _display_scale = ctx.display_scale;
+    
+    _command_buffer = _command_queue->commandBuffer();
+    MTL::RenderPassDescriptor *desc = MTL::RenderPassDescriptor::alloc()->init();
 
-void mtl_renderer_t::end_draw(boden::context_t &ctx)
-{
-    boden::renderer_t::end_draw(ctx);
+    desc->colorAttachments()->object(0)->setTexture(_surface->texture());
+    desc->colorAttachments()->object(0)->setLoadAction(MTL::LoadActionClear);
+    desc->colorAttachments()->object(0)->setClearColor(MTL::ClearColor::Make(0.0f, 0.0f, 0.0f, 0.0f));
     
-    CA::MetalDrawable *surface = reinterpret_cast<CA::MetalDrawable *>(ctx.surface_handle);
+    _encoder = _command_buffer->renderCommandEncoder(desc);
+    desc->release();
     
-    MTL::CommandBuffer *command_buffer = _command_queue->commandBuffer();
-    MTL::RenderPassDescriptor *render_pass_desc = MTL::RenderPassDescriptor::alloc()->init();
-    
-    render_pass_desc->colorAttachments()->object(0)->setTexture(surface->texture());
-    render_pass_desc->colorAttachments()->object(0)->setLoadAction(MTL::LoadActionClear);
-    render_pass_desc->colorAttachments()->object(0)->setClearColor(MTL::ClearColor::Make(0.45f, 0.55f, 0.60f, 1.00f));
-
-    MTL::RenderCommandEncoder *encoder = command_buffer->renderCommandEncoder(render_pass_desc);
-    encoder->pushDebugGroup(NS::String::string("Boden Gui rendering",
+    _encoder->pushDebugGroup(NS::String::string("Boden Gui rendering",
                                                NS::StringEncoding::UTF8StringEncoding));
     
-    mtl_buffer_ref_t vertex_buffer = buffer_manager.dequeueReusableBuffer(_device,
-                                                                            builder.vertices.size() * sizeof(boden::draw::vertex_t));
-    mtl_buffer_ref_t index_buffer = buffer_manager.dequeueReusableBuffer(_device,
-                                                                           builder.indices.size() * sizeof(boden::draw::index_t));
+    _encoder->setCullMode(MTL::CullModeNone);
+    _encoder->setDepthStencilState(_depth_stencil.get());
+    _encoder->setRenderPipelineState(_render_pipeline.get());
     
-    memcpy((char*)vertex_buffer->get_buffer()->contents(),
-           builder.vertices.data(),
-           builder.vertices.size() * sizeof(boden::draw::vertex_t));
-    memcpy((char*)index_buffer->get_buffer()->contents(),
-           builder.indices.data(),
-           builder.indices.size() * sizeof(boden::draw::index_t));
-
-    encoder->setCullMode(MTL::CullModeNone);
-    encoder->setDepthStencilState(_depth_stencil.get());
-    encoder->setRenderPipelineState(_render_pipeline.get());
-    encoder->setVertexBuffer(vertex_buffer->get_buffer(), 0, 0);
-
     MTL::Viewport viewport =
     {
         .originX = 0.0,
@@ -78,7 +67,6 @@ void mtl_renderer_t::end_draw(boden::context_t &ctx)
         .znear = 0.0,
         .zfar = 1.0
     };
-    encoder->setViewport(viewport);
     
     float L = 0;
     float R = ctx.display_size.width * ctx.display_scale.x;
@@ -96,8 +84,35 @@ void mtl_renderer_t::end_draw(boden::context_t &ctx)
         { 0.0f,               0.0f,                 1/(F-N),   0.0f },
         { (R+L)/(L-R),        (T+B)/(B-T),          N/(F-N),   1.0f },
     };
+    
+    _encoder->setViewport(viewport);
+    _encoder->setVertexBytes(&ortho_projection, sizeof(ortho_projection), 1);
+}
 
-    encoder->setVertexBytes(&ortho_projection, sizeof(ortho_projection), 1);
+void mtl_renderer_t::end_draw(boden::context_t &ctx)
+{
+    boden::renderer_t::end_draw(ctx);
+    
+    if(builder.indices.size() == 0 || builder.vertices.size() == 0)
+    {
+        _encoder->popDebugGroup();
+        _encoder->endEncoding();
+        return;
+    }
+    
+    mtl_buffer_ref_t vertex_buffer = buffer_manager.dequeueReusableBuffer(_device,
+                                                                            builder.vertices.size() * sizeof(boden::draw::vertex_t));
+    mtl_buffer_ref_t index_buffer = buffer_manager.dequeueReusableBuffer(_device,
+                                                                           builder.indices.size() * sizeof(boden::draw::index_t));
+    
+    memcpy((char*)vertex_buffer->get_buffer()->contents(),
+           builder.vertices.data(),
+           builder.vertices.size() * sizeof(boden::draw::vertex_t));
+    memcpy((char*)index_buffer->get_buffer()->contents(),
+           builder.indices.data(),
+           builder.indices.size() * sizeof(boden::draw::index_t));
+
+    _encoder->setVertexBuffer(vertex_buffer->get_buffer(), 0, 0);
     
     for(const boden::draw::command_t &command : builder.commands)
     {
@@ -108,38 +123,36 @@ void mtl_renderer_t::end_draw(boden::context_t &ctx)
             .width = (NS::UInteger)(command.clip_rect.size.width * ctx.display_scale.x),
             .height = (NS::UInteger)(command.clip_rect.size.height * ctx.display_scale.y)
         };
-        encoder->setScissorRect(scissorRect);
+        _encoder->setScissorRect(scissorRect);
         
         if(command.texture_id) 
         {
-            encoder->setFragmentTexture(_image_library->get_mtl_texture(command.texture_id), 0);
+            _encoder->setFragmentTexture(_image_library->get_mtl_texture(command.texture_id), 0);
             
         }
         else 
         {
-            encoder->setFragmentTexture(_texture.get(), 0);
+            _encoder->setFragmentTexture(_texture.get(), 0);
         }
         
-        encoder->drawIndexedPrimitives(MTL::PrimitiveTypeTriangleStrip,
+        _encoder->drawIndexedPrimitives(MTL::PrimitiveTypeTriangleStrip,
                                        command.count,
                                        MTL::IndexTypeUInt32,
                                        index_buffer->get_buffer(),
                                        command.index_buffer_offset * sizeof(boden::draw::index_t));
     }
     
-    command_buffer->addCompletedHandler([vertex_buffer, index_buffer](MTL::CommandBuffer* buffer) 
+    _command_buffer->addCompletedHandler([vertex_buffer, index_buffer](MTL::CommandBuffer* buffer)
     {
         buffer_manager.queueReusableBuffer(vertex_buffer);
         buffer_manager.queueReusableBuffer(index_buffer);
     });
     
-    encoder->popDebugGroup();
-    encoder->endEncoding();
+    _encoder->popDebugGroup();
+    _encoder->endEncoding();
     
-    command_buffer->presentDrawable(surface);
-    command_buffer->commit();
-    
-    render_pass_desc->release();
+    _command_buffer->presentDrawable(_surface);
+    _command_buffer->commit();
 }
 
 void mtl_renderer_t::setup_depth_stencil()
