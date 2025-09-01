@@ -2,11 +2,12 @@
 
 #include <boden/builder.hpp>
 #include <boden/layout/rect.hpp>
-#include <boden/control.hpp>
+#include <boden/widget/control.hpp>
 
 namespace boden {
+namespace widget {
 
-class button_t : public control_t
+class button_t : public boden::widget::control_t
 {
 public:
     button_t();
@@ -19,4 +20,5 @@ public:
 private:
 };
 
+} // widget
 } // boden

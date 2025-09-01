@@ -2,6 +2,7 @@
 #include <boden/renderer.hpp>
 
 namespace boden {
+namespace widget {
 
 button_t::button_t()
     : control_t{}
@@ -39,7 +40,8 @@ void button_t::draw(boden::builder_t &builder)
 
 void button_t::mouse_down(const boden::event_t &ev)
 {
-    send_actions(boden::control_event_t::touch_down);
+    send_actions(boden::widget::control_event_t::touch_down);
 }
 
+} // widget
 } // boden

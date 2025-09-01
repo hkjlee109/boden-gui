@@ -1,6 +1,8 @@
 #include "responder.hpp"
 
 namespace boden {
+namespace widget {
+namespace base {
 
 responder_t::responder_t()
 {
@@ -18,4 +20,6 @@ void responder_t::mouse_up(const boden::event_t &ev)
 {
 }
 
+} // base
+} // widget
 } // boden

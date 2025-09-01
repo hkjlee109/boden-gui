@@ -3,6 +3,8 @@
 #include <boden/layout/color.hpp>
 
 namespace boden {
+namespace widget {
+namespace base {
 
 struct layer_t
 {
@@ -14,4 +16,6 @@ public:
     float border_width;
 };
 
+} // base
+} // widget
 } // boden

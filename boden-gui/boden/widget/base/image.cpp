@@ -3,6 +3,8 @@
 #include <boden/asset/image_library_ref.hpp>
 
 namespace boden {
+namespace widget {
+namespace base {
 
 image_t::image_t()
 {
@@ -20,4 +22,6 @@ image_t::~image_t()
 {
 }
 
+} // base
+} // widget
 } // boden

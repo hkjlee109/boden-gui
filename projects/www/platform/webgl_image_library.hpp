@@ -3,7 +3,7 @@
 
 #include <boden/asset/image_library.hpp>
 #include <boden/asset/texture_id.hpp>
-#include <boden/image.hpp>
+#include <boden/widget/base/image.hpp>
 #include <string>
 #include <vector>
 

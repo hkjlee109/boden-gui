@@ -1,6 +1,7 @@
 #include "control.hpp"
 
 namespace boden {
+namespace widget {
 
 control_t::control_t()
     : view_t{},
@@ -41,4 +42,5 @@ void control_t::set_enabled(bool enabled)
     _enabled = enabled;
 }
 
+} // widget
 } // boden

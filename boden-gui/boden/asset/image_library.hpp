@@ -1,7 +1,7 @@
 #pragma once
 
 #include <boden/asset/texture_id.hpp>
-#include <boden/image.hpp>
+#include <boden/widget/base/image.hpp>
 #include <cstdint>
 #include <string>
 #include <unordered_map>
@@ -15,7 +15,7 @@ public:
     virtual ~image_library_t() = 0;
 
     virtual bool load_image_from_path(const std::string &name, const std::string &path);
-    virtual bool load_image_from_data(const std::string &name, const boden::image_t &image);
+    virtual bool load_image_from_data(const std::string &name, const boden::widget::base::image_t &image);
     virtual boden::asset::texture_id_t get_texture_id(const char* name) = 0;
     
 protected:

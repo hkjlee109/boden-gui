@@ -1,6 +1,7 @@
 #include "view.hpp"
 
 namespace boden {
+namespace widget {
 
 view_t::view_t()
     : responder_t{},
@@ -26,7 +27,7 @@ void view_t::draw(boden::builder_t &builder)
 {
 }
 
-std::shared_ptr<boden::view_t> view_t::hit_test(boden::layout::point_t point)
+std::shared_ptr<boden::widget::view_t> view_t::hit_test(boden::layout::point_t point)
 {
     if(_hidden) 
     {
@@ -54,7 +55,7 @@ std::shared_ptr<boden::view_t> view_t::hit_test(boden::layout::point_t point)
     return shared_from_this();
 }
 
-void view_t::add_subview(const std::shared_ptr<boden::view_t> &view)
+void view_t::add_subview(const std::shared_ptr<boden::widget::view_t> &view)
 {
     _subviews.push_back(view);
 }
@@ -79,7 +80,7 @@ void view_t::set_layer_border_color(const boden::layout::color_t &color)
     _layer.border_color = color;
 }
 
-const std::vector<std::shared_ptr<boden::view_t>> & view_t::get_subviews() const
+const std::vector<std::shared_ptr<boden::widget::view_t>> & view_t::get_subviews() const
 {
     return _subviews;
 }
@@ -94,4 +95,5 @@ void view_t::set_hidden(bool hidden)
     _hidden = hidden;
 }
 
+} // widget
 } // boden

@@ -5,6 +5,8 @@
 #include <vector>
 
 namespace boden {
+namespace widget {
+namespace base {
 
 struct image_t
 {
@@ -20,4 +22,6 @@ public:
 private:
 };
 
+} // base
+} // widget
 } // boden

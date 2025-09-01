@@ -1,12 +1,13 @@
 #pragma once
 
 #include <boden/layout/rect.hpp>
-#include <boden/view.hpp>
+#include <boden/widget/view.hpp>
 #include <functional>
 #include <unordered_map>
 #include <vector>
 
 namespace boden {
+namespace widget {
 
 enum class control_event_t 
 {
@@ -14,7 +15,7 @@ enum class control_event_t
     touch_up_inside,
 };
 
-class control_t : public view_t
+class control_t : public boden::widget::view_t
 {
 public:
     control_t();
@@ -37,4 +38,5 @@ private:
     bool _enabled;
 };
 
+} // widget
 } // boden

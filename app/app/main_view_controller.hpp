@@ -1,15 +1,15 @@
 #pragma once
 
-#include <boden/button.hpp>
 #include <boden/context.hpp>
-#include <boden/image_view.hpp>
 #include <boden/layout/rect.hpp>
-#include <boden/view_controller.hpp>
+#include <boden/widget/button.hpp>
+#include <boden/widget/image_view.hpp>
+#include <boden/widget/view_controller.hpp>
 #include <memory>
 
 namespace app {
 
-class main_view_controller_t : public boden::view_controller_t
+class main_view_controller_t : public boden::widget::view_controller_t
 {
 public:
     main_view_controller_t();
@@ -21,8 +21,8 @@ public:
     void on_button_click();
     
 private:
-    std::shared_ptr<boden::button_t> _button;
-    std::shared_ptr<boden::image_view_t> _image_view;
+    std::shared_ptr<boden::widget::button_t> _button;
+    std::shared_ptr<boden::widget::image_view_t> _image_view;
     
     void init();
 };

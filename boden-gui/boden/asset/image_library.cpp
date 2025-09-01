@@ -12,7 +12,7 @@ bool image_library_t::load_image_from_path(const std::string &name, const std::s
     return false;
 }
 
-bool image_library_t::load_image_from_data(const std::string &name, const boden::image_t &image)
+bool image_library_t::load_image_from_data(const std::string &name, const boden::widget::base::image_t &image)
 {
     return false;
 }

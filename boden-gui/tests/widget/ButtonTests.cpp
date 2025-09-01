@@ -1,10 +1,10 @@
-#include <boden/button.hpp>
+#include <boden/widget/button.hpp>
 #include <gtest/gtest.h>
 #include <memory>
 
 struct ButtonTests: public testing::Test 
 {
-    boden::button_t mut;
+    boden::widget::button_t mut;
     bool isButtonDown;
 
     virtual void SetUp() override 
@@ -20,14 +20,14 @@ struct ButtonTests: public testing::Test
 
     void GivenTheModuleIsInitialized()
     {
-        mut = boden::button_t();
+        mut = boden::widget::button_t();
     }
 
     void RegisterButtonDownHandler()
     {
         mut.add_target(this,
                        &ButtonTests::ButtonDownHander,
-                       boden::control_event_t::touch_down);
+                       boden::widget::control_event_t::touch_down);
     }
 
     void ButtonDownHander() 

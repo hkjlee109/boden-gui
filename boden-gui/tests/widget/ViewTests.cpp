@@ -1,11 +1,11 @@
-#include <boden/view.hpp>
+#include <boden/widget/view.hpp>
 #include <gtest/gtest.h>
 #include <memory>
 
 struct ViewTests: public testing::Test 
 {
-    std::shared_ptr<boden::view_t> mut;
-    std::shared_ptr<boden::view_t> another_view;
+    std::shared_ptr<boden::widget::view_t> mut;
+    std::shared_ptr<boden::widget::view_t> another_view;
 
     virtual void SetUp() override 
     {
@@ -21,23 +21,23 @@ struct ViewTests: public testing::Test
 
     void GivenTheModuleIsInitialized(const boden::layout::rect_t &frame)
     {
-        mut = std::make_shared<boden::view_t>(frame);
+        mut = std::make_shared<boden::widget::view_t>(frame);
     }
 
     void GivenAnotherViewIsInitializedAndAdded(const boden::layout::rect_t &frame)
     {
-        another_view = std::make_shared<boden::view_t>(frame);
+        another_view = std::make_shared<boden::widget::view_t>(frame);
         mut->add_subview(another_view);
     }
 
-    void HideView(std::shared_ptr<boden::view_t> &view)
+    void HideView(std::shared_ptr<boden::widget::view_t> &view)
     {
         view->set_hidden(true);
     }
 
-    void HitTestShouldReturn(const boden::layout::point_t &point, boden::view_t *expected)
+    void HitTestShouldReturn(const boden::layout::point_t &point, boden::widget::view_t *expected)
     {
-        std::shared_ptr<boden::view_t> actual = mut->hit_test(point);
+        std::shared_ptr<boden::widget::view_t> actual = mut->hit_test(point);
         EXPECT_EQ(
             expected,
             actual.get()

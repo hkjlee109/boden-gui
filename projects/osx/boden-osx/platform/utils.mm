@@ -18,7 +18,7 @@ bool utils_t::convert_to_event(void *in, boden::event_t *out)
     return true;
 }
 
-bool utils_t::convert_to_image(void *in, boden::image_t *out)
+bool utils_t::convert_to_image(void *in, boden::widget::base::image_t *out)
 {
     if(in == nullptr || out == nullptr)
     {

@@ -1,6 +1,8 @@
 #include "layer.hpp"
 
 namespace boden {
+namespace widget {
+namespace base {
 
 layer_t::layer_t()
     : border_color{},
@@ -12,4 +14,6 @@ layer_t::~layer_t()
 {
 }
 
+} // base
+} // widget
 } // boden

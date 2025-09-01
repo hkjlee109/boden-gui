@@ -2,6 +2,7 @@
 #include <boden/renderer.hpp>
 
 namespace boden {
+namespace widget {
 
 image_view_t::image_view_t()
     : view_t(),
@@ -35,7 +36,7 @@ void image_view_t::draw(boden::builder_t &builder)
     builder.pop_clip_rect();
 }
 
-void image_view_t::set_image(std::unique_ptr<boden::image_t> image)
+void image_view_t::set_image(std::unique_ptr<boden::widget::base::image_t> image)
 {
     _image = std::move(image);
 }
@@ -50,4 +51,5 @@ const boden::layout::color_t & image_view_t::get_tint_color() const
     return _tint_color;
 }
 
+} // widget
 } // boden

@@ -7,7 +7,7 @@
 #import <boden/asset/image_library_ref.hpp>
 #import <boden/context.hpp>
 #import <boden/event.hpp>
-#import <boden/image.hpp>
+#import <boden/widget/base/image.hpp>
 
 @interface ViewController() <NSWindowDelegate, MTKViewDelegate>
 
@@ -37,7 +37,7 @@
     platform::mtl_image_library_t *mtl_image_library{new platform::mtl_image_library_t((__bridge MTL::Device *)self.mtkView.device)};
     
     NSImage* nsimage = [NSImage imageNamed:@"gearshape"];
-    boden::image_t image;
+    boden::widget::base::image_t image;
     platform::utils_t::convert_to_image((__bridge void *)nsimage, &image);
     mtl_image_library->load_image_from_data("gearshape", image);
     
@@ -65,7 +65,7 @@
     
     out_event.location.y = self.view.frame.size.height - out_event.location.y;
 
-    std::shared_ptr<boden::view_t> target = _main_view_controller->get_view().hit_test(out_event.location);
+    std::shared_ptr<boden::widget::view_t> target = _main_view_controller->get_view().hit_test(out_event.location);
     if(target == nullptr) return;
 
     target->mouse_down(out_event);

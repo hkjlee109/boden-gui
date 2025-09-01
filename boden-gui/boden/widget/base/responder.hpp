@@ -3,6 +3,8 @@
 #include <boden/event.hpp>
 
 namespace boden {
+namespace widget {
+namespace base {
 
 class responder_t
 {
@@ -16,4 +18,6 @@ public:
 private:
 };
 
+} // base
+} // widget
 } // boden
