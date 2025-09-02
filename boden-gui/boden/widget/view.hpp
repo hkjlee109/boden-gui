@@ -24,6 +24,9 @@ public:
     float get_layer_border_width() const;
     void set_layer_border_width(float width);
 
+    const boden::layout::color_t & get_layer_background_color() const;
+    void set_layer_background_color(const boden::layout::color_t &color);
+
     const boden::layout::color_t & get_layer_border_color() const;
     void set_layer_border_color(const boden::layout::color_t &color);
 

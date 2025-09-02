@@ -22,6 +22,10 @@ public:
                   const boden::layout::color_t &color, 
                   float thickness);
 
+    void add_rect_filled(const boden::layout::vec2_t &p1, 
+                         const boden::layout::vec2_t &p2,
+                         const boden::layout::color_t &color);
+
     void add_polyline(const std::vector<boden::layout::vec2_t> &path, 
                       const boden::layout::color_t &color, 
                       float thickness);

@@ -70,6 +70,16 @@ void view_t::set_layer_border_width(float width)
     _layer.border_width = width;
 }
 
+const boden::layout::color_t & view_t::get_layer_background_color() const 
+{
+    return _layer.background_color;
+}
+
+void view_t::set_layer_background_color(const boden::layout::color_t &color)
+{
+    _layer.background_color = color;
+}
+
 const boden::layout::color_t & view_t::get_layer_border_color() const 
 {
     return _layer.border_color;

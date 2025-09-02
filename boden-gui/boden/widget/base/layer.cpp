@@ -5,7 +5,8 @@ namespace widget {
 namespace base {
 
 layer_t::layer_t()
-    : border_color{},
+    : background_color{0x00, 0x00, 0x00, 0x00},
+      border_color{},
       border_width{0} 
 {
 }

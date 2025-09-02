@@ -52,6 +52,12 @@ void main_view_controller_t::init()
     _image_view->set_image(std::make_unique<boden::widget::base::image_t>("gearshape"));
     _image_view->set_tint_color({0xFF, 0xFF, 0x00, 0xFF});
     _view->add_subview(_image_view);
+
+    _rectangle = std::make_shared<boden::widget::shape::rectangle_t>(boden::layout::rect_t(300, 50, 100, 50));
+    _rectangle->set_layer_background_color({0x00, 0x00, 0xFF, 0xFF});
+    _rectangle->set_layer_border_color({0x00, 0xFF, 0xFF, 0xFF});
+    _rectangle->set_layer_border_width(2);
+    _view->add_subview(_rectangle);
 }
 
 } // platform
