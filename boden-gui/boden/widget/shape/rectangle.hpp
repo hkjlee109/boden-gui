@@ -1,13 +1,13 @@
 #pragma once
 
 #include <boden/layout/rect.hpp>
-#include <boden/widget/control.hpp>
+#include <boden/widget/shape/shape.hpp>
 
 namespace boden {
 namespace widget {
 namespace shape {
 
-class rectangle_t : public boden::widget::control_t
+class rectangle_t : public boden::widget::shape::shape_t
 {
 public:
     rectangle_t();

@@ -17,7 +17,7 @@ namespace boden
                              const boden::layout::color_t &color,
                              float thickness)
     {
-        if (thickness <= 0)
+        if(thickness <= 0)
             return;
 
         std::vector<boden::layout::vec2_t> path;

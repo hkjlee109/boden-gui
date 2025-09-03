@@ -56,7 +56,7 @@ void main_view_controller_t::init()
     _rectangle = std::make_shared<boden::widget::shape::rectangle_t>(boden::layout::rect_t(300, 50, 100, 50));
     _rectangle->set_layer_background_color({0x00, 0x00, 0xFF, 0xFF});
     _rectangle->set_layer_border_color({0x00, 0xFF, 0xFF, 0xFF});
-    _rectangle->set_layer_border_width(2);
+    _rectangle->set_layer_border_width(1);
     _view->add_subview(_rectangle);
 }
 

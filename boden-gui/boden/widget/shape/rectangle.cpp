@@ -9,7 +9,7 @@ rectangle_t::rectangle_t()
 }
 
 rectangle_t::rectangle_t(const boden::layout::rect_t &frame)
-    : control_t{frame}
+    : shape_t{frame}
 {
 }
 
@@ -39,6 +39,8 @@ void rectangle_t::draw(boden::builder_t &builder)
                      get_layer_border_width());
     
     builder.pop_clip_rect();
+
+    shape_t::draw(builder);
 }
 
 void rectangle_t::mouse_down(const boden::event_t &ev)
