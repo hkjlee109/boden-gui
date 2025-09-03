@@ -27,6 +27,14 @@ view_t::~view_t()
 
 void view_t::draw(boden::builder_t &builder)
 {
+    for(auto it = _subviews.rbegin(); it != _subviews.rend(); ++it) 
+    {
+        auto subview = *it;
+        if(subview) 
+        {
+            subview->draw(builder);
+        }
+    }
 }
 
 std::shared_ptr<boden::widget::view_t> view_t::hit_test(boden::layout::point_t point)

@@ -15,7 +15,7 @@ public:
     view_controller_t(const boden::layout::rect_t &frame);
     virtual ~view_controller_t();
 
-    boden::widget::view_t & get_view() const;
+    std::shared_ptr<boden::widget::view_t> get_view() const;
 
 protected:
     std::shared_ptr<boden::widget::view_t> _view;

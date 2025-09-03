@@ -1,10 +1,10 @@
 #pragma once
 
+#include <app/canvas_view_controller.hpp>
 #include <boden/context.hpp>
 #include <boden/layout/rect.hpp>
 #include <boden/widget/button.hpp>
 #include <boden/widget/image_view.hpp>
-#include <boden/widget/shape/rectangle.hpp>
 #include <boden/widget/view_controller.hpp>
 #include <memory>
 
@@ -24,7 +24,7 @@ public:
 private:
     std::shared_ptr<boden::widget::button_t> _button;
     std::shared_ptr<boden::widget::image_view_t> _image_view;
-    std::shared_ptr<boden::widget::shape::rectangle_t> _rectangle;
+    std::shared_ptr<app::canvas_view_controller_t> _canvas;
     
     void init();
 };

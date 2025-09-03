@@ -65,7 +65,7 @@
     
     out_event.location.y = self.view.frame.size.height - out_event.location.y;
 
-    std::shared_ptr<boden::widget::view_t> target = _main_view_controller->get_view().hit_test(out_event.location);
+    std::shared_ptr<boden::widget::view_t> target = _main_view_controller->get_view()->hit_test(out_event.location);
     if(target == nullptr) return;
 
     target->mouse_down(out_event);

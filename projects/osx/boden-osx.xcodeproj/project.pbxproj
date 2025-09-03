@@ -8,12 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		BF17A67C2D73419000477794 /* main_view_controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF17A67A2D73419000477794 /* main_view_controller.cpp */; };
+		BF54B2912E68A48D00F7D4F9 /* canvas_view_controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF54B2902E68A48C00F7D4F9 /* canvas_view_controller.cpp */; };
 		BF9759C92D6C9DA6000E9A16 /* libboden-gui.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF9759C82D6C9DA6000E9A16 /* libboden-gui.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		BF17A6792D73419000477794 /* main_view_controller.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = main_view_controller.hpp; sourceTree = "<group>"; };
 		BF17A67A2D73419000477794 /* main_view_controller.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main_view_controller.cpp; sourceTree = "<group>"; };
+		BF54B28F2E68A48C00F7D4F9 /* canvas_view_controller.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = canvas_view_controller.hpp; sourceTree = "<group>"; };
+		BF54B2902E68A48C00F7D4F9 /* canvas_view_controller.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = canvas_view_controller.cpp; sourceTree = "<group>"; };
 		BF9757F22D6C7871000E9A16 /* boden-osx.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "boden-osx.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF9759C82D6C9DA6000E9A16 /* libboden-gui.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboden-gui.a"; path = "../../build/lib/libboden-gui.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -49,6 +52,8 @@
 		BF17A67B2D73419000477794 /* app */ = {
 			isa = PBXGroup;
 			children = (
+				BF54B28F2E68A48C00F7D4F9 /* canvas_view_controller.hpp */,
+				BF54B2902E68A48C00F7D4F9 /* canvas_view_controller.cpp */,
 				BF17A6792D73419000477794 /* main_view_controller.hpp */,
 				BF17A67A2D73419000477794 /* main_view_controller.cpp */,
 			);
@@ -157,6 +162,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF54B2912E68A48D00F7D4F9 /* canvas_view_controller.cpp in Sources */,
 				BF17A67C2D73419000477794 /* main_view_controller.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

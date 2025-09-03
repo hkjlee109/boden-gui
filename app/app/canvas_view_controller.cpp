@@ -42,4 +42,4 @@ void canvas_view_controller_t::init()
     _view->add_subview(_rectangle);
 }
 
-} // platform
+} // app

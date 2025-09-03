@@ -40,7 +40,7 @@ void main_view_controller_t::on_button_click()
 
 void main_view_controller_t::init()
 {
-    _button = std::make_shared<boden::widget::button_t>(boden::layout::rect_t(100, 100, 100, 50));
+    _button = std::make_shared<boden::widget::button_t>(boden::layout::rect_t(10, 10, 50, 50));
     _button->set_layer_border_width(2);
     _button->set_layer_border_color({0x00, 0xFF, 0xFF, 0xFF});
     _button->add_target(this,
@@ -48,16 +48,13 @@ void main_view_controller_t::init()
                         boden::widget::control_event_t::touch_down);
     _view->add_subview(_button);
     
-    _image_view = std::make_shared<boden::widget::image_view_t>(boden::layout::rect_t(250, 250, 30, 30));
+    _image_view = std::make_shared<boden::widget::image_view_t>(boden::layout::rect_t(10, 70, 50, 50));
     _image_view->set_image(std::make_unique<boden::widget::base::image_t>("gearshape"));
     _image_view->set_tint_color({0xFF, 0xFF, 0x00, 0xFF});
     _view->add_subview(_image_view);
-
-    _rectangle = std::make_shared<boden::widget::shape::rectangle_t>(boden::layout::rect_t(300, 50, 100, 50));
-    _rectangle->set_layer_background_color({0x00, 0x00, 0xFF, 0xFF});
-    _rectangle->set_layer_border_color({0x00, 0xFF, 0xFF, 0xFF});
-    _rectangle->set_layer_border_width(1);
-    _view->add_subview(_rectangle);
+    
+    _canvas = std::make_shared<app::canvas_view_controller_t>(boden::layout::rect_t(70, 0, 570, 480));
+    _view->add_subview(_canvas->get_view());
 }
 
-} // platform
+} // app

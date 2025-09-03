@@ -18,14 +18,14 @@ view_controller_t::~view_controller_t()
 {
 }
 
-boden::widget::view_t & view_controller_t::get_view() const 
+std::shared_ptr<boden::widget::view_t> view_controller_t::get_view() const 
 {
     if(_view == nullptr) 
     {
         throw std::runtime_error("Attempted to access a null view.");
     }
 
-    return *_view;
+    return _view;
 }
 
 } // widget
