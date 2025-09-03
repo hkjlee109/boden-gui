@@ -9,8 +9,10 @@ namespace layout {
 struct rect_t
 {
     constexpr rect_t() : origin(), size() {}
+    constexpr rect_t(boden::layout::point_t &_origin, boden::layout::size_t &_size) 
+        : origin{_origin}, size{_size} {}
     constexpr rect_t(float _x, float _y, float _width, float _height) 
-        : origin(_x, _y), size(_width, _height) {}
+        : origin{_x, _y}, size{_width, _height} {}
     
     boden::layout::point_t origin;
     boden::layout::size_t size;
