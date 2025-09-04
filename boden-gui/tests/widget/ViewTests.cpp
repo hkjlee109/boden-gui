@@ -7,12 +7,12 @@ struct ViewTests: public testing::Test
     std::shared_ptr<boden::widget::view_t> mut;
     std::shared_ptr<boden::widget::view_t> another_view;
 
-    virtual void SetUp() override 
+    void SetUp() override 
     {
         return;
     }
 
-    virtual void TearDown() override 
+    void TearDown() override 
     {
         mut.reset();
         another_view.reset();

@@ -3,12 +3,12 @@
 
 struct BuilderTests: public testing::Test 
 {
-    virtual void SetUp() override 
+    void SetUp() override 
     {
         return;
     }
 
-    virtual void TearDown() override 
+    void TearDown() override 
     {
         return;
     }

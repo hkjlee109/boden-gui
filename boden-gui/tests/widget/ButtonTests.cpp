@@ -7,13 +7,13 @@ struct ButtonTests: public testing::Test
     boden::widget::button_t mut;
     bool isButtonDown;
 
-    virtual void SetUp() override 
+    void SetUp() override 
     {
         isButtonDown = false;
         return;
     }
 
-    virtual void TearDown() override 
+    void TearDown() override 
     {
         return;
     }
