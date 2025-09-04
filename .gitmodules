@@ -4,3 +4,6 @@
 [submodule "projects/www/deps/emsdk"]
 	path = projects/www/deps/emsdk
 	url = https://github.com/emscripten-core/emsdk
+[submodule "boden-gui/deps/boost"]
+	path = boden-gui/deps/boost
+	url = https://github.com/boostorg/boost
