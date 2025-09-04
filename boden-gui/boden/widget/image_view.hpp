@@ -13,9 +13,9 @@ class image_view_t : public boden::widget::view_t
 public:
     image_view_t();
     image_view_t(const boden::layout::rect_t &frame);
-    virtual ~image_view_t();
+    ~image_view_t() override;
     
-    virtual void draw(boden::builder_t &builder) override;
+    void draw(boden::builder_t &builder) override;
 
     void set_image(std::unique_ptr<boden::widget::base::image_t> image);
     void set_tint_color(const boden::layout::color_t &color);

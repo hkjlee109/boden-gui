@@ -20,7 +20,7 @@ class control_t : public boden::widget::view_t
 public:
     control_t();
     control_t(const boden::layout::rect_t &frame);
-    virtual ~control_t();
+    ~control_t() override;
 
     template <typename T>
     void add_target(T* target, void (T::*method)(), control_event_t event)

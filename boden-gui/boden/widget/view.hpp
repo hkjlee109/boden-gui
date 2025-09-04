@@ -15,7 +15,7 @@ class view_t : public boden::widget::base::responder_t,
 public:
     view_t();
     view_t(const boden::layout::rect_t &frame);
-    virtual ~view_t();
+    ~view_t() override;
 
     virtual void draw(boden::builder_t &builder);
     virtual std::shared_ptr<boden::widget::view_t> hit_test(boden::layout::point_t point);

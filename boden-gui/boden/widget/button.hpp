@@ -12,10 +12,10 @@ class button_t : public boden::widget::control_t
 public:
     button_t();
     button_t(const boden::layout::rect_t &frame);
-    virtual ~button_t();
+    ~button_t() override;
 
-    virtual void draw(boden::builder_t &builder) override;
-    virtual void mouse_down(const boden::event_t &ev) override;
+    void draw(boden::builder_t &builder) override;
+    void mouse_down(const boden::event_t &ev) override;
 
 private:
 };

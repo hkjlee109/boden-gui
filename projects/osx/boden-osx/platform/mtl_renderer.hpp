@@ -20,7 +20,7 @@ class mtl_renderer_t : public boden::renderer_t
 {
 public:
     mtl_renderer_t(MTL::Device* device, mtl_image_library_t *image_library);
-    ~mtl_renderer_t();
+    ~mtl_renderer_t() override;
     
     void begin_draw(boden::context_t &ctx) override;
     void end_draw(boden::context_t &ctx) override;

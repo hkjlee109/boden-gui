@@ -14,7 +14,7 @@ class mtl_image_library_t : public boden::asset::image_library_t
 {
 public:
     mtl_image_library_t(MTL::Device *device);
-    ~mtl_image_library_t();
+    ~mtl_image_library_t() override;
     
     bool load_image_from_path(const std::string &name, const std::string &path) override;
     bool load_image_from_data(const std::string &name, const boden::widget::base::image_t &image) override;

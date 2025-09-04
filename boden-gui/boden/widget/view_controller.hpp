@@ -13,7 +13,7 @@ class view_controller_t : public boden::widget::base::responder_t
 public:
     view_controller_t();
     view_controller_t(const boden::layout::rect_t &frame);
-    virtual ~view_controller_t();
+    ~view_controller_t() override;
 
     std::shared_ptr<boden::widget::view_t> get_view() const;
 
