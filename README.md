@@ -9,6 +9,9 @@ Cross platform 2D graphic library.
 
 ### Build GUI library
 ```
+git pull
+git submodule update --init --recursive
+
 mkdir build
 cd build
 cmake ..

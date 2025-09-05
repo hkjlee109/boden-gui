@@ -4,15 +4,16 @@
 
 namespace platform {
 
-class osx_backend_t : public boden::backend_t
+class osx_backend_t
 {
 public:
     osx_backend_t();
-    ~osx_backend_t() override;
+    ~osx_backend_t();
     
-    bool try_run() override;
+    bool try_run();
 
 private:
+    boden::backend_t _backend;
 };
 
 } // platform
