@@ -2,6 +2,7 @@
 #import "ViewController.h"
 
 #import "platform/osx_backend.hpp"
+#import "platform/osx_queue.hpp"
 
 @interface AppDelegate ()
 
@@ -9,7 +10,8 @@
 
 @implementation AppDelegate {
     NSWindow *_window;
-    platform::osx_backend_t _backend;
+    platform::osx_queue_t _queue;
+    std::unique_ptr<platform::osx_backend_t> _backend;
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
@@ -20,6 +22,8 @@
     _window.contentViewController = [ViewController new];
     [_window center];
     [_window orderFront:self];
+    
+    _backend = std::make_unique<platform::osx_backend_t>(_queue);
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
