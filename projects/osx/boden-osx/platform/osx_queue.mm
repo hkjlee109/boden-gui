@@ -10,7 +10,7 @@ osx_queue_t::~osx_queue_t()
 {
 }
 
-void osx_queue_t::push(const platform::osx_event_t &event)
+void osx_queue_t::push(const boden::event_t &event)
 {
     {
         std::lock_guard<std::mutex> lock(_mutex);
@@ -34,7 +34,7 @@ void osx_queue_t::wait()
     _condition_variable.wait(lock, [&] { return !_queue.empty(); });
 }
 
-const platform::osx_event_t osx_queue_t::front()
+const boden::event_t osx_queue_t::front()
 {
     std::lock_guard<std::mutex> lock(_mutex);
     return _queue.front();

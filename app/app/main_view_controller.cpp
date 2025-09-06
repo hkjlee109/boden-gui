@@ -21,6 +21,14 @@ main_view_controller_t::~main_view_controller_t()
 {
 }
 
+void main_view_controller_t::mouse_down(const boden::event_t &ev)
+{
+    std::shared_ptr<boden::widget::view_t> target = _view->hit_test(ev.location);
+    if(target == nullptr) return;
+    
+    target->mouse_down(ev);
+}
+
 void main_view_controller_t::draw(boden::context_t &ctx)
 {
     ctx.renderer->begin_draw(ctx);

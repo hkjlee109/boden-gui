@@ -17,10 +17,11 @@ public:
     main_view_controller_t(const boden::layout::rect_t &frame);
     ~main_view_controller_t();
     
+    void mouse_down(const boden::event_t &ev) override;
+    
     void draw(boden::context_t &ctx);
-    
     void on_button_click();
-    
+
 private:
     std::shared_ptr<boden::widget::button_t> _button;
     std::shared_ptr<boden::widget::image_view_t> _image_view;
