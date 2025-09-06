@@ -6,7 +6,7 @@ namespace platform {
 
 enum class osx_event_type_t : uint32_t
 {
-    start,
+    draw,
     left_mouse_down,
 };
 

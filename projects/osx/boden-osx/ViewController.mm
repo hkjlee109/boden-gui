@@ -14,23 +14,36 @@
 @end
 
 @implementation ViewController {
+    id<MTLDevice> _device;
+    platform::osx_queue_t *_queue;
+    
     std::unique_ptr<app::main_view_controller_t> _main_view_controller;
     std::unique_ptr<platform::mtl_renderer_t> _renderer;
     std::unique_ptr<boden::asset::image_library_ref_t> _image_library;
 }
 
-- (MTKView*)mtkView {
+- (instancetype)initWithDevice:(id<MTLDevice>)device
+                         queue:(platform::osx_queue_t *)queue {
+    self = [super init];
+    if(self) {
+        _device = device;
+        _queue = queue;
+    }
+    return self;
+}
+
+- (MTKView *)mtkView {
     return (MTKView *)self.view;
 }
 
-- (CAMetalLayer*)mtkLayer {
+- (CAMetalLayer *)mtkLayer {
     return (CAMetalLayer *)self.mtkView.layer;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    self.mtkView.device = MTLCreateSystemDefaultDevice();
+
+    self.mtkView.device = _device;
     self.mtkView.enableSetNeedsDisplay = YES;
     self.mtkView.delegate = self;
 
@@ -74,6 +87,8 @@
 #pragma mark MTKViewDelegate
 
 - (void)drawInMTKView:(nonnull MTKView *)view {
+    _queue->push(platform::osx_event_t(platform::osx_event_type_t::draw));
+    
     NSLog(@"# drawInMTKView");
     boden::context_t ctx;
     ctx.renderer = _renderer.get();
