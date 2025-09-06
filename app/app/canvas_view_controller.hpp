@@ -17,6 +17,8 @@ public:
     
     void draw(boden::context_t &ctx);
     
+    void on_shape_click();
+    
 private:
     std::shared_ptr<boden::widget::shape::rectangle_t> _rectangle;
     

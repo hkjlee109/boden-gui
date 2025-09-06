@@ -20,6 +20,7 @@ public:
     void mouse_down(const boden::event_t &ev) override;
     
     void draw(boden::context_t &ctx);
+    
     void on_button_click();
 
 private:

@@ -33,12 +33,20 @@ void canvas_view_controller_t::draw(boden::context_t &ctx)
     ctx.renderer->end_draw(ctx);
 }
 
+void canvas_view_controller_t::on_shape_click()
+{
+    printf("# canvs_view_controller_t::on_shape_click\n");
+}
+
 void canvas_view_controller_t::init()
 {
     _rectangle = std::make_shared<boden::widget::shape::rectangle_t>(boden::layout::rect_t(300, 50, 100, 50));
     _rectangle->set_layer_background_color({0x00, 0x00, 0xFF, 0xFF});
     _rectangle->set_layer_border_color({0x00, 0xFF, 0xFF, 0xFF});
     _rectangle->set_layer_border_width(1);
+    _rectangle->add_target(this,
+                           &canvas_view_controller_t::on_shape_click,
+                           boden::widget::control_event_t::touch_down);
     _view->add_subview(_rectangle);
 }
 
