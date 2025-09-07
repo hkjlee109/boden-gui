@@ -8,13 +8,11 @@ namespace app {
 main_view_controller_t::main_view_controller_t()
     : boden::widget::view_controller_t()
 {
-    init();
 }
 
 main_view_controller_t::main_view_controller_t(const boden::layout::rect_t &frame)
     : boden::widget::view_controller_t(frame)
 {
-    init();
 }
 
 main_view_controller_t::~main_view_controller_t()
@@ -27,6 +25,10 @@ void main_view_controller_t::mouse_down(const boden::event_t &ev)
     if(target == nullptr) return;
     
     target->mouse_down(ev);
+}
+
+void main_view_controller_t::mouse_dragged(const boden::event_t &ev)
+{
 }
 
 void main_view_controller_t::mouse_up(const boden::event_t &ev)
@@ -54,7 +56,7 @@ void main_view_controller_t::on_button_click(void *sender)
     printf("# main_view_controller_t::on_button_click\n");
 }
 
-void main_view_controller_t::init()
+void main_view_controller_t::load_view()
 {
     _button = std::make_shared<boden::widget::button_t>(boden::layout::rect_t(10, 10, 50, 50));
     _button->set_layer_border_width(2);
@@ -69,8 +71,9 @@ void main_view_controller_t::init()
     _image_view->set_tint_color({0xFF, 0xFF, 0x00, 0xFF});
     _view->add_subview(_image_view);
     
-    _canvas = std::make_shared<app::canvas_view_controller_t>(boden::layout::rect_t(70, 0, 570, 480));
-    _view->add_subview(_canvas->get_view());
+    auto canvas = std::make_shared<app::canvas_view_controller_t>(boden::layout::rect_t(70, 0, 570, 480));
+    _view->add_subview(canvas->get_view());
+    add_child_view_controller(canvas);
 }
 
 } // app

@@ -8,7 +8,8 @@
 namespace boden {
 namespace widget {
 
-class view_controller_t : public boden::widget::base::responder_t
+class view_controller_t : public boden::widget::base::responder_t,
+                          public std::enable_shared_from_this<boden::widget::view_controller_t>
 {
 public:
     view_controller_t();
@@ -17,8 +18,15 @@ public:
 
     std::shared_ptr<boden::widget::view_t> get_view() const;
 
+    void set_parent(const std::shared_ptr<const boden::widget::view_controller_t> &ctrl);
+
+    void add_child_view_controller(const std::shared_ptr<boden::widget::view_controller_t> &ctrl);
+
 protected:
     std::shared_ptr<boden::widget::view_t> _view;
+
+    std::vector<std::shared_ptr<boden::widget::view_controller_t>> _child_view_controllers;
+    std::weak_ptr<const boden::widget::view_controller_t> _parent;
 };
 
 } // widget

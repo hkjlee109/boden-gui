@@ -18,18 +18,17 @@ public:
     ~main_view_controller_t();
     
     void mouse_down(const boden::event_t &ev) override;
+    void mouse_dragged(const boden::event_t &ev) override;
     void mouse_up(const boden::event_t &ev) override;
     
     void draw(boden::context_t &ctx);
+    void load_view();
     
     void on_button_click(void *sender);
 
 private:
     std::shared_ptr<boden::widget::button_t> _button;
     std::shared_ptr<boden::widget::image_view_t> _image_view;
-    std::shared_ptr<app::canvas_view_controller_t> _canvas;
-    
-    void init();
 };
 
 } // app

@@ -61,6 +61,15 @@
     _queue->push(out_event);
 }
 
+- (void)mouseDragged:(NSEvent *)event {
+    boden::event_t out_event;
+    platform::utils_t::convert_to_event((__bridge void *)event, &out_event);
+    
+    out_event.type = boden::event_type_t::left_mouse_dragged;
+    out_event.location.y = self.view.frame.size.height - out_event.location.y;
+    _queue->push(out_event);
+}
+
 - (void)mouseUp:(NSEvent *)event {
     boden::event_t out_event;
     platform::utils_t::convert_to_event((__bridge void *)event, &out_event);

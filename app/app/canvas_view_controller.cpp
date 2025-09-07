@@ -71,7 +71,7 @@ void canvas_view_controller_t::on_shape_mouse_down(void *sender)
 
 void canvas_view_controller_t::init()
 {
-    auto rectangle{std::make_shared<boden::widget::shape::rectangle_t>(boden::layout::rect_t(300, 50, 100, 50))};
+    auto rectangle{std::make_shared<boden::widget::shape::rectangle_t>(boden::layout::rect_t(150, 50, 100, 50))};
     rectangle->set_layer_background_color({0x00, 0x00, 0xFF, 0xFF});
     rectangle->set_layer_border_color({0x00, 0xFF, 0xFF, 0xFF});
     rectangle->set_layer_border_width(1);

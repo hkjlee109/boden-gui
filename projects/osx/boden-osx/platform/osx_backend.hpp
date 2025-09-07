@@ -27,9 +27,9 @@ private:
     std::thread _thread;
     platform::osx_queue_t &_queue;
 
-    std::unique_ptr<app::main_view_controller_t> _main_view_controller;
     std::unique_ptr<boden::asset::image_library_ref_t> _image_library;
     std::unique_ptr<platform::mtl_renderer_t> _renderer;
+    std::shared_ptr<app::main_view_controller_t> _main_view_controller;
     
     id<RenderViewProvider> _provider;
     

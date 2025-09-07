@@ -33,8 +33,8 @@ public:
 
     const std::vector<std::shared_ptr<boden::widget::view_t>> & get_subviews() const;
 
-    std::shared_ptr<const boden::widget::view_t> get_superview() const;
-    void set_superview(std::shared_ptr<const boden::widget::view_t> view);
+    std::shared_ptr<const boden::widget::view_t> get_parent() const;
+    void set_parent(const std::shared_ptr<const boden::widget::view_t> &view);
 
     bool is_hidden() const;
     void set_hidden(bool hidden);
@@ -49,7 +49,7 @@ protected:
     bool _hidden;
 
     std::vector<std::shared_ptr<boden::widget::view_t>> _subviews;
-    std::weak_ptr<const boden::widget::view_t> _superview;
+    std::weak_ptr<const boden::widget::view_t> _parent;
 };
 
 } // widget

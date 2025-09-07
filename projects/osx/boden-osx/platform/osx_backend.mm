@@ -19,8 +19,9 @@ osx_backend_t::osx_backend_t(MTL::Device *device, platform::osx_queue_t &queue, 
     mtl_image_library->load_image_from_data("gearshape", image);
     
     _image_library = std::make_unique<boden::asset::image_library_ref_t>(mtl_image_library);
-    _main_view_controller = std::make_unique<app::main_view_controller_t>(boden::layout::rect_t{0, 0, 640, 480});
     _renderer = std::make_unique<platform::mtl_renderer_t>(device, mtl_image_library);
+    _main_view_controller = std::make_shared<app::main_view_controller_t>(boden::layout::rect_t{0, 0, 640, 480});
+    _main_view_controller->load_view();
 }
 
 osx_backend_t::~osx_backend_t()
@@ -72,12 +73,20 @@ int osx_backend_t::main()
                 });
                 break;
                 
+            case boden::event_type_t::left_mouse_dragged:
+                _main_view_controller->mouse_dragged(event);
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    [_provider setNeedsDisplay:YES];
+//                });
+                break;
+                
             case boden::event_type_t::left_mouse_up:
                 _main_view_controller->mouse_up(event);
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [_provider setNeedsDisplay:YES];
                 });
                 break;
+                
         }
 
         std::this_thread::sleep_for(std::chrono::microseconds(1));
