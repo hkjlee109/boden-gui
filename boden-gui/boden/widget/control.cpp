@@ -28,7 +28,7 @@ void control_t::send_actions(control_event_t event)
 
     for(auto action : _actions[control_event_t::touch_down])
     {
-        action();
+        action(this);
     }   
 }
 

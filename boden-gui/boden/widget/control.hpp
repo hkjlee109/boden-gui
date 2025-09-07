@@ -23,9 +23,9 @@ public:
     ~control_t() override;
 
     template <typename T>
-    void add_target(T* target, void (T::*method)(), control_event_t event)
+    void add_target(T* target, void (T::*method)(void *), control_event_t event)
     {
-        _actions[event].push_back(std::bind(method, target));
+        _actions[event].push_back(std::bind(method, target, std::placeholders::_1));
     }
 
     void send_actions(control_event_t event);
@@ -34,7 +34,7 @@ public:
     void set_enabled(bool enabled);
 
 private:
-    std::unordered_map<control_event_t, std::vector<std::function<void()>>> _actions;
+    std::unordered_map<control_event_t, std::vector<std::function<void(void *sender)>>> _actions;
     bool _enabled;
 };
 

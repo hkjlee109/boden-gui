@@ -30,7 +30,7 @@ struct ButtonTests: public testing::Test
                        boden::widget::control_event_t::touch_down);
     }
 
-    void ButtonDownHander() 
+    void ButtonDownHander(void *sender) 
     {
         isButtonDown = true;
     }

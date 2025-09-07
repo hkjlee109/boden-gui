@@ -21,7 +21,7 @@ public:
     
     void draw(boden::context_t &ctx);
     
-    void on_button_click();
+    void on_button_click(void *sender);
 
 private:
     std::shared_ptr<boden::widget::button_t> _button;

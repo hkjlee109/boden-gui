@@ -2,9 +2,10 @@
 
 #include <boden/context.hpp>
 #include <boden/layout/rect.hpp>
-#include <boden/widget/shape/rectangle.hpp>
+#include <boden/widget/shape/shape.hpp>
 #include <boden/widget/view_controller.hpp>
 #include <memory>
+#include <unordered_set>
 
 namespace app {
 
@@ -17,10 +18,11 @@ public:
     
     void draw(boden::context_t &ctx);
     
-    void on_shape_click();
+    void on_shape_click(void *sender);
     
 private:
-    std::shared_ptr<boden::widget::shape::rectangle_t> _rectangle;
+    std::vector<std::shared_ptr<boden::widget::shape::shape_t>> _shapes;
+    std::unordered_set<boden::widget::shape::shape_t *> _selection;
     
     void init();
 };

@@ -67,6 +67,7 @@ int osx_backend_t::main()
                 
             case boden::event_type_t::left_mouse_down:
                 _main_view_controller->mouse_down(event);
+                draw();
                 break;
         }
 

@@ -22,21 +22,24 @@ void shape_t::draw(boden::builder_t &builder)
 {
     if(_selected) 
     {
-        builder.push_clip_rect({_frame.origin.x - HANDLE_SIZE_HALF - 1, 
-                                _frame.origin.y - HANDLE_SIZE_HALF - 1, 
-                                _frame.size.width + HANDLE_SIZE + 2, 
-                                _frame.size.height + HANDLE_SIZE + 2});
+        boden::layout::point_t origin = convert_point_to_view({0, 0}, nullptr);
+        boden::layout::rect_t frame{origin, _frame.size};
+
+        builder.push_clip_rect({frame.origin.x - HANDLE_SIZE_HALF - 1, 
+                                frame.origin.y - HANDLE_SIZE_HALF - 1, 
+                                frame.size.width + HANDLE_SIZE + 2, 
+                                frame.size.height + HANDLE_SIZE + 2});
     
         boden::layout::point_t pts[] = {
-            {_frame.origin.x, _frame.origin.y},
-            {_frame.origin.x + _frame.size.width, _frame.origin.y},
-            {_frame.origin.x, _frame.origin.y + _frame.size.height},
-            {_frame.origin.x + _frame.size.width, _frame.origin.y + _frame.size.height},
+            {frame.origin.x, frame.origin.y},
+            {frame.origin.x + frame.size.width, frame.origin.y},
+            {frame.origin.x, frame.origin.y + frame.size.height},
+            {frame.origin.x + frame.size.width, frame.origin.y + frame.size.height},
 
-            {_frame.origin.x + _frame.size.width / 2, _frame.origin.y},
-            {_frame.origin.x, _frame.origin.y + _frame.size.height / 2},
-            {_frame.origin.x + _frame.size.width, _frame.origin.y + _frame.size.height / 2},
-            {_frame.origin.x + _frame.size.width / 2, _frame.origin.y + _frame.size.height}
+            {frame.origin.x + frame.size.width / 2, frame.origin.y},
+            {frame.origin.x, frame.origin.y + frame.size.height / 2},
+            {frame.origin.x + frame.size.width, frame.origin.y + frame.size.height / 2},
+            {frame.origin.x + frame.size.width / 2, frame.origin.y + frame.size.height}
         };
 
         for (const auto &pt : pts) {

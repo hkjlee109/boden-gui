@@ -41,7 +41,7 @@ void main_view_controller_t::draw(boden::context_t &ctx)
     ctx.renderer->end_draw(ctx);
 }
 
-void main_view_controller_t::on_button_click()
+void main_view_controller_t::on_button_click(void *sender)
 {
     printf("# main_view_controller_t::on_button_click\n");
 }

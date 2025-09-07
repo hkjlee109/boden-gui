@@ -2,6 +2,7 @@
 
 #include <boden/layout/rect.hpp>
 #include <boden/renderer.hpp>
+#include <boden/widget/shape/rectangle.hpp>
 
 namespace app {
 
@@ -33,21 +34,33 @@ void canvas_view_controller_t::draw(boden::context_t &ctx)
     ctx.renderer->end_draw(ctx);
 }
 
-void canvas_view_controller_t::on_shape_click()
+void canvas_view_controller_t::on_shape_click(void *sender)
 {
-    printf("# canvs_view_controller_t::on_shape_click\n");
+    auto *shape = static_cast<boden::widget::shape::shape_t *>(sender);
+    
+    if(shape->is_selected())
+    {
+        shape->set_selected(false);
+        _selection.erase(shape);
+    }
+    else
+    {
+        shape->set_selected(true);
+        _selection.insert(shape);
+    }
 }
 
 void canvas_view_controller_t::init()
 {
-    _rectangle = std::make_shared<boden::widget::shape::rectangle_t>(boden::layout::rect_t(300, 50, 100, 50));
-    _rectangle->set_layer_background_color({0x00, 0x00, 0xFF, 0xFF});
-    _rectangle->set_layer_border_color({0x00, 0xFF, 0xFF, 0xFF});
-    _rectangle->set_layer_border_width(1);
-    _rectangle->add_target(this,
-                           &canvas_view_controller_t::on_shape_click,
-                           boden::widget::control_event_t::touch_down);
-    _view->add_subview(_rectangle);
+    auto rectangle{std::make_shared<boden::widget::shape::rectangle_t>(boden::layout::rect_t(300, 50, 100, 50))};
+    rectangle->set_layer_background_color({0x00, 0x00, 0xFF, 0xFF});
+    rectangle->set_layer_border_color({0x00, 0xFF, 0xFF, 0xFF});
+    rectangle->set_layer_border_width(1);
+    rectangle->add_target(this,
+                          &canvas_view_controller_t::on_shape_click,
+                          boden::widget::control_event_t::touch_down);
+    _shapes.push_back(rectangle);
+    _view->add_subview(rectangle);
 }
 
 } // app
