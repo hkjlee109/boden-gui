@@ -43,7 +43,7 @@ void button_t::draw(boden::builder_t &builder)
 
 void button_t::mouse_down(const boden::event_t &ev)
 {
-    send_actions(boden::widget::control_event_t::touch_down);
+    send_actions(boden::widget::control_event_t::mouse_down);
 }
 
 } // widget

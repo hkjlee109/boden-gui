@@ -29,6 +29,14 @@ void main_view_controller_t::mouse_down(const boden::event_t &ev)
     target->mouse_down(ev);
 }
 
+void main_view_controller_t::mouse_up(const boden::event_t &ev)
+{
+    std::shared_ptr<boden::widget::view_t> target = _view->hit_test(ev.location);
+    if(target == nullptr) return;
+    
+    target->mouse_up(ev);
+}
+
 void main_view_controller_t::draw(boden::context_t &ctx)
 {
     ctx.renderer->begin_draw(ctx);
@@ -53,7 +61,7 @@ void main_view_controller_t::init()
     _button->set_layer_border_color({0x00, 0xFF, 0xFF, 0xFF});
     _button->add_target(this,
                         &main_view_controller_t::on_button_click,
-                        boden::widget::control_event_t::touch_down);
+                        boden::widget::control_event_t::mouse_down);
     _view->add_subview(_button);
     
     _image_view = std::make_shared<boden::widget::image_view_t>(boden::layout::rect_t(10, 70, 50, 50));

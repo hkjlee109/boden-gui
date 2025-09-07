@@ -67,7 +67,16 @@ int osx_backend_t::main()
                 
             case boden::event_type_t::left_mouse_down:
                 _main_view_controller->mouse_down(event);
-                draw();
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [_provider setNeedsDisplay:YES];
+                });
+                break;
+                
+            case boden::event_type_t::left_mouse_up:
+                _main_view_controller->mouse_up(event);
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [_provider setNeedsDisplay:YES];
+                });
                 break;
         }
 

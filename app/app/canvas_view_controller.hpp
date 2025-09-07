@@ -18,8 +18,9 @@ public:
     
     void draw(boden::context_t &ctx);
     
-    void on_shape_click(void *sender);
-    
+    void on_background_mouse_up(void *sender);
+    void on_shape_mouse_down(void *sender);
+
 private:
     std::vector<std::shared_ptr<boden::widget::shape::shape_t>> _shapes;
     std::unordered_set<boden::widget::shape::shape_t *> _selection;

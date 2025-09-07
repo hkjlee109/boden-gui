@@ -11,7 +11,6 @@ view_controller_t::view_controller_t()
 view_controller_t::view_controller_t(const boden::layout::rect_t &frame)
     : _view{std::make_shared<boden::widget::view_t>(frame)}
 {
-
 }
 
 view_controller_t::~view_controller_t()

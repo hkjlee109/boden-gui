@@ -27,7 +27,7 @@ struct ButtonTests: public testing::Test
     {
         mut.add_target(this,
                        &ButtonTests::ButtonDownHander,
-                       boden::widget::control_event_t::touch_down);
+                       boden::widget::control_event_t::mouse_down);
     }
 
     void ButtonDownHander(void *sender) 

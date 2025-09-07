@@ -9,6 +9,7 @@ enum class event_type_t : uint32_t
 {
     draw,
     left_mouse_down,
+    left_mouse_up,
 };
 
 struct event_t

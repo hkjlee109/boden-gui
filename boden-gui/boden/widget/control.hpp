@@ -11,8 +11,8 @@ namespace widget {
 
 enum class control_event_t 
 {
-    touch_down,
-    touch_up_inside,
+    mouse_down,
+    mouse_up,
 };
 
 class control_t : public boden::widget::view_t

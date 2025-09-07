@@ -3,9 +3,10 @@
 
 @protocol RenderViewProvider <NSObject>
 
-@required
 - (nullable id<CAMetalDrawable>)currentDrawable;
 - (CGSize)displaySize;
 - (float)displayScale;
+
+- (void)setNeedsDisplay:(BOOL)flag;
 
 @end
