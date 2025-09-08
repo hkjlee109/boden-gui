@@ -5,6 +5,8 @@ namespace widget {
 namespace shape {
 
 shape_t::shape_t()
+    : control_t{},
+      _selected{false}
 {
 }
 
@@ -64,6 +66,16 @@ bool shape_t::is_selected() const
 void shape_t::set_selected(bool selected)
 {
     _selected = selected;
+}
+
+const boden::layout::rect_t & shape_t::get_frame_cache() const
+{
+    return _frame_cache;
+}
+
+void shape_t::set_frame_cache(const boden::layout::rect_t& frame)
+{
+    _frame_cache = frame;
 }
 
 } // shape

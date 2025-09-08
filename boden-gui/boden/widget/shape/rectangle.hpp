@@ -15,9 +15,6 @@ public:
     ~rectangle_t() override;
 
     void draw(boden::builder_t &builder) override;
-    void mouse_down(const boden::event_t &ev) override;
-    void mouse_dragged(const boden::event_t &ev) override;
-    void mouse_up(const boden::event_t &ev) override;
 
 private:
 };

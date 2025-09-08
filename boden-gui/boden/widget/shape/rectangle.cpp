@@ -46,20 +46,6 @@ void rectangle_t::draw(boden::builder_t &builder)
     shape_t::draw(builder);
 }
 
-void rectangle_t::mouse_down(const boden::event_t &ev)
-{
-    send_actions(boden::widget::control_event_t::mouse_down);
-}
-
-void rectangle_t::mouse_dragged(const boden::event_t &ev)
-{
-}
-
-void rectangle_t::mouse_up(const boden::event_t &ev)
-{
-    send_actions(boden::widget::control_event_t::mouse_up);
-}
-
 } // shape
 } // widget
 } // boden

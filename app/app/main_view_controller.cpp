@@ -21,22 +21,26 @@ main_view_controller_t::~main_view_controller_t()
 
 void main_view_controller_t::mouse_down(const boden::event_t &ev)
 {
-    std::shared_ptr<boden::widget::view_t> target = _view->hit_test(ev.location);
-    if(target == nullptr) return;
-    
-    target->mouse_down(ev);
+    for(auto ctrl : _child_view_controllers)
+    {
+        ctrl->mouse_down(ev);
+    }
 }
 
 void main_view_controller_t::mouse_dragged(const boden::event_t &ev)
 {
+    for(auto ctrl : _child_view_controllers)
+    {
+        ctrl->mouse_dragged(ev);
+    }
 }
 
 void main_view_controller_t::mouse_up(const boden::event_t &ev)
-{
-    std::shared_ptr<boden::widget::view_t> target = _view->hit_test(ev.location);
-    if(target == nullptr) return;
-    
-    target->mouse_up(ev);
+{    
+    for(auto ctrl : _child_view_controllers)
+    {
+        ctrl->mouse_up(ev);
+    }
 }
 
 void main_view_controller_t::draw(boden::context_t &ctx)

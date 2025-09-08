@@ -31,6 +31,9 @@ public:
     const boden::layout::color_t & get_layer_border_color() const;
     void set_layer_border_color(const boden::layout::color_t &color);
 
+    const boden::layout::rect_t & get_frame() const;
+    void set_frame(const boden::layout::rect_t& frame);
+
     const std::vector<std::shared_ptr<boden::widget::view_t>> & get_subviews() const;
 
     std::shared_ptr<const boden::widget::view_t> get_parent() const;

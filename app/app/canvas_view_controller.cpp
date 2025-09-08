@@ -1,5 +1,4 @@
 #include "canvas_view_controller.hpp"
-#include "canvas_view.hpp"
 
 #include <boden/layout/rect.hpp>
 #include <boden/renderer.hpp>
@@ -10,27 +9,87 @@ namespace app {
 canvas_view_controller_t::canvas_view_controller_t()
     : boden::widget::view_controller_t()
 {
-    auto view = std::make_shared<app::canvas_view_t>();
-    view->set_on_mouse_up(std::bind(&canvas_view_controller_t::on_background_mouse_up,
-                                    this,
-                                    std::placeholders::_1));
-    _view = view;
     init();
 }
 
 canvas_view_controller_t::canvas_view_controller_t(const boden::layout::rect_t &frame)
     : boden::widget::view_controller_t(frame)
 {
-    auto view = std::make_shared<app::canvas_view_t>(frame);
-    view->set_on_mouse_up(std::bind(&canvas_view_controller_t::on_background_mouse_up,
-                                    this,
-                                    std::placeholders::_1));
-    _view = view;
     init();
 }
 
 canvas_view_controller_t::~canvas_view_controller_t()
 {
+}
+
+void canvas_view_controller_t::mouse_down(const boden::event_t &ev)
+{
+    _mouse_location_cache = ev.location;
+    
+    std::shared_ptr<boden::widget::view_t> target = _view->hit_test(ev.location);
+    if(target == nullptr)
+    {
+        return;
+    }
+    
+    if(target == _view)
+    {
+        for(auto *shape : _selection)
+        {
+            if(shape)
+            {
+                shape->set_selected(false);
+            }
+        }
+        _selection.clear();
+        return;
+    }
+    
+    std::shared_ptr<boden::widget::shape::shape_t> shape = std::static_pointer_cast<boden::widget::shape::shape_t>(target);
+    if(!shape->is_selected())
+    {
+        shape->set_selected(true);
+        _selection.insert(shape.get());
+    }
+    shape->set_frame_cache(shape->get_frame());
+}
+
+void canvas_view_controller_t::mouse_dragged(const boden::event_t &ev)
+{
+    if(_selection.size() == 0)
+    {
+        return;
+    }
+    
+    float dx = ev.location.x - _mouse_location_cache.x;
+    float dy = ev.location.y - _mouse_location_cache.y;
+    
+    for(auto *shape : _selection)
+    {
+        if(shape)
+        {
+            shape->set_frame(shape->get_frame_cache().offset_by(dx, dy));
+        }
+    }
+}
+
+void canvas_view_controller_t::mouse_up(const boden::event_t &ev)
+{
+    if(_selection.size() == 0)
+    {
+        return;
+    }
+    
+    float dx = ev.location.x - _mouse_location_cache.x;
+    float dy = ev.location.y - _mouse_location_cache.y;
+    
+    for(auto *shape : _selection)
+    {
+        if(shape)
+        {
+            shape->set_frame(shape->get_frame_cache().offset_by(dx, dy));
+        }
+    }
 }
 
 void canvas_view_controller_t::draw(boden::context_t &ctx)
@@ -45,39 +104,12 @@ void canvas_view_controller_t::draw(boden::context_t &ctx)
     ctx.renderer->end_draw(ctx);
 }
 
-void canvas_view_controller_t::on_background_mouse_up(void *sender)
-{
-    for(auto *shape : _selection)
-    {
-        if(shape)
-        {
-            shape->set_selected(false);
-        }
-    }
-
-    _selection.clear();
-}
-
-void canvas_view_controller_t::on_shape_mouse_down(void *sender)
-{
-    auto *shape = static_cast<boden::widget::shape::shape_t *>(sender);
-    
-    if(!shape->is_selected())
-    {
-        shape->set_selected(true);
-        _selection.insert(shape);
-    }
-}
-
 void canvas_view_controller_t::init()
 {
     auto rectangle{std::make_shared<boden::widget::shape::rectangle_t>(boden::layout::rect_t(150, 50, 100, 50))};
     rectangle->set_layer_background_color({0x00, 0x00, 0xFF, 0xFF});
     rectangle->set_layer_border_color({0x00, 0xFF, 0xFF, 0xFF});
     rectangle->set_layer_border_width(1);
-    rectangle->add_target(this,
-                          &canvas_view_controller_t::on_shape_mouse_down,
-                          boden::widget::control_event_t::mouse_down);
     _shapes.push_back(rectangle);
     _view->add_subview(rectangle);
 }

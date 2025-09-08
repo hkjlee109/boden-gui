@@ -22,6 +22,14 @@ struct rect_t
         return (point.x >= origin.x && point.x <= (origin.x + size.width) &&
                 point.y >= origin.y && point.y <= (origin.y + size.height));
     }
+
+    constexpr rect_t offset_by(float dx, float dy) const 
+    {
+        return rect_t(origin.x + dx,
+                      origin.y + dy,
+                      size.width,
+                      size.height);
+    }
 };
 
 } // layout
