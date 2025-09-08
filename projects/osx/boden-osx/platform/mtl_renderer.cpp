@@ -1,9 +1,11 @@
 #include "mtl_renderer.hpp"
 
 #include "mtl_buffer_manager.hpp"
+
 #include <boden/draw/index.hpp>
 #include <boden/draw/vertex.hpp>
 #include <simd/simd.h>
+#include <algorithm>
 #include <iostream>
 
 namespace platform {
@@ -116,12 +118,17 @@ void mtl_renderer_t::end_draw(boden::context_t &ctx)
     
     for(const boden::draw::command_t &command : builder.commands)
     {
+        int32_t x = std::clamp<int32_t>(command.clip_rect.origin.x, 0, ctx.display_size.width);
+        int32_t y = std::clamp<int32_t>(command.clip_rect.origin.y, 0, ctx.display_size.height);
+        int32_t width = std::min<int32_t>(command.clip_rect.size.width, ctx.display_size.width - x);
+        int32_t height = std::min<int32_t>(command.clip_rect.size.height, ctx.display_size.height - y);
+        
         MTL::ScissorRect scissorRect =
         {
-            .x = (NS::UInteger)(command.clip_rect.origin.x * ctx.display_scale.x),
-            .y = (NS::UInteger)(command.clip_rect.origin.y * ctx.display_scale.y),
-            .width = (NS::UInteger)(command.clip_rect.size.width * ctx.display_scale.x),
-            .height = (NS::UInteger)(command.clip_rect.size.height * ctx.display_scale.y)
+            .x = (NS::UInteger)(x * ctx.display_scale.x),
+            .y = (NS::UInteger)(y * ctx.display_scale.y),
+            .width = (NS::UInteger)(width * ctx.display_scale.x),
+            .height = (NS::UInteger)(height * ctx.display_scale.y)
         };
         _encoder->setScissorRect(scissorRect);
         
