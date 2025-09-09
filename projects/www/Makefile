@@ -2,7 +2,8 @@ CXX := emcc
 CXXFLAGS := -Wall -std=c++20
 
 BUILD_DIR := build
-TARGET := $(BUILD_DIR)/boden-www.js
+TARGET_DIR := public
+TARGET := $(TARGET_DIR)/boden-www.js
 
 BODEN_GUI_DIR := ../../boden-gui
 BODEN_GUI_BUILD_DIR := $(BUILD_DIR)/boden-gui
@@ -18,6 +19,7 @@ all: $(BUILD_DIR) $(BODEN_GUI_TARGET) $(TARGET)
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 	mkdir -p $(BODEN_GUI_BUILD_DIR)
+	mkdir -p $(TARGET_DIR)
 
 $(BODEN_GUI_TARGET): 
 	@echo "Creating boden-gui library..."
@@ -41,5 +43,6 @@ $(TARGET):
 
 clean:
 	rm -rf $(BUILD_DIR)
+	rm -rf $(TARGET_DIR)
 
 .PHONY: all clean $(TARGET)

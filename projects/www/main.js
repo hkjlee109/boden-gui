@@ -1,6 +1,6 @@
 import * as webgl from "./webgl/index.js"
 
-import createModule from './build/boden-www.js';
+import createModule from './public/boden-www.js';
 
 createModule().then((Module) => {
     Module.webgl_render = webgl.render;
