@@ -135,7 +135,6 @@ void mtl_renderer_t::end_draw(boden::context_t &ctx)
         if(command.texture_id) 
         {
             _encoder->setFragmentTexture(_image_library->get_mtl_texture(command.texture_id), 0);
-            
         }
         else 
         {

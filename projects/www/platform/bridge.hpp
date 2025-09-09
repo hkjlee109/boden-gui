@@ -17,6 +17,11 @@
 
 namespace platform {
 
+std::shared_ptr<app::main_view_controller_t> make_main_view_controller(const boden::layout::rect_t& frame) 
+{
+    return std::make_shared<app::main_view_controller_t>(frame);
+}
+
 EMSCRIPTEN_BINDINGS(bridge) 
 {
     emscripten::class_<boden::layout::rect_t>("rect_t")
@@ -36,8 +41,11 @@ EMSCRIPTEN_BINDINGS(bridge)
         .constructor<boden::asset::image_library_t *>();
 
     emscripten::class_<app::main_view_controller_t>("main_view_controller_t")
-        .constructor<boden::layout::rect_t>()
-        .function("draw", &app::main_view_controller_t::draw);
+        .smart_ptr<std::shared_ptr<app::main_view_controller_t>>("main_view_controller_t")
+        .function("draw", &app::main_view_controller_t::draw)
+        .function("load_view", &app::main_view_controller_t::load_view);
+    
+    emscripten::function("make_main_view_controller", &make_main_view_controller);
 
     emscripten::class_<webgl_renderer_t, emscripten::base<boden::renderer_t>>("webgl_renderer_t")
         .constructor<>()

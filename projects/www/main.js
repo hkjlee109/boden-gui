@@ -37,12 +37,13 @@ async function main(module) {
     renderer = new module.webgl_renderer_t();
 
     let rect = new module.rect_t(0, 0, 640, 480);
-    main_view_controller = new module.main_view_controller_t(rect);
+    main_view_controller = module.make_main_view_controller(rect);
     rect.delete();
 
     let context = new module.context_t();
     context.renderer = renderer;
 
+    main_view_controller.load_view();
     main_view_controller.draw(context);
 
     context.delete();
