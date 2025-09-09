@@ -49,7 +49,7 @@ EMSCRIPTEN_BINDINGS(bridge)
 
     emscripten::class_<webgl_renderer_t, emscripten::base<boden::renderer_t>>("webgl_renderer_t")
         .constructor<>()
-        .function("begin_draw", &webgl_renderer_t::begin_draw);
+        .function("render", &webgl_renderer_t::render);
         
     emscripten::class_<webgl_image_library_t, emscripten::base<boden::asset::image_library_t>>("webgl_image_library_t")
         .constructor<>()

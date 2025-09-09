@@ -1,7 +1,5 @@
 #include "canvas_view_controller.hpp"
 
-#include <boden/layout/rect.hpp>
-#include <boden/renderer.hpp>
 #include <boden/widget/shape/rectangle.hpp>
 
 namespace app {
@@ -92,16 +90,12 @@ void canvas_view_controller_t::mouse_up(const boden::event_t &ev)
     }
 }
 
-void canvas_view_controller_t::draw(boden::context_t &ctx)
+void canvas_view_controller_t::draw(boden::builder_t &builder)
 {
-    ctx.renderer->begin_draw(ctx);
-    
     for(const std::shared_ptr<boden::widget::view_t> &view : _view->get_subviews())
     {
-        view->draw(ctx.renderer->builder);
+        view->draw(builder);
     }
-
-    ctx.renderer->end_draw(ctx);
 }
 
 void canvas_view_controller_t::init()

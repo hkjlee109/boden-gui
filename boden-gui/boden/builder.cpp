@@ -150,7 +150,7 @@ namespace boden
         _clip_rect_stack.pop_back();
     }
 
-    const boden::layout::rect_t &builder_t::get_clip_rect_top() const
+    const boden::layout::rect_t & builder_t::get_clip_rect_top() const
     {
         return _clip_rect_stack.back();
     }

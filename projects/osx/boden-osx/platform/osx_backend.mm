@@ -13,7 +13,7 @@ osx_backend_t::osx_backend_t(MTL::Device *device, platform::osx_queue_t &queue, 
 {
     platform::mtl_image_library_t *mtl_image_library{new platform::mtl_image_library_t(device)};
     
-    NSImage* nsimage = [NSImage imageNamed:@"gearshape"];
+    NSImage *nsimage = [NSImage imageNamed:@"gearshape"];
     boden::widget::base::image_t image;
     platform::utils_t::convert_to_image((__bridge void *)nsimage, &image);
     mtl_image_library->load_image_from_data("gearshape", image);
@@ -39,15 +39,18 @@ void osx_backend_t::start()
 
 void osx_backend_t::draw()
 {
+    auto builder = std::make_shared<boden::builder_t>();
+    _main_view_controller->draw(*builder.get());
+
     dispatch_async(dispatch_get_main_queue(), ^{
         boden::context_t ctx;
-        ctx.renderer = _renderer.get();
         ctx.surface_handle = (boden::surface_handle_t)(__bridge CA::MetalDrawable *)_provider.currentDrawable;
         ctx.display_size = boden::layout::size_t{(float)_provider.displaySize.width,
                                                  (float)_provider.displaySize.height};
         ctx.display_scale = boden::layout::vec2_t{(float)_provider.displayScale,
                                                   (float)_provider.displayScale};
-        _main_view_controller->draw(ctx);
+        
+        _renderer->render(ctx, builder->commands, builder->indices, builder->vertices);
     });
 }
 
@@ -86,10 +89,7 @@ int osx_backend_t::main()
                     [_provider setNeedsDisplay:YES];
                 });
                 break;
-                
         }
-
-        std::this_thread::sleep_for(std::chrono::microseconds(1));
     }
 }
 

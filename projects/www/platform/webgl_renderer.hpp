@@ -10,8 +10,7 @@ public:
     webgl_renderer_t();
     ~webgl_renderer_t();
 
-    void begin_draw(boden::context_t &ctx) override;
-    void end_draw(boden::context_t &ctx) override;
+    void render(boden::context_t &ctx) override;
 };
 
 } // platform

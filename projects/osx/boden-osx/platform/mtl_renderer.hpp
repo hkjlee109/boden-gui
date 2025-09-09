@@ -22,8 +22,10 @@ public:
     mtl_renderer_t(MTL::Device* device, mtl_image_library_t *image_library);
     ~mtl_renderer_t() override;
     
-    void begin_draw(boden::context_t &ctx) override;
-    void end_draw(boden::context_t &ctx) override;
+    void render(const boden::context_t &ctx,
+                const std::vector<boden::draw::command_t> &commands,
+                const std::vector<boden::draw::index_t> &indices,
+                const std::vector<boden::draw::vertex_t> &vertices) override;
     
 private:
     void setup_depth_stencil();
@@ -37,11 +39,6 @@ private:
     pipeline_ref_t _render_pipeline;
     depth_stencil_ref_t _depth_stencil;
     texture_ref_t _texture;
-    
-    CA::MetalDrawable *_surface;
-    boden::layout::vec2_t _display_scale;
-    MTL::CommandBuffer *_command_buffer;
-    MTL::RenderCommandEncoder *_encoder;
 };
 
 } // platform

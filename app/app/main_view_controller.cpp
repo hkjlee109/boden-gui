@@ -1,8 +1,5 @@
 #include "main_view_controller.hpp"
 
-#include <boden/layout/rect.hpp>
-#include <boden/renderer.hpp>
-
 namespace app {
 
 main_view_controller_t::main_view_controller_t()
@@ -43,16 +40,12 @@ void main_view_controller_t::mouse_up(const boden::event_t &ev)
     }
 }
 
-void main_view_controller_t::draw(boden::context_t &ctx)
+void main_view_controller_t::draw(boden::builder_t &builder)
 {
-    ctx.renderer->begin_draw(ctx);
-    
     for(const std::shared_ptr<boden::widget::view_t> &view : _view->get_subviews())
     {
-        view->draw(ctx.renderer->builder);
+        view->draw(builder);
     }
-
-    ctx.renderer->end_draw(ctx);
 }
 
 void main_view_controller_t::on_button_click(void *sender)

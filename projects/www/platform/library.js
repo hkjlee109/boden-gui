@@ -1,16 +1,10 @@
 addToLibrary({
 
-    lib_begin_draw: function() {
-        console.log("# begin_draw");     
-    },
-
-    lib_end_draw: function(
+    lib_render: function(
         commands_addr, commands_count,
         indices_addr, indices_count,
         vertices_addr, vertices_count
     ) {
-        console.log("# end_draw");
-
         /*
          * struct command_t
          * uint32_t count;

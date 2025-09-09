@@ -1,6 +1,5 @@
 #pragma once
 
-#include <boden/context.hpp>
 #include <boden/layout/rect.hpp>
 #include <boden/widget/shape/shape.hpp>
 #include <boden/widget/view_controller.hpp>
@@ -20,7 +19,7 @@ public:
     void mouse_dragged(const boden::event_t &ev) override;
     void mouse_up(const boden::event_t &ev) override;
     
-    void draw(boden::context_t &ctx);
+    void draw(boden::builder_t &builder);
     
 private:
     std::vector<std::shared_ptr<boden::widget::shape::shape_t>> _shapes;

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <app/canvas_view_controller.hpp>
-#include <boden/context.hpp>
+#include <boden/builder.hpp>
 #include <boden/layout/rect.hpp>
 #include <boden/widget/button.hpp>
 #include <boden/widget/image_view.hpp>
@@ -21,7 +21,7 @@ public:
     void mouse_dragged(const boden::event_t &ev) override;
     void mouse_up(const boden::event_t &ev) override;
     
-    void draw(boden::context_t &ctx);
+    void draw(boden::builder_t &builder);
     void load_view();
     
     void on_button_click(void *sender);
