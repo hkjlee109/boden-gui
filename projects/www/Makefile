@@ -30,7 +30,6 @@ $(TARGET):
 	$(CXX) -lembind \
         -sMODULARIZE=1 \
         -sEXPORT_ES6=1 \
-        -sNO_DISABLE_EXCEPTION_CATCHING \
         -I$(BODEN_GUI_DIR) \
         -I$(APP_DIR) \
         -L$(BODEN_GUI_BUILD_DIR) \
