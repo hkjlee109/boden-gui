@@ -40,13 +40,20 @@ async function main(module) {
     main_view_controller = module.make_main_view_controller(rect);
     rect.delete();
 
-    let context = new module.context_t();
-    context.renderer = renderer;
-
     main_view_controller.load_view();
-    main_view_controller.draw(context);
+
+    let builder = new module.builder_t();
+    main_view_controller.draw(builder);
+
+    let context = new module.context_t();
+    context.batch = builder.get_batch();
+
+    console.log(context.batch);
+
+    renderer.render(context);
 
     context.delete();
+    builder.delete();
 
     if (renderer) {
         renderer.delete();

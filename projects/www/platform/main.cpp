@@ -1,1 +1,7 @@
-#include "bridge.hpp"
+#include "binding/batch.hpp"
+#include "binding/builder.hpp"
+#include "binding/context.hpp"
+#include "binding/image_library.hpp"
+#include "binding/main_view_controller.hpp"
+#include "binding/rect.hpp"
+#include "binding/renderer.hpp"
