@@ -44,13 +44,14 @@ void osx_backend_t::draw()
 
     dispatch_async(dispatch_get_main_queue(), ^{
         boden::context_t ctx;
+
         ctx.surface_handle = (boden::surface_handle_t)(__bridge CA::MetalDrawable *)_provider.currentDrawable;
         ctx.display_size = boden::layout::size_t{(float)_provider.displaySize.width,
                                                  (float)_provider.displaySize.height};
         ctx.display_scale = boden::layout::vec2_t{(float)_provider.displayScale,
                                                   (float)_provider.displayScale};
-        
-        _renderer->render(ctx, builder->commands, builder->indices, builder->vertices);
+        ctx.batch = &builder->get_batch();
+        _renderer->render(ctx);
     });
 }
 

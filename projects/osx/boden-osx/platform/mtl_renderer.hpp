@@ -22,10 +22,7 @@ public:
     mtl_renderer_t(MTL::Device* device, mtl_image_library_t *image_library);
     ~mtl_renderer_t() override;
     
-    void render(const boden::context_t &ctx,
-                const std::vector<boden::draw::command_t> &commands,
-                const std::vector<boden::draw::index_t> &indices,
-                const std::vector<boden::draw::vertex_t> &vertices) override;
+    void render(boden::context_t &ctx) override;
     
 private:
     void setup_depth_stencil();

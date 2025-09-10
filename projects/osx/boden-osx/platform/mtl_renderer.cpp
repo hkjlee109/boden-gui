@@ -32,14 +32,11 @@ mtl_renderer_t::~mtl_renderer_t()
 {
 }
 
-void mtl_renderer_t::render(const boden::context_t &ctx,
-                            const std::vector<boden::draw::command_t> &commands,
-                            const std::vector<boden::draw::index_t> &indices,
-                            const std::vector<boden::draw::vertex_t> &vertices)
+void mtl_renderer_t::render(boden::context_t &ctx)
 {
-    boden::renderer_t::render(ctx, commands, indices, vertices);
+    boden::renderer_t::render(ctx);
     
-    if(indices.size() == 0 || vertices.size() == 0)
+    if(ctx.batch->indices.size() == 0 || ctx.batch->vertices.size() == 0)
     {
         return;
     }
@@ -94,20 +91,20 @@ void mtl_renderer_t::render(const boden::context_t &ctx,
     encoder->setVertexBytes(&ortho_projection, sizeof(ortho_projection), 1);
     
     mtl_buffer_ref_t vertex_buffer = buffer_manager.dequeueReusableBuffer(_device,
-                                                                          vertices.size() * sizeof(boden::draw::vertex_t));
+                                                                          ctx.batch->vertices.size() * sizeof(boden::draw::vertex_t));
     mtl_buffer_ref_t index_buffer = buffer_manager.dequeueReusableBuffer(_device,
-                                                                         indices.size() * sizeof(boden::draw::index_t));
+                                                                         ctx.batch->indices.size() * sizeof(boden::draw::index_t));
     
     memcpy((char*)vertex_buffer->get_buffer()->contents(),
-           vertices.data(),
-           vertices.size() * sizeof(boden::draw::vertex_t));
+           ctx.batch->vertices.data(),
+           ctx.batch->vertices.size() * sizeof(boden::draw::vertex_t));
     memcpy((char*)index_buffer->get_buffer()->contents(),
-           indices.data(),
-           indices.size() * sizeof(boden::draw::index_t));
+           ctx.batch->indices.data(),
+           ctx.batch->indices.size() * sizeof(boden::draw::index_t));
 
     encoder->setVertexBuffer(vertex_buffer->get_buffer(), 0, 0);
     
-    for(const boden::draw::command_t &command : commands)
+    for(const boden::draw::command_t &command : ctx.batch->commands)
     {
         int32_t x = std::clamp<int32_t>(command.clip_rect.origin.x, 0, ctx.display_size.width);
         int32_t y = std::clamp<int32_t>(command.clip_rect.origin.y, 0, ctx.display_size.height);

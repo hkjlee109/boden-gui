@@ -1,165 +1,169 @@
 #include "builder.hpp"
 #include <boden/math/normalize.hpp>
 
-namespace boden
+namespace boden {
+
+builder_t::builder_t()
 {
+}
 
-    builder_t::builder_t()
-    {
-    }
+builder_t::~builder_t()
+{
+}
 
-    builder_t::~builder_t()
-    {
-    }
+void builder_t::add_rect(const boden::layout::vec2_t &p1,
+                         const boden::layout::vec2_t &p2,
+                         const boden::layout::color_t &color,
+                         float thickness)
+{
+    if(thickness <= 0)
+        return;
 
-    void builder_t::add_rect(const boden::layout::vec2_t &p1,
-                             const boden::layout::vec2_t &p2,
+    std::vector<boden::layout::vec2_t> path;
+    path.push_back(p1);
+    path.emplace_back(p1.x, p2.y);
+    path.push_back(p2);
+    path.emplace_back(p2.x, p1.y);
+
+    add_polyline(path, color, thickness);
+}
+
+void builder_t::add_rect_filled(const boden::layout::vec2_t &p1,
+                                const boden::layout::vec2_t &p2,
+                                const boden::layout::color_t &color)
+{
+    uint32_t index_buffer_offset = _batch.indices.size();
+    uint32_t vertex_buffer_offset = _batch.vertices.size();
+    _batch.commands.emplace_back(0, index_buffer_offset, vertex_buffer_offset, get_clip_rect_top());
+
+    _batch.vertices.emplace_back(boden::layout::vec2_t{p1.x, p1.y},
+                                 boden::layout::vec2_t{0, 0},
+                                 color);
+    _batch.vertices.emplace_back(boden::layout::vec2_t{p2.x, p1.y},
+                                 boden::layout::vec2_t{0, 0},
+                                 color);
+    _batch.vertices.emplace_back(boden::layout::vec2_t{p1.x, p2.y},
+                                 boden::layout::vec2_t{0, 0},
+                                 color);
+    _batch.vertices.emplace_back(boden::layout::vec2_t{p2.x, p2.y},
+                                 boden::layout::vec2_t{0, 0},
+                                 color);
+
+    _batch.indices.insert(_batch.indices.end(), {vertex_buffer_offset + 0,
+                                                 vertex_buffer_offset + 1,
+                                                 vertex_buffer_offset + 2});
+    _batch.indices.insert(_batch.indices.end(), {vertex_buffer_offset + 1,
+                                                 vertex_buffer_offset + 2,
+                                                 vertex_buffer_offset + 3});
+
+    _batch.commands.back().count = _batch.indices.size() - index_buffer_offset;
+}
+
+void builder_t::add_polyline(const std::vector<boden::layout::vec2_t> &path,
                              const boden::layout::color_t &color,
                              float thickness)
+{
+    int count = path.size();
+
+    uint32_t index_buffer_offset = _batch.indices.size();
+    uint32_t vertex_buffer_offset = _batch.vertices.size();
+    _batch.commands.emplace_back(0, index_buffer_offset, vertex_buffer_offset, get_clip_rect_top());
+
+    for (int i1 = 0; i1 < count; i1++)
     {
-        if(thickness <= 0)
-            return;
+        const int i2 = (i1 + 1) == count ? 0 : i1 + 1;
+        const boden::layout::vec2_t &p1 = path[i1];
+        const boden::layout::vec2_t &p2 = path[i2];
 
-        std::vector<boden::layout::vec2_t> path;
-        path.push_back(p1);
-        path.emplace_back(p1.x, p2.y);
-        path.push_back(p2);
-        path.emplace_back(p2.x, p1.y);
+        float dx = p2.x - p1.x;
+        float dy = p2.y - p1.y;
+        boden::math::normalize_float_2(dx, dy);
+        dx *= (thickness * 0.5f);
+        dy *= (thickness * 0.5f);
 
-        add_polyline(path, color, thickness);
+        vertex_buffer_offset = _batch.vertices.size();
+
+        _batch.vertices.emplace_back(boden::layout::vec2_t{p1.x + dy, p1.y - dx},
+                                     boden::layout::vec2_t{0, 0},
+                                     color);
+        _batch.vertices.emplace_back(boden::layout::vec2_t{p2.x + dy, p2.y - dx},
+                                     boden::layout::vec2_t{0, 0},
+                                     color);
+        _batch.vertices.emplace_back(boden::layout::vec2_t{p1.x - dy, p1.y + dx},
+                                     boden::layout::vec2_t{0, 0},
+                                     color);
+        _batch.vertices.emplace_back(boden::layout::vec2_t{p2.x - dy, p2.y + dx},
+                                     boden::layout::vec2_t{0, 0},
+                                     color);
+
+        _batch.indices.insert(_batch.indices.end(), {vertex_buffer_offset + 0,
+                                                     vertex_buffer_offset + 1,
+                                                     vertex_buffer_offset + 2});
+        _batch.indices.insert(_batch.indices.end(), {vertex_buffer_offset + 1,
+                                                     vertex_buffer_offset + 2,
+                                                     vertex_buffer_offset + 3});
     }
 
-    void builder_t::add_rect_filled(const boden::layout::vec2_t &p1,
-                                    const boden::layout::vec2_t &p2,
-                                    const boden::layout::color_t &color)
-    {
-        uint32_t index_buffer_offset = indices.size();
-        uint32_t vertex_buffer_offset = vertices.size();
-        commands.emplace_back(0, index_buffer_offset, vertex_buffer_offset, get_clip_rect_top());
+    _batch.commands.back().count = _batch.indices.size() - index_buffer_offset;
+}
 
-        vertices.emplace_back(boden::layout::vec2_t{p1.x, p1.y},
-                              boden::layout::vec2_t{0, 0},
-                              color);
-        vertices.emplace_back(boden::layout::vec2_t{p2.x, p1.y},
-                              boden::layout::vec2_t{0, 0},
-                              color);
-        vertices.emplace_back(boden::layout::vec2_t{p1.x, p2.y},
-                              boden::layout::vec2_t{0, 0},
-                              color);
-        vertices.emplace_back(boden::layout::vec2_t{p2.x, p2.y},
-                              boden::layout::vec2_t{0, 0},
-                              color);
+void builder_t::add_image(boden::asset::texture_id_t tid,
+                          const boden::layout::vec2_t &p1,
+                          const boden::layout::vec2_t &p2,
+                          const boden::layout::color_t &color)
+{
+    uint32_t index_buffer_offset = _batch.indices.size();
+    uint32_t vertex_buffer_offset = _batch.vertices.size();
+    _batch.commands.emplace_back(0, index_buffer_offset, vertex_buffer_offset, get_clip_rect_top(), tid);
 
-        indices.insert(indices.end(), {vertex_buffer_offset + 0,
-                                       vertex_buffer_offset + 1,
-                                       vertex_buffer_offset + 2});
-        indices.insert(indices.end(), {vertex_buffer_offset + 1,
-                                       vertex_buffer_offset + 2,
-                                       vertex_buffer_offset + 3});
+    _batch.vertices.emplace_back(boden::layout::vec2_t{p1.x, p1.y},
+                                 boden::layout::vec2_t{0, 0},
+                                 color);
+    _batch.vertices.emplace_back(boden::layout::vec2_t{p2.x, p1.y},
+                                 boden::layout::vec2_t{1, 0},
+                                 color);
+    _batch.vertices.emplace_back(boden::layout::vec2_t{p1.x, p2.y},
+                                 boden::layout::vec2_t{0, 1},
+                                 color);
+    _batch.vertices.emplace_back(boden::layout::vec2_t{p2.x, p2.y},
+                                 boden::layout::vec2_t{1, 1},
+                                 color);
 
-        commands.back().count = indices.size() - index_buffer_offset;
-    }
+    _batch.indices.insert(_batch.indices.end(), {vertex_buffer_offset + 0,
+                                                 vertex_buffer_offset + 1,
+                                                 vertex_buffer_offset + 2});
+    _batch.indices.insert(_batch.indices.end(), {vertex_buffer_offset + 1,
+                                                 vertex_buffer_offset + 2,
+                                                 vertex_buffer_offset + 3});
 
-    void builder_t::add_polyline(const std::vector<boden::layout::vec2_t> &path,
-                                 const boden::layout::color_t &color,
-                                 float thickness)
-    {
-        int count = path.size();
+    _batch.commands.back().count = _batch.indices.size() - index_buffer_offset;
+}
 
-        uint32_t index_buffer_offset = indices.size();
-        uint32_t vertex_buffer_offset = vertices.size();
-        commands.emplace_back(0, index_buffer_offset, vertex_buffer_offset, get_clip_rect_top());
+void builder_t::push_clip_rect(const boden::layout::rect_t &rect)
+{
+    _clip_rect_stack.push_back(rect);
+}
 
-        for (int i1 = 0; i1 < count; i1++)
-        {
-            const int i2 = (i1 + 1) == count ? 0 : i1 + 1;
-            const boden::layout::vec2_t &p1 = path[i1];
-            const boden::layout::vec2_t &p2 = path[i2];
+void builder_t::pop_clip_rect()
+{
+    _clip_rect_stack.pop_back();
+}
 
-            float dx = p2.x - p1.x;
-            float dy = p2.y - p1.y;
-            boden::math::normalize_float_2(dx, dy);
-            dx *= (thickness * 0.5f);
-            dy *= (thickness * 0.5f);
+const boden::batch_t & builder_t::get_batch() const
+{
+    return _batch;
+}
 
-            vertex_buffer_offset = vertices.size();
+const boden::layout::rect_t & builder_t::get_clip_rect_top() const
+{
+    return _clip_rect_stack.back();
+}
 
-            vertices.emplace_back(boden::layout::vec2_t{p1.x + dy, p1.y - dx},
-                                  boden::layout::vec2_t{0, 0},
-                                  color);
-            vertices.emplace_back(boden::layout::vec2_t{p2.x + dy, p2.y - dx},
-                                  boden::layout::vec2_t{0, 0},
-                                  color);
-            vertices.emplace_back(boden::layout::vec2_t{p1.x - dy, p1.y + dx},
-                                  boden::layout::vec2_t{0, 0},
-                                  color);
-            vertices.emplace_back(boden::layout::vec2_t{p2.x - dy, p2.y + dx},
-                                  boden::layout::vec2_t{0, 0},
-                                  color);
-
-            indices.insert(indices.end(), {vertex_buffer_offset + 0,
-                                           vertex_buffer_offset + 1,
-                                           vertex_buffer_offset + 2});
-            indices.insert(indices.end(), {vertex_buffer_offset + 1,
-                                           vertex_buffer_offset + 2,
-                                           vertex_buffer_offset + 3});
-        }
-
-        commands.back().count = indices.size() - index_buffer_offset;
-    }
-
-    void builder_t::add_image(boden::asset::texture_id_t tid,
-                              const boden::layout::vec2_t &p1,
-                              const boden::layout::vec2_t &p2,
-                              const boden::layout::color_t &color)
-    {
-        uint32_t index_buffer_offset = indices.size();
-        uint32_t vertex_buffer_offset = vertices.size();
-        commands.emplace_back(0, index_buffer_offset, vertex_buffer_offset, get_clip_rect_top(), tid);
-
-        vertices.emplace_back(boden::layout::vec2_t{p1.x, p1.y},
-                              boden::layout::vec2_t{0, 0},
-                              color);
-        vertices.emplace_back(boden::layout::vec2_t{p2.x, p1.y},
-                              boden::layout::vec2_t{1, 0},
-                              color);
-        vertices.emplace_back(boden::layout::vec2_t{p1.x, p2.y},
-                              boden::layout::vec2_t{0, 1},
-                              color);
-        vertices.emplace_back(boden::layout::vec2_t{p2.x, p2.y},
-                              boden::layout::vec2_t{1, 1},
-                              color);
-
-        indices.insert(indices.end(), {vertex_buffer_offset + 0,
-                                       vertex_buffer_offset + 1,
-                                       vertex_buffer_offset + 2});
-        indices.insert(indices.end(), {vertex_buffer_offset + 1,
-                                       vertex_buffer_offset + 2,
-                                       vertex_buffer_offset + 3});
-
-        commands.back().count = indices.size() - index_buffer_offset;
-    }
-
-    void builder_t::push_clip_rect(const boden::layout::rect_t &rect)
-    {
-        _clip_rect_stack.push_back(rect);
-    }
-
-    void builder_t::pop_clip_rect()
-    {
-        _clip_rect_stack.pop_back();
-    }
-
-    const boden::layout::rect_t & builder_t::get_clip_rect_top() const
-    {
-        return _clip_rect_stack.back();
-    }
-
-    void builder_t::reset()
-    {
-        commands.clear();
-        vertices.clear();
-        _clip_rect_stack.clear();
-    }
+void builder_t::reset()
+{
+    _batch.commands.clear();
+    _batch.vertices.clear();
+    _clip_rect_stack.clear();
+}
 
 } // boden
