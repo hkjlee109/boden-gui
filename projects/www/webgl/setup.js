@@ -1,4 +1,4 @@
-import { setRenderProgram } from "./render-program.js"
+import { setGL, setRenderProgram } from "./global-variables.js"
 import { init as initDefautTexture } from "./default-texture.js"
 
 function setup(gl) {
@@ -63,6 +63,7 @@ function setup(gl) {
     };
 
     initDefautTexture(gl);
+    setGL(gl);
     setRenderProgram(renderProgram);
 }
 

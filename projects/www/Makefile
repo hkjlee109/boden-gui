@@ -32,6 +32,8 @@ $(TARGET):
 	$(CXX) -lembind \
         -sMODULARIZE=1 \
         -sEXPORT_ES6=1 \
+        -sEXPORTED_RUNTIME_METHODS=['ccall','cwrap'] \
+        -sEXPORTED_FUNCTIONS=['_malloc','_free'] \
         -I$(BODEN_GUI_DIR) \
         -I$(APP_DIR) \
         -L$(BODEN_GUI_BUILD_DIR) \

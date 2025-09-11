@@ -30,7 +30,7 @@ struct rect_t
                       size.width,
                       size.height);
     }
-};
+} __attribute__((packed));
 
 } // layout
 } // boden

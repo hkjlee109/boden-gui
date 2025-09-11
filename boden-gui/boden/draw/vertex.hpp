@@ -8,6 +8,7 @@ namespace draw {
 
 struct vertex_t
 {
+    vertex_t() = default;
     constexpr vertex_t(const boden::layout::vec2_t &_position, 
                        const boden::layout::vec2_t &_uv, 
                        const uint32_t &_color) 
@@ -18,7 +19,7 @@ struct vertex_t
     boden::layout::vec2_t position;
     boden::layout::vec2_t uv;
     uint32_t color;
-};
+} __attribute__((packed));
 
 } // draw
 } // boden

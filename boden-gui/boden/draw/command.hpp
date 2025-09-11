@@ -9,6 +9,7 @@ namespace draw {
 
 struct command_t
 {
+    command_t() = default;
     constexpr command_t(uint32_t _count,
                         uint32_t _index_buffer_offset,
                         uint32_t _vertex_buffer_offset,
@@ -26,7 +27,7 @@ struct command_t
 
     boden::layout::rect_t clip_rect;
     boden::asset::texture_id_t texture_id;
-};
+} __attribute__((packed));
 
 } // draw
 } // boden

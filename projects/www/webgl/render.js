@@ -1,11 +1,11 @@
-import { getRenderProgram } from "./render-program.js"
+import { getGL, getRenderProgram } from "./global-variables.js"
 import { getTexture } from "./image-library.js"
+import { mat4 } from 'gl-matrix';
 
 async function render(commands, indices, vertices) {
     console.log("# render");
 
-    const canvas = document.querySelector("#gl-canvas");
-    const gl = canvas.getContext("webgl");
+    const gl = getGL();
 
     if(gl === null) {
         alert("Unable to initialize WebGL. Your browser or machine may not support it.");
