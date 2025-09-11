@@ -6,7 +6,7 @@
 #include <emscripten/bind.h>
 
 namespace platform {
-namespace bridge {
+namespace binding {
 
 EMSCRIPTEN_BINDINGS(builder) 
 {
@@ -15,5 +15,5 @@ EMSCRIPTEN_BINDINGS(builder)
         .function("get_batch", &boden::builder_t::get_batch);
 }
 
-} // bridge
+} // binding
 } // platform

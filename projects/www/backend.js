@@ -4,7 +4,7 @@ let main_view_controller = null;
 let module = null;
 
 self.onmessage = async (event) => {
-    const { type } = event.data;
+    const { type, x, y } = event.data;
 
     switch (type) {
     case 'init':
@@ -21,14 +21,29 @@ self.onmessage = async (event) => {
         break;
 
     case 'left_mouse_down':
-        console.log("Mouse Down:", x, y);
+        main_view_controller.mouse_down({
+            type: module.event_type_t.left_mouse_down,
+            location: { x: x, y: y }
+        });
+        render();
         break;
 
-    case 'left_mouse_up':
-        console.log("Mouse Up:", x, y);
+    case 'left_mouse_dragged':
+        main_view_controller.mouse_dragged({
+            type: module.event_type_t.left_mouse_dragged,
+            location: { x: x, y: y }
+        });
+        render();
+        break;
+
+    case 'left_mouse_up': 
+        main_view_controller.mouse_up({
+            type: module.event_type_t.left_mouse_up,
+            location: { x: x, y: y }
+        });
+        render();
         break;
     }
-
 };
 
 async function render() {

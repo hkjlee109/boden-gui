@@ -6,7 +6,7 @@
 #include <emscripten/bind.h>
 
 namespace platform {
-namespace bridge {
+namespace binding {
 
 EMSCRIPTEN_BINDINGS(rect) 
 {
@@ -16,5 +16,5 @@ EMSCRIPTEN_BINDINGS(rect)
         .property("size", &boden::layout::rect_t::size);
 }
 
-} // bridge
+} // binding
 } // platform

@@ -5,6 +5,7 @@ let renderer;
 let main_view_controller;
 let image_library_ref;
 let module = null;
+let dragging = false;
 
 const canvas = document.querySelector("#gl-canvas");
 const worker = new Worker("./backend.js", { type: "module" });
@@ -20,21 +21,9 @@ canvas.addEventListener("mousedown", (event) => {
     const { x, y, button } = event;
     switch (event.button) {
     case 0:
+        dragging = true;
         worker.postMessage({
             type: "left_mouse_down",
-            x: x,
-            y: y
-        });
-        break;
-    }
-});
-
-canvas.addEventListener("mouseup", (event) => {
-    const { x, y, button } = event;
-    switch (event.button) {
-    case 0:
-        worker.postMessage({
-            type: "left_mouse_up",
             x: x,
             y: y
         });
@@ -46,7 +35,27 @@ canvas.addEventListener("mousemove", (event) => {
     const { x, y, button } = event;
     switch (event.button) {
     case 0:
-        console.log("Mouse Move:", x, y, button);
+        if (dragging) {
+            worker.postMessage({
+                type: "left_mouse_dragged",
+                x: x,
+                y: y
+            });
+        }
+        break;
+    }
+});
+
+canvas.addEventListener("mouseup", (event) => {
+    const { x, y, button } = event;
+    switch (event.button) {
+    case 0:
+        dragging = false;
+        worker.postMessage({
+            type: "left_mouse_up",
+            x: x,
+            y: y
+        });
         break;
     }
 });

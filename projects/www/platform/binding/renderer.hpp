@@ -8,7 +8,7 @@
 #include <emscripten/bind.h>
 
 namespace platform {
-namespace bridge {
+namespace binding {
 
 EMSCRIPTEN_BINDINGS(renderer) 
 {
@@ -19,5 +19,5 @@ EMSCRIPTEN_BINDINGS(renderer)
         .function("render", &webgl_renderer_t::render);
 }
 
-} // bridge
+} // binding
 } // platform

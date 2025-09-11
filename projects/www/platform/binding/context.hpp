@@ -6,7 +6,7 @@
 #include <emscripten/bind.h>
 
 namespace platform {
-namespace bridge {
+namespace binding {
 
 EMSCRIPTEN_BINDINGS(context) 
 {
@@ -15,5 +15,5 @@ EMSCRIPTEN_BINDINGS(context)
         .property("batch", &boden::context_t::batch, emscripten::allow_raw_pointers());
 }
 
-} // bridge
+} // binding
 } // platform

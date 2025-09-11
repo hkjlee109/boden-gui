@@ -8,7 +8,7 @@
 #include <emscripten/bind.h>
 
 namespace platform {
-namespace bridge {
+namespace binding {
 
 EMSCRIPTEN_BINDINGS(image_library) 
 {
@@ -22,5 +22,5 @@ EMSCRIPTEN_BINDINGS(image_library)
         .function("load_image_from_path", &webgl_image_library_t::load_image_from_path);
 }
 
-} // bridge
+} // binding
 } // platform

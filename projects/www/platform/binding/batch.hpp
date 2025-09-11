@@ -6,7 +6,7 @@
 #include <emscripten/bind.h>
 
 namespace platform {
-namespace bridge {
+namespace binding {
 
 EMSCRIPTEN_BINDINGS(batch) 
 {
@@ -35,5 +35,5 @@ EMSCRIPTEN_BINDINGS(batch)
         }));
 }
 
-} // bridge
+} // binding
 } // platform
