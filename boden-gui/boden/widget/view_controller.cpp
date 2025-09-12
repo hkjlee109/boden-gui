@@ -19,6 +19,31 @@ view_controller_t::~view_controller_t()
 {
 }
 
+void view_controller_t::mouse_down(const boden::event_t &ev)
+{
+    auto target = _view->hit_test(ev.location);
+    if(target == nullptr)
+    {
+        return;
+    }
+    target->mouse_down(ev);
+}
+
+void view_controller_t::mouse_dragged(const boden::event_t &ev)
+{
+
+}
+
+void view_controller_t::mouse_up(const boden::event_t &ev)
+{
+    auto target = _view->hit_test(ev.location);
+    if(target == nullptr)
+    {
+        return;
+    }
+    target->mouse_up(ev);
+}
+
 std::shared_ptr<boden::widget::view_t> view_controller_t::get_view() const 
 {
     if(_view == nullptr) 

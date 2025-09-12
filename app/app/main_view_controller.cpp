@@ -1,5 +1,8 @@
 #include "main_view_controller.hpp"
 
+#include <app/canvas_view_controller.hpp>
+#include <app/toolbox_view_controller.hpp>
+
 namespace app {
 
 main_view_controller_t::main_view_controller_t()
@@ -48,25 +51,11 @@ void main_view_controller_t::draw(boden::builder_t &builder)
     }
 }
 
-void main_view_controller_t::on_button_click(void *sender)
-{
-    printf("# main_view_controller_t::on_button_click\n");
-}
-
 void main_view_controller_t::load_view()
 {
-    _button = std::make_shared<boden::widget::button_t>(boden::layout::rect_t(10, 10, 50, 50));
-    _button->set_layer_border_width(2);
-    _button->set_layer_border_color({0x00, 0xFF, 0xFF, 0xFF});
-    _button->add_target(this,
-                        &main_view_controller_t::on_button_click,
-                        boden::widget::control_event_t::mouse_down);
-    _view->add_subview(_button);
-    
-    _image_view = std::make_shared<boden::widget::image_view_t>(boden::layout::rect_t(10, 70, 50, 50));
-    _image_view->set_image(std::make_unique<boden::widget::base::image_t>("gearshape"));
-    _image_view->set_tint_color({0xFF, 0xFF, 0x00, 0xFF});
-    _view->add_subview(_image_view);
+    auto toolbox = std::make_shared<app::toolbox_view_controller_t>(boden::layout::rect_t(0, 0, 70, 480));
+    _view->add_subview(toolbox->get_view());
+    add_child_view_controller(toolbox);
     
     auto canvas = std::make_shared<app::canvas_view_controller_t>(boden::layout::rect_t(70, 0, 570, 480));
     _view->add_subview(canvas->get_view());

@@ -22,14 +22,14 @@ canvas_view_controller_t::~canvas_view_controller_t()
 
 void canvas_view_controller_t::mouse_down(const boden::event_t &ev)
 {
-    _mouse_location_cache = ev.location;
-    
     std::shared_ptr<boden::widget::view_t> target = _view->hit_test(ev.location);
     if(target == nullptr)
     {
         return;
     }
-    
+
+    _mouse_location_cache = ev.location;
+
     if(target == _view)
     {
         for(auto *shape : _selection)
@@ -54,6 +54,12 @@ void canvas_view_controller_t::mouse_down(const boden::event_t &ev)
 
 void canvas_view_controller_t::mouse_dragged(const boden::event_t &ev)
 {
+    std::shared_ptr<boden::widget::view_t> target = _view->hit_test(ev.location);
+    if(target == nullptr)
+    {
+        return;
+    }
+    
     if(_selection.size() == 0)
     {
         return;
@@ -73,6 +79,12 @@ void canvas_view_controller_t::mouse_dragged(const boden::event_t &ev)
 
 void canvas_view_controller_t::mouse_up(const boden::event_t &ev)
 {
+    std::shared_ptr<boden::widget::view_t> target = _view->hit_test(ev.location);
+    if(target == nullptr)
+    {
+        return;
+    }
+    
     if(_selection.size() == 0)
     {
         return;
