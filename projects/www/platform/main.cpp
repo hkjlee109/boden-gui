@@ -2,6 +2,7 @@
 #include "binding/builder.hpp"
 #include "binding/context.hpp"
 #include "binding/event.hpp"
+#include "binding/image_id_lookup_table.hpp"
 #include "binding/image_library.hpp"
 #include "binding/main_view_controller.hpp"
 #include "binding/point.hpp"

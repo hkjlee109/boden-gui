@@ -1,9 +1,7 @@
 import * as webgl from "./webgl/index.js"
 import createModule from './public/boden-www.js';
 
-let renderer;
-let main_view_controller;
-let image_library_ref;
+let renderer = null;
 let module = null;
 let dragging = false;
 
@@ -74,46 +72,15 @@ async function main() {
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
     await webgl.loadImageFromPath(gl, 'gearshape', './images/gearshape.png');
-
+    
     webgl.setup(gl);
-
-    let image_library = new module.webgl_image_library_t();
-    image_library_ref = new module.image_library_ref_t(image_library);
-
+    
     renderer = new module.webgl_renderer_t();
 
     worker.postMessage({
-        type: "init"
+        type: "init",
+        image_id_lookup_table_entries: Array.from(webgl.getImageIdLookupTable())
     });
-
-    // let rect = new module.rect_t(0, 0, 640, 480);
-    // main_view_controller = module.make_main_view_controller(rect);
-    // rect.delete();
-
-    // main_view_controller.load_view();
-
-    // let builder = new module.builder_t();
-    // main_view_controller.draw(builder);
-
-    // let context = new module.context_t();
-    // context.batch = builder.get_batch();
-
-    // console.log(context.batch);
-
-    // renderer.render(context);
-
-    // context.delete();
-    // builder.delete();
-
-    // if (renderer) {
-    //     renderer.delete();
-    //     renderer = null;
-    // }
-
-    // if (main_view_controller) {
-    //     main_view_controller.delete();
-    //     main_view_controller = null;
-    // }
 }
 
 worker.onmessage = async (event) => {

@@ -23,9 +23,9 @@ bool webgl_image_library_t::load_image_from_path(const std::string &name, const 
     return true;
 }
 
-boden::asset::texture_id_t webgl_image_library_t::get_texture_id(const char *_name)
-{
-    return lib_get_texture_id(_name);
-}
+// boden::asset::texture_id_t webgl_image_library_t::get_texture_id(const char *_name)
+// {
+//     return lib_get_texture_id(_name);
+// }
 
 } // platform

@@ -9,17 +9,20 @@ namespace platform {
 
 osx_backend_t::osx_backend_t(MTL::Device *device, platform::osx_queue_t &queue, id<RenderViewProvider> provider)
     : _queue{queue},
-      _provider{provider}
+      _provider{provider},
+      _mtl_image_library{platform::mtl_image_library_t(device)}
 {
-    platform::mtl_image_library_t *mtl_image_library{new platform::mtl_image_library_t(device)};
+    boden::asset::image_id_lookup_table_t *image_id_lookup_table{new boden::asset::image_id_lookup_table_t()};
+    _mtl_image_library.set_image_id_lookup_table(image_id_lookup_table);
     
     NSImage *nsimage = [NSImage imageNamed:@"gearshape"];
     boden::widget::base::image_t image;
     platform::utils_t::convert_to_image((__bridge void *)nsimage, &image);
-    mtl_image_library->load_image_from_data("gearshape", image);
+    _mtl_image_library.load_image_from_data("gearshape", image);
     
-    _image_library = std::make_unique<boden::asset::image_library_ref_t>(mtl_image_library);
-    _renderer = std::make_unique<platform::mtl_renderer_t>(device, mtl_image_library);
+    _image_id_lookup_table = std::make_unique<boden::asset::image_id_lookup_table_ref_t>(image_id_lookup_table);
+    
+    _renderer = std::make_unique<platform::mtl_renderer_t>(device, &_mtl_image_library);
     _main_view_controller = std::make_shared<app::main_view_controller_t>(boden::layout::rect_t{0, 0, 640, 480});
     _main_view_controller->load_view();
 }

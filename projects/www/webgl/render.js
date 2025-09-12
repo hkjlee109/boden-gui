@@ -1,5 +1,5 @@
 import { getGL, getRenderProgram } from "./global-variables.js"
-import { getTexture } from "./image-library.js"
+import { getImageById } from "./image-library.js"
 import { mat4 } from 'gl-matrix';
 
 async function render(commands, indices, vertices) {
@@ -109,7 +109,7 @@ async function render(commands, indices, vertices) {
             const type = gl.UNSIGNED_SHORT;
 
             if(textureId) {
-                const texture = getTexture(textureId);
+                const texture = getImageById(textureId);
                 gl.activeTexture(gl.TEXTURE1);
                 gl.bindTexture(gl.TEXTURE_2D, texture);
                 gl.uniform1i(renderProgram.uniformLocations.texture, 1);

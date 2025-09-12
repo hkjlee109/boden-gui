@@ -1,6 +1,6 @@
 #include "image.hpp"
 
-#include <boden/asset/image_library_ref.hpp>
+#include <boden/asset/image_id_lookup_table.hpp>
 
 namespace boden {
 namespace widget {
@@ -12,9 +12,9 @@ image_t::image_t()
 
 image_t::image_t(const char *name)
 {
-    if(boden::asset::image_library_t *library = boden::asset::image_library_ref_t::get_instance())
+    if(auto *table = boden::asset::image_id_lookup_table_ref_t::get_instance())
     {
-        texture_id = library->get_texture_id(name);
+        texture_id = table->at(name);
     }
 }
 
