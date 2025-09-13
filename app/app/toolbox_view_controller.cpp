@@ -47,13 +47,14 @@ void toolbox_view_controller_t::on_button_click(void *sender)
 
 void toolbox_view_controller_t::init()
 {
-    _button = std::make_shared<boden::widget::button_t>(boden::layout::rect_t(10, 10, 50, 50));
-    _button->set_layer_border_width(2);
-    _button->set_layer_border_color({0x00, 0xFF, 0xFF, 0xFF});
-    _button->add_target(this,
+    _rectangle = std::make_shared<boden::widget::button_t>(boden::layout::rect_t(10, 10, 50, 50));
+    _rectangle->set_layer_border_width(2);
+    _rectangle->set_layer_border_color({0x00, 0xFF, 0xFF, 0xFF});
+    _rectangle->set_image(std::make_unique<boden::widget::base::image_t>("gearshape"));
+    _rectangle->add_target(this,
                         &toolbox_view_controller_t::on_button_click,
                         boden::widget::control_event_t::mouse_down);
-    _view->add_subview(_button);
+    _view->add_subview(_rectangle);
     
     _image_view = std::make_shared<boden::widget::image_view_t>(boden::layout::rect_t(10, 70, 50, 50));
     _image_view->set_image(std::make_unique<boden::widget::base::image_t>("gearshape"));

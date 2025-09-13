@@ -24,7 +24,7 @@ public:
     void on_button_click(void *sender);
     
 private:
-    std::shared_ptr<boden::widget::button_t> _button;
+    std::shared_ptr<boden::widget::button_t> _rectangle;
     std::shared_ptr<boden::widget::image_view_t> _image_view;
     
     void init();
