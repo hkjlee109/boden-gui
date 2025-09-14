@@ -13,8 +13,8 @@ osx_backend_t::osx_backend_t(MTL::Device *device, platform::osx_queue_t &queue, 
       _provider{provider},
       _mtl_image_library{platform::mtl_image_library_t(device)}
 {
-    boden::asset::image_id_lookup_table_t *image_id_lookup_table{new boden::asset::image_id_lookup_table_t()};
-    _mtl_image_library.set_image_id_lookup_table(image_id_lookup_table);
+    auto *image_info_lookup_table{new boden::asset::image_info_lookup_table_t()};
+    _mtl_image_library.set_image_info_lookup_table(image_info_lookup_table);
     
     NSString *path;
     path = [[NSBundle mainBundle] pathForResource:@"gearshape" ofType:@"png"];
@@ -23,7 +23,7 @@ osx_backend_t::osx_backend_t(MTL::Device *device, platform::osx_queue_t &queue, 
     path = [[NSBundle mainBundle] pathForResource:@"rectangle" ofType:@"png"];
     _mtl_image_library.load_image_from_path("rectangle", path.UTF8String);
     
-    _image_id_lookup_table = std::make_unique<boden::asset::image_id_lookup_table_ref_t>(image_id_lookup_table);
+    _image_info_lookup_table = std::make_unique<boden::asset::image_info_lookup_table_ref_t>(image_info_lookup_table);
     
     _renderer = std::make_unique<platform::mtl_renderer_t>(device, &_mtl_image_library);
     _main_view_controller = std::make_shared<app::main_view_controller_t>(boden::layout::rect_t{0, 0, 640, 480});

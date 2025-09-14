@@ -1,5 +1,5 @@
 const imageLookupTable = new Map();
-const imageIdLookupTable = new Map();
+const imageInfoLookupTable = new Map();
 
 var lastTextureId = 0;
 
@@ -26,19 +26,23 @@ async function loadImageFromPath(gl, name, path) {
     lastTextureId = lastTextureId + 1;
 
     imageLookupTable.set(lastTextureId, texture);
-    imageIdLookupTable.set(name, lastTextureId);
+    imageInfoLookupTable.set(name,  {
+        id: lastTextureId,
+        width: imageBitmap.width,
+        height: imageBitmap.height
+    });
 }
 
 function getImageById(id) {
     return imageLookupTable.get(id);
 }
 
-function getImageIdLookupTable() {
-    return imageIdLookupTable;
+function getImageInfoLookupTable() {
+    return imageInfoLookupTable;
 }
 
 export { 
     loadImageFromPath,
     getImageById,
-    getImageIdLookupTable
+    getImageInfoLookupTable
 };

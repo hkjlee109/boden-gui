@@ -72,14 +72,20 @@ async function main() {
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
 
     await webgl.loadImageFromPath(gl, 'gearshape', './images/gearshape.png');
+    await webgl.loadImageFromPath(gl, 'rectangle', './images/rectangle.png');
     
+    const imageConfig = await (await fetch('./images/images-config.json')).json();
+    for (const [key, info] of Object.entries(imageConfig.images)) {
+        await webgl.loadImageFromPath(gl, key, `${info.path}/${info.name}.${info.type}`);
+    }
+
     webgl.setup(gl);
     
     renderer = new module.webgl_renderer_t();
 
     worker.postMessage({
         type: "init",
-        image_id_lookup_table_entries: Array.from(webgl.getImageIdLookupTable())
+        image_info_lookup_table_entries: Array.from(webgl.getImageInfoLookupTable())
     });
 }
 

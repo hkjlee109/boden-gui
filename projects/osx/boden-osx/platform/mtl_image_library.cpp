@@ -42,7 +42,9 @@ bool mtl_image_library_t::load_image_from_path(const std::string &name, const st
         texture->replaceRegion(region, 0, stb.data, stb.width * stb.number_of_channels);
         
         _textures[++_last_texture_id] = texture;
-        _image_id_lookup_table->insert(name, _last_texture_id);
+
+        boden::asset::image_info_t info{_last_texture_id, (float)stb.width, (float)stb.height};
+        _image_info_lookup_table->insert(name, info);
 
         return true;
     }
@@ -64,7 +66,9 @@ bool mtl_image_library_t::load_image_from_data(const std::string &name, const bo
     texture->replaceRegion(region, 0, image.data.data(), image.size.width * 4);
 
     _textures[++_last_texture_id] = texture;
-    _image_id_lookup_table->insert(name, _last_texture_id);
+
+    boden::asset::image_info_t info{_last_texture_id, image.size.width, image.size.height};
+    _image_info_lookup_table->insert(name, info);
     
     return true;
 }
@@ -74,9 +78,9 @@ MTL::Texture * mtl_image_library_t::get_mtl_texture(boden::asset::texture_id_t t
     return _textures[texture_id];
 }
 
-void mtl_image_library_t::set_image_id_lookup_table(boden::asset::image_id_lookup_table_t *table)
+void mtl_image_library_t::set_image_info_lookup_table(boden::asset::image_info_lookup_table_t *table)
 {
-    _image_id_lookup_table = table;
+    _image_info_lookup_table = table;
 }
 
 } // platform

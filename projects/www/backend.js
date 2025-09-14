@@ -1,21 +1,25 @@
 import createModule from './public/boden-www.js';
 
 let main_view_controller = null;
-let image_id_lookup_table_ref = null;
+let image_info_lookup_table_ref = null;
 let module = null;
 
 self.onmessage = async (event) => {
-    const { type, x, y, image_id_lookup_table_entries } = event.data;
+    const { type, x, y, image_info_lookup_table_entries } = event.data;
 
     switch (type) {
     case 'init':
         module = await createModule();
 
-        let image_id_lookup_table = new module.image_id_lookup_table_t();
-        for (const [name, id] of image_id_lookup_table_entries) {
-            image_id_lookup_table.insert(name, id);
+        let image_info_lookup_table = new module.image_info_lookup_table_t();
+        for (const [name, info] of image_info_lookup_table_entries) {
+            image_info_lookup_table.insert(name, { 
+                id: info.id, 
+                width: info.width, 
+                height: info.height
+            });
         }
-        image_id_lookup_table_ref = new module.image_id_lookup_table_ref_t(image_id_lookup_table);
+        image_info_lookup_table_ref = new module.image_info_lookup_table_ref_t(image_info_lookup_table);
 
         const rect = new module.rect_t(0, 0, 640, 480);
         main_view_controller = module.make_main_view_controller(rect);
