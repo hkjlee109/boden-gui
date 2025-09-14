@@ -1,0 +1,9 @@
+{
+  "images": {
+    "rectangle": {
+      "path": "images",
+      "name": "rectangle",
+      "type": "png"
+    }
+  }
+}

@@ -1,6 +1,7 @@
 #include "osx_backend.hpp"
 
 #include "utils.hpp"
+#include <boden/asset/stb_ref.hpp>
 #include <boden/context.hpp>
 #include <boden/event.hpp>
 #include <Cocoa/Cocoa.h>
@@ -15,10 +16,12 @@ osx_backend_t::osx_backend_t(MTL::Device *device, platform::osx_queue_t &queue, 
     boden::asset::image_id_lookup_table_t *image_id_lookup_table{new boden::asset::image_id_lookup_table_t()};
     _mtl_image_library.set_image_id_lookup_table(image_id_lookup_table);
     
-    NSImage *nsimage = [NSImage imageNamed:@"gearshape"];
-    boden::widget::base::image_t image;
-    platform::utils_t::convert_to_image((__bridge void *)nsimage, &image);
-    _mtl_image_library.load_image_from_data("gearshape", image);
+    NSString *path;
+    path = [[NSBundle mainBundle] pathForResource:@"gearshape" ofType:@"png"];
+    _mtl_image_library.load_image_from_path("gearshape", path.UTF8String);
+    
+    path = [[NSBundle mainBundle] pathForResource:@"rectangle" ofType:@"png"];
+    _mtl_image_library.load_image_from_path("rectangle", path.UTF8String);
     
     _image_id_lookup_table = std::make_unique<boden::asset::image_id_lookup_table_ref_t>(image_id_lookup_table);
     

@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		BF17A67C2D73419000477794 /* main_view_controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF17A67A2D73419000477794 /* main_view_controller.cpp */; };
 		BF40AC892E74A908000EB85D /* toolbox_view_controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF40AC882E74A908000EB85D /* toolbox_view_controller.cpp */; };
+		BF40ADA72E7620B9000EB85D /* config-images.json in Resources */ = {isa = PBXBuildFile; fileRef = BF40ADA42E7620B9000EB85D /* config-images.json */; };
+		BF40ADA92E762106000EB85D /* rectangle.png in Resources */ = {isa = PBXBuildFile; fileRef = BF40ADA82E762106000EB85D /* rectangle.png */; };
+		BF40AE372E76B758000EB85D /* gearshape.png in Resources */ = {isa = PBXBuildFile; fileRef = BF40AE362E76B758000EB85D /* gearshape.png */; };
 		BF54B2912E68A48D00F7D4F9 /* canvas_view_controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF54B2902E68A48C00F7D4F9 /* canvas_view_controller.cpp */; };
 		BF54B3AB2E697D0100F7D4F9 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF54B3AA2E697D0100F7D4F9 /* MetalKit.framework */; };
 		BF9759C92D6C9DA6000E9A16 /* libboden-gui.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF9759C82D6C9DA6000E9A16 /* libboden-gui.a */; };
@@ -19,6 +22,9 @@
 		BF17A67A2D73419000477794 /* main_view_controller.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main_view_controller.cpp; sourceTree = "<group>"; };
 		BF40AC872E74A908000EB85D /* toolbox_view_controller.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = toolbox_view_controller.hpp; sourceTree = "<group>"; };
 		BF40AC882E74A908000EB85D /* toolbox_view_controller.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = toolbox_view_controller.cpp; sourceTree = "<group>"; };
+		BF40ADA42E7620B9000EB85D /* config-images.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "config-images.json"; sourceTree = "<group>"; };
+		BF40ADA82E762106000EB85D /* rectangle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rectangle.png; sourceTree = "<group>"; };
+		BF40AE362E76B758000EB85D /* gearshape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gearshape.png; sourceTree = "<group>"; };
 		BF54B28F2E68A48C00F7D4F9 /* canvas_view_controller.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = canvas_view_controller.hpp; sourceTree = "<group>"; };
 		BF54B2902E68A48C00F7D4F9 /* canvas_view_controller.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = canvas_view_controller.cpp; sourceTree = "<group>"; };
 		BF54B3AA2E697D0100F7D4F9 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
@@ -58,6 +64,7 @@
 		BF17A67B2D73419000477794 /* app */ = {
 			isa = PBXGroup;
 			children = (
+				BF40ADA52E7620B9000EB85D /* resources */,
 				BF54B28F2E68A48C00F7D4F9 /* canvas_view_controller.hpp */,
 				BF54B2902E68A48C00F7D4F9 /* canvas_view_controller.cpp */,
 				BF40AC872E74A908000EB85D /* toolbox_view_controller.hpp */,
@@ -67,6 +74,24 @@
 			);
 			name = app;
 			path = ../../app/app;
+			sourceTree = "<group>";
+		};
+		BF40ADA32E7620B9000EB85D /* images */ = {
+			isa = PBXGroup;
+			children = (
+				BF40AE362E76B758000EB85D /* gearshape.png */,
+				BF40ADA82E762106000EB85D /* rectangle.png */,
+			);
+			path = images;
+			sourceTree = "<group>";
+		};
+		BF40ADA52E7620B9000EB85D /* resources */ = {
+			isa = PBXGroup;
+			children = (
+				BF40ADA32E7620B9000EB85D /* images */,
+				BF40ADA42E7620B9000EB85D /* config-images.json */,
+			);
+			path = resources;
 			sourceTree = "<group>";
 		};
 		BF9757E92D6C7871000E9A16 = {
@@ -161,6 +186,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF40ADA72E7620B9000EB85D /* config-images.json in Resources */,
+				BF40ADA92E762106000EB85D /* rectangle.png in Resources */,
+				BF40AE372E76B758000EB85D /* gearshape.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

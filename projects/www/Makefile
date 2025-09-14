@@ -14,7 +14,7 @@ APP_SRCS := $(wildcard $(APP_DIR)/**/*.cpp)
 
 WWW_SRCS := $(wildcard platform/*.cpp)
 
-all: $(BUILD_DIR) $(BODEN_GUI_TARGET) $(TARGET)
+all: $(BUILD_DIR) $(BODEN_GUI_TARGET) $(TARGET) copy-resources
 
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
@@ -42,6 +42,10 @@ $(TARGET):
         --js-library platform/library.js \
         $(APP_SRCS) \
         $(WWW_SRCS)
+
+copy-resources:
+	mkdir -p ./images
+	cp -r $(APP_DIR)/app/resources/images/* ./images/
 
 clean:
 	rm -rf $(BUILD_DIR)

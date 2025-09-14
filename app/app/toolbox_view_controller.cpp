@@ -50,7 +50,7 @@ void toolbox_view_controller_t::init()
     _rectangle = std::make_shared<boden::widget::button_t>(boden::layout::rect_t(10, 10, 50, 50));
     _rectangle->set_layer_border_width(2);
     _rectangle->set_layer_border_color({0x00, 0xFF, 0xFF, 0xFF});
-    _rectangle->set_image(std::make_unique<boden::widget::base::image_t>("gearshape"));
+    _rectangle->set_image(std::make_unique<boden::widget::base::image_t>("rectangle"));
     _rectangle->add_target(this,
                         &toolbox_view_controller_t::on_button_click,
                         boden::widget::control_event_t::mouse_down);
