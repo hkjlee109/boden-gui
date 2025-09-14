@@ -20,16 +20,9 @@ public:
     virtual void draw(boden::builder_t &builder);
     virtual std::shared_ptr<boden::widget::view_t> hit_test(boden::layout::point_t point);
 
+    boden::widget::base::layer_t layer;
+
     void add_subview(const std::shared_ptr<boden::widget::view_t> &view);
-
-    float get_layer_border_width() const;
-    void set_layer_border_width(float width);
-
-    const boden::layout::color_t & get_layer_background_color() const;
-    void set_layer_background_color(const boden::layout::color_t &color);
-
-    const boden::layout::color_t & get_layer_border_color() const;
-    void set_layer_border_color(const boden::layout::color_t &color);
 
     const boden::layout::rect_t & get_frame() const;
     void set_frame(const boden::layout::rect_t& frame);
@@ -46,7 +39,6 @@ public:
                                                  const boden::widget::view_t *to_view) const;
 
 protected:
-    boden::widget::base::layer_t _layer;
     boden::layout::rect_t _bounds;
     boden::layout::rect_t _frame;
     bool _hidden;

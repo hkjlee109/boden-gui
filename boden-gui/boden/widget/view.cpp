@@ -74,36 +74,6 @@ void view_t::add_subview(const std::shared_ptr<boden::widget::view_t> &view)
     _subviews.push_back(view);
 }
 
-float view_t::get_layer_border_width() const
-{
-    return _layer.border_width;
-}
-
-void view_t::set_layer_border_width(float width)
-{
-    _layer.border_width = width;
-}
-
-const boden::layout::color_t & view_t::get_layer_background_color() const 
-{
-    return _layer.background_color;
-}
-
-void view_t::set_layer_background_color(const boden::layout::color_t &color)
-{
-    _layer.background_color = color;
-}
-
-const boden::layout::color_t & view_t::get_layer_border_color() const 
-{
-    return _layer.border_color;
-}
-
-void view_t::set_layer_border_color(const boden::layout::color_t &color)
-{
-    _layer.border_color = color;
-}
-
 const boden::layout::rect_t & view_t::get_frame() const
 {
     return _frame;

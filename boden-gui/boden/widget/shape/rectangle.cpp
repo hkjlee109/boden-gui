@@ -27,7 +27,7 @@ void rectangle_t::draw(boden::builder_t &builder)
     boden::layout::point_t origin = convert_point_to_view({0, 0}, nullptr);
     boden::layout::rect_t frame{origin, _frame.size};
 
-    float padding = get_layer_border_width() + 1;
+    float padding = layer.border_width + 1;
     builder.push_clip_rect({frame.origin.x - padding, 
                             frame.origin.y - padding, 
                             frame.size.width + padding * 2, 
@@ -35,12 +35,12 @@ void rectangle_t::draw(boden::builder_t &builder)
     
     builder.add_rect_filled({frame.origin.x, frame.origin.y}, 
                             {frame.origin.x + frame.size.width, frame.origin.y + frame.size.height},
-                            get_layer_background_color());
+                            layer.background_color);
 
     builder.add_rect({frame.origin.x, frame.origin.y}, 
                      {frame.origin.x + frame.size.width, frame.origin.y + frame.size.height},
-                     get_layer_border_color(),
-                     get_layer_border_width());
+                     layer.border_color,
+                     layer.border_width);
     
     builder.pop_clip_rect();
 

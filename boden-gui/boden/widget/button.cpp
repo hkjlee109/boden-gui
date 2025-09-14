@@ -5,19 +5,15 @@ namespace boden {
 namespace widget {
 
 button_t::button_t()
-    : control_t{},
-      _bordered{true},
-      _content_tint_color{0x00, 0x00, 0x00, 0xFF},
-      _image_position{image_position_t::no_image}
+    : control_t{}
 {
+    init();
 }
 
 button_t::button_t(const boden::layout::rect_t &frame)
-    : control_t{frame},
-      _bordered{true},
-      _content_tint_color{0x00, 0x00, 0x00, 0xFF},
-      _image_position{image_position_t::no_image}
+    : control_t{frame}
 {
+    init();
 }
 
 button_t::~button_t()
@@ -31,53 +27,57 @@ void button_t::draw(boden::builder_t &builder)
         return;
     }
 
+    boden::layout::point_t origin = convert_point_to_view({0, 0}, nullptr);
+    boden::layout::rect_t frame{origin, _frame.size};
+    
+    builder.push_clip_rect({frame.origin.x - layer.border_width, 
+                            frame.origin.y - layer.border_width, 
+                            frame.size.width + layer.border_width * 2, 
+                            frame.size.height + layer.border_width * 2});
+
+    builder.add_rect_filled({frame.origin.x, frame.origin.y}, 
+                            {frame.origin.x + frame.size.width, frame.origin.y + frame.size.height},
+                            layer.background_color);
+
     if(_image) 
     {
-        boden::layout::point_t origin = convert_point_to_view({0, 0}, nullptr);
-        boden::layout::rect_t frame{origin, _frame.size};
+        float x, y, width, height = 0;
 
-        builder.push_clip_rect({frame.origin.x, frame.origin.y, frame.size.width, frame.size.height});
+        switch(_image_scaling)
+        {
+        case image_scaling_t::scale_none:
+            x = frame.mid_x() - _image->size.width / 2;
+            y = frame.mid_y() - _image->size.height / 2;
+            width = _image->size.width;
+            height = _image->size.height;
+            break;
+        default:
+            break;
+        }
     
         builder.add_image(_image->texture_id, 
-                          {frame.origin.x, frame.origin.y}, 
-                          {frame.origin.x + frame.size.width, frame.origin.y + frame.size.height},
+                          {x, y}, 
+                          {x + width, y + height},
                           _content_tint_color);
     }
 
-    builder.pop_clip_rect();
-
-    if(_bordered)
+    if(layer.border_width > 0)
     {
         boden::layout::point_t origin = convert_point_to_view({0, 0}, nullptr);
         boden::layout::rect_t frame{origin, _frame.size};
-
-        builder.push_clip_rect({frame.origin.x - get_layer_border_width() / 2, 
-                                frame.origin.y - get_layer_border_width() / 2, 
-                                frame.size.width + get_layer_border_width(), 
-                                frame.size.height + get_layer_border_width()});
     
         builder.add_rect({frame.origin.x, frame.origin.y}, 
                          {frame.origin.x + frame.size.width, frame.origin.y + frame.size.height},
-                         get_layer_border_color(),
-                         get_layer_border_width());
-    
-        builder.pop_clip_rect();
+                         layer.border_color,
+                         layer.border_width);
     }
+
+    builder.pop_clip_rect();
 }
 
 void button_t::mouse_down(const boden::event_t &ev)
 {
     send_actions(boden::widget::control_event_t::mouse_down);
-}
-
-bool button_t::is_bordered() const
-{
-    return _bordered;
-}
-
-void button_t::set_bordered(bool bordered)
-{
-    _bordered = bordered;
 }
 
 void button_t::set_content_tint_color(const boden::layout::color_t &color)
@@ -95,6 +95,11 @@ void button_t::set_image_position(image_position_t position)
     _image_position = position;
 }
 
+void button_t::set_image_scaling(image_scaling_t scaling)
+{
+    _image_scaling = scaling;
+}
+
 const std::string & button_t::get_title() const
 {
     return _title;
@@ -105,5 +110,14 @@ void button_t::set_title(std::string &title)
     _title = title;
 }
     
+void button_t::init()
+{
+    _content_tint_color = {0xFF, 0xFF, 0xFF, 0xFF};
+    _image_position = image_position_t::no_image;
+    _image_scaling = image_scaling_t::scale_none;
+
+    layer.background_color = {0x8F, 0x8F, 0x8F, 0xFF};
+}
+
 } // widget
 } // boden

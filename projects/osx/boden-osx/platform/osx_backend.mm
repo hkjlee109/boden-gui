@@ -19,7 +19,7 @@ osx_backend_t::osx_backend_t(MTL::Device *device, platform::osx_queue_t &queue, 
     NSString *path;
     path = [[NSBundle mainBundle] pathForResource:@"gearshape" ofType:@"png"];
     _mtl_image_library.load_image_from_path("gearshape", path.UTF8String);
-    
+
     path = [[NSBundle mainBundle] pathForResource:@"rectangle" ofType:@"png"];
     _mtl_image_library.load_image_from_path("rectangle", path.UTF8String);
     

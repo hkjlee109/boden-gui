@@ -25,10 +25,28 @@ struct rect_t
 
     constexpr rect_t offset_by(float dx, float dy) const 
     {
-        return rect_t(origin.x + dx,
-                      origin.y + dy,
-                      size.width,
-                      size.height);
+        return {origin.x + dx,
+                origin.y + dy,
+                size.width,
+                size.height};
+    }
+
+    constexpr rect_t inset_by(float dx, float dy) const 
+    {
+        return {origin.x + dx,
+                origin.y + dy,
+                size.width - 2 * dx,
+                size.height - 2 * dy};
+    }
+
+    constexpr float mid_x() const 
+    {
+        return origin.x + (size.width / 2);
+    }
+
+    constexpr float mid_y() const 
+    {
+        return origin.y + (size.height / 2);
     }
 } __attribute__((packed));
 

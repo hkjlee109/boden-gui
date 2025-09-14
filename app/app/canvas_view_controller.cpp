@@ -113,9 +113,9 @@ void canvas_view_controller_t::draw(boden::builder_t &builder)
 void canvas_view_controller_t::init()
 {
     auto rectangle{std::make_shared<boden::widget::shape::rectangle_t>(boden::layout::rect_t(150, 50, 100, 50))};
-    rectangle->set_layer_background_color({0x00, 0x00, 0xFF, 0xFF});
-    rectangle->set_layer_border_color({0x00, 0xFF, 0xFF, 0xFF});
-    rectangle->set_layer_border_width(1);
+    rectangle->layer.background_color = {0x00, 0x00, 0xFF, 0xFF};
+    rectangle->layer.border_color = {0x00, 0xFF, 0xFF, 0xFF};
+    rectangle->layer.border_width = 1;
     _shapes.push_back(rectangle);
     _view->add_subview(rectangle);
 }
