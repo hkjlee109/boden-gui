@@ -7,6 +7,7 @@
 #include <app/main_view_controller.hpp>
 #include <boden/asset/image_library.hpp>
 #include <boden/asset/image_info_lookup_table.hpp>
+#include <boden/backend.hpp>
 #include <boden/widget/base/image.hpp>
 
 #include <thread>
@@ -16,7 +17,7 @@
 
 namespace platform {
 
-class osx_backend_t
+class osx_backend_t : public boden::backend_t
 {
 public:
     osx_backend_t(MTL::Device *device, platform::osx_queue_t &queue, id<RenderViewProvider> provider);

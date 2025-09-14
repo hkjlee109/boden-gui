@@ -27,6 +27,7 @@ osx_backend_t::osx_backend_t(MTL::Device *device, platform::osx_queue_t &queue, 
     
     _renderer = std::make_unique<platform::mtl_renderer_t>(device, &_mtl_image_library);
     _main_view_controller = std::make_shared<app::main_view_controller_t>(boden::layout::rect_t{0, 0, 640, 480});
+    _main_view_controller->set_backend(this);
     _main_view_controller->load_view();
 }
 
@@ -78,23 +79,35 @@ int osx_backend_t::main()
                 
             case boden::event_type_t::left_mouse_down:
                 _main_view_controller->mouse_down(event);
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [_provider setNeedsDisplay:YES];
-                });
+                if(needs_display())
+                {
+                    set_needs_display(false);
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [_provider setNeedsDisplay:YES];
+                    });
+                }
                 break;
                 
             case boden::event_type_t::left_mouse_dragged:
                 _main_view_controller->mouse_dragged(event);
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [_provider setNeedsDisplay:YES];
-                });
+                if(needs_display())
+                {
+                    set_needs_display(false);
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [_provider setNeedsDisplay:YES];
+                    });
+                }
                 break;
                 
             case boden::event_type_t::left_mouse_up:
                 _main_view_controller->mouse_up(event);
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [_provider setNeedsDisplay:YES];
-                });
+                if(needs_display())
+                {
+                    set_needs_display(false);
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [_provider setNeedsDisplay:YES];
+                    });
+                }
                 break;
         }
     }

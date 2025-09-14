@@ -37,6 +37,7 @@ void canvas_view_controller_t::mouse_down(const boden::event_t &ev)
             if(shape)
             {
                 shape->set_selected(false);
+                set_needs_display(true);
             }
         }
         _selection.clear();
@@ -48,6 +49,7 @@ void canvas_view_controller_t::mouse_down(const boden::event_t &ev)
     {
         shape->set_selected(true);
         _selection.insert(shape.get());
+        set_needs_display(true);
     }
     shape->set_frame_cache(shape->get_frame());
 }
@@ -75,6 +77,7 @@ void canvas_view_controller_t::mouse_dragged(const boden::event_t &ev)
             shape->set_frame(shape->get_frame_cache().offset_by(dx, dy));
         }
     }
+    set_needs_display(true);
 }
 
 void canvas_view_controller_t::mouse_up(const boden::event_t &ev)
@@ -100,6 +103,7 @@ void canvas_view_controller_t::mouse_up(const boden::event_t &ev)
             shape->set_frame(shape->get_frame_cache().offset_by(dx, dy));
         }
     }
+    set_needs_display(true);
 }
 
 void canvas_view_controller_t::draw(boden::builder_t &builder)

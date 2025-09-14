@@ -27,6 +27,7 @@ bool backend_t::impl_t::try_run()
 }
 
 backend_t::backend_t()
+    : _needs_display{false}
 {
     _impl = std::make_unique<backend_t::impl_t>();
 }
@@ -38,6 +39,16 @@ backend_t::~backend_t()
 bool backend_t::try_run()
 {
    return _impl->try_run();
+}
+
+bool backend_t::needs_display() const
+{
+    return _needs_display;
+}
+
+void backend_t::set_needs_display(bool needs)
+{
+    _needs_display = needs;
 }
 
 } // boden

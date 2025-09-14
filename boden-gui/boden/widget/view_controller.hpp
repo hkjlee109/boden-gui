@@ -1,5 +1,6 @@
 #pragma once
 
+#include <boden/backend.hpp>
 #include <boden/layout/rect.hpp>
 #include <boden/widget/base/responder.hpp>
 #include <boden/widget/view.hpp>
@@ -22,15 +23,18 @@ public:
 
     std::shared_ptr<boden::widget::view_t> get_view() const;
 
-    void set_parent(const std::shared_ptr<const boden::widget::view_controller_t> &ctrl);
+    void set_backend(boden::backend_t *backend);
+    void set_parent(const std::shared_ptr<boden::widget::view_controller_t> &ctrl);
+    void set_needs_display(bool needs);
 
     void add_child_view_controller(const std::shared_ptr<boden::widget::view_controller_t> &ctrl);
 
 protected:
     std::shared_ptr<boden::widget::view_t> _view;
 
+    boden::backend_t *_backend;
     std::vector<std::shared_ptr<boden::widget::view_controller_t>> _child_view_controllers;
-    std::weak_ptr<const boden::widget::view_controller_t> _parent;
+    std::weak_ptr<boden::widget::view_controller_t> _parent;
 };
 
 } // widget

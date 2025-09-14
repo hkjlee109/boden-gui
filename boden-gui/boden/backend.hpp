@@ -12,9 +12,14 @@ public:
 
     virtual bool try_run();
 
+    bool needs_display() const;
+    void set_needs_display(bool needs);
+
 private:
     class impl_t;
     std::unique_ptr<impl_t> _impl;
+
+    bool _needs_display;
 };
 
 } // boden

@@ -12,7 +12,7 @@ async function render(commands, indices, vertices) {
         return;
     }
 
-    gl.clearColor(0.45, 0.55, 0.6, 1.0);
+    gl.clearColor(0.16, 0.16, 0.16, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT);
 
     var positions = [];

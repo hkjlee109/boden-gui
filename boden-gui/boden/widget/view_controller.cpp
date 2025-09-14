@@ -4,13 +4,15 @@ namespace boden {
 namespace widget {
 
 view_controller_t::view_controller_t() 
-    : _view{std::make_shared<boden::widget::view_t>()}
+    : _view{std::make_shared<boden::widget::view_t>()},
+      _backend{nullptr}
 {
     _parent.reset();
 }
 
 view_controller_t::view_controller_t(const boden::layout::rect_t &frame)
-    : _view{std::make_shared<boden::widget::view_t>(frame)}
+    : _view{std::make_shared<boden::widget::view_t>(frame)},
+      _backend{nullptr}
 {
     _parent.reset();
 }
@@ -54,9 +56,28 @@ std::shared_ptr<boden::widget::view_t> view_controller_t::get_view() const
     return _view;
 }
 
-void view_controller_t::set_parent(const std::shared_ptr<const boden::widget::view_controller_t> &ctrl)
+void view_controller_t::set_backend(boden::backend_t *backend)
+{
+    _backend = backend;
+}
+
+void view_controller_t::set_parent(const std::shared_ptr<boden::widget::view_controller_t> &ctrl)
 {
     _parent = ctrl;
+}
+
+void view_controller_t::set_needs_display(bool needs)
+{
+    if(_backend)
+    {
+        _backend->set_needs_display(needs);
+        return;
+    }
+
+    if (auto parent = _parent.lock()) 
+    {
+       parent->set_needs_display(needs);
+    }
 }
 
 void view_controller_t::add_child_view_controller(const std::shared_ptr<boden::widget::view_controller_t> &crtl)
