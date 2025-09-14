@@ -15,6 +15,7 @@ public:
     boden::layout::color_t background_color;
     boden::layout::color_t border_color;
     float border_width;
+    float corner_radius;
 };
 
 } // base

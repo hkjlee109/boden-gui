@@ -7,7 +7,8 @@ namespace base {
 layer_t::layer_t()
     : background_color{0x00, 0x00, 0x00, 0x00},
       border_color{},
-      border_width{0} 
+      border_width{0},
+      corner_radius{0}
 {
 }
 

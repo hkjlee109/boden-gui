@@ -48,7 +48,9 @@ void toolbox_view_controller_t::on_button_click(void *sender)
 void toolbox_view_controller_t::init()
 {
     _rectangle = std::make_shared<boden::widget::button_t>(boden::layout::rect_t(10, 10, 50, 50));
+    _rectangle->layer.background_color = {0x2A, 0x2A, 0x2A, 0xFF};
     _rectangle->set_image(std::make_unique<boden::widget::base::image_t>("rectangle"));
+    _rectangle->set_content_tint_color({0xB7, 0xB7, 0xB7, 0xFF});
     _rectangle->add_target(this,
                         &toolbox_view_controller_t::on_button_click,
                         boden::widget::control_event_t::mouse_down);

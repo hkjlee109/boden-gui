@@ -37,7 +37,8 @@ void button_t::draw(boden::builder_t &builder)
 
     builder.add_rect_filled({frame.origin.x, frame.origin.y}, 
                             {frame.origin.x + frame.size.width, frame.origin.y + frame.size.height},
-                            layer.background_color);
+                            layer.background_color, 
+                            layer.corner_radius);
 
     if(_image) 
     {
@@ -117,6 +118,7 @@ void button_t::init()
     _image_scaling = image_scaling_t::scale_none;
 
     layer.background_color = {0x8F, 0x8F, 0x8F, 0xFF};
+    layer.corner_radius = 4;
 }
 
 } // widget

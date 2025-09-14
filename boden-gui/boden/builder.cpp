@@ -30,31 +30,77 @@ void builder_t::add_rect(const boden::layout::vec2_t &p1,
 
 void builder_t::add_rect_filled(const boden::layout::vec2_t &p1,
                                 const boden::layout::vec2_t &p2,
-                                const boden::layout::color_t &color)
+                                const boden::layout::color_t &color,
+                                float corner_radius)
 {
     uint32_t index_buffer_offset = _batch.indices.size();
     uint32_t vertex_buffer_offset = _batch.vertices.size();
     _batch.commands.emplace_back(0, index_buffer_offset, vertex_buffer_offset, get_clip_rect_top());
 
-    _batch.vertices.emplace_back(boden::layout::vec2_t{p1.x, p1.y},
-                                 boden::layout::vec2_t{0, 0},
-                                 color);
-    _batch.vertices.emplace_back(boden::layout::vec2_t{p2.x, p1.y},
-                                 boden::layout::vec2_t{0, 0},
-                                 color);
-    _batch.vertices.emplace_back(boden::layout::vec2_t{p1.x, p2.y},
-                                 boden::layout::vec2_t{0, 0},
-                                 color);
-    _batch.vertices.emplace_back(boden::layout::vec2_t{p2.x, p2.y},
-                                 boden::layout::vec2_t{0, 0},
-                                 color);
+    float r = std::min(corner_radius, std::min(p2.x - p1.x, p2.y - p1.y) * 0.5f);
 
-    _batch.indices.insert(_batch.indices.end(), {vertex_buffer_offset + 0,
-                                                 vertex_buffer_offset + 1,
-                                                 vertex_buffer_offset + 2});
-    _batch.indices.insert(_batch.indices.end(), {vertex_buffer_offset + 1,
+    boden::layout::vec2_t top_left = {p1.x + r, p1.y + r};
+    boden::layout::vec2_t top_right = {p2.x - r, p1.y + r};
+    boden::layout::vec2_t bottom_right = {p2.x - r, p2.y - r};
+    boden::layout::vec2_t bottom_left = {p1.x + r, p2.y - r};
+
+    _batch.vertices.emplace_back(top_left, boden::layout::vec2_t{0, 0}, color);
+    _batch.vertices.emplace_back(top_right, boden::layout::vec2_t{0, 0}, color);
+    _batch.vertices.emplace_back(bottom_right, boden::layout::vec2_t{0, 0}, color);
+    _batch.vertices.emplace_back(bottom_left, boden::layout::vec2_t{0, 0}, color);
+
+    _batch.indices.insert(_batch.indices.end(), {vertex_buffer_offset + 0, 
+                                                 vertex_buffer_offset + 1, 
                                                  vertex_buffer_offset + 2,
+                                                 vertex_buffer_offset + 0, 
+                                                 vertex_buffer_offset + 2, 
                                                  vertex_buffer_offset + 3});
+
+    _batch.commands.back().count = _batch.indices.size() - index_buffer_offset;
+
+    if(r > 0)
+    {
+        add_rect_filled({top_left.x, top_left.y - r}, top_right, color);
+        add_rect_filled(top_right, {bottom_right.x + r, bottom_right.y}, color);
+        add_rect_filled(bottom_left, {bottom_right.x, bottom_right.y + r}, color);
+        add_rect_filled({top_left.x - r, top_left.y}, bottom_left, color);
+
+        _batch.commands.emplace_back(0, index_buffer_offset, vertex_buffer_offset, get_clip_rect_top());
+        uint32_t index_buffer_offset = _batch.indices.size();
+        uint32_t vertex_buffer_offset = _batch.vertices.size();
+        uint32_t number_of_steps = 4;
+        const float step = (0.5f * M_PI) / number_of_steps;
+
+        auto emit_corner = [&](const boden::layout::vec2_t &center, float start_angle) 
+        {
+            uint32_t center_index = _batch.vertices.size();
+            _batch.vertices.emplace_back(center, boden::layout::vec2_t{0, 0}, color);
+
+            for(int i = 0; i <= number_of_steps; ++i) 
+            {
+                float angle = start_angle + i * step;
+                float x = center.x + std::cos(angle) * r;
+                float y = center.y + std::sin(angle) * r;
+                _batch.vertices.emplace_back(boden::layout::vec2_t{x, y}, boden::layout::vec2_t{0, 0}, color);
+
+                if(i > 0) 
+                {
+                    _batch.indices.insert(_batch.indices.end(), {
+                        center_index,
+                        static_cast<uint32_t>(center_index + i),
+                        static_cast<uint32_t>(center_index + i + 1)
+                    });
+                }
+            }
+        };
+
+        emit_corner(top_left, M_PI);
+        emit_corner(top_right, 1.5f * M_PI);
+        emit_corner(bottom_right, 0.0f);
+        emit_corner(bottom_left, 0.5f * M_PI);
+
+        _batch.commands.back().count = _batch.indices.size() - index_buffer_offset;
+    }
 
     _batch.commands.back().count = _batch.indices.size() - index_buffer_offset;
 }
