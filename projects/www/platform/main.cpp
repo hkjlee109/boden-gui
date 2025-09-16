@@ -1,3 +1,4 @@
+#include "binding/backend.hpp"
 #include "binding/batch.hpp"
 #include "binding/builder.hpp"
 #include "binding/context.hpp"
@@ -5,7 +6,5 @@
 #include "binding/image_info.hpp"
 #include "binding/image_info_lookup_table.hpp"
 #include "binding/image_library.hpp"
-#include "binding/main_view_controller.hpp"
 #include "binding/point.hpp"
-#include "binding/rect.hpp"
 #include "binding/renderer.hpp"

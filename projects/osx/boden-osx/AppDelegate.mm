@@ -35,7 +35,7 @@
     _backend = std::make_unique<platform::osx_backend_t>((__bridge MTL::Device *)device,
                                                          _queue,
                                                          (id<RenderViewProvider>)controller);
-    _backend->start();
+    _backend->run();
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {

@@ -23,7 +23,7 @@ public:
     osx_backend_t(MTL::Device *device, platform::osx_queue_t &queue, id<RenderViewProvider> provider);
     ~osx_backend_t();
     
-    void start();
+    void run();
 
 private:
     std::thread _thread;

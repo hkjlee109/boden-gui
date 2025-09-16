@@ -39,7 +39,7 @@ osx_backend_t::~osx_backend_t()
     }
 }
 
-void osx_backend_t::start()
+void osx_backend_t::run()
 {
     _thread = std::thread(&osx_backend_t::main, this);
 }

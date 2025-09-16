@@ -1,6 +1,6 @@
 import createModule from './public/boden-www.js';
 
-let main_view_controller = null;
+let backend = null;
 let image_info_lookup_table_ref = null;
 let module = null;
 
@@ -21,10 +21,7 @@ self.onmessage = async (event) => {
         }
         image_info_lookup_table_ref = new module.image_info_lookup_table_ref_t(image_info_lookup_table);
 
-        const rect = new module.rect_t(0, 0, 640, 480);
-        main_view_controller = module.make_main_view_controller(rect);
-        main_view_controller.load_view();
-        rect.delete();
+        backend = new module.www_backend_t();
 
         console.log('[Worker] Init done.');
 
@@ -32,27 +29,39 @@ self.onmessage = async (event) => {
         break;
 
     case 'left_mouse_down':
-        main_view_controller.mouse_down({
+        backend.try_run({
             type: module.event_type_t.left_mouse_down,
             location: { x: x, y: y }
         });
-        render();
+        
+        if (backend.needs_display()) {
+            backend.set_needs_display(false);
+            render();
+        }
         break;
 
     case 'left_mouse_dragged':
-        main_view_controller.mouse_dragged({
+        backend.try_run({
             type: module.event_type_t.left_mouse_dragged,
             location: { x: x, y: y }
         });
-        render();
+
+        if (backend.needs_display()) {
+            backend.set_needs_display(false);
+            render();
+        }
         break;
 
     case 'left_mouse_up': 
-        main_view_controller.mouse_up({
+        backend.try_run({
             type: module.event_type_t.left_mouse_up,
             location: { x: x, y: y }
         });
-        render();
+
+        if (backend.needs_display()) {
+            backend.set_needs_display(false);
+            render();
+        }
         break;
     }
 };
@@ -60,7 +69,7 @@ self.onmessage = async (event) => {
 async function render() {
     try {
         const builder = new module.builder_t();
-        main_view_controller.draw(builder);
+        backend.draw(builder);
 
         let batch = builder.get_batch();
 
