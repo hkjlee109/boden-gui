@@ -69,14 +69,14 @@ const std::vector<std::shared_ptr<boden::widget::view_t>> & view_t::get_subviews
     return _subviews;
 }
 
-std::shared_ptr<const boden::widget::view_t> view_t::get_parent() const 
+std::shared_ptr<const boden::widget::view_t> view_t::get_superview() const 
 {
-    return _parent.lock();
+    return _superview.lock();
 }
 
-void view_t::set_parent(const std::shared_ptr<const boden::widget::view_t> &view)
+void view_t::set_superview(const std::shared_ptr<const boden::widget::view_t> &view)
 {
-    _parent = view;
+    _superview = view;
 }
 
 void view_t::set_window(const std::shared_ptr<boden::widget::window_t> &window)
@@ -104,9 +104,9 @@ void view_t::set_needs_display(bool needs)
 
 void view_t::add_subview(const std::shared_ptr<boden::widget::view_t> &view)
 {
-    view->set_parent(this->shared_from_this());
+    view->set_superview(this->shared_from_this());
 
-    if (auto window = _window.lock()) 
+    if(auto window = _window.lock()) 
     {
         view->set_window(window);
     }
@@ -122,10 +122,10 @@ boden::layout::point_t view_t::convert_point_to_view(const boden::layout::point_
         return {point.x + _frame.origin.x, point.y + _frame.origin.y};
     }
 
-    if (auto parent = _parent.lock()) 
+    if (auto superview = _superview.lock()) 
     {
-        return parent->convert_point_to_view({point.x + _frame.origin.x, point.y + _frame.origin.y},
-                                             to_view);
+        return superview->convert_point_to_view({point.x + _frame.origin.x, point.y + _frame.origin.y},
+                                                to_view);
     }
 
     return {point.x + _frame.origin.x, point.y + _frame.origin.y};                                           

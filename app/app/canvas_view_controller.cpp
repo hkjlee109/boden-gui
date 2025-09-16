@@ -20,17 +20,12 @@ canvas_view_controller_t::~canvas_view_controller_t()
 {
 }
 
-void canvas_view_controller_t::mouse_down(const boden::event_t &ev)
+void canvas_view_controller_t::did_view_mouse_down(std::shared_ptr<boden::widget::view_t> sender,
+                                                   const boden::layout::point_t &location)
 {
-    std::shared_ptr<boden::widget::view_t> target = _view->hit_test(ev.location);
-    if(target == nullptr)
-    {
-        return;
-    }
+    _mouse_location_cache = location;
 
-    _mouse_location_cache = ev.location;
-
-    if(target == _view)
+    if(sender == _view)
     {
         for(auto *shape : _selection)
         {
@@ -44,84 +39,59 @@ void canvas_view_controller_t::mouse_down(const boden::event_t &ev)
         return;
     }
     
-    std::shared_ptr<boden::widget::shape::shape_t> shape = std::static_pointer_cast<boden::widget::shape::shape_t>(target);
-    if(!shape->is_selected())
+    if(auto shape = std::dynamic_pointer_cast<boden::widget::shape::shape_t>(sender))
     {
-        shape->set_selected(true);
-        shape->set_needs_display(true);
-        _selection.insert(shape.get());
-    }
-    shape->set_frame_cache(shape->get_frame());
-}
-
-void canvas_view_controller_t::mouse_dragged(const boden::event_t &ev)
-{
-    std::shared_ptr<boden::widget::view_t> target = _view->hit_test(ev.location);
-    if(target == nullptr)
-    {
-        return;
-    }
-    
-    if(_selection.size() == 0)
-    {
-        return;
-    }
-    
-    float dx = ev.location.x - _mouse_location_cache.x;
-    float dy = ev.location.y - _mouse_location_cache.y;
-    
-    for(auto *shape : _selection)
-    {
-        if(shape)
+        if(!shape->is_selected())
         {
-            shape->set_frame(shape->get_frame_cache().offset_by(dx, dy));
+            shape->set_selected(true);
+            shape->set_needs_display(true);
+            _selection.insert(shape.get());
+            _view->set_needs_display(true);
         }
+        shape->set_frame_cache(shape->get_frame());
     }
-    _view->set_needs_display(true);
-}
-
-void canvas_view_controller_t::mouse_up(const boden::event_t &ev)
-{
-    std::shared_ptr<boden::widget::view_t> target = _view->hit_test(ev.location);
-    if(target == nullptr)
-    {
-        return;
-    }
-    
-    if(_selection.size() == 0)
-    {
-        return;
-    }
-    
-    float dx = ev.location.x - _mouse_location_cache.x;
-    float dy = ev.location.y - _mouse_location_cache.y;
-    
-    for(auto *shape : _selection)
-    {
-        if(shape)
-        {
-            shape->set_frame(shape->get_frame_cache().offset_by(dx, dy));
-        }
-    }
-    _view->set_needs_display(true);
-}
-
-void canvas_view_controller_t::did_view_mouse_down(std::shared_ptr<boden::widget::view_t> sender,
-                                                   boden::layout::point_t location)
-{
-    printf("##\n");
 }
 
 void canvas_view_controller_t::did_view_mouse_dragged(std::shared_ptr<boden::widget::view_t> sender,
-                                                      boden::layout::point_t location)
+                                                      const boden::layout::point_t &location)
 {
+    if(_selection.size() == 0)
+    {
+        return;
+    }
     
+    float dx = location.x - _mouse_location_cache.x;
+    float dy = location.y - _mouse_location_cache.y;
+    
+    for(auto *shape : _selection)
+    {
+        if(shape)
+        {
+            shape->set_frame(shape->get_frame_cache().offset_by(dx, dy));
+        }
+    }
+    _view->set_needs_display(true);
 }
 
 void canvas_view_controller_t::did_view_mouse_up(std::shared_ptr<boden::widget::view_t> sender,
-                                                 boden::layout::point_t location)
+                                                 const boden::layout::point_t &location)
 {
+    if(_selection.size() == 0)
+    {
+        return;
+    }
     
+    float dx = location.x - _mouse_location_cache.x;
+    float dy = location.y - _mouse_location_cache.y;
+    
+    for(auto *shape : _selection)
+    {
+        if(shape)
+        {
+            shape->set_frame(shape->get_frame_cache().offset_by(dx, dy));
+        }
+    }
+    _view->set_needs_display(true);
 }
 
 void canvas_view_controller_t::draw(boden::builder_t &builder)

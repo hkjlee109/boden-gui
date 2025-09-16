@@ -18,20 +18,6 @@ toolbox_view_controller_t::~toolbox_view_controller_t()
 {
 }
 
-void toolbox_view_controller_t::mouse_down(const boden::event_t &ev)
-{
-    view_controller_t::mouse_down(ev);
-}
-
-void toolbox_view_controller_t::mouse_dragged(const boden::event_t &ev)
-{
-}
-
-void toolbox_view_controller_t::mouse_up(const boden::event_t &ev)
-{
-    view_controller_t::mouse_up(ev);
-}
-
 void toolbox_view_controller_t::draw(boden::builder_t &builder)
 {
     for(const std::shared_ptr<boden::widget::view_t> &view : _view->get_subviews())

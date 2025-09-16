@@ -27,9 +27,6 @@ public:
     void set_backend(boden::backend_t *backend);
     void set_needs_display(bool needs);
 
-    void set_content_view(const std::shared_ptr<boden::widget::view_t> &view);
-    void set_content_view_controller(const std::shared_ptr<boden::widget::view_controller_t> &ctrl);
-
     virtual void order_front();
     
 protected:

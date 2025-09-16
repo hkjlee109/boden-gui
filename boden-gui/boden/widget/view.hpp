@@ -13,13 +13,13 @@ namespace widget {
 class view_delegate_t {
 public:
     virtual void did_view_mouse_down(std::shared_ptr<boden::widget::view_t> sender, 
-                                     boden::layout::point_t location) = 0;
+                                     const boden::layout::point_t &location) = 0;
 
     virtual void did_view_mouse_dragged(std::shared_ptr<boden::widget::view_t> sender, 
-                                        boden::layout::point_t location) = 0;
+                                        const boden::layout::point_t &location) = 0;
 
     virtual void did_view_mouse_up(std::shared_ptr<boden::widget::view_t> sender, 
-                                   boden::layout::point_t location) = 0;
+                                   const boden::layout::point_t &location) = 0;
 
     virtual ~view_delegate_t() = default;
 };
@@ -45,8 +45,8 @@ public:
 
     const std::vector<std::shared_ptr<boden::widget::view_t>> & get_subviews() const;
 
-    std::shared_ptr<const boden::widget::view_t> get_parent() const;
-    void set_parent(const std::shared_ptr<const boden::widget::view_t> &view);
+    std::shared_ptr<const boden::widget::view_t> get_superview() const;
+    void set_superview(const std::shared_ptr<const boden::widget::view_t> &view);
 
     void set_window(const std::shared_ptr<boden::widget::window_t> &window);
 
@@ -71,7 +71,7 @@ protected:
     bool _hidden;
 
     std::vector<std::shared_ptr<boden::widget::view_t>> _subviews;
-    std::weak_ptr<const boden::widget::view_t> _parent;
+    std::weak_ptr<const boden::widget::view_t> _superview;
     std::weak_ptr<boden::widget::window_t> _window;
 };
 

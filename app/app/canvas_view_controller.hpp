@@ -17,18 +17,14 @@ public:
     canvas_view_controller_t(const boden::layout::rect_t &frame);
     ~canvas_view_controller_t();
     
-    void mouse_down(const boden::event_t &ev) override;
-    void mouse_dragged(const boden::event_t &ev) override;
-    void mouse_up(const boden::event_t &ev) override;
-    
     void did_view_mouse_down(std::shared_ptr<boden::widget::view_t> sender,
-                             boden::layout::point_t location) override;
+                             const boden::layout::point_t &location) override;
 
     void did_view_mouse_dragged(std::shared_ptr<boden::widget::view_t> sender,
-                                boden::layout::point_t location) override;
+                                const boden::layout::point_t &location) override;
 
     void did_view_mouse_up(std::shared_ptr<boden::widget::view_t> sender,
-                           boden::layout::point_t location) override;
+                           const boden::layout::point_t &location) override;
 
     void draw(boden::builder_t &builder);
     

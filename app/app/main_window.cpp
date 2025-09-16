@@ -21,8 +21,8 @@ main_window_t::~main_window_t()
 void main_window_t::order_front()
 {
     boden::widget::window_t::order_front();
-    
     _content_view_controller = std::make_shared<app::main_view_controller_t>(_content_view->get_frame());
+    _content_view_controller->get_view()->set_window(this->shared_from_this());
     _content_view_controller->load_view();
     _content_view = _content_view_controller->get_view();
 }

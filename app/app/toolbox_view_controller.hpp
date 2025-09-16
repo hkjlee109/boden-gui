@@ -15,12 +15,7 @@ public:
     toolbox_view_controller_t(const boden::layout::rect_t &frame);
     ~toolbox_view_controller_t();
     
-    void mouse_down(const boden::event_t &ev) override;
-    void mouse_dragged(const boden::event_t &ev) override;
-    void mouse_up(const boden::event_t &ev) override;
-    
     void draw(boden::builder_t &builder);
-    
     void on_button_click(void *sender);
     
 private:
