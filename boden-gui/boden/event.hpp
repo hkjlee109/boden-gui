@@ -11,6 +11,7 @@ enum class event_type_t : uint32_t
     left_mouse_down,
     left_mouse_dragged,
     left_mouse_up,
+    mouse_moved,
 };
 
 struct event_t

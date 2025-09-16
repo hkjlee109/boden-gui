@@ -7,14 +7,12 @@ view_controller_t::view_controller_t()
     : _view{std::make_shared<boden::widget::view_t>()},
       _backend{nullptr}
 {
-    _parent.reset();
 }
 
 view_controller_t::view_controller_t(const boden::layout::rect_t &frame)
     : _view{std::make_shared<boden::widget::view_t>(frame)},
       _backend{nullptr}
 {
-    _parent.reset();
 }
 
 view_controller_t::~view_controller_t()
@@ -23,27 +21,18 @@ view_controller_t::~view_controller_t()
 
 void view_controller_t::mouse_down(const boden::event_t &ev)
 {
-    auto target = _view->hit_test(ev.location);
-    if(target == nullptr)
-    {
-        return;
-    }
-    target->mouse_down(ev);
 }
 
 void view_controller_t::mouse_dragged(const boden::event_t &ev)
 {
-
 }
 
 void view_controller_t::mouse_up(const boden::event_t &ev)
 {
-    auto target = _view->hit_test(ev.location);
-    if(target == nullptr)
-    {
-        return;
-    }
-    target->mouse_up(ev);
+}
+
+void view_controller_t::load_view()
+{
 }
 
 std::shared_ptr<boden::widget::view_t> view_controller_t::get_view() const 
@@ -64,20 +53,6 @@ void view_controller_t::set_backend(boden::backend_t *backend)
 void view_controller_t::set_parent(const std::shared_ptr<boden::widget::view_controller_t> &ctrl)
 {
     _parent = ctrl;
-}
-
-void view_controller_t::set_needs_display(bool needs)
-{
-    if(_backend)
-    {
-        _backend->set_needs_display(needs);
-        return;
-    }
-
-    if (auto parent = _parent.lock()) 
-    {
-       parent->set_needs_display(needs);
-    }
 }
 
 void view_controller_t::add_child_view_controller(const std::shared_ptr<boden::widget::view_controller_t> &crtl)

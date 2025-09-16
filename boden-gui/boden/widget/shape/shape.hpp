@@ -1,5 +1,6 @@
 #pragma once
 
+#include <boden/layout/point.hpp>
 #include <boden/layout/rect.hpp>
 #include <boden/widget/control.hpp>
 

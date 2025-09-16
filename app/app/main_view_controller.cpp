@@ -19,6 +19,17 @@ main_view_controller_t::~main_view_controller_t()
 {
 }
 
+void main_view_controller_t::load_view()
+{
+    auto toolbox = std::make_shared<app::toolbox_view_controller_t>(boden::layout::rect_t(0, 0, 70, 480));
+    _view->add_subview(toolbox->get_view());
+    add_child_view_controller(toolbox);
+    
+    auto canvas = std::make_shared<app::canvas_view_controller_t>(boden::layout::rect_t(70, 0, 570, 480));
+    _view->add_subview(canvas->get_view());
+    add_child_view_controller(canvas);
+}
+
 void main_view_controller_t::mouse_down(const boden::event_t &ev)
 {
     for(auto ctrl : _child_view_controllers)
@@ -49,17 +60,6 @@ void main_view_controller_t::draw(boden::builder_t &builder)
     {
         view->draw(builder);
     }
-}
-
-void main_view_controller_t::load_view()
-{
-    auto toolbox = std::make_shared<app::toolbox_view_controller_t>(boden::layout::rect_t(0, 0, 70, 480));
-    _view->add_subview(toolbox->get_view());
-    add_child_view_controller(toolbox);
-    
-    auto canvas = std::make_shared<app::canvas_view_controller_t>(boden::layout::rect_t(70, 0, 570, 480));
-    _view->add_subview(canvas->get_view());
-    add_child_view_controller(canvas);
 }
 
 } // app

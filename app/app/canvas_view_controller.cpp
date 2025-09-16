@@ -37,10 +37,10 @@ void canvas_view_controller_t::mouse_down(const boden::event_t &ev)
             if(shape)
             {
                 shape->set_selected(false);
-                set_needs_display(true);
             }
         }
         _selection.clear();
+        _view->set_needs_display(true);
         return;
     }
     
@@ -48,8 +48,8 @@ void canvas_view_controller_t::mouse_down(const boden::event_t &ev)
     if(!shape->is_selected())
     {
         shape->set_selected(true);
+        shape->set_needs_display(true);
         _selection.insert(shape.get());
-        set_needs_display(true);
     }
     shape->set_frame_cache(shape->get_frame());
 }
@@ -77,7 +77,7 @@ void canvas_view_controller_t::mouse_dragged(const boden::event_t &ev)
             shape->set_frame(shape->get_frame_cache().offset_by(dx, dy));
         }
     }
-    set_needs_display(true);
+    _view->set_needs_display(true);
 }
 
 void canvas_view_controller_t::mouse_up(const boden::event_t &ev)
@@ -103,7 +103,25 @@ void canvas_view_controller_t::mouse_up(const boden::event_t &ev)
             shape->set_frame(shape->get_frame_cache().offset_by(dx, dy));
         }
     }
-    set_needs_display(true);
+    _view->set_needs_display(true);
+}
+
+void canvas_view_controller_t::did_view_mouse_down(std::shared_ptr<boden::widget::view_t> sender,
+                                                   boden::layout::point_t location)
+{
+    printf("##\n");
+}
+
+void canvas_view_controller_t::did_view_mouse_dragged(std::shared_ptr<boden::widget::view_t> sender,
+                                                      boden::layout::point_t location)
+{
+    
+}
+
+void canvas_view_controller_t::did_view_mouse_up(std::shared_ptr<boden::widget::view_t> sender,
+                                                 boden::layout::point_t location)
+{
+    
 }
 
 void canvas_view_controller_t::draw(boden::builder_t &builder)
@@ -116,7 +134,10 @@ void canvas_view_controller_t::draw(boden::builder_t &builder)
 
 void canvas_view_controller_t::init()
 {
+    _view->set_view_delegate(this);
+
     auto rectangle{std::make_shared<boden::widget::shape::rectangle_t>(boden::layout::rect_t(150, 50, 100, 50))};
+    rectangle->set_view_delegate(this);
     rectangle->layer.background_color = {0x00, 0x00, 0xFF, 0xFF};
     rectangle->layer.border_color = {0x00, 0xFF, 0xFF, 0xFF};
     rectangle->layer.border_width = 1;

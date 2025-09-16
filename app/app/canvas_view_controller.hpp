@@ -2,13 +2,15 @@
 
 #include <boden/layout/rect.hpp>
 #include <boden/widget/shape/shape.hpp>
+#include <boden/widget/view.hpp>
 #include <boden/widget/view_controller.hpp>
 #include <memory>
 #include <unordered_set>
 
 namespace app {
 
-class canvas_view_controller_t : public boden::widget::view_controller_t
+class canvas_view_controller_t : public boden::widget::view_controller_t,
+                                 public boden::widget::view_delegate_t
 {
 public:
     canvas_view_controller_t();
@@ -19,6 +21,15 @@ public:
     void mouse_dragged(const boden::event_t &ev) override;
     void mouse_up(const boden::event_t &ev) override;
     
+    void did_view_mouse_down(std::shared_ptr<boden::widget::view_t> sender,
+                             boden::layout::point_t location) override;
+
+    void did_view_mouse_dragged(std::shared_ptr<boden::widget::view_t> sender,
+                                boden::layout::point_t location) override;
+
+    void did_view_mouse_up(std::shared_ptr<boden::widget::view_t> sender,
+                           boden::layout::point_t location) override;
+
     void draw(boden::builder_t &builder);
     
 private:

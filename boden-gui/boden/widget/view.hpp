@@ -3,11 +3,26 @@
 #include <boden/builder.hpp>
 #include <boden/widget/base/layer.hpp>
 #include <boden/widget/base/responder.hpp>
+#include <boden/widget/window.hpp>
 #include <boden/layout/rect.hpp>
 #include <vector>
 
 namespace boden {
 namespace widget {
+
+class view_delegate_t {
+public:
+    virtual void did_view_mouse_down(std::shared_ptr<boden::widget::view_t> sender, 
+                                     boden::layout::point_t location) = 0;
+
+    virtual void did_view_mouse_dragged(std::shared_ptr<boden::widget::view_t> sender, 
+                                        boden::layout::point_t location) = 0;
+
+    virtual void did_view_mouse_up(std::shared_ptr<boden::widget::view_t> sender, 
+                                   boden::layout::point_t location) = 0;
+
+    virtual ~view_delegate_t() = default;
+};
 
 class view_t : public boden::widget::base::responder_t, 
                public std::enable_shared_from_this<boden::widget::view_t>
@@ -17,12 +32,13 @@ public:
     view_t(const boden::layout::rect_t &frame);
     ~view_t() override;
 
-    virtual void draw(boden::builder_t &builder);
-    virtual std::shared_ptr<boden::widget::view_t> hit_test(boden::layout::point_t point);
+    void mouse_down(const boden::event_t &ev) override;
+    void mouse_dragged(const boden::event_t &ev) override;
+    void mouse_up(const boden::event_t &ev) override;
 
     boden::widget::base::layer_t layer;
 
-    void add_subview(const std::shared_ptr<boden::widget::view_t> &view);
+    void set_view_delegate(boden::widget::view_delegate_t *delegate);
 
     const boden::layout::rect_t & get_frame() const;
     void set_frame(const boden::layout::rect_t& frame);
@@ -32,19 +48,31 @@ public:
     std::shared_ptr<const boden::widget::view_t> get_parent() const;
     void set_parent(const std::shared_ptr<const boden::widget::view_t> &view);
 
+    void set_window(const std::shared_ptr<boden::widget::window_t> &window);
+
     bool is_hidden() const;
     void set_hidden(bool hidden);
+
+    void set_needs_display(bool needs);
+
+    void add_subview(const std::shared_ptr<boden::widget::view_t> &view);
 
     boden::layout::point_t convert_point_to_view(const boden::layout::point_t &point, 
                                                  const boden::widget::view_t *to_view) const;
 
+    virtual void draw(boden::builder_t &builder);
+    virtual std::shared_ptr<boden::widget::view_t> hit_test(boden::layout::point_t point);
+
 protected:
+    boden::widget::view_delegate_t *_view_delegate;
+    
     boden::layout::rect_t _bounds;
     boden::layout::rect_t _frame;
     bool _hidden;
 
     std::vector<std::shared_ptr<boden::widget::view_t>> _subviews;
     std::weak_ptr<const boden::widget::view_t> _parent;
+    std::weak_ptr<boden::widget::window_t> _window;
 };
 
 } // widget

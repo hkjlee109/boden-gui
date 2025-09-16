@@ -4,7 +4,7 @@
 #include "mtl_renderer.hpp"
 #include "osx_queue.hpp"
 
-#include <app/main_view_controller.hpp>
+#include <app/main_window.hpp>
 #include <boden/asset/image_library.hpp>
 #include <boden/asset/image_info_lookup_table.hpp>
 #include <boden/backend.hpp>
@@ -31,7 +31,7 @@ private:
     
     std::unique_ptr<boden::asset::image_info_lookup_table_ref_t> _image_info_lookup_table;
     std::unique_ptr<platform::mtl_renderer_t> _renderer;
-    std::shared_ptr<app::main_view_controller_t> _main_view_controller;
+    std::shared_ptr<app::main_window_t> _window;
     
     id<RenderViewProvider> _provider;
     platform::mtl_image_library_t _mtl_image_library;

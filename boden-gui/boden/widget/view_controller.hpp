@@ -20,13 +20,14 @@ public:
     void mouse_down(const boden::event_t &ev) override;
     void mouse_dragged(const boden::event_t &ev) override;
     void mouse_up(const boden::event_t &ev) override;
-
+ 
+    virtual void load_view();
+    
     std::shared_ptr<boden::widget::view_t> get_view() const;
 
     void set_backend(boden::backend_t *backend);
     void set_parent(const std::shared_ptr<boden::widget::view_controller_t> &ctrl);
-    void set_needs_display(bool needs);
-
+    
     void add_child_view_controller(const std::shared_ptr<boden::widget::view_controller_t> &ctrl);
 
 protected:

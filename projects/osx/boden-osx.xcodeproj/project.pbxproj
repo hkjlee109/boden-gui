@@ -12,6 +12,7 @@
 		BF40ADA92E762106000EB85D /* rectangle.png in Resources */ = {isa = PBXBuildFile; fileRef = BF40ADA82E762106000EB85D /* rectangle.png */; };
 		BF40AE372E76B758000EB85D /* gearshape.png in Resources */ = {isa = PBXBuildFile; fileRef = BF40AE362E76B758000EB85D /* gearshape.png */; };
 		BF40AE392E76D05F000EB85D /* images-config.json in Resources */ = {isa = PBXBuildFile; fileRef = BF40AE382E76D05F000EB85D /* images-config.json */; };
+		BF40AF542E77FB3B000EB85D /* main_window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF40AF532E77FB3B000EB85D /* main_window.cpp */; };
 		BF54B2912E68A48D00F7D4F9 /* canvas_view_controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF54B2902E68A48C00F7D4F9 /* canvas_view_controller.cpp */; };
 		BF54B3AB2E697D0100F7D4F9 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF54B3AA2E697D0100F7D4F9 /* MetalKit.framework */; };
 		BF9759C92D6C9DA6000E9A16 /* libboden-gui.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF9759C82D6C9DA6000E9A16 /* libboden-gui.a */; };
@@ -25,6 +26,8 @@
 		BF40ADA82E762106000EB85D /* rectangle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rectangle.png; sourceTree = "<group>"; };
 		BF40AE362E76B758000EB85D /* gearshape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gearshape.png; sourceTree = "<group>"; };
 		BF40AE382E76D05F000EB85D /* images-config.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "images-config.json"; sourceTree = "<group>"; };
+		BF40AF522E77FB3B000EB85D /* main_window.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = main_window.hpp; sourceTree = "<group>"; };
+		BF40AF532E77FB3B000EB85D /* main_window.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main_window.cpp; sourceTree = "<group>"; };
 		BF54B28F2E68A48C00F7D4F9 /* canvas_view_controller.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = canvas_view_controller.hpp; sourceTree = "<group>"; };
 		BF54B2902E68A48C00F7D4F9 /* canvas_view_controller.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = canvas_view_controller.cpp; sourceTree = "<group>"; };
 		BF54B3AA2E697D0100F7D4F9 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
@@ -71,6 +74,8 @@
 				BF40AC882E74A908000EB85D /* toolbox_view_controller.cpp */,
 				BF17A6792D73419000477794 /* main_view_controller.hpp */,
 				BF17A67A2D73419000477794 /* main_view_controller.cpp */,
+				BF40AF522E77FB3B000EB85D /* main_window.hpp */,
+				BF40AF532E77FB3B000EB85D /* main_window.cpp */,
 			);
 			name = app;
 			path = ../../app/app;
@@ -200,6 +205,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF40AC892E74A908000EB85D /* toolbox_view_controller.cpp in Sources */,
+				BF40AF542E77FB3B000EB85D /* main_window.cpp in Sources */,
 				BF54B2912E68A48D00F7D4F9 /* canvas_view_controller.cpp in Sources */,
 				BF17A67C2D73419000477794 /* main_view_controller.cpp in Sources */,
 			);
