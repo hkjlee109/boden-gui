@@ -111,7 +111,7 @@ int osx_backend_t::main()
                 break;
                 
             case boden::event_type_t::mouse_moved:
-                
+                _window->mouse_moved(event);
                 if(needs_display())
                 {
                     set_needs_display(false);

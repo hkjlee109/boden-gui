@@ -1,6 +1,7 @@
 #pragma once
 
 #include <boden/backend.hpp>
+#include <boden/tracking_area_manager.hpp>
 #include <boden/layout/rect.hpp>
 #include <boden/widget/base/responder.hpp>
 #include <memory>
@@ -25,6 +26,8 @@ public:
     void mouse_up(const boden::event_t &ev) override;
 
     void set_backend(boden::backend_t *backend);
+    void set_content_view(std::shared_ptr<boden::widget::view_t> view);
+    void set_content_view_controller(std::shared_ptr<boden::widget::view_controller_t> ctrl);
     void set_needs_display(bool needs);
 
     virtual void order_front();
@@ -34,6 +37,7 @@ protected:
     std::shared_ptr<boden::widget::view_controller_t> _content_view_controller;
 
     boden::backend_t *_backend;
+    boden::tracking_area_manager_t _tracking_area_manager;
 };
 
 } // widget

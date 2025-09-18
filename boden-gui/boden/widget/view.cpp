@@ -49,6 +49,49 @@ void view_t::mouse_up(const boden::event_t &ev)
     }
 }
 
+void view_t::draw(boden::builder_t &builder)
+{
+    for(auto it = _subviews.rbegin(); it != _subviews.rend(); ++it) 
+    {
+        auto subview = *it;
+        if(subview) 
+        {
+            subview->draw(builder);
+        }
+    }
+}
+
+std::shared_ptr<boden::widget::view_t> view_t::hit_test(boden::layout::point_t point)
+{
+    if(_hidden) 
+    {
+        return nullptr;
+    }
+
+    boden::layout::point_t origin = convert_point_to_view({0, 0}, nullptr);
+    boden::layout::rect_t frame{origin, _frame.size};
+
+    if(!frame.contains(point)) 
+    {
+        return nullptr;
+    }
+
+    for(auto it = _subviews.rbegin(); it != _subviews.rend(); ++it) 
+    {
+        auto subview = *it;
+        if(subview) 
+        {
+            auto hitView = subview->hit_test(point);
+            if(hitView) 
+            {
+                return hitView;
+            }
+        }
+    }
+
+    return shared_from_this();
+}
+
 void view_t::set_view_delegate(boden::widget::view_delegate_t *delegate)
 {
     _view_delegate = delegate;
@@ -102,6 +145,11 @@ void view_t::set_needs_display(bool needs)
     }
 }
 
+const std::vector<std::shared_ptr<boden::widget::base::tracking_area_t>> & view_t::get_tracking_areas() const 
+{
+    return _tracking_areas;
+}
+
 void view_t::add_subview(const std::shared_ptr<boden::widget::view_t> &view)
 {
     view->set_superview(this->shared_from_this());
@@ -112,6 +160,22 @@ void view_t::add_subview(const std::shared_ptr<boden::widget::view_t> &view)
     }
 
     _subviews.push_back(view);
+}
+
+void view_t::add_tracking_area(const std::shared_ptr<boden::widget::base::tracking_area_t> &area)
+{
+    if(std::find(_tracking_areas.begin(), _tracking_areas.end(), area) == _tracking_areas.end()) 
+    {
+        _tracking_areas.push_back(area);
+    }
+}
+
+void view_t::remove_tracking_area(const std::shared_ptr<boden::widget::base::tracking_area_t>& area) {
+    auto it = std::remove(_tracking_areas.begin(), _tracking_areas.end(), area);
+    if(it != _tracking_areas.end()) 
+    {
+        _tracking_areas.erase(it, _tracking_areas.end());
+    }
 }
 
 boden::layout::point_t view_t::convert_point_to_view(const boden::layout::point_t &point, 
@@ -129,49 +193,6 @@ boden::layout::point_t view_t::convert_point_to_view(const boden::layout::point_
     }
 
     return {point.x + _frame.origin.x, point.y + _frame.origin.y};                                           
-}
-
-void view_t::draw(boden::builder_t &builder)
-{
-    for(auto it = _subviews.rbegin(); it != _subviews.rend(); ++it) 
-    {
-        auto subview = *it;
-        if(subview) 
-        {
-            subview->draw(builder);
-        }
-    }
-}
-
-std::shared_ptr<boden::widget::view_t> view_t::hit_test(boden::layout::point_t point)
-{
-    if(_hidden) 
-    {
-        return nullptr;
-    }
-
-    boden::layout::point_t origin = convert_point_to_view({0, 0}, nullptr);
-    boden::layout::rect_t frame{origin, _frame.size};
-
-    if(!frame.contains(point)) 
-    {
-        return nullptr;
-    }
-
-    for(auto it = _subviews.rbegin(); it != _subviews.rend(); ++it) 
-    {
-        auto subview = *it;
-        if(subview) 
-        {
-            auto hitView = subview->hit_test(point);
-            if(hitView) 
-            {
-                return hitView;
-            }
-        }
-    }
-
-    return shared_from_this();
 }
 
 } // widget

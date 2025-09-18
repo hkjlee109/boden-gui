@@ -20,6 +20,14 @@ void responder_t::mouse_dragged(const boden::event_t &ev)
 {
 }
 
+void responder_t::mouse_entered(const boden::event_t &ev)
+{
+}
+
+void responder_t::mouse_exited(const boden::event_t &ev)
+{
+}
+
 void responder_t::mouse_moved(const boden::event_t &ev)
 {
 }

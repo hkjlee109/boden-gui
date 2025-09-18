@@ -14,6 +14,8 @@ public:
 
     virtual void mouse_down(const boden::event_t &ev);
     virtual void mouse_dragged(const boden::event_t &ev);
+    virtual void mouse_entered(const boden::event_t &ev);
+    virtual void mouse_exited(const boden::event_t &ev);
     virtual void mouse_moved(const boden::event_t &ev);
     virtual void mouse_up(const boden::event_t &ev);
 

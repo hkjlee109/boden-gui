@@ -7,6 +7,10 @@
 #include <boden/layout/rect.hpp>
 #include <vector>
 
+namespace boden::widget::base {
+class tracking_area_t;
+} // boden::widget::base 
+
 namespace boden {
 namespace widget {
 
@@ -32,11 +36,15 @@ public:
     view_t(const boden::layout::rect_t &frame);
     ~view_t() override;
 
+    boden::widget::base::layer_t layer;
+
+
     void mouse_down(const boden::event_t &ev) override;
     void mouse_dragged(const boden::event_t &ev) override;
     void mouse_up(const boden::event_t &ev) override;
 
-    boden::widget::base::layer_t layer;
+    virtual void draw(boden::builder_t &builder);
+    virtual std::shared_ptr<boden::widget::view_t> hit_test(boden::layout::point_t point);
 
     void set_view_delegate(boden::widget::view_delegate_t *delegate);
 
@@ -55,13 +63,14 @@ public:
 
     void set_needs_display(bool needs);
 
+    const std::vector<std::shared_ptr<boden::widget::base::tracking_area_t>> & get_tracking_areas() const;
+
     void add_subview(const std::shared_ptr<boden::widget::view_t> &view);
+    void add_tracking_area(const std::shared_ptr<boden::widget::base::tracking_area_t> &area);
+    void remove_tracking_area(const std::shared_ptr<boden::widget::base::tracking_area_t> &area);
 
     boden::layout::point_t convert_point_to_view(const boden::layout::point_t &point, 
                                                  const boden::widget::view_t *to_view) const;
-
-    virtual void draw(boden::builder_t &builder);
-    virtual std::shared_ptr<boden::widget::view_t> hit_test(boden::layout::point_t point);
 
 protected:
     boden::widget::view_delegate_t *_view_delegate;
@@ -73,6 +82,8 @@ protected:
     std::vector<std::shared_ptr<boden::widget::view_t>> _subviews;
     std::weak_ptr<const boden::widget::view_t> _superview;
     std::weak_ptr<boden::widget::window_t> _window;
+
+    std::vector<std::shared_ptr<boden::widget::base::tracking_area_t>> _tracking_areas;
 };
 
 } // widget

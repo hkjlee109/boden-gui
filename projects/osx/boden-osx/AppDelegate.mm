@@ -31,7 +31,7 @@
 
     [_window center];
     [_window orderFront:self];
-    
+    [_window setAcceptsMouseMovedEvents:YES];
     _backend = std::make_unique<platform::osx_backend_t>((__bridge MTL::Device *)device,
                                                          _queue,
                                                          (id<RenderViewProvider>)controller);
