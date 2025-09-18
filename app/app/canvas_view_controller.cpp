@@ -7,13 +7,11 @@ namespace app {
 canvas_view_controller_t::canvas_view_controller_t()
     : boden::widget::view_controller_t()
 {
-    init();
 }
 
 canvas_view_controller_t::canvas_view_controller_t(const boden::layout::rect_t &frame)
     : boden::widget::view_controller_t(frame)
 {
-    init();
 }
 
 canvas_view_controller_t::~canvas_view_controller_t()
@@ -102,7 +100,7 @@ void canvas_view_controller_t::draw(boden::builder_t &builder)
     }
 }
 
-void canvas_view_controller_t::init()
+void canvas_view_controller_t::load_view()
 {
     _view->set_view_delegate(this);
 

@@ -1,5 +1,7 @@
 #import "platform/osx_queue.hpp"
 
+#import "View.h"
+
 #import <Cocoa/Cocoa.h>
 #import <MetalKit/MetalKit.h>
 

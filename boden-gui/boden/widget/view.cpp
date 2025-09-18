@@ -141,7 +141,7 @@ void view_t::set_needs_display(bool needs)
 {
     if(auto window = _window.lock()) 
     {
-       window->set_needs_display(needs);
+        window->set_needs_display(needs);
     }
 }
 

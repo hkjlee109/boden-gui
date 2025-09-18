@@ -19,12 +19,14 @@ hover_button_t::~hover_button_t()
 
 void hover_button_t::mouse_entered(const boden::event_t &ev)
 {
-    printf("# mouse entered\n");
+    layer.background_color = {0x37, 0x37, 0x37, 0xFF};
+    set_needs_display(true);
 }
 
 void hover_button_t::mouse_exited(const boden::event_t &ev)
 {
-    printf("# mouse exited\n");
+    layer.background_color = {0x2A, 0x2A, 0x2A, 0xFF};
+    set_needs_display(true);
 }
 
 void hover_button_t::set_hover_enabled(bool enabled)

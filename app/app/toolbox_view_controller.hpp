@@ -15,6 +15,8 @@ public:
     toolbox_view_controller_t(const boden::layout::rect_t &frame);
     ~toolbox_view_controller_t();
     
+    void load_view() override;
+    
     void draw(boden::builder_t &builder);
     void on_button_click(void *sender);
     

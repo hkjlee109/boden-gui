@@ -33,6 +33,10 @@ void view_controller_t::mouse_up(const boden::event_t &ev)
 
 void view_controller_t::load_view()
 {
+    for(const auto &ctrl : _child_view_controllers) 
+    {
+        ctrl->load_view();
+    }
 }
 
 std::shared_ptr<boden::widget::view_t> view_controller_t::get_view() const 

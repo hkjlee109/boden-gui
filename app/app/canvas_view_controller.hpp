@@ -17,6 +17,8 @@ public:
     canvas_view_controller_t(const boden::layout::rect_t &frame);
     ~canvas_view_controller_t();
     
+    void load_view() override;
+    
     void did_view_mouse_down(std::shared_ptr<boden::widget::view_t> sender,
                              const boden::layout::point_t &location) override;
 

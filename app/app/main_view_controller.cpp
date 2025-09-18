@@ -28,6 +28,8 @@ void main_view_controller_t::load_view()
     auto canvas = std::make_shared<app::canvas_view_controller_t>(boden::layout::rect_t(70, 0, 570, 480));
     _view->add_subview(canvas->get_view());
     add_child_view_controller(canvas);
+
+    boden::widget::view_controller_t::load_view();
 }
 
 void main_view_controller_t::draw(boden::builder_t &builder)

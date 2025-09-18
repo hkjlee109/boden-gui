@@ -1,4 +1,5 @@
 #import "ViewController.h"
+
 #import "RenderViewProvider.h"
 
 #import "platform/utils.hpp"
@@ -49,7 +50,7 @@
 }
 
 - (void)loadView {
-    self.view = [[MTKView alloc] initWithFrame:CGRectMake(0, 0, 640, 480)];
+    self.view = [[View alloc] initWithFrame:CGRectMake(0, 0, 640, 480)];
 }
 
 - (void)mouseDown:(NSEvent *)event {
