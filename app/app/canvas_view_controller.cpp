@@ -25,14 +25,7 @@ void canvas_view_controller_t::did_view_mouse_down(std::shared_ptr<boden::widget
 
     if(sender == _view)
     {
-        for(auto *shape : _selection)
-        {
-            if(shape)
-            {
-                shape->set_selected(false);
-            }
-        }
-        _selection.clear();
+        clear_selection();
         _view->set_needs_display(true);
         return;
     }
@@ -41,10 +34,10 @@ void canvas_view_controller_t::did_view_mouse_down(std::shared_ptr<boden::widget
     {
         if(!shape->is_selected())
         {
+            clear_selection();
             shape->set_selected(true);
             shape->set_needs_display(true);
             _selection.insert(shape.get());
-            _view->set_needs_display(true);
         }
         shape->set_frame_cache(shape->get_frame());
     }
@@ -92,25 +85,42 @@ void canvas_view_controller_t::did_view_mouse_up(std::shared_ptr<boden::widget::
     _view->set_needs_display(true);
 }
 
-void canvas_view_controller_t::draw(boden::builder_t &builder)
-{
-    for(const std::shared_ptr<boden::widget::view_t> &view : _view->get_subviews())
-    {
-        view->draw(builder);
-    }
-}
-
 void canvas_view_controller_t::load_view()
 {
     _view->set_view_delegate(this);
+}
 
-    auto rectangle{std::make_shared<boden::widget::shape::rectangle_t>(boden::layout::rect_t(150, 50, 100, 50))};
-    rectangle->set_view_delegate(this);
-    rectangle->layer.background_color = {0x00, 0x00, 0xFF, 0xFF};
-    rectangle->layer.border_color = {0x00, 0xFF, 0xFF, 0xFF};
-    rectangle->layer.border_width = 1;
-    _shapes.push_back(rectangle);
-    _view->add_subview(rectangle);
+void canvas_view_controller_t::create_shape(app::shape_type_t type)
+{
+    clear_selection();
+    
+    switch(type)
+    {
+        case app::shape_type_t::rectangle:
+            auto rectangle{std::make_shared<boden::widget::shape::rectangle_t>(boden::layout::rect_t(150, 50, 100, 50))};
+            rectangle->set_view_delegate(this);
+            rectangle->layer.background_color = {0x00, 0x00, 0xFF, 0xFF};
+            rectangle->layer.border_color = {0x00, 0xFF, 0xFF, 0xFF};
+            rectangle->layer.border_width = 1;
+            rectangle->set_selected(true);
+            _shapes.push_back(rectangle);
+            _selection.insert(rectangle.get());
+            _view->add_subview(rectangle);
+            break;
+    }
+    _view->set_needs_display(true);
+}
+
+void canvas_view_controller_t::clear_selection()
+{
+    for(auto *shape : _selection)
+    {
+        if(shape)
+        {
+            shape->set_selected(false);
+        }
+    }
+    _selection.clear();
 }
 
 } // app

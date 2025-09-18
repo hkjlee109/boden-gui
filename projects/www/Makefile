@@ -10,9 +10,8 @@ BODEN_GUI_BUILD_DIR := $(BUILD_DIR)/boden-gui
 BODEN_GUI_TARGET := $(BODEN_GUI_BUILD_DIR)/libboden-gui.a
 
 APP_DIR := ../../app
-APP_SRCS := $(wildcard $(APP_DIR)/**/*.cpp)
-
-WWW_SRCS := $(wildcard platform/*.cpp)
+APP_SRCS := $(shell find $(APP_DIR) -name '*.cpp')
+WWW_SRCS := $(shell find platform -name '*.cpp')
 
 all: $(BUILD_DIR) $(BODEN_GUI_TARGET) $(TARGET) copy-resources
 

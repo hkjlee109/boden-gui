@@ -1,5 +1,7 @@
 #include "toolbox_view_controller.hpp"
 
+#include <app/theme/color.hpp>
+
 namespace app {
 
 toolbox_view_controller_t::toolbox_view_controller_t()
@@ -24,27 +26,35 @@ void toolbox_view_controller_t::draw(boden::builder_t &builder)
     }
 }
 
-void toolbox_view_controller_t::on_button_click(void *sender)
+void toolbox_view_controller_t::on_tool_button_click(void *sender)
 {
-    printf("# main_view_controller_t::on_button_click\n");
+    if(_toolbox_delegate)
+    {
+        _toolbox_delegate->did_toolbox_select(shared_from_this(), app::shape_type_t::rectangle);
+    }
 }
 
 void toolbox_view_controller_t::load_view()
 {
     _rectangle = std::make_shared<app::components::hover_button_t>(boden::layout::rect_t(10, 10, 50, 50));
-    _rectangle->layer.background_color = {0x2A, 0x2A, 0x2A, 0xFF};
+    _rectangle->layer.background_color = app::theme::color::background;
     _rectangle->set_image(std::make_unique<boden::widget::base::image_t>("rectangle"));
     _rectangle->set_content_tint_color({0xB7, 0xB7, 0xB7, 0xFF});
     _rectangle->set_hover_enabled(true);
     _rectangle->add_target(this,
-                        &toolbox_view_controller_t::on_button_click,
-                        boden::widget::control_event_t::mouse_down);
+                           &toolbox_view_controller_t::on_tool_button_click,
+                           boden::widget::control_event_t::mouse_down);
     _view->add_subview(_rectangle);
 
     _image_view = std::make_shared<boden::widget::image_view_t>(boden::layout::rect_t(10, 70, 50, 50));
     _image_view->set_image(std::make_unique<boden::widget::base::image_t>("gearshape"));
     _image_view->set_tint_color({0xFF, 0xFF, 0x00, 0xFF});
     _view->add_subview(_image_view);
+}
+
+void toolbox_view_controller_t::set_toolbox_delegate(app::toolbox_delegate_t *delegate)
+{
+    _toolbox_delegate = delegate;
 }
 
 } // app

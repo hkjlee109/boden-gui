@@ -1,5 +1,7 @@
 #include "hover_button.hpp"
 
+#include "app/theme/color.hpp"
+
 namespace app {
 namespace components {
 
@@ -19,13 +21,13 @@ hover_button_t::~hover_button_t()
 
 void hover_button_t::mouse_entered(const boden::event_t &ev)
 {
-    layer.background_color = {0x37, 0x37, 0x37, 0xFF};
+    layer.background_color = app::theme::color::background_400;
     set_needs_display(true);
 }
 
 void hover_button_t::mouse_exited(const boden::event_t &ev)
 {
-    layer.background_color = {0x2A, 0x2A, 0x2A, 0xFF};
+    layer.background_color = app::theme::color::background;
     set_needs_display(true);
 }
 

@@ -51,13 +51,9 @@ void view_t::mouse_up(const boden::event_t &ev)
 
 void view_t::draw(boden::builder_t &builder)
 {
-    for(auto it = _subviews.rbegin(); it != _subviews.rend(); ++it) 
+    for(auto subview : _subviews)
     {
-        auto subview = *it;
-        if(subview) 
-        {
-            subview->draw(builder);
-        }
+        subview->draw(builder);
     }
 }
 

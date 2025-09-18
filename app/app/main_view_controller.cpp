@@ -1,8 +1,5 @@
 #include "main_view_controller.hpp"
 
-#include <app/canvas_view_controller.hpp>
-#include <app/toolbox_view_controller.hpp>
-
 namespace app {
 
 main_view_controller_t::main_view_controller_t()
@@ -21,23 +18,22 @@ main_view_controller_t::~main_view_controller_t()
 
 void main_view_controller_t::load_view()
 {
-    auto toolbox = std::make_shared<app::toolbox_view_controller_t>(boden::layout::rect_t(0, 0, 70, 480));
-    _view->add_subview(toolbox->get_view());
-    add_child_view_controller(toolbox);
+    _toolbox_ctrl = std::make_shared<app::toolbox_view_controller_t>(boden::layout::rect_t(0, 0, 70, 480));
+    _toolbox_ctrl->set_toolbox_delegate(this);
+    _view->add_subview(_toolbox_ctrl->get_view());
+    add_child_view_controller(_toolbox_ctrl);
     
-    auto canvas = std::make_shared<app::canvas_view_controller_t>(boden::layout::rect_t(70, 0, 570, 480));
-    _view->add_subview(canvas->get_view());
-    add_child_view_controller(canvas);
+    _canvas_ctrl = std::make_shared<app::canvas_view_controller_t>(boden::layout::rect_t(70, 0, 570, 480));
+    _view->add_subview(_canvas_ctrl->get_view());
+    add_child_view_controller(_canvas_ctrl);
 
     boden::widget::view_controller_t::load_view();
 }
 
-void main_view_controller_t::draw(boden::builder_t &builder)
+void main_view_controller_t::did_toolbox_select(std::shared_ptr<boden::widget::view_controller_t> sender,
+                                                app::shape_type_t shape_type)
 {
-    for(const std::shared_ptr<boden::widget::view_t> &view : _view->get_subviews())
-    {
-        view->draw(builder);
-    }
+    _canvas_ctrl->create_shape(shape_type);
 }
 
 } // app

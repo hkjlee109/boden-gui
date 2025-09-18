@@ -19,7 +19,7 @@ struct color_t
     operator uint32_t() const {
         return _value;
     }
-
+    
 private:
     uint32_t _value;
 };

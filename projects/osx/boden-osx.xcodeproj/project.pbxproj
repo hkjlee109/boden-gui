@@ -31,6 +31,8 @@
 		BF40AF532E77FB3B000EB85D /* main_window.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main_window.cpp; sourceTree = "<group>"; };
 		BF40AFE12E7B5C40000EB85D /* hover_button.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = hover_button.hpp; sourceTree = "<group>"; };
 		BF40AFE22E7B5C40000EB85D /* hover_button.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = hover_button.cpp; sourceTree = "<group>"; };
+		BF40AFE82E7C3DB9000EB85D /* color.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = color.hpp; sourceTree = "<group>"; };
+		BF40AFEC2E7C4E2C000EB85D /* shape_type.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = shape_type.hpp; sourceTree = "<group>"; };
 		BF54B28F2E68A48C00F7D4F9 /* canvas_view_controller.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = canvas_view_controller.hpp; sourceTree = "<group>"; };
 		BF54B2902E68A48C00F7D4F9 /* canvas_view_controller.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = canvas_view_controller.cpp; sourceTree = "<group>"; };
 		BF54B3AA2E697D0100F7D4F9 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
@@ -72,8 +74,10 @@
 			children = (
 				BF40AFE32E7B5C40000EB85D /* components */,
 				BF40ADA52E7620B9000EB85D /* resources */,
+				BF40AFE92E7C3DB9000EB85D /* theme */,
 				BF54B28F2E68A48C00F7D4F9 /* canvas_view_controller.hpp */,
 				BF54B2902E68A48C00F7D4F9 /* canvas_view_controller.cpp */,
+				BF40AFEC2E7C4E2C000EB85D /* shape_type.hpp */,
 				BF40AC872E74A908000EB85D /* toolbox_view_controller.hpp */,
 				BF40AC882E74A908000EB85D /* toolbox_view_controller.cpp */,
 				BF17A6792D73419000477794 /* main_view_controller.hpp */,
@@ -110,6 +114,14 @@
 				BF40AFE22E7B5C40000EB85D /* hover_button.cpp */,
 			);
 			path = components;
+			sourceTree = "<group>";
+		};
+		BF40AFE92E7C3DB9000EB85D /* theme */ = {
+			isa = PBXGroup;
+			children = (
+				BF40AFE82E7C3DB9000EB85D /* color.hpp */,
+			);
+			path = theme;
 			sourceTree = "<group>";
 		};
 		BF9757E92D6C7871000E9A16 = {

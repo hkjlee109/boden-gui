@@ -1,5 +1,6 @@
 #pragma once
 
+#include <app/shape_type.hpp>
 #include <boden/layout/rect.hpp>
 #include <boden/widget/shape/shape.hpp>
 #include <boden/widget/view.hpp>
@@ -28,7 +29,7 @@ public:
     void did_view_mouse_up(std::shared_ptr<boden::widget::view_t> sender,
                            const boden::layout::point_t &location) override;
 
-    void draw(boden::builder_t &builder);
+    void create_shape(app::shape_type_t type);
     
 private:
     std::vector<std::shared_ptr<boden::widget::shape::shape_t>> _shapes;
@@ -37,6 +38,7 @@ private:
     boden::layout::point_t _mouse_location_cache;
     
     void init();
+    void clear_selection();
 };
 
 } // app
