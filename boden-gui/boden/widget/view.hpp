@@ -54,9 +54,9 @@ public:
     const std::vector<std::shared_ptr<boden::widget::view_t>> & get_subviews() const;
 
     std::shared_ptr<const boden::widget::view_t> get_superview() const;
-    void set_superview(const std::shared_ptr<const boden::widget::view_t> &view);
+    void set_superview(std::shared_ptr<const boden::widget::view_t> view);
 
-    void set_window(const std::shared_ptr<boden::widget::window_t> &window);
+    void set_window(std::shared_ptr<boden::widget::window_t> window);
 
     bool is_hidden() const;
     void set_hidden(bool hidden);
@@ -65,9 +65,9 @@ public:
 
     const std::vector<std::shared_ptr<boden::widget::base::tracking_area_t>> & get_tracking_areas() const;
 
-    void add_subview(const std::shared_ptr<boden::widget::view_t> &view);
-    void add_tracking_area(const std::shared_ptr<boden::widget::base::tracking_area_t> &area);
-    void remove_tracking_area(const std::shared_ptr<boden::widget::base::tracking_area_t> &area);
+    void add_subview(std::shared_ptr<boden::widget::view_t> view);
+    void add_tracking_area(std::shared_ptr<boden::widget::base::tracking_area_t> area);
+    void remove_tracking_area(std::shared_ptr<boden::widget::base::tracking_area_t> area);
 
     boden::layout::point_t convert_point_to_view(const boden::layout::point_t &point, 
                                                  const boden::widget::view_t *to_view) const;

@@ -54,12 +54,12 @@ void view_controller_t::set_backend(boden::backend_t *backend)
     _backend = backend;
 }
 
-void view_controller_t::set_parent(const std::shared_ptr<boden::widget::view_controller_t> &ctrl)
+void view_controller_t::set_parent(std::shared_ptr<boden::widget::view_controller_t> ctrl)
 {
     _parent = ctrl;
 }
 
-void view_controller_t::add_child_view_controller(const std::shared_ptr<boden::widget::view_controller_t> &crtl)
+void view_controller_t::add_child_view_controller(std::shared_ptr<boden::widget::view_controller_t> crtl)
 {
     crtl->set_parent(this->shared_from_this());
     _child_view_controllers.push_back(crtl);

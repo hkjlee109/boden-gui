@@ -6,7 +6,7 @@ namespace base {
 
 tracking_area_t::tracking_area_t(boden::layout::rect_t rect,
                                  options options,
-                                 const std::shared_ptr<boden::widget::view_t> &owner)
+                                 std::shared_ptr<boden::widget::view_t> owner)
     : _rect{rect},
       _options{options},
       _owner{owner}

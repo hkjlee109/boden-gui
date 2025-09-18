@@ -13,7 +13,7 @@ tracking_area_manager_t::~tracking_area_manager_t()
 {
 }
 
-void tracking_area_manager_t::set_content_view(const std::shared_ptr<boden::widget::view_t> &view)
+void tracking_area_manager_t::set_content_view(std::shared_ptr<boden::widget::view_t> view)
 {
     _content_view = view;
 }

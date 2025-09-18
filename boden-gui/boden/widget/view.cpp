@@ -113,12 +113,12 @@ std::shared_ptr<const boden::widget::view_t> view_t::get_superview() const
     return _superview.lock();
 }
 
-void view_t::set_superview(const std::shared_ptr<const boden::widget::view_t> &view)
+void view_t::set_superview(std::shared_ptr<const boden::widget::view_t> view)
 {
     _superview = view;
 }
 
-void view_t::set_window(const std::shared_ptr<boden::widget::window_t> &window)
+void view_t::set_window(std::shared_ptr<boden::widget::window_t> window)
 {
     _window = window;
 }
@@ -146,7 +146,7 @@ const std::vector<std::shared_ptr<boden::widget::base::tracking_area_t>> & view_
     return _tracking_areas;
 }
 
-void view_t::add_subview(const std::shared_ptr<boden::widget::view_t> &view)
+void view_t::add_subview(std::shared_ptr<boden::widget::view_t> view)
 {
     view->set_superview(this->shared_from_this());
 
@@ -158,7 +158,7 @@ void view_t::add_subview(const std::shared_ptr<boden::widget::view_t> &view)
     _subviews.push_back(view);
 }
 
-void view_t::add_tracking_area(const std::shared_ptr<boden::widget::base::tracking_area_t> &area)
+void view_t::add_tracking_area(std::shared_ptr<boden::widget::base::tracking_area_t> area)
 {
     if(std::find(_tracking_areas.begin(), _tracking_areas.end(), area) == _tracking_areas.end()) 
     {
@@ -166,7 +166,7 @@ void view_t::add_tracking_area(const std::shared_ptr<boden::widget::base::tracki
     }
 }
 
-void view_t::remove_tracking_area(const std::shared_ptr<boden::widget::base::tracking_area_t>& area) {
+void view_t::remove_tracking_area(std::shared_ptr<boden::widget::base::tracking_area_t> area) {
     auto it = std::remove(_tracking_areas.begin(), _tracking_areas.end(), area);
     if(it != _tracking_areas.end()) 
     {

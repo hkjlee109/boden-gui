@@ -14,7 +14,8 @@ EMSCRIPTEN_BINDINGS(event)
         .value("draw", boden::event_type_t::draw)
         .value("left_mouse_down", boden::event_type_t::left_mouse_down)
         .value("left_mouse_dragged", boden::event_type_t::left_mouse_dragged)
-        .value("left_mouse_up", boden::event_type_t::left_mouse_up);
+        .value("left_mouse_up", boden::event_type_t::left_mouse_up)
+        .value("mouse_moved", boden::event_type_t::mouse_moved);
 
     emscripten::value_object<boden::event_t>("event_t")
         .field("type", &boden::event_t::type)

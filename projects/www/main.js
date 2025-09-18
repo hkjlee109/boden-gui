@@ -39,6 +39,12 @@ canvas.addEventListener("mousemove", (event) => {
                 x: x,
                 y: y
             });
+        } else {
+            worker.postMessage({
+                type: "mouse_moved",
+                x: x,
+                y: y
+            });
         }
         break;
     }

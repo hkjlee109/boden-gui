@@ -63,6 +63,18 @@ self.onmessage = async (event) => {
             render();
         }
         break;
+
+    case 'mouse_moved': 
+        backend.try_run({
+            type: module.event_type_t.mouse_moved,
+            location: { x: x, y: y }
+        });
+
+        if (backend.needs_display()) {
+            backend.set_needs_display(false);
+            render();
+        }
+        break;
     }
 };
 

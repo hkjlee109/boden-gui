@@ -19,7 +19,7 @@ public:
     tracking_area_manager_t();
     virtual ~tracking_area_manager_t();
 
-    void set_content_view(const std::shared_ptr<boden::widget::view_t> &view);
+    void set_content_view(std::shared_ptr<boden::widget::view_t> view);
 
     void mouse_moved(const boden::event_t &ev);
 
