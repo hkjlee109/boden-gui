@@ -4,13 +4,20 @@ Project(boden-gui VERSION 1.0.0)
 set(CMAKE_CXX_STANDARD 20)
 
 include("cmake/boost-external-project.cmake")
+include("cmake/freetype-external-project.cmake")
+include("cmake/harfbuzz-external-project.cmake")
 
 file(GLOB_RECURSE SOURCES boden/*.cpp boden/*.hpp)
 
 add_library(boden-gui ${SOURCES})
 
+target_link_libraries(${PROJECT_NAME} 
+    PRIVATE boost_json freetype harfbuzz 
+)
+
 target_include_directories(${PROJECT_NAME}
-    PUBLIC .
+    PUBLIC 
+        .
 )
 
 add_subdirectory(tools/googletest)

@@ -4,7 +4,14 @@
 #include <boden/asset/stb_ref.hpp>
 #include <boden/context.hpp>
 #include <boden/event.hpp>
+#include <boden/utils/config.hpp>
 #include <Cocoa/Cocoa.h>
+
+
+#include <fstream>
+#include <sstream>
+#include <iostream>
+
 
 namespace platform {
 
@@ -16,16 +23,16 @@ osx_backend_t::osx_backend_t(MTL::Device *device, platform::osx_queue_t &queue, 
     auto *image_info_lookup_table{new boden::asset::image_info_lookup_table_t()};
     _mtl_image_library.set_image_info_lookup_table(image_info_lookup_table);
     
-    NSString *path;
-    path = [[NSBundle mainBundle] pathForResource:@"gearshape" ofType:@"png"];
-    _mtl_image_library.load_image_from_path("gearshape", path.UTF8String);
+    NSString *jsonPath = [[NSBundle mainBundle] pathForResource:@"images-config" ofType:@"json"];
+    auto configs = boden::utils::config_t::parse_images_config_file(jsonPath.UTF8String);
+        
+    for(auto config : configs)
+    {
+        NSString *path = [[NSBundle mainBundle] pathForResource:[NSString stringWithUTF8String:config.name.c_str()]
+                                                         ofType:[NSString stringWithUTF8String:config.type.c_str()]];
+        _mtl_image_library.load_image_from_path(config.key, path.UTF8String);
+    }
 
-    path = [[NSBundle mainBundle] pathForResource:@"rectangle" ofType:@"png"];
-    _mtl_image_library.load_image_from_path("rectangle", path.UTF8String);
-    
-    path = [[NSBundle mainBundle] pathForResource:@"textbox" ofType:@"png"];
-    _mtl_image_library.load_image_from_path("textbox", path.UTF8String);
-    
     _image_info_lookup_table = std::make_unique<boden::asset::image_info_lookup_table_ref_t>(image_info_lookup_table);
     
     _renderer = std::make_unique<platform::mtl_renderer_t>(device, &_mtl_image_library);

@@ -9,6 +9,11 @@
       "path": "images",
       "name": "textbox",
       "type": "png"
+    },
+    "gearshape": {
+      "path": "images",
+      "name": "gearshape",
+      "type": "png"
     }
   }
 }

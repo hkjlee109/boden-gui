@@ -1,0 +1,1 @@
+add_subdirectory(deps/harfbuzz EXCLUDE_FROM_ALL)

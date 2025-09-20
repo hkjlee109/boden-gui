@@ -1,0 +1,26 @@
+#pragma once
+
+#include <string>
+#include <vector>
+
+namespace boden {
+namespace utils {
+
+
+
+class config_t
+{
+public:
+    struct image_entry_t
+    {
+        std::string key;
+        std::string path;
+        std::string name;
+        std::string type; 
+    };
+
+    static std::vector<config_t::image_entry_t> parse_images_config_file(const std::string &filename);
+};
+
+} // utils
+} // boden

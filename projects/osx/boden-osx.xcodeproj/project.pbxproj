@@ -15,6 +15,7 @@
 		BF40AF542E77FB3B000EB85D /* main_window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF40AF532E77FB3B000EB85D /* main_window.cpp */; };
 		BF40AFE42E7B5C40000EB85D /* hover_button.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF40AFE22E7B5C40000EB85D /* hover_button.cpp */; };
 		BF40AFEE2E7EA260000EB85D /* textbox.png in Resources */ = {isa = PBXBuildFile; fileRef = BF40AFED2E7EA260000EB85D /* textbox.png */; };
+		BF40B07F2E7F5A07000EB85D /* libboost_json.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF40B07E2E7F5A07000EB85D /* libboost_json.a */; };
 		BF54B2912E68A48D00F7D4F9 /* canvas_view_controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF54B2902E68A48C00F7D4F9 /* canvas_view_controller.cpp */; };
 		BF54B3AB2E697D0100F7D4F9 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF54B3AA2E697D0100F7D4F9 /* MetalKit.framework */; };
 		BF9759C92D6C9DA6000E9A16 /* libboden-gui.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF9759C82D6C9DA6000E9A16 /* libboden-gui.a */; };
@@ -35,6 +36,7 @@
 		BF40AFE82E7C3DB9000EB85D /* color.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = color.hpp; sourceTree = "<group>"; };
 		BF40AFEC2E7C4E2C000EB85D /* shape_type.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = shape_type.hpp; sourceTree = "<group>"; };
 		BF40AFED2E7EA260000EB85D /* textbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = textbox.png; sourceTree = "<group>"; };
+		BF40B07E2E7F5A07000EB85D /* libboost_json.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_json.a; path = ../../build/lib/libboost_json.a; sourceTree = "<group>"; };
 		BF54B28F2E68A48C00F7D4F9 /* canvas_view_controller.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = canvas_view_controller.hpp; sourceTree = "<group>"; };
 		BF54B2902E68A48C00F7D4F9 /* canvas_view_controller.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = canvas_view_controller.cpp; sourceTree = "<group>"; };
 		BF54B3AA2E697D0100F7D4F9 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
@@ -64,6 +66,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF9759C92D6C9DA6000E9A16 /* libboden-gui.a in Frameworks */,
+				BF40B07F2E7F5A07000EB85D /* libboost_json.a in Frameworks */,
 				BF54B3AB2E697D0100F7D4F9 /* MetalKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -149,6 +152,7 @@
 		BF9759C72D6C9DA6000E9A16 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BF40B07E2E7F5A07000EB85D /* libboost_json.a */,
 				BF54B3AA2E697D0100F7D4F9 /* MetalKit.framework */,
 				BF9759C82D6C9DA6000E9A16 /* libboden-gui.a */,
 			);
