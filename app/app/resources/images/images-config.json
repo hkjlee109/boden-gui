@@ -4,6 +4,11 @@
       "path": "images",
       "name": "rectangle",
       "type": "png"
+    },
+    "textbox": {
+      "path": "images",
+      "name": "textbox",
+      "type": "png"
     }
   }
 }

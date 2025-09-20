@@ -30,23 +30,53 @@ void toolbox_view_controller_t::on_tool_button_click(void *sender)
 {
     if(_toolbox_delegate)
     {
-        _toolbox_delegate->did_toolbox_select(shared_from_this(), app::shape_type_t::rectangle);
+        boden::widget::view_t *view = static_cast<boden::widget::view_t*>(sender);
+        app::shape_type_t shape_type;
+        
+        switch(view->tag)
+        {
+            case 0:
+                shape_type = app::shape_type_t::rectangle;
+                break;
+                
+            case 1:
+                shape_type = app::shape_type_t::textbox;
+                break;
+            
+            default:
+                return;
+        }
+        
+        _toolbox_delegate->did_toolbox_select(shared_from_this(), shape_type);
     }
 }
 
 void toolbox_view_controller_t::load_view()
 {
-    _rectangle = std::make_shared<app::components::hover_button_t>(boden::layout::rect_t(10, 10, 50, 50));
+    _rectangle = std::make_shared<app::components::hover_button_t>(boden::layout::rect_t(10, 10, 50, 40));
+
     _rectangle->layer.background_color = app::theme::color::background;
     _rectangle->set_image(std::make_unique<boden::widget::base::image_t>("rectangle"));
     _rectangle->set_content_tint_color({0xB7, 0xB7, 0xB7, 0xFF});
     _rectangle->set_hover_enabled(true);
+    _rectangle->tag = 0;
     _rectangle->add_target(this,
                            &toolbox_view_controller_t::on_tool_button_click,
                            boden::widget::control_event_t::mouse_down);
     _view->add_subview(_rectangle);
 
-    _image_view = std::make_shared<boden::widget::image_view_t>(boden::layout::rect_t(10, 70, 50, 50));
+    _textbox = std::make_shared<app::components::hover_button_t>(boden::layout::rect_t(10, 55, 50, 40));
+    _textbox->layer.background_color = app::theme::color::background;
+    _textbox->set_image(std::make_unique<boden::widget::base::image_t>("textbox"));
+    _textbox->set_content_tint_color({0xB7, 0xB7, 0xB7, 0xFF});
+    _textbox->set_hover_enabled(true);
+    _textbox->tag = 1;
+    _textbox->add_target(this,
+                         &toolbox_view_controller_t::on_tool_button_click,
+                         boden::widget::control_event_t::mouse_down);
+    _view->add_subview(_textbox);
+    
+    _image_view = std::make_shared<boden::widget::image_view_t>(boden::layout::rect_t(10, 130, 50, 50));
     _image_view->set_image(std::make_unique<boden::widget::base::image_t>("gearshape"));
     _image_view->set_tint_color({0xFF, 0xFF, 0x00, 0xFF});
     _view->add_subview(_image_view);

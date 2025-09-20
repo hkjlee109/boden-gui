@@ -23,6 +23,9 @@ osx_backend_t::osx_backend_t(MTL::Device *device, platform::osx_queue_t &queue, 
     path = [[NSBundle mainBundle] pathForResource:@"rectangle" ofType:@"png"];
     _mtl_image_library.load_image_from_path("rectangle", path.UTF8String);
     
+    path = [[NSBundle mainBundle] pathForResource:@"textbox" ofType:@"png"];
+    _mtl_image_library.load_image_from_path("textbox", path.UTF8String);
+    
     _image_info_lookup_table = std::make_unique<boden::asset::image_info_lookup_table_ref_t>(image_info_lookup_table);
     
     _renderer = std::make_unique<platform::mtl_renderer_t>(device, &_mtl_image_library);

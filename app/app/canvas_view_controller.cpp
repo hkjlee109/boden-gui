@@ -97,6 +97,7 @@ void canvas_view_controller_t::create_shape(app::shape_type_t type)
     switch(type)
     {
         case app::shape_type_t::rectangle:
+        {
             auto rectangle{std::make_shared<boden::widget::shape::rectangle_t>(boden::layout::rect_t(150, 50, 100, 50))};
             rectangle->set_view_delegate(this);
             rectangle->layer.background_color = {0x00, 0x00, 0xFF, 0xFF};
@@ -106,6 +107,10 @@ void canvas_view_controller_t::create_shape(app::shape_type_t type)
             _shapes.push_back(rectangle);
             _selection.insert(rectangle.get());
             _view->add_subview(rectangle);
+            break;
+        }
+            
+        case app::shape_type_t::textbox:
             break;
     }
     _view->set_needs_display(true);

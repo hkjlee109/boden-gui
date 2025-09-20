@@ -37,6 +37,7 @@ private:
     app::toolbox_delegate_t *_toolbox_delegate;
     
     std::shared_ptr<app::components::hover_button_t> _rectangle;
+    std::shared_ptr<app::components::hover_button_t> _textbox;
     std::shared_ptr<boden::widget::image_view_t> _image_view;
     
     void init();

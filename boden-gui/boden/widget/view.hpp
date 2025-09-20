@@ -37,8 +37,8 @@ public:
     ~view_t() override;
 
     boden::widget::base::layer_t layer;
-
-
+    uint32_t tag;
+    
     void mouse_down(const boden::event_t &ev) override;
     void mouse_dragged(const boden::event_t &ev) override;
     void mouse_up(const boden::event_t &ev) override;
@@ -62,6 +62,7 @@ public:
     void set_hidden(bool hidden);
 
     void set_needs_display(bool needs);
+    void set_needs_layout(bool needs);
 
     const std::vector<std::shared_ptr<boden::widget::base::tracking_area_t>> & get_tracking_areas() const;
 
@@ -71,13 +72,16 @@ public:
 
     boden::layout::point_t convert_point_to_view(const boden::layout::point_t &point, 
                                                  const boden::widget::view_t *to_view) const;
-
+    void layout_if_needed();
+    void layout_subviews();
+                                                 
 protected:
     boden::widget::view_delegate_t *_view_delegate;
     
     boden::layout::rect_t _bounds;
     boden::layout::rect_t _frame;
     bool _hidden;
+    bool _needs_layout;
 
     std::vector<std::shared_ptr<boden::widget::view_t>> _subviews;
     std::weak_ptr<const boden::widget::view_t> _superview;

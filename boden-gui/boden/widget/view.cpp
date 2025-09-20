@@ -141,6 +141,11 @@ void view_t::set_needs_display(bool needs)
     }
 }
 
+void view_t::set_needs_layout(bool needs)
+{
+    _needs_layout = needs;
+}
+
 const std::vector<std::shared_ptr<boden::widget::base::tracking_area_t>> & view_t::get_tracking_areas() const 
 {
     return _tracking_areas;
@@ -189,6 +194,21 @@ boden::layout::point_t view_t::convert_point_to_view(const boden::layout::point_
     }
 
     return {point.x + _frame.origin.x, point.y + _frame.origin.y};                                           
+}
+
+void view_t::layout_if_needed()
+{
+    if(_needs_layout)
+    {
+    }
+}
+
+void view_t::layout_subviews()
+{
+    for(auto subview : _subviews)
+    {
+        subview->layout_subviews();
+    }
 }
 
 } // widget

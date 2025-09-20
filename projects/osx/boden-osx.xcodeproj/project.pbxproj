@@ -14,6 +14,7 @@
 		BF40AE392E76D05F000EB85D /* images-config.json in Resources */ = {isa = PBXBuildFile; fileRef = BF40AE382E76D05F000EB85D /* images-config.json */; };
 		BF40AF542E77FB3B000EB85D /* main_window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF40AF532E77FB3B000EB85D /* main_window.cpp */; };
 		BF40AFE42E7B5C40000EB85D /* hover_button.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF40AFE22E7B5C40000EB85D /* hover_button.cpp */; };
+		BF40AFEE2E7EA260000EB85D /* textbox.png in Resources */ = {isa = PBXBuildFile; fileRef = BF40AFED2E7EA260000EB85D /* textbox.png */; };
 		BF54B2912E68A48D00F7D4F9 /* canvas_view_controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF54B2902E68A48C00F7D4F9 /* canvas_view_controller.cpp */; };
 		BF54B3AB2E697D0100F7D4F9 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF54B3AA2E697D0100F7D4F9 /* MetalKit.framework */; };
 		BF9759C92D6C9DA6000E9A16 /* libboden-gui.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF9759C82D6C9DA6000E9A16 /* libboden-gui.a */; };
@@ -33,6 +34,7 @@
 		BF40AFE22E7B5C40000EB85D /* hover_button.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = hover_button.cpp; sourceTree = "<group>"; };
 		BF40AFE82E7C3DB9000EB85D /* color.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = color.hpp; sourceTree = "<group>"; };
 		BF40AFEC2E7C4E2C000EB85D /* shape_type.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = shape_type.hpp; sourceTree = "<group>"; };
+		BF40AFED2E7EA260000EB85D /* textbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = textbox.png; sourceTree = "<group>"; };
 		BF54B28F2E68A48C00F7D4F9 /* canvas_view_controller.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = canvas_view_controller.hpp; sourceTree = "<group>"; };
 		BF54B2902E68A48C00F7D4F9 /* canvas_view_controller.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = canvas_view_controller.cpp; sourceTree = "<group>"; };
 		BF54B3AA2E697D0100F7D4F9 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
@@ -95,6 +97,7 @@
 				BF40AE382E76D05F000EB85D /* images-config.json */,
 				BF40AE362E76B758000EB85D /* gearshape.png */,
 				BF40ADA82E762106000EB85D /* rectangle.png */,
+				BF40AFED2E7EA260000EB85D /* textbox.png */,
 			);
 			path = images;
 			sourceTree = "<group>";
@@ -218,6 +221,7 @@
 			files = (
 				BF40AE392E76D05F000EB85D /* images-config.json in Resources */,
 				BF40ADA92E762106000EB85D /* rectangle.png in Resources */,
+				BF40AFEE2E7EA260000EB85D /* textbox.png in Resources */,
 				BF40AE372E76B758000EB85D /* gearshape.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
