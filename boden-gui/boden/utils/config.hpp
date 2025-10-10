@@ -20,6 +20,7 @@ public:
     };
 
     static std::vector<config_t::image_entry_t> parse_images_config_file(const std::string &filename);
+    static std::vector<config_t::image_entry_t> parse_fonts_config_file(const std::string &filename);
 };
 
 } // utils

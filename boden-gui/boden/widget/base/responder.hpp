@@ -1,6 +1,7 @@
 #pragma once
 
 #include <boden/event.hpp>
+#include <boden/system_event.hpp>
 
 namespace boden {
 namespace widget {
@@ -18,6 +19,12 @@ public:
     virtual void mouse_exited(const boden::event_t &ev);
     virtual void mouse_moved(const boden::event_t &ev);
     virtual void mouse_up(const boden::event_t &ev);
+
+    virtual void system_event(const boden::system_event_t &ev);
+    
+    virtual bool accepts_first_responder();
+    virtual bool become_first_responder();
+    virtual bool resign_first_responder();
 
 private:
 };

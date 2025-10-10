@@ -15,7 +15,7 @@ struct context_t
     boden::layout::size_t display_size;
     boden::layout::vec2_t display_scale;
     
-    const batch_t *batch;
+    std::shared_ptr<boden::batch_t> batch;
 };
     
 } // boden

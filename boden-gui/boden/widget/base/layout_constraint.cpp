@@ -1,7 +1,5 @@
 #include "layout_constraint.hpp"
 
-#include <boden/asset/image_info_lookup_table.hpp>
-
 namespace boden {
 namespace widget {
 namespace base {

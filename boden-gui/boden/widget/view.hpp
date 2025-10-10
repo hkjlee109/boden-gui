@@ -5,6 +5,7 @@
 #include <boden/widget/base/responder.hpp>
 #include <boden/widget/window.hpp>
 #include <boden/layout/rect.hpp>
+#include <boden/system_event.hpp>
 #include <vector>
 
 namespace boden::widget::base {
@@ -37,12 +38,13 @@ public:
     ~view_t() override;
 
     boden::widget::base::layer_t layer;
-    uint32_t tag;
     
     void mouse_down(const boden::event_t &ev) override;
     void mouse_dragged(const boden::event_t &ev) override;
     void mouse_up(const boden::event_t &ev) override;
-
+    bool become_first_responder() override;
+    bool resign_first_responder() override;
+    
     virtual void draw(boden::builder_t &builder);
     virtual std::shared_ptr<boden::widget::view_t> hit_test(boden::layout::point_t point);
 
@@ -56,6 +58,8 @@ public:
     std::shared_ptr<const boden::widget::view_t> get_superview() const;
     void set_superview(std::shared_ptr<const boden::widget::view_t> view);
 
+    std::shared_ptr<const boden::widget::view_t> get_view_with_tag(uint32_t tag) const;
+
     void set_window(std::shared_ptr<boden::widget::window_t> window);
 
     bool is_hidden() const;
@@ -63,6 +67,9 @@ public:
 
     void set_needs_display(bool needs);
     void set_needs_layout(bool needs);
+
+    uint32_t get_tag() const;
+    void set_tag(uint32_t tag);
 
     const std::vector<std::shared_ptr<boden::widget::base::tracking_area_t>> & get_tracking_areas() const;
 
@@ -74,12 +81,15 @@ public:
                                                  const boden::widget::view_t *to_view) const;
     void layout_if_needed();
     void layout_subviews();
-                                                 
+                                     
+    void enqueue_system_event(const boden::system_event_t &event);
+
 protected:
     boden::widget::view_delegate_t *_view_delegate;
     
     boden::layout::rect_t _bounds;
     boden::layout::rect_t _frame;
+    uint32_t _tag;
     bool _hidden;
     bool _needs_layout;
 

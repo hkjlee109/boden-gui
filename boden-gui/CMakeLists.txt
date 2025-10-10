@@ -18,6 +18,9 @@ target_link_libraries(${PROJECT_NAME}
 target_include_directories(${PROJECT_NAME}
     PUBLIC 
         .
+        ${PROJECT_SOURCE_DIR}/deps/harfbuzz/src
+        ${PROJECT_SOURCE_DIR}/deps/freetype/include
+        ${PROJECT_BINARY_DIR}/deps/freetype/include
 )
 
 add_subdirectory(tools/googletest)

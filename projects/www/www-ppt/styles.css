@@ -1,0 +1,31 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;  
+  align-items: center;
+  background-color: #f0f0f0;
+}
+
+#container {
+    position: relative;
+}
+
+#textInput {
+    font-family: 'Noto Sans', sans-serif;
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    background-color: transparent;
+    border: none;
+    caret-color: skyblue;
+    color: white;
+    display: none;   
+    font-size: 14px;
+    padding: 7px 5px;
+}
+
+#textInput:focus {
+  outline: none;
+}

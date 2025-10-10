@@ -3,6 +3,7 @@
 #include <boden/backend.hpp>
 #include <boden/tracking_area_manager.hpp>
 #include <boden/layout/rect.hpp>
+#include <boden/system_event.hpp>
 #include <boden/widget/base/responder.hpp>
 #include <memory>
 
@@ -20,6 +21,8 @@ public:
     window_t(const boden::layout::rect_t &frame);
     ~window_t() override;
 
+    virtual void order_front();
+
     void mouse_down(const boden::event_t &ev) override;
     void mouse_dragged(const boden::event_t &ev) override;
     void mouse_moved(const boden::event_t &ev) override;
@@ -30,14 +33,19 @@ public:
     void set_content_view_controller(std::shared_ptr<boden::widget::view_controller_t> ctrl);
     void set_needs_display(bool needs);
 
-    virtual void order_front();
-    
+    std::shared_ptr<boden::widget::base::responder_t> get_first_responder() const;
+
+    void enqueue_system_event(const boden::system_event_t &event);
+    bool make_first_responder(std::shared_ptr<boden::widget::base::responder_t> responder);
+
 protected:
     std::shared_ptr<boden::widget::view_t> _content_view;
     std::shared_ptr<boden::widget::view_controller_t> _content_view_controller;
+    std::shared_ptr<boden::widget::base::responder_t> _first_responder;
 
     boden::backend_t *_backend;
     boden::tracking_area_manager_t _tracking_area_manager;
+
 };
 
 } // widget

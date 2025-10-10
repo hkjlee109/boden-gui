@@ -42,23 +42,26 @@ void button_t::draw(boden::builder_t &builder)
 
     if(_image) 
     {
-        float x, y, width, height = 0;
+        float x = 0;
+        float y = 0;
+        float width = 0;
+        float height = 0;
 
         switch(_image_scaling)
         {
-        case image_scaling_t::scale_none:
-            x = frame.mid_x() - _image->size.width / 2;
-            y = frame.mid_y() - _image->size.height / 2;
-            width = _image->size.width;
-            height = _image->size.height;
-            break;
-        default:
-            break;
+            case image_scaling_t::scale_none:
+                x = frame.mid_x() - _image->size.width / 2;
+                y = frame.mid_y() - _image->size.height / 2;
+                width = _image->size.width;
+                height = _image->size.height;
+                break;
+            default:
+                break;
         }
     
-        builder.add_image(_image->texture_id, 
-                          {x, y}, 
-                          {x + width, y + height},
+        builder.add_image(_image->key, 
+                          {frame.origin.x, frame.origin.y}, 
+                          {frame.origin.x + frame.size.width, frame.origin.y + frame.size.height},
                           _content_tint_color);
     }
 

@@ -19,7 +19,7 @@ struct vertex_t
     boden::layout::vec2_t position;
     boden::layout::vec2_t uv;
     uint32_t color;
-} __attribute__((packed));
+};
 
 } // draw
 } // boden

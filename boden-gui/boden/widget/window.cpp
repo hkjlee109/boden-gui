@@ -24,6 +24,10 @@ window_t::~window_t()
 {
 }
 
+void window_t::order_front() 
+{
+}
+
 void window_t::mouse_down(const boden::event_t &ev)
 {
     auto target = _content_view->hit_test(ev.location);
@@ -87,8 +91,20 @@ void window_t::set_needs_display(bool needs)
     }
 }
 
-void window_t::order_front() 
+std::shared_ptr<boden::widget::base::responder_t> window_t::get_first_responder() const
 {
+    return _first_responder;
+}
+
+void window_t::enqueue_system_event(const boden::system_event_t &event)
+{
+    _backend->enqueue_system_event(event);
+}
+
+bool window_t::make_first_responder(std::shared_ptr<boden::widget::base::responder_t> responder)
+{
+    _first_responder = responder;
+    return true;
 }
 
 } // widget

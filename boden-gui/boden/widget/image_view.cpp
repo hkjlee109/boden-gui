@@ -31,7 +31,7 @@ void image_view_t::draw(boden::builder_t &builder)
 
     builder.push_clip_rect({frame.origin.x, frame.origin.y, frame.size.width, frame.size.height});
     
-    builder.add_image(_image->texture_id, 
+    builder.add_image(_image->key, 
                       {frame.origin.x, frame.origin.y}, 
                       {frame.origin.x + frame.size.width, frame.origin.y + frame.size.height},
                       _tint_color);

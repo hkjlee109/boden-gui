@@ -1,0 +1,9 @@
+{
+  "fonts": {
+    "default": {
+      "path": "fonts",
+      "name": "NotoSans-Regular",
+      "type": "ttf"
+    }
+  }
+}

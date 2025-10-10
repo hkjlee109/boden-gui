@@ -3,6 +3,8 @@
 #include <boden/layout/point.hpp>
 #include <boden/layout/size.hpp>
 
+#include <algorithm>
+
 namespace boden {
 namespace layout {
 
@@ -48,7 +50,16 @@ struct rect_t
     {
         return origin.y + (size.height / 2);
     }
-} __attribute__((packed));
+
+    constexpr rect_t unify_with(const rect_t &other)
+    {
+        float min_x = std::min(origin.x, other.origin.x);
+        float min_y = std::min(origin.y, other.origin.y);
+        float max_x = std::max(origin.x + size.width, other.origin.x + other.size.width);
+        float max_y = std::max(origin.y + size.height, other.origin.y + other.size.height);
+        return { min_x, min_y, max_x - min_x, max_y - min_y };
+    }
+};
 
 } // layout
 } // boden

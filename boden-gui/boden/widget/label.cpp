@@ -5,12 +5,17 @@ namespace boden {
 namespace widget {
 
 label_t::label_t()
-    : view_t()
+    : view_t(),
+      _text{},
+      _text_color{0xFF, 0xFF, 0xFF, 0xFF}
 {
 }
 
 label_t::label_t(const boden::layout::rect_t &frame)
-    : view_t{frame}
+    : view_t{frame},
+      _text{},
+      _text_color{0xFF, 0xFF, 0xFF, 0xFF},
+      _text_alignment{boden::widget::base::text_alignment_t::left}
 {
 }
 
@@ -30,7 +35,22 @@ void label_t::draw(boden::builder_t &builder)
 
     builder.push_clip_rect({frame.origin.x, frame.origin.y, frame.size.width, frame.size.height});
     
+    builder.add_text(_text,
+                     {frame.origin.x, frame.origin.y}, 
+                     {frame.origin.x + frame.size.width, frame.origin.y + frame.size.height},
+                     _text_color);
+
     builder.pop_clip_rect();
+}
+
+void label_t::set_text(const std::string &text)
+{
+    _text = text;
+}
+
+void label_t::set_text_color(const boden::layout::color_t &color)
+{
+    _text_color = color;
 }
 
 } // widget

@@ -49,6 +49,24 @@ void view_t::mouse_up(const boden::event_t &ev)
     }
 }
 
+bool view_t::become_first_responder()
+{
+    if(auto window = _window.lock()) 
+    {
+        window->make_first_responder(shared_from_this());
+    }
+    return true;
+}
+
+bool view_t::resign_first_responder()
+{
+    if(auto window = _window.lock()) 
+    {
+        window->make_first_responder(nullptr);
+    }
+    return true;
+}
+
 void view_t::draw(boden::builder_t &builder)
 {
     for(auto subview : _subviews)
@@ -77,10 +95,10 @@ std::shared_ptr<boden::widget::view_t> view_t::hit_test(boden::layout::point_t p
         auto subview = *it;
         if(subview) 
         {
-            auto hitView = subview->hit_test(point);
-            if(hitView) 
+            auto view = subview->hit_test(point);
+            if(view) 
             {
-                return hitView;
+                return view;
             }
         }
     }
@@ -118,6 +136,34 @@ void view_t::set_superview(std::shared_ptr<const boden::widget::view_t> view)
     _superview = view;
 }
 
+std::shared_ptr<const boden::widget::view_t> view_t::get_view_with_tag(uint32_t tag) const
+{
+    if(_hidden) 
+    {
+        return nullptr;
+    }
+
+    if(_tag == tag) 
+    {
+        return shared_from_this();
+    }
+
+    for(auto it = _subviews.rbegin(); it != _subviews.rend(); ++it) 
+    {
+        auto subview = *it;
+        if(subview) 
+        {
+            auto view = subview->get_view_with_tag(tag);
+            if(view) 
+            {
+                return view;
+            }
+        }
+    }
+
+    return nullptr;
+}
+
 void view_t::set_window(std::shared_ptr<boden::widget::window_t> window)
 {
     _window = window;
@@ -144,6 +190,16 @@ void view_t::set_needs_display(bool needs)
 void view_t::set_needs_layout(bool needs)
 {
     _needs_layout = needs;
+}
+
+uint32_t view_t::get_tag() const
+{
+    return _tag;
+}
+
+void view_t::set_tag(uint32_t tag)
+{
+    _tag = tag;
 }
 
 const std::vector<std::shared_ptr<boden::widget::base::tracking_area_t>> & view_t::get_tracking_areas() const 
@@ -209,6 +265,14 @@ void view_t::layout_subviews()
     {
         subview->layout_subviews();
     }
+}
+
+void view_t::enqueue_system_event(const boden::system_event_t &event)
+{
+    if(auto window = _window.lock()) 
+    {
+        window->enqueue_system_event(event);
+    }   
 }
 
 } // widget
