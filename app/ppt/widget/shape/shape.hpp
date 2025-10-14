@@ -17,14 +17,12 @@ public:
     shape_t(const boden::layout::rect_t &frame);
     ~shape_t() override;
 
+    bool accepts_first_responder() override;
     void draw(boden::builder_t &builder) override;
-
     void system_event(const boden::system_event_t &event) override;
-    bool become_first_responder() override;
-    bool resign_first_responder() override;
 
-    bool is_selected() const;
-    void set_selected(bool selected);
+    bool is_editable() const;
+    void set_editable(bool editable);
 
     const boden::layout::rect_t & get_frame_cache() const;
     void set_frame_cache(const boden::layout::rect_t& frame);
@@ -35,8 +33,8 @@ public:
 private:
     static constexpr float HANDLE_SIZE = 8.0f;
     static constexpr float HANDLE_SIZE_HALF = HANDLE_SIZE / 2;
-    
-    bool _selected;
+
+    bool _editable;
     boden::layout::rect_t _frame_cache;
 
     std::string _text;

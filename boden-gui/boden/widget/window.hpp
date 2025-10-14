@@ -23,19 +23,21 @@ public:
 
     virtual void order_front();
 
-    void mouse_down(const boden::event_t &ev) override;
-    void mouse_dragged(const boden::event_t &ev) override;
-    void mouse_moved(const boden::event_t &ev) override;
-    void mouse_up(const boden::event_t &ev) override;
+    void mouse_down(const boden::event_t &system_event) override;
+    void mouse_dragged(const boden::event_t &system_event) override;
+    void mouse_moved(const boden::event_t &system_event) override;
+    void mouse_up(const boden::event_t &system_event) override;
+    void key_down(const boden::event_t &system_event) override;
+    void key_up(const boden::event_t &system_event) override;
 
     void set_backend(boden::backend_t *backend);
     void set_content_view(std::shared_ptr<boden::widget::view_t> view);
     void set_content_view_controller(std::shared_ptr<boden::widget::view_controller_t> ctrl);
     void set_needs_display(bool needs);
 
-    std::shared_ptr<boden::widget::base::responder_t> get_first_responder() const;
+    void system(const boden::system_event_t &system_event);
+    void enqueue_system_event(const boden::system_event_t &system_event);
 
-    void enqueue_system_event(const boden::system_event_t &event);
     bool make_first_responder(std::shared_ptr<boden::widget::base::responder_t> responder);
 
 protected:
@@ -45,7 +47,6 @@ protected:
 
     boden::backend_t *_backend;
     boden::tracking_area_manager_t _tracking_area_manager;
-
 };
 
 } // widget

@@ -6,6 +6,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol ViewDelegate <NSObject>
 
 - (void)didKeyDown:(NSEvent *)event;
+- (void)didKeyUp:(NSEvent *)event;
 
 @end
 

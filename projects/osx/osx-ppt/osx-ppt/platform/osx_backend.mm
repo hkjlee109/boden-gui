@@ -134,10 +134,19 @@ int osx_backend_t::main()
                 display_if_needed();
                 break;
 
+            case boden::event_type_t::key_down:
+                _window->key_down(event);
+                display_if_needed();
+                break;
+
+            case boden::event_type_t::key_up:
+                _window->key_up(event);
+                display_if_needed();
+                break;
+
             case boden::event_type_t::system:
                 auto system_event = std::any_cast<const boden::system_event_t &>(event.params.at("system_event"));
-                auto responder = _window->get_first_responder();
-                responder->system_event(system_event);
+                _window->system(system_event);
                 display_if_needed();
                 break;
         }
@@ -155,19 +164,26 @@ int osx_backend_t::main()
             {
                 case (uint32_t)boden::system_event_type_t::text_input_begin:
                 {
-                    auto frame = std::any_cast<const boden::layout::rect_t &>(event.params.at("frame"));
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [_provider displayTextInput:NSMakeRect(frame.origin.x,
-                                                               frame.origin.y,
-                                                               frame.size.width,
-                                                               frame.size.height)];
-                    });
+                    auto text_ = std::any_cast<const std::string &>(event.params.at("text"));
+                    auto frame_ = std::any_cast<const boden::layout::rect_t &>(event.params.at("frame"));
                     
+                    NSString *text = [NSString stringWithUTF8String:text_.c_str()];
+                    NSRect frame = NSMakeRect(frame_.origin.x,
+                                              frame_.origin.y,
+                                              frame_.size.width,
+                                              frame_.size.height);
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [_provider beginTextInput:text frame:frame];
+                    });
                     break;
                 }
                     
                 case (uint32_t)boden::system_event_type_t::text_input_end:
                 {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [_provider endTextInput];
+                    });
                     break;
                 }
                     

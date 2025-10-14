@@ -12,31 +12,39 @@ responder_t::~responder_t()
 {
 }
 
-void responder_t::mouse_down(const boden::event_t &ev)
+void responder_t::mouse_down(const boden::event_t &event)
 {
 }
 
-void responder_t::mouse_dragged(const boden::event_t &ev)
+void responder_t::mouse_dragged(const boden::event_t &event)
 {
 }
 
-void responder_t::mouse_entered(const boden::event_t &ev)
+void responder_t::mouse_entered(const boden::event_t &event)
 {
 }
 
-void responder_t::mouse_exited(const boden::event_t &ev)
+void responder_t::mouse_exited(const boden::event_t &event)
 {
 }
 
-void responder_t::mouse_moved(const boden::event_t &ev)
+void responder_t::mouse_moved(const boden::event_t &event)
 {
 }
 
-void responder_t::mouse_up(const boden::event_t &ev)
+void responder_t::mouse_up(const boden::event_t &event)
 {
 }
 
-void responder_t::system_event(const boden::system_event_t &ev)
+void responder_t::key_down(const boden::event_t &ev)
+{
+}
+
+void responder_t::key_up(const boden::event_t &event)
+{
+}
+
+void responder_t::system_event(const boden::system_event_t &system_event)
 {
 }
 

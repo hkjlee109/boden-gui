@@ -31,4 +31,10 @@
     }
 }
 
+- (void)keyUp:(NSEvent *)event {
+    if([self.viewDelegate respondsToSelector:@selector(didKeyUp:)]) {
+        [self.viewDelegate didKeyUp:event];
+    }
+}
+
 @end

@@ -42,6 +42,10 @@ self.onmessage = async (event) => {
         backend.mouseMoved(arg1, arg2);
         break;
 
+    case 'key_down': 
+        backend.keyDown(arg1, 0, 0);
+        break;
+
     case 'system_text_input_commit': 
         backend.commitTextInput(arg1);
         break;

@@ -76,9 +76,9 @@ void toolbox_view_controller_t::load_view()
                          boden::widget::control_event_t::mouse_down);
     _view->add_subview(_textbox);
     
-    _image_view = std::make_shared<boden::widget::image_view_t>(boden::layout::rect_t(10, 130, 50, 50));
+    _image_view = std::make_shared<boden::widget::image_view_t>(boden::layout::rect_t(10, 420, 50, 50));
     _image_view->set_image(std::make_unique<boden::widget::base::image_t>("gearshape"));
-    _image_view->set_tint_color({0xFF, 0xFF, 0x00, 0xFF});
+    _image_view->set_tint_color({0xB7, 0xB7, 0xB7, 0xFF});
     _view->add_subview(_image_view);
 }
 

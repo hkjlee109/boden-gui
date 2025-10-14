@@ -53,9 +53,9 @@ bool backend_t::needs_system() const
     return !_system_event_queue.empty();
 }
 
-void backend_t::enqueue_system_event(const boden::system_event_t &event)
+void backend_t::enqueue_system_event(const boden::system_event_t &system_event)
 {
-    _system_event_queue.push(event);
+    _system_event_queue.push(system_event);
 }
     
 std::optional<boden::system_event_t> backend_t::dequeue_system_event()

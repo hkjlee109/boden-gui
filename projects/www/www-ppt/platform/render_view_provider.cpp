@@ -6,23 +6,14 @@ namespace platform {
 
 extern "C" {
 
-extern void em_display_text_input(float x,
+extern void em_begin_text_input(const char* text,
+                                  size_t length,
+                                  float x,
                                   float y,
                                   float width,
                                   float height);
 
-// extern void em_render(const boden::draw::command_t *commands,
-//                       uint32_t commands_count,
-//                       const boden::draw::index_t *indices,
-//                       uint32_t indices_count,
-//                       const boden::draw::vertex_t *vertices,
-//                       uint32_t vertices_count);
-
-// EMSCRIPTEN_KEEPALIVE
-// uint32_t cpp_get_gpu_texture_id(boden::gpu::texture_id_t tid) 
-// {
-//     return (uint32_t)texture_manager->get_gpu_texture_handle(tid);
-// }
+extern void em_end_text_input();
 
 } // "C"
 
@@ -34,9 +25,14 @@ render_view_provider_t::~render_view_provider_t()
 {
 }
 
-void render_view_provider_t::display_text_input(const boden::layout::rect_t &rect)
+void render_view_provider_t::begin_text_input(const std::string &text, const boden::layout::rect_t &rect)
 {
-    em_display_text_input(rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+    em_begin_text_input(text.c_str(), text.length(), rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
+}
+
+void render_view_provider_t::end_text_input()
+{
+    em_end_text_input();
 }
 
 } // platform

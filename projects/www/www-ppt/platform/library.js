@@ -355,22 +355,36 @@ addToLibrary({
         return gtid;
     },
 
-    em_display_text_input: function(
-        x, 
+    em_begin_text_input: function(
+        text_,
+        textLength,
+        x,
         y, 
         width,
         height
     ) {
+        const text = UTF8ToString(text_, textLength);
+
         let worker = Module.worker;
         worker.postMessage({
-            type: 'display_text_input',
-            arg1: x,
-            arg2: y,
-            arg3: width,
-            arg4: height
+            type: 'begin_text_input',
+            arg1: text,
+            arg2: x,
+            arg3: y,
+            arg4: width,
+            arg5: height
+        });
+        return;
+    },
+
+    em_end_text_input: function() {
+        let worker = Module.worker;
+        worker.postMessage({
+            type: 'end_text_input'
         });
         return;
     }
+
 
 });
     

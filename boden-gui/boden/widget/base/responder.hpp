@@ -13,14 +13,16 @@ public:
     responder_t();
     virtual ~responder_t();
 
-    virtual void mouse_down(const boden::event_t &ev);
-    virtual void mouse_dragged(const boden::event_t &ev);
-    virtual void mouse_entered(const boden::event_t &ev);
-    virtual void mouse_exited(const boden::event_t &ev);
-    virtual void mouse_moved(const boden::event_t &ev);
-    virtual void mouse_up(const boden::event_t &ev);
+    virtual void mouse_down(const boden::event_t &event);
+    virtual void mouse_dragged(const boden::event_t &event);
+    virtual void mouse_entered(const boden::event_t &event);
+    virtual void mouse_exited(const boden::event_t &event);
+    virtual void mouse_moved(const boden::event_t &event);
+    virtual void mouse_up(const boden::event_t &event);
+    virtual void key_down(const boden::event_t &event);
+    virtual void key_up(const boden::event_t &event);
 
-    virtual void system_event(const boden::system_event_t &ev);
+    virtual void system_event(const boden::system_event_t &system_event);
     
     virtual bool accepts_first_responder();
     virtual bool become_first_responder();

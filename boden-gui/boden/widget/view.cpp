@@ -5,7 +5,6 @@ namespace widget {
 
 view_t::view_t()
     : responder_t{},
-      _view_delegate{nullptr},
       _bounds{0, 0, 0, 0},
       _frame{0, 0, 0, 0},
       _hidden{false}
@@ -14,7 +13,6 @@ view_t::view_t()
 
 view_t::view_t(const boden::layout::rect_t &frame)
     : responder_t{},
-      _view_delegate{nullptr},
       _bounds{0, 0, frame.size.width, frame.size.height},
       _frame{frame},
       _hidden{false}
@@ -23,48 +21,6 @@ view_t::view_t(const boden::layout::rect_t &frame)
 
 view_t::~view_t()
 {
-}
-
-void view_t::mouse_down(const boden::event_t &ev)
-{
-    if(_view_delegate) 
-    {
-        _view_delegate->did_view_mouse_down(shared_from_this(), ev.location);
-    }
-}
-    
-void view_t::mouse_dragged(const boden::event_t &ev)
-{
-    if(_view_delegate) 
-    {
-        _view_delegate->did_view_mouse_dragged(shared_from_this(), ev.location);
-    }
-}
-    
-void view_t::mouse_up(const boden::event_t &ev)
-{
-    if(_view_delegate) 
-    {
-        _view_delegate->did_view_mouse_up(shared_from_this(), ev.location);
-    }
-}
-
-bool view_t::become_first_responder()
-{
-    if(auto window = _window.lock()) 
-    {
-        window->make_first_responder(shared_from_this());
-    }
-    return true;
-}
-
-bool view_t::resign_first_responder()
-{
-    if(auto window = _window.lock()) 
-    {
-        window->make_first_responder(nullptr);
-    }
-    return true;
 }
 
 void view_t::draw(boden::builder_t &builder)
@@ -106,11 +62,10 @@ std::shared_ptr<boden::widget::view_t> view_t::hit_test(boden::layout::point_t p
     return shared_from_this();
 }
 
-void view_t::set_view_delegate(boden::widget::view_delegate_t *delegate)
+void view_t::did_add_subview(const boden::widget::view_t *view)
 {
-    _view_delegate = delegate;
 }
-
+    
 const boden::layout::rect_t & view_t::get_frame() const
 {
     return _frame;
@@ -131,7 +86,7 @@ std::shared_ptr<const boden::widget::view_t> view_t::get_superview() const
     return _superview.lock();
 }
 
-void view_t::set_superview(std::shared_ptr<const boden::widget::view_t> view)
+void view_t::set_superview(std::shared_ptr<boden::widget::view_t> view)
 {
     _superview = view;
 }
@@ -162,6 +117,11 @@ std::shared_ptr<const boden::widget::view_t> view_t::get_view_with_tag(uint32_t 
     }
 
     return nullptr;
+}
+
+std::shared_ptr<boden::widget::window_t> view_t::get_window() const
+{
+    return _window.lock();
 }
 
 void view_t::set_window(std::shared_ptr<boden::widget::window_t> window)
@@ -217,6 +177,28 @@ void view_t::add_subview(std::shared_ptr<boden::widget::view_t> view)
     }
 
     _subviews.push_back(view);
+
+    did_add_subview(view.get());
+}
+
+void view_t::remove_subview(std::shared_ptr<boden::widget::view_t> view)
+{
+    _subviews.erase(std::remove_if(_subviews.begin(), 
+                                   _subviews.end(),
+                                   [view](const std::shared_ptr<boden::widget::view_t> &child) 
+                                   {
+                                       return child.get() == view.get();
+                                   }), 
+                                   _subviews.end());
+}
+
+void view_t::remove_from_superview()
+{
+    if(auto super = _superview.lock()) 
+    {
+        super->remove_subview(shared_from_this());
+        _superview.reset();
+    }
 }
 
 void view_t::add_tracking_area(std::shared_ptr<boden::widget::base::tracking_area_t> area)

@@ -15,20 +15,6 @@ class tracking_area_t;
 namespace boden {
 namespace widget {
 
-class view_delegate_t {
-public:
-    virtual void did_view_mouse_down(std::shared_ptr<boden::widget::view_t> sender, 
-                                     const boden::layout::point_t &location) = 0;
-
-    virtual void did_view_mouse_dragged(std::shared_ptr<boden::widget::view_t> sender, 
-                                        const boden::layout::point_t &location) = 0;
-
-    virtual void did_view_mouse_up(std::shared_ptr<boden::widget::view_t> sender, 
-                                   const boden::layout::point_t &location) = 0;
-
-    virtual ~view_delegate_t() = default;
-};
-
 class view_t : public boden::widget::base::responder_t, 
                public std::enable_shared_from_this<boden::widget::view_t>
 {
@@ -37,18 +23,17 @@ public:
     view_t(const boden::layout::rect_t &frame);
     ~view_t() override;
 
+    view_t(const view_t &) noexcept = default;
+    view_t& operator=(const view_t &) noexcept = default;
+
+    view_t(view_t &&) noexcept = default;
+    view_t& operator=(view_t &&) noexcept = default;
+
     boden::widget::base::layer_t layer;
-    
-    void mouse_down(const boden::event_t &ev) override;
-    void mouse_dragged(const boden::event_t &ev) override;
-    void mouse_up(const boden::event_t &ev) override;
-    bool become_first_responder() override;
-    bool resign_first_responder() override;
     
     virtual void draw(boden::builder_t &builder);
     virtual std::shared_ptr<boden::widget::view_t> hit_test(boden::layout::point_t point);
-
-    void set_view_delegate(boden::widget::view_delegate_t *delegate);
+    virtual void did_add_subview(const boden::widget::view_t *view);
 
     const boden::layout::rect_t & get_frame() const;
     void set_frame(const boden::layout::rect_t& frame);
@@ -56,10 +41,11 @@ public:
     const std::vector<std::shared_ptr<boden::widget::view_t>> & get_subviews() const;
 
     std::shared_ptr<const boden::widget::view_t> get_superview() const;
-    void set_superview(std::shared_ptr<const boden::widget::view_t> view);
+    void set_superview(std::shared_ptr<boden::widget::view_t> view);
 
     std::shared_ptr<const boden::widget::view_t> get_view_with_tag(uint32_t tag) const;
 
+    std::shared_ptr<boden::widget::window_t> get_window() const;
     void set_window(std::shared_ptr<boden::widget::window_t> window);
 
     bool is_hidden() const;
@@ -74,6 +60,9 @@ public:
     const std::vector<std::shared_ptr<boden::widget::base::tracking_area_t>> & get_tracking_areas() const;
 
     void add_subview(std::shared_ptr<boden::widget::view_t> view);
+    void remove_subview(std::shared_ptr<boden::widget::view_t> view);
+    void remove_from_superview();
+    
     void add_tracking_area(std::shared_ptr<boden::widget::base::tracking_area_t> area);
     void remove_tracking_area(std::shared_ptr<boden::widget::base::tracking_area_t> area);
 
@@ -85,8 +74,6 @@ public:
     void enqueue_system_event(const boden::system_event_t &event);
 
 protected:
-    boden::widget::view_delegate_t *_view_delegate;
-    
     boden::layout::rect_t _bounds;
     boden::layout::rect_t _frame;
     uint32_t _tag;
@@ -94,7 +81,7 @@ protected:
     bool _needs_layout;
 
     std::vector<std::shared_ptr<boden::widget::view_t>> _subviews;
-    std::weak_ptr<const boden::widget::view_t> _superview;
+    std::weak_ptr<boden::widget::view_t> _superview;
     std::weak_ptr<boden::widget::window_t> _window;
 
     std::vector<std::shared_ptr<boden::widget::base::tracking_area_t>> _tracking_areas;

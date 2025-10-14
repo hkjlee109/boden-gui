@@ -26,6 +26,9 @@
 		BFC989C82E92A0A300566F80 /* textbox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFC989C72E92A0A300566F80 /* textbox.cpp */; };
 		BFC989CA2E92D86800566F80 /* fonts-config.json in Resources */ = {isa = PBXBuildFile; fileRef = BFC989C92E92D86800566F80 /* fonts-config.json */; };
 		BFC989CF2E96A94600566F80 /* NotoSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BFC989CE2E96A94600566F80 /* NotoSans-Regular.ttf */; };
+		BFC98BF22E99AB8400566F80 /* canvas_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFC98BF12E99AB8400566F80 /* canvas_view.cpp */; };
+		BFC98BF52E99B36800566F80 /* selection_view_controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFC98BF42E99B36800566F80 /* selection_view_controller.cpp */; };
+		BFC98BF92E9A7D7200566F80 /* selection_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFC98BF82E9A7D7200566F80 /* selection_view.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -82,6 +85,12 @@
 		BFC989C72E92A0A300566F80 /* textbox.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = textbox.cpp; sourceTree = "<group>"; };
 		BFC989C92E92D86800566F80 /* fonts-config.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "fonts-config.json"; sourceTree = "<group>"; };
 		BFC989CE2E96A94600566F80 /* NotoSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSans-Regular.ttf"; sourceTree = "<group>"; };
+		BFC98BF12E99AB8400566F80 /* canvas_view.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = canvas_view.cpp; sourceTree = "<group>"; };
+		BFC98BF32E99AB9300566F80 /* canvas_view.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = canvas_view.hpp; sourceTree = "<group>"; };
+		BFC98BF42E99B36800566F80 /* selection_view_controller.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = selection_view_controller.cpp; sourceTree = "<group>"; };
+		BFC98BF62E99B37300566F80 /* selection_view_controller.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = selection_view_controller.hpp; sourceTree = "<group>"; };
+		BFC98BF72E9A7D7200566F80 /* selection_view.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = selection_view.hpp; sourceTree = "<group>"; };
+		BFC98BF82E9A7D7200566F80 /* selection_view.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = selection_view.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -121,13 +130,19 @@
 				BFC989C22E92A01C00566F80 /* widget */,
 				BF54B28F2E68A48C00F7D4F9 /* canvas_view_controller.hpp */,
 				BF54B2902E68A48C00F7D4F9 /* canvas_view_controller.cpp */,
-				BF40AFEC2E7C4E2C000EB85D /* shape_type.hpp */,
-				BF40AC872E74A908000EB85D /* toolbox_view_controller.hpp */,
-				BF40AC882E74A908000EB85D /* toolbox_view_controller.cpp */,
+				BFC98BF32E99AB9300566F80 /* canvas_view.hpp */,
+				BFC98BF12E99AB8400566F80 /* canvas_view.cpp */,
 				BF17A6792D73419000477794 /* main_view_controller.hpp */,
 				BF17A67A2D73419000477794 /* main_view_controller.cpp */,
 				BF40AF522E77FB3B000EB85D /* main_window.hpp */,
 				BF40AF532E77FB3B000EB85D /* main_window.cpp */,
+				BFC98BF62E99B37300566F80 /* selection_view_controller.hpp */,
+				BFC98BF42E99B36800566F80 /* selection_view_controller.cpp */,
+				BFC98BF72E9A7D7200566F80 /* selection_view.hpp */,
+				BFC98BF82E9A7D7200566F80 /* selection_view.cpp */,
+				BF40AFEC2E7C4E2C000EB85D /* shape_type.hpp */,
+				BF40AC872E74A908000EB85D /* toolbox_view_controller.hpp */,
+				BF40AC882E74A908000EB85D /* toolbox_view_controller.cpp */,
 			);
 			name = ppt;
 			path = ../../../app/ppt;
@@ -347,10 +362,13 @@
 				BF40AF542E77FB3B000EB85D /* main_window.cpp in Sources */,
 				BF54B2912E68A48D00F7D4F9 /* canvas_view_controller.cpp in Sources */,
 				BF17A67C2D73419000477794 /* main_view_controller.cpp in Sources */,
+				BFC98BF92E9A7D7200566F80 /* selection_view.cpp in Sources */,
 				BFC989C32E92A01C00566F80 /* hover_button.cpp in Sources */,
 				BFC989C42E92A01C00566F80 /* rectangle.cpp in Sources */,
 				BFC989C52E92A01C00566F80 /* shape.cpp in Sources */,
 				BFC989C82E92A0A300566F80 /* textbox.cpp in Sources */,
+				BFC98BF22E99AB8400566F80 /* canvas_view.cpp in Sources */,
+				BFC98BF52E99B36800566F80 /* selection_view_controller.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

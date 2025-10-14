@@ -13,130 +13,153 @@ canvas_view_controller_t::canvas_view_controller_t()
 canvas_view_controller_t::canvas_view_controller_t(const boden::layout::rect_t &frame)
     : boden::widget::view_controller_t(frame)
 {
+    auto canvas_view{std::make_shared<ppt::canvas_view_t>(frame)};
+    canvas_view->set_delegate(this);
+    _view = canvas_view;
 }
 
 canvas_view_controller_t::~canvas_view_controller_t()
 {
 }
 
-void canvas_view_controller_t::did_view_mouse_down(std::shared_ptr<boden::widget::view_t> sender,
-                                                   const boden::layout::point_t &location)
+void canvas_view_controller_t::did_canvas_view_add_subview(const boden::widget::view_t *view)
 {
-    _mouse_location_cache = location;
-
-    if(sender == _view)
+    if(view == _selection_ctrl->get_view().get())
     {
-        clear_selection();
-        _view->set_needs_display(true);
         return;
     }
     
-    if(auto shape = std::dynamic_pointer_cast<ppt::widget::shape::shape_t>(sender))
+    _selection_ctrl->get_view()->remove_from_superview();
+    _view->add_subview(_selection_ctrl->get_view());
+}
+
+void canvas_view_controller_t::did_canvas_view_key_down(uint32_t key_code, uint64_t modifier_flags)
+{
+    switch(key_code)
     {
-        if(!shape->is_selected())
-        {
-            clear_selection();
-            shape->set_selected(true);
-            shape->set_needs_display(true);
-            _selection.insert(shape.get());
-        }
-        shape->set_frame_cache(shape->get_frame());
+        case 36:
+            _selection_ctrl->set_editable_if_needed(true);
+            break;
+            
+        default:
+            break;
     }
 }
 
-void canvas_view_controller_t::did_view_mouse_dragged(std::shared_ptr<boden::widget::view_t> sender,
-                                                      const boden::layout::point_t &location)
+void canvas_view_controller_t::did_canvas_view_key_up(uint32_t key_code, uint64_t modifier_flags)
 {
-    if(_selection.size() == 0)
+}
+
+void canvas_view_controller_t::did_canvas_view_mouse_down(const boden::layout::point_t &location)
+{
+    _selection_ctrl->set_editable_if_needed(false);
+    
+    _mouse_location_cache = location;
+    auto &subviews = _view->get_subviews();
+    
+    for(auto it = subviews.rbegin(); it != subviews.rend(); ++it)
+    {
+        auto &subview = *it;
+        if(!subview)
+        {
+            continue;
+        }
+        
+        auto hit_view = subview->hit_test(location);
+        if(!hit_view)
+        {
+            continue;
+        }
+        
+        auto shape = std::dynamic_pointer_cast<ppt::widget::shape::shape_t>(hit_view);
+        if(!shape)
+        {
+            continue;
+        }
+        
+        if(!_selection_ctrl->contains(shape))
+        {
+            _selection_ctrl->remove_all();
+            _selection_ctrl->add(shape);
+        }
+
+        _selection_ctrl->anchor();
+        return;
+    }
+    
+    _selection_ctrl->remove_all();
+}
+
+void canvas_view_controller_t::did_canvas_view_mouse_dragged(const boden::layout::point_t &location)
+{
+    if(_selection_ctrl->is_empty())
     {
         return;
     }
     
-    float dx = location.x - _mouse_location_cache.x;
-    float dy = location.y - _mouse_location_cache.y;
+    _selection_ctrl->move_by(location.x - _mouse_location_cache.x,
+                             location.y - _mouse_location_cache.y);
     
-    for(auto *shape : _selection)
-    {
-        if(shape)
-        {
-            shape->set_frame(shape->get_frame_cache().offset_by(dx, dy));
-        }
-    }
     _view->set_needs_display(true);
 }
 
-void canvas_view_controller_t::did_view_mouse_up(std::shared_ptr<boden::widget::view_t> sender,
-                                                 const boden::layout::point_t &location)
+void canvas_view_controller_t::did_canvas_view_mouse_up(const boden::layout::point_t &location)
 {
-    if(_selection.size() == 0)
+    if(_selection_ctrl->is_empty())
     {
         return;
     }
     
-    float dx = location.x - _mouse_location_cache.x;
-    float dy = location.y - _mouse_location_cache.y;
+    _selection_ctrl->move_by(location.x - _mouse_location_cache.x,
+                             location.y - _mouse_location_cache.y);
     
-    for(auto *shape : _selection)
-    {
-        if(shape)
-        {
-            shape->set_frame(shape->get_frame_cache().offset_by(dx, dy));
-        }
-    }
     _view->set_needs_display(true);
 }
 
 void canvas_view_controller_t::load_view()
-{
-    _view->set_view_delegate(this);
+{   
+    _selection_ctrl = std::make_shared<ppt::selection_view_controller_t>(boden::layout::rect_t(0, 0, 570, 480));
+    _view->add_subview(_selection_ctrl->get_view());
+    add_child_view_controller(_selection_ctrl);
+
+    boden::widget::view_controller_t::load_view();
 }
 
 void canvas_view_controller_t::create_shape(ppt::shape_type_t type)
-{
-    clear_selection();
+{    
+    if(_selection_ctrl->is_editing())
+    {
+        _selection_ctrl->remove_all();
+        return;
+    }
     
+    _selection_ctrl->remove_all();
+
     switch(type)
     {
         case ppt::shape_type_t::rectangle:
         {
-            auto rectangle{std::make_shared<ppt::widget::shape::rectangle_t>(boden::layout::rect_t(150, 50, 100, 50))};
-            rectangle->set_view_delegate(this);
-            rectangle->layer.background_color = {0x00, 0x00, 0xFF, 0xFF};
-            rectangle->layer.border_color = {0x00, 0xFF, 0xFF, 0xFF};
+            auto rectangle{std::make_shared<ppt::widget::shape::rectangle_t>(boden::layout::rect_t(150, 50, 150, 80))};
+            rectangle->layer.background_color = {0x21, 0x21, 0x21, 0xFF};
+            rectangle->layer.border_color = {0xFF, 0xFF, 0xFF, 0xFF};
             rectangle->layer.border_width = 1;
-            rectangle->set_selected(true);
             _shapes.push_back(rectangle);
-            _selection.insert(rectangle.get());
             _view->add_subview(rectangle);
+            _selection_ctrl->add(rectangle);
             break;
         }
             
         case ppt::shape_type_t::textbox:
         {
             auto textbox{std::make_shared<ppt::widget::shape::textbox_t>(boden::layout::rect_t(100, 50, 150, 50))};
-            textbox->set_view_delegate(this);
-            textbox->set_selected(true);
             _shapes.push_back(textbox);
-            _selection.insert(textbox.get());
             _view->add_subview(textbox);
-
-            textbox->become_first_responder();
+            _selection_ctrl->add(textbox);
+            _selection_ctrl->set_editable_if_needed(true);
             break;
         }
     }
     _view->set_needs_display(true);
-}
-
-void canvas_view_controller_t::clear_selection()
-{
-    for(auto *shape : _selection)
-    {
-        if(shape)
-        {
-            shape->set_selected(false);
-        }
-    }
-    _selection.clear();
 }
 
 } // ppt

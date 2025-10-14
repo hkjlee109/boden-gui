@@ -49,9 +49,22 @@ void www_backend_t::commit_text_input(const std::string &text)
     system_event.type = (uint32_t)boden::system_event_type_t::text_input_commit;
     system_event.params["text"] = text;
 
-    auto responder = _window->get_first_responder();
-    responder->system_event(system_event);
+    _window->system(system_event);
 
+    display_if_needed();
+    process_system_event_if_needed();
+}
+
+void www_backend_t::key_down(uint32_t key_code, uint32_t flags_msb, uint32_t flags_lsb)
+{
+    boden::event_t event;
+    event.type = boden::event_type_t::key_down;
+    event.key_code = key_code;
+    event.modifier_flags_msb = flags_msb;
+    event.modifier_flags_lsb = flags_lsb;
+
+    _window->key_down(event);
+    
     display_if_needed();
     process_system_event_if_needed();
 }
@@ -139,13 +152,15 @@ void www_backend_t::process_system_event_if_needed()
         {
             case (uint32_t)boden::system_event_type_t::text_input_begin:
             {
+                auto text = std::any_cast<const std::string &>(event.params.at("text"));
                 auto frame = std::any_cast<const boden::layout::rect_t &>(event.params.at("frame"));
-                _render_view_provider->display_text_input(frame);
+                _render_view_provider->begin_text_input(text, frame);
                 break;
             }
                     
             case (uint32_t)boden::system_event_type_t::text_input_end:
             {
+                _render_view_provider->end_text_input();
                 break;
             }
                     

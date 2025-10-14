@@ -139,13 +139,29 @@
     [self.mtkView setNeedsDisplay:YES];
 }
 
-- (void)displayTextInput:(NSRect)frame {
+- (void)beginTextInput:(NSString *)text frame:(NSRect)frame {
     frame.origin.y = self.view.frame.size.height - frame.origin.y - frame.size.height - 7;
+    _textView.string = text;
     _textView.frame = frame;
     _textView.hidden = NO;
     _textView.font = [NSFont fontWithName:@"NotoSans-Regular" size:14];
 
     [[self.view window] makeFirstResponder:_textView];
+}
+
+- (void)endTextInput {
+    boden::system_event_t system_event;
+    system_event.type = (uint32_t)boden::system_event_type_t::text_input_commit;
+    system_event.params["text"] = std::string(_textView.string.UTF8String);
+    
+    boden::event_t event;
+    event.type = boden::event_type_t::system;
+    event.params["system_event"] = system_event;
+    _queue->push(event);
+    
+    _textView.string = @"";
+    _textView.hidden = YES;
+    [[self.view window] makeFirstResponder:nil];
 }
 
 #pragma mark OverlayTextInputViewDelegate
@@ -167,6 +183,21 @@
 #pragma mark ViewDelegate
 
 - (void)didKeyDown:(nonnull NSEvent *)event {
+    boden::event_t out_event;
+    out_event.type = boden::event_type_t::key_down;
+    out_event.key_code = event.keyCode;
+    out_event.modifier_flags_msb = static_cast<uint32_t>(event.modifierFlags >> 32);
+    out_event.modifier_flags_lsb = static_cast<uint32_t>(event.modifierFlags & 0xFFFFFFFF);
+    _queue->push(out_event);
+}
+
+- (void)didKeyUp:(nonnull NSEvent *)event {
+    boden::event_t out_event;
+    out_event.type = boden::event_type_t::key_up;
+    out_event.key_code = event.keyCode;
+    out_event.modifier_flags_msb = static_cast<uint32_t>(event.modifierFlags >> 32);
+    out_event.modifier_flags_lsb = static_cast<uint32_t>(event.modifierFlags & 0xFFFFFFFF);
+    _queue->push(out_event);
 }
 
 @end

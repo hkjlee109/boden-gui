@@ -8,6 +8,7 @@
 - (float)displayScale;
 
 - (void)setNeedsDisplay:(BOOL)flag;
-- (void)displayTextInput:(NSRect)frame;
+- (void)beginTextInput:(NSString *_Nonnull)text frame:(NSRect)frame;
+- (void)endTextInput;
 
 @end

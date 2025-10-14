@@ -20,7 +20,7 @@ public:
     void set_needs_display(bool needs);
 
     bool needs_system() const;
-    void enqueue_system_event(const boden::system_event_t &event);
+    void enqueue_system_event(const boden::system_event_t &system_event);
     std::optional<boden::system_event_t> dequeue_system_event();
 
 protected:
