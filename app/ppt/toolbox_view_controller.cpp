@@ -9,21 +9,8 @@ toolbox_view_controller_t::toolbox_view_controller_t()
 {
 }
 
-toolbox_view_controller_t::toolbox_view_controller_t(const boden::layout::rect_t &frame)
-    : boden::widget::view_controller_t(frame)
-{
-}
-
 toolbox_view_controller_t::~toolbox_view_controller_t()
 {
-}
-
-void toolbox_view_controller_t::draw(boden::builder_t &builder)
-{
-    for(const std::shared_ptr<boden::widget::view_t> &view : _view->get_subviews())
-    {
-        view->draw(builder);
-    }
 }
 
 void toolbox_view_controller_t::on_tool_button_click(void *sender)
@@ -53,6 +40,9 @@ void toolbox_view_controller_t::on_tool_button_click(void *sender)
 
 void toolbox_view_controller_t::load_view()
 {
+    boden::widget::view_controller_t::load_view();
+    _view->set_frame(boden::layout::rect_t(0, 0, 70, 480));
+    
     _rectangle = std::make_shared<ppt::widget::hover_button_t>(boden::layout::rect_t(10, 10, 50, 40));
 
     _rectangle->layer.background_color = ppt::theme::color::background;

@@ -10,14 +10,6 @@ canvas_view_controller_t::canvas_view_controller_t()
 {
 }
 
-canvas_view_controller_t::canvas_view_controller_t(const boden::layout::rect_t &frame)
-    : boden::widget::view_controller_t(frame)
-{
-    auto canvas_view{std::make_shared<ppt::canvas_view_t>(frame)};
-    canvas_view->set_delegate(this);
-    _view = canvas_view;
-}
-
 canvas_view_controller_t::~canvas_view_controller_t()
 {
 }
@@ -116,13 +108,20 @@ void canvas_view_controller_t::did_canvas_view_mouse_up(const boden::layout::poi
     _view->set_needs_display(true);
 }
 
+void canvas_view_controller_t::did_canvas_view_scroll_wheel(const boden::layout::vec2_t &delta)
+{
+
+}
+
 void canvas_view_controller_t::load_view()
-{   
-    _selection_ctrl = std::make_shared<ppt::selection_view_controller_t>(boden::layout::rect_t(0, 0, 570, 480));
+{
+    auto canvas_view{std::make_shared<ppt::canvas_view_t>(boden::layout::rect_t(70, 0, 570, 480))};
+    canvas_view->set_delegate(this);
+    _view = canvas_view;
+    
+    _selection_ctrl = std::make_shared<ppt::selection_view_controller_t>();
     _view->add_subview(_selection_ctrl->get_view());
     add_child_view_controller(_selection_ctrl);
-
-    boden::widget::view_controller_t::load_view();
 }
 
 void canvas_view_controller_t::create_shape(ppt::shape_type_t type)

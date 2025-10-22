@@ -2,6 +2,7 @@
 
 #include <boden/builder.hpp>
 #include <boden/layout/rect.hpp>
+#include <boden/layout/edge_insets.hpp>
 #include <boden/widget/base/image.hpp>
 #include <boden/widget/control.hpp>
 #include <memory>
@@ -35,11 +36,13 @@ public:
     button_t(const boden::layout::rect_t &frame);
     ~button_t() override;
 
-    void draw(boden::builder_t &builder) override;
+    void draw_rect(boden::builder_t &builder, const boden::layout::rect_t &dirty_rect) override;
     void mouse_down(const boden::event_t &ev) override;
 
     void set_content_tint_color(const boden::layout::color_t &color);
+
     void set_image(std::shared_ptr<boden::widget::base::image_t> image);
+    void set_image_edge_insets(const boden::layout::edge_insets_t &insets);
     void set_image_position(image_position_t position);
     void set_image_scaling(image_scaling_t scaling);
 
@@ -49,6 +52,7 @@ public:
 private:
     boden::layout::color_t _content_tint_color;
     std::shared_ptr<boden::widget::base::image_t> _image;
+    boden::layout::edge_insets_t _image_edge_insets;
     image_position_t _image_position;
     image_scaling_t _image_scaling;
     std::string _title;

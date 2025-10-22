@@ -14,7 +14,6 @@ class view_controller_t : public boden::widget::base::responder_t,
 {
 public:
     view_controller_t();
-    view_controller_t(const boden::layout::rect_t &frame);
     ~view_controller_t() override;
 
     void mouse_down(const boden::event_t &ev) override;
@@ -22,8 +21,9 @@ public:
     void mouse_up(const boden::event_t &ev) override;
  
     virtual void load_view();
-    
-    std::shared_ptr<boden::widget::view_t> get_view() const;
+    virtual void view_did_load();
+
+    std::shared_ptr<boden::widget::view_t> get_view();
 
     void set_backend(boden::backend_t *backend);
     void set_parent(std::shared_ptr<boden::widget::view_controller_t> ctrl);

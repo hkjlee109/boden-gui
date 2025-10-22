@@ -16,21 +16,19 @@ selection_view_t::~selection_view_t()
 {
 }
 
-void selection_view_t::draw(boden::builder_t &builder)
+void selection_view_t::draw_rect(boden::builder_t &builder, const boden::layout::rect_t &dirty_rect)
 {
     boden::layout::point_t origin = convert_point_to_view({0, 0}, nullptr);
 
     for(auto &frame_ : _selection_frames)
     {
-        boden::layout::rect_t frame{origin.x + frame_.origin.x,
-                                    origin.y + frame_.origin.y,
-                                    frame_.size.width,
-                                    frame_.size.height};
+        boden::layout::rect_t frame{origin + frame_.origin, frame_.size};
+        boden::layout::rect_t clip_rect{origin + dirty_rect.origin, dirty_rect.size};
         
-        builder.push_clip_rect({frame.origin.x - HANDLE_SIZE_HALF - 1,
-                                frame.origin.y - HANDLE_SIZE_HALF - 1,
-                                frame.size.width + HANDLE_SIZE + 2,
-                                frame.size.height + HANDLE_SIZE + 2});
+        builder.push_clip_rect({clip_rect.origin.x - HANDLE_SIZE_HALF - 1,
+                                clip_rect.origin.y - HANDLE_SIZE_HALF - 1,
+                                clip_rect.size.width + HANDLE_SIZE + 2,
+                                clip_rect.size.height + HANDLE_SIZE + 2});
         
         boden::layout::point_t pts[] =
         {

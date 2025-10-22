@@ -10,15 +10,14 @@ selection_view_controller_t::selection_view_controller_t()
 {
 }
 
-selection_view_controller_t::selection_view_controller_t(const boden::layout::rect_t &frame)
-    : boden::widget::view_controller_t(frame)
-{
-    auto selection_view{std::make_shared<ppt::selection_view_t>(frame)};
-    _view = selection_view;
-}
-
 selection_view_controller_t::~selection_view_controller_t()
 {
+}
+
+void selection_view_controller_t::load_view()
+{
+    auto selection_view{std::make_shared<ppt::selection_view_t>(boden::layout::rect_t(0, 0, 570, 480))};
+    _view = selection_view;
 }
 
 void selection_view_controller_t::add(std::shared_ptr<boden::widget::view_t> view)

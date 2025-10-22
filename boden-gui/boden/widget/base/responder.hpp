@@ -21,6 +21,7 @@ public:
     virtual void mouse_up(const boden::event_t &event);
     virtual void key_down(const boden::event_t &event);
     virtual void key_up(const boden::event_t &event);
+    virtual void scroll_wheel(const boden::event_t &event);
 
     virtual void system_event(const boden::system_event_t &system_event);
     

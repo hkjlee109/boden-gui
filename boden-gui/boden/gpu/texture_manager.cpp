@@ -62,6 +62,17 @@ boden::gpu::gpu_texture_handle_t texture_manager_t::get_gpu_texture_handle(boden
     return texture.gpu_texture_handle;
 }
 
+boden::layout::size_t texture_manager_t::get_texture_size(boden::gpu::texture_id_t tid) const
+{
+    auto it = _textures.find(tid);
+    if(it == _textures.end()) 
+    {
+        return {0, 0};
+    }
+
+    return (it->second)->size;
+}
+
 texture_id_t texture_manager_t::create(boden::layout::size_t size,
                                        uint8_t number_of_channels)
 {

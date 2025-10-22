@@ -1,9 +1,10 @@
 #pragma once
 
 #include <boden/backend.hpp>
-#include <boden/tracking_area_manager.hpp>
+#include <boden/builder.hpp>
 #include <boden/layout/rect.hpp>
 #include <boden/system_event.hpp>
+#include <boden/tracking_area_manager.hpp>
 #include <boden/widget/base/responder.hpp>
 #include <memory>
 
@@ -22,6 +23,8 @@ public:
     ~window_t() override;
 
     virtual void order_front();
+    virtual void draw(boden::builder_t &builder);
+
 
     void mouse_down(const boden::event_t &system_event) override;
     void mouse_dragged(const boden::event_t &system_event) override;
@@ -29,6 +32,7 @@ public:
     void mouse_up(const boden::event_t &system_event) override;
     void key_down(const boden::event_t &system_event) override;
     void key_up(const boden::event_t &system_event) override;
+    void scroll_wheel(const boden::event_t &system_event) override;
 
     void set_backend(boden::backend_t *backend);
     void set_content_view(std::shared_ptr<boden::widget::view_t> view);

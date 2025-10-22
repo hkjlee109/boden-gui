@@ -16,7 +16,6 @@
 		BF40AFEE2E7EA260000EB85D /* textbox.png in Resources */ = {isa = PBXBuildFile; fileRef = BF40AFED2E7EA260000EB85D /* textbox.png */; };
 		BF40B07F2E7F5A07000EB85D /* libboost_json.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF40B07E2E7F5A07000EB85D /* libboost_json.a */; };
 		BF40B09D2E83E127000EB85D /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF40B09C2E83E127000EB85D /* libfreetype.a */; };
-		BF40B09F2E849084000EB85D /* libharfbuzz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF40B09E2E849084000EB85D /* libharfbuzz.a */; };
 		BF54B2912E68A48D00F7D4F9 /* canvas_view_controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF54B2902E68A48C00F7D4F9 /* canvas_view_controller.cpp */; };
 		BF54B3AB2E697D0100F7D4F9 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF54B3AA2E697D0100F7D4F9 /* MetalKit.framework */; };
 		BF9759C92D6C9DA6000E9A16 /* libboden-gui.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF9759C82D6C9DA6000E9A16 /* libboden-gui.a */; };
@@ -29,6 +28,7 @@
 		BFC98BF22E99AB8400566F80 /* canvas_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFC98BF12E99AB8400566F80 /* canvas_view.cpp */; };
 		BFC98BF52E99B36800566F80 /* selection_view_controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFC98BF42E99B36800566F80 /* selection_view_controller.cpp */; };
 		BFC98BF92E9A7D7200566F80 /* selection_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFC98BF82E9A7D7200566F80 /* selection_view.cpp */; };
+		BFF225A62EA1145400D13EA4 /* libharfbuzz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BFF225A52EA1145400D13EA4 /* libharfbuzz.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,37 +44,13 @@
 		BF40AFE82E7C3DB9000EB85D /* color.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = color.hpp; sourceTree = "<group>"; };
 		BF40AFEC2E7C4E2C000EB85D /* shape_type.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = shape_type.hpp; sourceTree = "<group>"; };
 		BF40AFED2E7EA260000EB85D /* textbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = textbox.png; sourceTree = "<group>"; };
-		BF40B07E2E7F5A07000EB85D /* libboost_json.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_json.a; path = ../../build/lib/libboost_json.a; sourceTree = "<group>"; };
-		BF40B0832E83E115000EB85D /* mtl_buffer_manager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = mtl_buffer_manager.hpp; sourceTree = "<group>"; };
-		BF40B0842E83E115000EB85D /* mtl_buffer_manager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = mtl_buffer_manager.cpp; sourceTree = "<group>"; };
-		BF40B0852E83E115000EB85D /* mtl_cpp_init.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = mtl_cpp_init.cpp; sourceTree = "<group>"; };
-		BF40B0862E83E115000EB85D /* mtl_image_library.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = mtl_image_library.hpp; sourceTree = "<group>"; };
-		BF40B0872E83E115000EB85D /* mtl_image_library.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = mtl_image_library.cpp; sourceTree = "<group>"; };
-		BF40B0882E83E115000EB85D /* mtl_renderer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = mtl_renderer.hpp; sourceTree = "<group>"; };
-		BF40B0892E83E115000EB85D /* mtl_renderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = mtl_renderer.cpp; sourceTree = "<group>"; };
-		BF40B08A2E83E115000EB85D /* osx_backend.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = osx_backend.hpp; sourceTree = "<group>"; };
-		BF40B08B2E83E115000EB85D /* osx_backend.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = osx_backend.mm; sourceTree = "<group>"; };
-		BF40B08C2E83E115000EB85D /* osx_queue.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = osx_queue.hpp; sourceTree = "<group>"; };
-		BF40B08D2E83E115000EB85D /* osx_queue.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = osx_queue.mm; sourceTree = "<group>"; };
-		BF40B08E2E83E115000EB85D /* utils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = utils.hpp; sourceTree = "<group>"; };
-		BF40B08F2E83E115000EB85D /* utils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = utils.mm; sourceTree = "<group>"; };
-		BF40B0912E83E115000EB85D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		BF40B0922E83E115000EB85D /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
-		BF40B0932E83E115000EB85D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		BF40B0942E83E115000EB85D /* boden-osx.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "boden-osx.entitlements"; sourceTree = "<group>"; };
-		BF40B0952E83E115000EB85D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		BF40B0962E83E115000EB85D /* RenderViewProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RenderViewProvider.h; sourceTree = "<group>"; };
-		BF40B0972E83E115000EB85D /* View.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = View.h; sourceTree = "<group>"; };
-		BF40B0982E83E115000EB85D /* View.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = View.m; sourceTree = "<group>"; };
-		BF40B0992E83E115000EB85D /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		BF40B09A2E83E115000EB85D /* ViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
-		BF40B09C2E83E127000EB85D /* libfreetype.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype.a; path = ../../build/lib/libfreetype.a; sourceTree = "<group>"; };
-		BF40B09E2E849084000EB85D /* libharfbuzz.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libharfbuzz.a; path = ../../build/lib/libharfbuzz.a; sourceTree = "<group>"; };
+		BF40B07E2E7F5A07000EB85D /* libboost_json.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_json.a; path = ../../../build/lib/libboost_json.a; sourceTree = "<group>"; };
+		BF40B09C2E83E127000EB85D /* libfreetype.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype.a; path = ../../../build/lib/libfreetype.a; sourceTree = "<group>"; };
 		BF54B28F2E68A48C00F7D4F9 /* canvas_view_controller.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = canvas_view_controller.hpp; sourceTree = "<group>"; };
 		BF54B2902E68A48C00F7D4F9 /* canvas_view_controller.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = canvas_view_controller.cpp; sourceTree = "<group>"; };
 		BF54B3AA2E697D0100F7D4F9 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
 		BF9757F22D6C7871000E9A16 /* osx-ppt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "osx-ppt.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		BF9759C82D6C9DA6000E9A16 /* libboden-gui.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboden-gui.a"; path = "../../build/lib/libboden-gui.a"; sourceTree = "<group>"; };
+		BF9759C82D6C9DA6000E9A16 /* libboden-gui.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboden-gui.a"; path = "../../../build/lib/libboden-gui.a"; sourceTree = "<group>"; };
 		BFC989BB2E92A01C00566F80 /* rectangle.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = rectangle.hpp; sourceTree = "<group>"; };
 		BFC989BC2E92A01C00566F80 /* rectangle.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = rectangle.cpp; sourceTree = "<group>"; };
 		BFC989BD2E92A01C00566F80 /* shape.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = shape.hpp; sourceTree = "<group>"; };
@@ -91,17 +67,13 @@
 		BFC98BF62E99B37300566F80 /* selection_view_controller.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = selection_view_controller.hpp; sourceTree = "<group>"; };
 		BFC98BF72E9A7D7200566F80 /* selection_view.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = selection_view.hpp; sourceTree = "<group>"; };
 		BFC98BF82E9A7D7200566F80 /* selection_view.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = selection_view.cpp; sourceTree = "<group>"; };
+		BFF225A52EA1145400D13EA4 /* libharfbuzz.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libharfbuzz.a; path = "/Users/kyung/git/boden-gui/build/lib/libharfbuzz.a"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		BF9757F42D6C7871000E9A16 /* osx-ppt */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = "osx-ppt";
-			sourceTree = "<group>";
-		};
-		BF975AA32D6CA522000E9A16 /* deps */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = deps;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -111,11 +83,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF40B09F2E849084000EB85D /* libharfbuzz.a in Frameworks */,
 				BF40B09D2E83E127000EB85D /* libfreetype.a in Frameworks */,
 				BF9759C92D6C9DA6000E9A16 /* libboden-gui.a in Frameworks */,
 				BF40B07F2E7F5A07000EB85D /* libboost_json.a in Frameworks */,
 				BF54B3AB2E697D0100F7D4F9 /* MetalKit.framework in Frameworks */,
+				BFF225A62EA1145400D13EA4 /* libharfbuzz.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -185,50 +157,11 @@
 			path = fonts;
 			sourceTree = "<group>";
 		};
-		BF40B0902E83E115000EB85D /* platform */ = {
-			isa = PBXGroup;
-			children = (
-				BF40B0832E83E115000EB85D /* mtl_buffer_manager.hpp */,
-				BF40B0842E83E115000EB85D /* mtl_buffer_manager.cpp */,
-				BF40B0852E83E115000EB85D /* mtl_cpp_init.cpp */,
-				BF40B0862E83E115000EB85D /* mtl_image_library.hpp */,
-				BF40B0872E83E115000EB85D /* mtl_image_library.cpp */,
-				BF40B0882E83E115000EB85D /* mtl_renderer.hpp */,
-				BF40B0892E83E115000EB85D /* mtl_renderer.cpp */,
-				BF40B08A2E83E115000EB85D /* osx_backend.hpp */,
-				BF40B08B2E83E115000EB85D /* osx_backend.mm */,
-				BF40B08C2E83E115000EB85D /* osx_queue.hpp */,
-				BF40B08D2E83E115000EB85D /* osx_queue.mm */,
-				BF40B08E2E83E115000EB85D /* utils.hpp */,
-				BF40B08F2E83E115000EB85D /* utils.mm */,
-			);
-			path = platform;
-			sourceTree = "<group>";
-		};
-		BF40B09B2E83E115000EB85D /* boden-osx */ = {
-			isa = PBXGroup;
-			children = (
-				BF40B0902E83E115000EB85D /* platform */,
-				BF40B0912E83E115000EB85D /* AppDelegate.h */,
-				BF40B0922E83E115000EB85D /* AppDelegate.mm */,
-				BF40B0932E83E115000EB85D /* Assets.xcassets */,
-				BF40B0942E83E115000EB85D /* boden-osx.entitlements */,
-				BF40B0952E83E115000EB85D /* main.m */,
-				BF40B0962E83E115000EB85D /* RenderViewProvider.h */,
-				BF40B0972E83E115000EB85D /* View.h */,
-				BF40B0982E83E115000EB85D /* View.m */,
-				BF40B0992E83E115000EB85D /* ViewController.h */,
-				BF40B09A2E83E115000EB85D /* ViewController.mm */,
-			);
-			path = "boden-osx";
-			sourceTree = "<group>";
-		};
 		BF9757E92D6C7871000E9A16 = {
 			isa = PBXGroup;
 			children = (
 				BF9757F42D6C7871000E9A16 /* osx-ppt */,
 				BF17A67B2D73419000477794 /* ppt */,
-				BF975AA32D6CA522000E9A16 /* deps */,
 				BF9759C72D6C9DA6000E9A16 /* Frameworks */,
 				BF9757F32D6C7871000E9A16 /* Products */,
 			);
@@ -245,10 +178,9 @@
 		BF9759C72D6C9DA6000E9A16 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				BF40B09E2E849084000EB85D /* libharfbuzz.a */,
 				BF40B09C2E83E127000EB85D /* libfreetype.a */,
-				BF40B09B2E83E115000EB85D /* boden-osx */,
 				BF40B07E2E7F5A07000EB85D /* libboost_json.a */,
+				BFF225A52EA1145400D13EA4 /* libharfbuzz.a */,
 				BF54B3AA2E697D0100F7D4F9 /* MetalKit.framework */,
 				BF9759C82D6C9DA6000E9A16 /* libboden-gui.a */,
 			);
@@ -295,7 +227,6 @@
 			);
 			fileSystemSynchronizedGroups = (
 				BF9757F42D6C7871000E9A16 /* osx-ppt */,
-				BF975AA32D6CA522000E9A16 /* deps */,
 			);
 			name = "osx-ppt";
 			packageProductDependencies = (
@@ -507,6 +438,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../deps/metal-cpp/**",
 					"$(SRCROOT)/../../../boden-gui/",
 					"$(SRCROOT)/../../../boden-gui/deps/harfbuzz/src",
 					"$(SRCROOT)/../../../boden-gui/deps/freetype/include",
@@ -540,6 +472,7 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../deps/metal-cpp/**",
 					"$(SRCROOT)/../../../boden-gui/",
 					"$(SRCROOT)/../../../boden-gui/deps/harfbuzz/src",
 					"$(SRCROOT)/../../../boden-gui/deps/freetype/include",

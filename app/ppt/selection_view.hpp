@@ -16,7 +16,7 @@ public:
     selection_view_t(const boden::layout::rect_t &frame);
     ~selection_view_t() override;
 
-    void draw(boden::builder_t &builder) override;
+    void draw_rect(boden::builder_t &builder, const boden::layout::rect_t &dirty_rect) override;
     std::shared_ptr<boden::widget::view_t> hit_test(boden::layout::point_t point) override;
 
     void set_selection_frames(std::vector<boden::layout::rect_t> &&frames);

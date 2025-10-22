@@ -4,14 +4,7 @@ namespace boden {
 namespace widget {
 
 view_controller_t::view_controller_t() 
-    : _view{std::make_shared<boden::widget::view_t>()},
-      _backend{nullptr}
-{
-}
-
-view_controller_t::view_controller_t(const boden::layout::rect_t &frame)
-    : _view{std::make_shared<boden::widget::view_t>(frame)},
-      _backend{nullptr}
+    : _backend{nullptr}
 {
 }
 
@@ -33,17 +26,20 @@ void view_controller_t::mouse_up(const boden::event_t &ev)
 
 void view_controller_t::load_view()
 {
-    for(const auto &ctrl : _child_view_controllers) 
-    {
-        ctrl->load_view();
-    }
+    _view = std::make_shared<boden::widget::view_t>();
 }
 
-std::shared_ptr<boden::widget::view_t> view_controller_t::get_view() const 
+void view_controller_t::view_did_load()
+{
+
+}
+
+std::shared_ptr<boden::widget::view_t> view_controller_t::get_view() 
 {
     if(_view == nullptr) 
     {
-        throw std::runtime_error("Attempted to access a null view.");
+        load_view();
+        view_did_load();
     }
 
     return _view;

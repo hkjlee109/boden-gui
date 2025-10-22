@@ -14,7 +14,6 @@ class main_view_controller_t : public boden::widget::view_controller_t,
 {
 public:
     main_view_controller_t();
-    main_view_controller_t(const boden::layout::rect_t &frame);
     ~main_view_controller_t();
     
     void load_view() override;

@@ -24,6 +24,7 @@ public:
     virtual boden::gpu::gpu_texture_handle_t create_gpu_texture(boden::layout::size_t size, uint8_t number_of_channels) = 0;
 
     boden::gpu::gpu_texture_handle_t get_gpu_texture_handle(boden::gpu::texture_id_t tid);
+    boden::layout::size_t get_texture_size(boden::gpu::texture_id_t tid) const;
 
     boden::gpu::texture_id_t create(boden::layout::size_t size,
                                     uint8_t number_of_channels);

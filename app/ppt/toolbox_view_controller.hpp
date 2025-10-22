@@ -23,14 +23,12 @@ class toolbox_view_controller_t : public boden::widget::view_controller_t
 {
 public:
     toolbox_view_controller_t();
-    toolbox_view_controller_t(const boden::layout::rect_t &frame);
     ~toolbox_view_controller_t();
     
     void load_view() override;
     
     void set_toolbox_delegate(ppt::toolbox_delegate_t *delegate);
     
-    void draw(boden::builder_t &builder);
     void on_tool_button_click(void *sender);
     
 private:

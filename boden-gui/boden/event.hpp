@@ -17,6 +17,7 @@ enum class event_type_t : uint32_t
     mouse_moved,
     key_down,
     key_up,
+    scroll_wheel,
 
     system,
 };
@@ -37,6 +38,8 @@ struct event_t
     uint32_t key_code;
     uint32_t modifier_flags_msb;
     uint32_t modifier_flags_lsb;
+    float scrolling_delta_x;
+    float scrolling_delta_y;
     
     std::unordered_map<std::string, std::any> params;
 };

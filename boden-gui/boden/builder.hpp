@@ -24,6 +24,8 @@ public:
     const boden::layout::rect_t & get_clip_rect_top() const;
 
     void set_font_manager(boden::font::font_manager_t *_manager);
+
+    const boden::asset::image_manager_t * get_image_manager() const;
     void set_image_manager(boden::asset::image_manager_t *_manager);
 
     void add_rect(const boden::layout::vec2_t &p1, 

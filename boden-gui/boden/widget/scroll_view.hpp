@@ -1,0 +1,26 @@
+#pragma once
+
+#include <boden/layout/rect.hpp>
+#include <boden/widget/clip_view.hpp>
+#include <boden/widget/view.hpp>
+#include <memory>
+
+namespace boden {
+namespace widget {
+
+class scroll_view_t : public boden::widget::view_t
+{
+public:
+    scroll_view_t();
+    scroll_view_t(const boden::layout::rect_t &frame);
+    ~scroll_view_t() override;
+
+    void set_document_view(std::shared_ptr<boden::widget::view_t> view);
+
+protected:
+    std::shared_ptr<boden::widget::view_t> _document_view;
+    std::shared_ptr<boden::widget::clip_view_t> _content_view;
+};
+
+} // widget
+} // boden

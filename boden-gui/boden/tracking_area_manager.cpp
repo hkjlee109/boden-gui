@@ -34,7 +34,6 @@ void tracking_area_manager_t::mouse_moved(const boden::event_t &ev)
             if (auto owner = entered_area->get_owner().lock()) 
             {
                 owner->mouse_exited(ev);
-
             }
             _entered_area.reset();
         }
@@ -59,10 +58,12 @@ void tracking_area_manager_t::mouse_moved(const boden::event_t &ev)
         return;
     }
 
+    auto origin = target->convert_point_to_view({0, 0}, nullptr);
+
     for(auto it = areas.rbegin(); it != areas.rend(); ++it)
     {
         const auto &area = *it;
-        if(area == nullptr || !area->get_rect().contains(ev.location))
+        if(area == nullptr || !area->get_rect().offset_by(origin.x, origin.y).contains(ev.location))
         {
             continue;
         }

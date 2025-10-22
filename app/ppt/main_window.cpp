@@ -21,12 +21,6 @@ main_window_t::~main_window_t()
 void main_window_t::order_front()
 {
     boden::widget::window_t::order_front();
-    set_content_view_controller(std::make_shared<ppt::main_view_controller_t>(_content_view->get_frame()));
-}
-
-void main_window_t::draw(boden::builder_t &builder)
-{
-    _content_view->draw(builder);
 }
 
 } // ppt

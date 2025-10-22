@@ -1,0 +1,14 @@
+{
+  "images": {
+    "minus": {
+      "path": "images",
+      "name": "minus",
+      "type": "png"
+    },
+    "plus": {
+      "path": "images",
+      "name": "plus",
+      "type": "png"
+    }
+  }
+}

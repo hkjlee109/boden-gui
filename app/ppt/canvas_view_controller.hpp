@@ -17,7 +17,6 @@ class canvas_view_controller_t : public boden::widget::view_controller_t,
 {
 public:
     canvas_view_controller_t();
-    canvas_view_controller_t(const boden::layout::rect_t &frame);
     ~canvas_view_controller_t();
     
     void load_view() override;
@@ -27,7 +26,8 @@ public:
     void did_canvas_view_mouse_down(const boden::layout::point_t &location) override;
     void did_canvas_view_mouse_dragged(const boden::layout::point_t &location) override;
     void did_canvas_view_mouse_up(const boden::layout::point_t &location) override;
-
+    void did_canvas_view_scroll_wheel(const boden::layout::vec2_t &delta) override;
+    
     void create_shape(ppt::shape_type_t type);
     
 private:

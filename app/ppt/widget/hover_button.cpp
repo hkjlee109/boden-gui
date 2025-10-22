@@ -35,10 +35,9 @@ void hover_button_t::set_hover_enabled(bool enabled)
 {
     if(enabled)
     {
-        auto options{boden::widget::base::tracking_area_t::options::mouse_entered_and_exited};   
-        auto origin{convert_point_to_view({0, 0}, nullptr)};
-        auto frame{boden::layout::rect_t{origin, _frame.size}};
-        _tracking_area = std::make_shared<boden::widget::base::tracking_area_t>(frame,
+        auto options{boden::widget::base::tracking_area_t::options::mouse_entered_and_exited};
+        boden::layout::rect_t bounds{0, 0, _frame.size.width, _frame.size.height};
+        _tracking_area = std::make_shared<boden::widget::base::tracking_area_t>(bounds,
                                                                                 options,
                                                                                 shared_from_this());
         add_tracking_area(_tracking_area);

@@ -18,7 +18,7 @@ public:
     ~shape_t() override;
 
     bool accepts_first_responder() override;
-    void draw(boden::builder_t &builder) override;
+    void draw_rect(boden::builder_t &builder, const boden::layout::rect_t &dirty_rect) override;
     void system_event(const boden::system_event_t &event) override;
 
     bool is_editable() const;

@@ -7,7 +7,7 @@ namespace layout {
 
 struct color_t
 {
-    constexpr color_t() : _value{0xFF000000} 
+    constexpr color_t() : _value{0x00000000} 
     {
     }
 

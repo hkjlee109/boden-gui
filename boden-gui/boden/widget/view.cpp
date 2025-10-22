@@ -7,7 +7,8 @@ view_t::view_t()
     : responder_t{},
       _bounds{0, 0, 0, 0},
       _frame{0, 0, 0, 0},
-      _hidden{false}
+      _hidden{false},
+      _needs_display{false}
 {
 }
 
@@ -15,7 +16,8 @@ view_t::view_t(const boden::layout::rect_t &frame)
     : responder_t{},
       _bounds{0, 0, frame.size.width, frame.size.height},
       _frame{frame},
-      _hidden{false}
+      _hidden{false},
+      _needs_display{false}
 {
 }
 
@@ -23,11 +25,42 @@ view_t::~view_t()
 {
 }
 
-void view_t::draw(boden::builder_t &builder)
+void view_t::draw_rect(boden::builder_t &builder, const boden::layout::rect_t &dirty_rect)
 {
+    if(_hidden) 
+    {
+        return;
+    }
+    
+    boden::layout::point_t origin = convert_point_to_view({0, 0}, nullptr);
+    boden::layout::rect_t frame{origin, _frame.size};
+    boden::layout::rect_t clip_rect{origin + dirty_rect.origin, dirty_rect.size};
+
+    builder.push_clip_rect({clip_rect.origin.x - layer.border_width, 
+                            clip_rect.origin.y - layer.border_width, 
+                            clip_rect.size.width + layer.border_width * 2, 
+                            clip_rect.size.height + layer.border_width * 2});
+
+    builder.add_rect_filled({frame.origin.x, frame.origin.y}, 
+                            {frame.origin.x + frame.size.width, frame.origin.y + frame.size.height},
+                            layer.background_color, 
+                            layer.corner_radius);
+    
+    builder.pop_clip_rect();
+
     for(auto subview : _subviews)
     {
-        subview->draw(builder);
+        if(auto intersected = dirty_rect.intersection(subview->get_frame()))
+        {
+            const auto &rect = *intersected;
+            auto &subview_frame = subview->get_frame();
+            auto dirty_in_subview = boden::layout::rect_t{rect.origin.x - subview_frame.origin.x,
+                                                          rect.origin.y - subview_frame.origin.y,
+                                                          rect.size.width,
+                                                          rect.size.height};
+
+            subview->draw_rect(builder, dirty_in_subview);
+        }
     }
 }
 
@@ -65,13 +98,28 @@ std::shared_ptr<boden::widget::view_t> view_t::hit_test(boden::layout::point_t p
 void view_t::did_add_subview(const boden::widget::view_t *view)
 {
 }
-    
+
+void view_t::view_will_move_to_window(std::shared_ptr<boden::widget::window_t> window)
+{
+    _window = window;
+
+    for(auto subview : _subviews)
+    {
+        subview->view_will_move_to_window(window);
+    }
+}
+
+const boden::layout::rect_t & view_t::get_bounds() const
+{
+    return _bounds;
+}
+
 const boden::layout::rect_t & view_t::get_frame() const
 {
     return _frame;
 }
 
-void view_t::set_frame(const boden::layout::rect_t& frame)
+void view_t::set_frame(const boden::layout::rect_t &frame)
 {
     _frame = frame;
 }
@@ -141,6 +189,9 @@ void view_t::set_hidden(bool hidden)
 
 void view_t::set_needs_display(bool needs)
 {
+    _needs_display = needs;
+    _dirty_rect = _frame;
+
     if(auto window = _window.lock()) 
     {
         window->set_needs_display(needs);
@@ -173,7 +224,7 @@ void view_t::add_subview(std::shared_ptr<boden::widget::view_t> view)
 
     if(auto window = _window.lock()) 
     {
-        view->set_window(window);
+        view->view_will_move_to_window(window);
     }
 
     _subviews.push_back(view);

@@ -1,0 +1,492 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		BF40B07F2E7F5A07000EB85D /* libboost_json.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF40B07E2E7F5A07000EB85D /* libboost_json.a */; };
+		BF40B09D2E83E127000EB85D /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF40B09C2E83E127000EB85D /* libfreetype.a */; };
+		BF40B09F2E849084000EB85D /* libharfbuzz.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF40B09E2E849084000EB85D /* libharfbuzz.a */; };
+		BF4BC3522EA2F910000B9174 /* zoom_view_controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF4BC3512EA2F910000B9174 /* zoom_view_controller.cpp */; };
+		BF4BC3542EA37779000B9174 /* plus.png in Resources */ = {isa = PBXBuildFile; fileRef = BF4BC3532EA37779000B9174 /* plus.png */; };
+		BF4BC3A62EA37D63000B9174 /* minus.png in Resources */ = {isa = PBXBuildFile; fileRef = BF4BC3A52EA37D63000B9174 /* minus.png */; };
+		BF54B3AB2E697D0100F7D4F9 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF54B3AA2E697D0100F7D4F9 /* MetalKit.framework */; };
+		BF9759C92D6C9DA6000E9A16 /* libboden-gui.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF9759C82D6C9DA6000E9A16 /* libboden-gui.a */; };
+		BFF225722EA108FF00D13EA4 /* NotoSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BFF225582EA108FF00D13EA4 /* NotoSans-Regular.ttf */; };
+		BFF225732EA108FF00D13EA4 /* images-config.json in Resources */ = {isa = PBXBuildFile; fileRef = BFF2255B2EA108FF00D13EA4 /* images-config.json */; };
+		BFF225772EA108FF00D13EA4 /* fonts-config.json in Resources */ = {isa = PBXBuildFile; fileRef = BFF225572EA108FF00D13EA4 /* fonts-config.json */; };
+		BFF225782EA108FF00D13EA4 /* hover_button.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFF225652EA108FF00D13EA4 /* hover_button.cpp */; };
+		BFF225792EA108FF00D13EA4 /* canvas_view_controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFF2256A2EA108FF00D13EA4 /* canvas_view_controller.cpp */; };
+		BFF2257A2EA108FF00D13EA4 /* main_window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFF2256E2EA108FF00D13EA4 /* main_window.cpp */; };
+		BFF2257B2EA108FF00D13EA4 /* main_view_controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFF2256C2EA108FF00D13EA4 /* main_view_controller.cpp */; };
+		BFF2257C2EA108FF00D13EA4 /* canvas_view.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFF225682EA108FF00D13EA4 /* canvas_view.cpp */; };
+		BFF2257D2EA108FF00D13EA4 /* toolbox_view_controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFF225702EA108FF00D13EA4 /* toolbox_view_controller.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		BF40B07E2E7F5A07000EB85D /* libboost_json.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_json.a; path = ../../../build/lib/libboost_json.a; sourceTree = "<group>"; };
+		BF40B09C2E83E127000EB85D /* libfreetype.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype.a; path = ../../../build/lib/libfreetype.a; sourceTree = "<group>"; };
+		BF40B09E2E849084000EB85D /* libharfbuzz.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libharfbuzz.a; path = ../../../build/lib/libharfbuzz.a; sourceTree = "<group>"; };
+		BF4BC3502EA2F910000B9174 /* zoom_view_controller.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = zoom_view_controller.hpp; sourceTree = "<group>"; };
+		BF4BC3512EA2F910000B9174 /* zoom_view_controller.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = zoom_view_controller.cpp; sourceTree = "<group>"; };
+		BF4BC3532EA37779000B9174 /* plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plus.png; sourceTree = "<group>"; };
+		BF4BC3A52EA37D63000B9174 /* minus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = minus.png; sourceTree = "<group>"; };
+		BF54B3AA2E697D0100F7D4F9 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
+		BF9757F22D6C7871000E9A16 /* osx-miro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "osx-miro.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF9759C82D6C9DA6000E9A16 /* libboden-gui.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboden-gui.a"; path = "../../../build/lib/libboden-gui.a"; sourceTree = "<group>"; };
+		BFF225572EA108FF00D13EA4 /* fonts-config.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "fonts-config.json"; sourceTree = "<group>"; };
+		BFF225582EA108FF00D13EA4 /* NotoSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSans-Regular.ttf"; sourceTree = "<group>"; };
+		BFF2255B2EA108FF00D13EA4 /* images-config.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "images-config.json"; sourceTree = "<group>"; };
+		BFF225602EA108FF00D13EA4 /* color.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = color.hpp; sourceTree = "<group>"; };
+		BFF225622EA108FF00D13EA4 /* memory.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = memory.hpp; sourceTree = "<group>"; };
+		BFF225642EA108FF00D13EA4 /* hover_button.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = hover_button.hpp; sourceTree = "<group>"; };
+		BFF225652EA108FF00D13EA4 /* hover_button.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = hover_button.cpp; sourceTree = "<group>"; };
+		BFF225672EA108FF00D13EA4 /* canvas_view.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = canvas_view.hpp; sourceTree = "<group>"; };
+		BFF225682EA108FF00D13EA4 /* canvas_view.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = canvas_view.cpp; sourceTree = "<group>"; };
+		BFF225692EA108FF00D13EA4 /* canvas_view_controller.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = canvas_view_controller.hpp; sourceTree = "<group>"; };
+		BFF2256A2EA108FF00D13EA4 /* canvas_view_controller.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = canvas_view_controller.cpp; sourceTree = "<group>"; };
+		BFF2256B2EA108FF00D13EA4 /* main_view_controller.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = main_view_controller.hpp; sourceTree = "<group>"; };
+		BFF2256C2EA108FF00D13EA4 /* main_view_controller.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main_view_controller.cpp; sourceTree = "<group>"; };
+		BFF2256D2EA108FF00D13EA4 /* main_window.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = main_window.hpp; sourceTree = "<group>"; };
+		BFF2256E2EA108FF00D13EA4 /* main_window.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main_window.cpp; sourceTree = "<group>"; };
+		BFF2256F2EA108FF00D13EA4 /* toolbox_view_controller.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = toolbox_view_controller.hpp; sourceTree = "<group>"; };
+		BFF225702EA108FF00D13EA4 /* toolbox_view_controller.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = toolbox_view_controller.cpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		BF9757F42D6C7871000E9A16 /* osx-miro */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "osx-miro";
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		BF9757EF2D6C7871000E9A16 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF40B09F2E849084000EB85D /* libharfbuzz.a in Frameworks */,
+				BF40B09D2E83E127000EB85D /* libfreetype.a in Frameworks */,
+				BF9759C92D6C9DA6000E9A16 /* libboden-gui.a in Frameworks */,
+				BF40B07F2E7F5A07000EB85D /* libboost_json.a in Frameworks */,
+				BF54B3AB2E697D0100F7D4F9 /* MetalKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BF9757E92D6C7871000E9A16 = {
+			isa = PBXGroup;
+			children = (
+				BF9757F42D6C7871000E9A16 /* osx-miro */,
+				BFF225712EA108FF00D13EA4 /* miro */,
+				BF9759C72D6C9DA6000E9A16 /* Frameworks */,
+				BF9757F32D6C7871000E9A16 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		BF9757F32D6C7871000E9A16 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BF9757F22D6C7871000E9A16 /* osx-miro.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BF9759C72D6C9DA6000E9A16 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BF40B09E2E849084000EB85D /* libharfbuzz.a */,
+				BF40B09C2E83E127000EB85D /* libfreetype.a */,
+				BF40B07E2E7F5A07000EB85D /* libboost_json.a */,
+				BF54B3AA2E697D0100F7D4F9 /* MetalKit.framework */,
+				BF9759C82D6C9DA6000E9A16 /* libboden-gui.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BFF225592EA108FF00D13EA4 /* fonts */ = {
+			isa = PBXGroup;
+			children = (
+				BFF225572EA108FF00D13EA4 /* fonts-config.json */,
+				BFF225582EA108FF00D13EA4 /* NotoSans-Regular.ttf */,
+			);
+			path = fonts;
+			sourceTree = "<group>";
+		};
+		BFF2255E2EA108FF00D13EA4 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				BF4BC3A52EA37D63000B9174 /* minus.png */,
+				BF4BC3532EA37779000B9174 /* plus.png */,
+				BFF2255B2EA108FF00D13EA4 /* images-config.json */,
+			);
+			path = images;
+			sourceTree = "<group>";
+		};
+		BFF2255F2EA108FF00D13EA4 /* resources */ = {
+			isa = PBXGroup;
+			children = (
+				BFF225592EA108FF00D13EA4 /* fonts */,
+				BFF2255E2EA108FF00D13EA4 /* images */,
+			);
+			path = resources;
+			sourceTree = "<group>";
+		};
+		BFF225612EA108FF00D13EA4 /* theme */ = {
+			isa = PBXGroup;
+			children = (
+				BFF225602EA108FF00D13EA4 /* color.hpp */,
+			);
+			path = theme;
+			sourceTree = "<group>";
+		};
+		BFF225632EA108FF00D13EA4 /* utils */ = {
+			isa = PBXGroup;
+			children = (
+				BFF225622EA108FF00D13EA4 /* memory.hpp */,
+			);
+			path = utils;
+			sourceTree = "<group>";
+		};
+		BFF225662EA108FF00D13EA4 /* widget */ = {
+			isa = PBXGroup;
+			children = (
+				BFF225642EA108FF00D13EA4 /* hover_button.hpp */,
+				BFF225652EA108FF00D13EA4 /* hover_button.cpp */,
+			);
+			path = widget;
+			sourceTree = "<group>";
+		};
+		BFF225712EA108FF00D13EA4 /* miro */ = {
+			isa = PBXGroup;
+			children = (
+				BFF2255F2EA108FF00D13EA4 /* resources */,
+				BFF225612EA108FF00D13EA4 /* theme */,
+				BFF225632EA108FF00D13EA4 /* utils */,
+				BFF225662EA108FF00D13EA4 /* widget */,
+				BFF225672EA108FF00D13EA4 /* canvas_view.hpp */,
+				BFF225682EA108FF00D13EA4 /* canvas_view.cpp */,
+				BFF225692EA108FF00D13EA4 /* canvas_view_controller.hpp */,
+				BFF2256A2EA108FF00D13EA4 /* canvas_view_controller.cpp */,
+				BFF2256B2EA108FF00D13EA4 /* main_view_controller.hpp */,
+				BFF2256C2EA108FF00D13EA4 /* main_view_controller.cpp */,
+				BFF2256D2EA108FF00D13EA4 /* main_window.hpp */,
+				BFF2256E2EA108FF00D13EA4 /* main_window.cpp */,
+				BFF2256F2EA108FF00D13EA4 /* toolbox_view_controller.hpp */,
+				BFF225702EA108FF00D13EA4 /* toolbox_view_controller.cpp */,
+				BF4BC3502EA2F910000B9174 /* zoom_view_controller.hpp */,
+				BF4BC3512EA2F910000B9174 /* zoom_view_controller.cpp */,
+			);
+			name = miro;
+			path = "/Users/kyung/git/boden-gui/app/miro";
+			sourceTree = "<absolute>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		BF9757F12D6C7871000E9A16 /* osx-miro */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BF9758052D6C7873000E9A16 /* Build configuration list for PBXNativeTarget "osx-miro" */;
+			buildPhases = (
+				BF9757EE2D6C7871000E9A16 /* Sources */,
+				BF9757EF2D6C7871000E9A16 /* Frameworks */,
+				BF9757F02D6C7871000E9A16 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				BF9757F42D6C7871000E9A16 /* osx-miro */,
+			);
+			name = "osx-miro";
+			packageProductDependencies = (
+			);
+			productName = "boden-gui-osx";
+			productReference = BF9757F22D6C7871000E9A16 /* osx-miro.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BF9757EA2D6C7871000E9A16 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastUpgradeCheck = 1640;
+				TargetAttributes = {
+					BF9757F12D6C7871000E9A16 = {
+						CreatedOnToolsVersion = 16.2;
+					};
+				};
+			};
+			buildConfigurationList = BF9757ED2D6C7871000E9A16 /* Build configuration list for PBXProject "osx-miro" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = BF9757E92D6C7871000E9A16;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = BF9757F32D6C7871000E9A16 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BF9757F12D6C7871000E9A16 /* osx-miro */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BF9757F02D6C7871000E9A16 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BFF225722EA108FF00D13EA4 /* NotoSans-Regular.ttf in Resources */,
+				BFF225732EA108FF00D13EA4 /* images-config.json in Resources */,
+				BF4BC3A62EA37D63000B9174 /* minus.png in Resources */,
+				BFF225772EA108FF00D13EA4 /* fonts-config.json in Resources */,
+				BF4BC3542EA37779000B9174 /* plus.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		BF9757EE2D6C7871000E9A16 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BFF225782EA108FF00D13EA4 /* hover_button.cpp in Sources */,
+				BF4BC3522EA2F910000B9174 /* zoom_view_controller.cpp in Sources */,
+				BFF225792EA108FF00D13EA4 /* canvas_view_controller.cpp in Sources */,
+				BFF2257A2EA108FF00D13EA4 /* main_window.cpp in Sources */,
+				BFF2257B2EA108FF00D13EA4 /* main_view_controller.cpp in Sources */,
+				BFF2257C2EA108FF00D13EA4 /* canvas_view.cpp in Sources */,
+				BFF2257D2EA108FF00D13EA4 /* toolbox_view_controller.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		BF9758032D6C7873000E9A16 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 5NJ6RQ9QCA;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		BF9758042D6C7873000E9A16 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 5NJ6RQ9QCA;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		BF9758062D6C7873000E9A16 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "osx-miro/osx-miro.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../deps/metal-cpp/**",
+					"$(SRCROOT)/../../../boden-gui/",
+					"$(SRCROOT)/../../../boden-gui/deps/harfbuzz/src",
+					"$(SRCROOT)/../../../boden-gui/deps/freetype/include",
+					"$(SRCROOT)/deps/metal-cpp/",
+					"$(SRCROOT)/../../../app",
+				);
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../../../build/lib";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.kartoffelsoft.osx-miro";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+			};
+			name = Debug;
+		};
+		BF9758072D6C7873000E9A16 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "osx-miro/osx-miro.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/../deps/metal-cpp/**",
+					"$(SRCROOT)/../../../boden-gui/",
+					"$(SRCROOT)/../../../boden-gui/deps/harfbuzz/src",
+					"$(SRCROOT)/../../../boden-gui/deps/freetype/include",
+					"$(SRCROOT)/deps/metal-cpp/",
+					"$(SRCROOT)/../../../app",
+				);
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../../../build/lib";
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.kartoffelsoft.osx-miro";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		BF9757ED2D6C7871000E9A16 /* Build configuration list for PBXProject "osx-miro" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BF9758032D6C7873000E9A16 /* Debug */,
+				BF9758042D6C7873000E9A16 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BF9758052D6C7873000E9A16 /* Build configuration list for PBXNativeTarget "osx-miro" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BF9758062D6C7873000E9A16 /* Debug */,
+				BF9758072D6C7873000E9A16 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BF9757EA2D6C7871000E9A16 /* Project object */;
+}

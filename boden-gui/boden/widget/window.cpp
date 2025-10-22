@@ -30,6 +30,11 @@ void window_t::order_front()
 {
 }
 
+void window_t::draw(boden::builder_t &builder)
+{
+    _content_view->draw_rect(builder, _content_view->get_frame());
+}
+
 void window_t::mouse_down(const boden::event_t &event)
 {
     auto target = _content_view->hit_test(event.location);
@@ -81,6 +86,14 @@ void window_t::key_up(const boden::event_t &event)
     }
 }
 
+void window_t::scroll_wheel(const boden::event_t &event)
+{
+    if(_first_responder)
+    {
+        _first_responder->scroll_wheel(event);
+    }
+}
+
 void window_t::set_backend(boden::backend_t *backend)
 {
     _backend = backend;
@@ -89,7 +102,7 @@ void window_t::set_backend(boden::backend_t *backend)
 void window_t::set_content_view(std::shared_ptr<boden::widget::view_t> view)
 {
     _content_view = view;
-    _content_view->set_window(this->shared_from_this());
+    _content_view->view_will_move_to_window(this->shared_from_this());
     _tracking_area_manager.set_content_view(_content_view);
 }
 
@@ -97,7 +110,6 @@ void window_t::set_content_view_controller(std::shared_ptr<boden::widget::view_c
 {
     _content_view_controller = ctrl;
     set_content_view(_content_view_controller->get_view());
-    _content_view_controller->load_view();
     make_first_responder(nullptr);
 }
 

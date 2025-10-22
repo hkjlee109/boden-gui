@@ -44,6 +44,10 @@ void responder_t::key_up(const boden::event_t &event)
 {
 }
 
+void responder_t::scroll_wheel(const boden::event_t &event)
+{
+}
+
 void responder_t::system_event(const boden::system_event_t &system_event)
 {
 }

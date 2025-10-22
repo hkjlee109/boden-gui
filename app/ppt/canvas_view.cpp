@@ -93,6 +93,14 @@ void canvas_view_t::mouse_up(const boden::event_t &event)
     }
 }
 
+void canvas_view_t::scroll_wheel(const boden::event_t &event)
+{
+    if(_delegate)
+    {
+        _delegate->did_canvas_view_scroll_wheel({event.scrolling_delta_x,event.scrolling_delta_y});
+    }
+}
+
 void canvas_view_t::set_delegate(ppt::canvas_view_delegate_t *delegate)
 {
     _delegate = delegate;

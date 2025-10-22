@@ -16,8 +16,6 @@ public:
 
     void order_front() override;
     
-    void draw(boden::builder_t &builder);
-
 private:
 };
 

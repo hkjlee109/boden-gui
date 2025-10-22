@@ -11,7 +11,7 @@ BODEN_GUI_BUILD_DIR := $(BUILD_DIR)/boden-gui
 BODEN_GUI_TARGET := $(BODEN_GUI_BUILD_DIR)/libboden-gui.a
 
 APP_DIR := ../../../app
-APP_SRCS := $(shell find $(APP_DIR) -name '*.cpp')
+APP_SRCS := $(shell find $(APP_DIR)/ppt -name '*.cpp')
 WWW_SRCS := $(shell find platform -name '*.cpp')
 
 all: $(BUILD_DIR) $(BODEN_GUI_TARGET) $(TARGET) copy-resources
@@ -61,5 +61,7 @@ copy-resources:
 clean:
 	rm -rf $(BUILD_DIR)
 	rm -rf $(TARGET_DIR)
+	rm -rf images
+	rm -rf fonts
 
 .PHONY: all clean $(TARGET)

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <boden/layout/size.hpp>
 #include <boden/gpu/texture_manager.hpp>
 #include <optional>
 #include <string>
@@ -13,7 +14,8 @@ public:
     image_manager_t();
     ~image_manager_t();
 
-    std::optional<boden::gpu::texture_id_t> get_texture_id(const std::string &key);
+    std::optional<boden::gpu::texture_id_t> get_texture_id(const std::string &key) const;
+    boden::layout::size_t get_texture_size(const std::string &key) const;
     void set_texture_manager(boden::gpu::texture_manager_t *manager);
     bool load(const std::string &key, const std::string &full_path);
 

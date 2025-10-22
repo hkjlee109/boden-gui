@@ -20,7 +20,7 @@ button_t::~button_t()
 {
 }
 
-void button_t::draw(boden::builder_t &builder)
+void button_t::draw_rect(boden::builder_t &builder, const boden::layout::rect_t &dirty_rect)
 {
     if(_hidden) 
     {
@@ -29,11 +29,12 @@ void button_t::draw(boden::builder_t &builder)
 
     boden::layout::point_t origin = convert_point_to_view({0, 0}, nullptr);
     boden::layout::rect_t frame{origin, _frame.size};
-    
-    builder.push_clip_rect({frame.origin.x - layer.border_width, 
-                            frame.origin.y - layer.border_width, 
-                            frame.size.width + layer.border_width * 2, 
-                            frame.size.height + layer.border_width * 2});
+    boden::layout::rect_t clip_rect{origin + dirty_rect.origin, dirty_rect.size};
+
+    builder.push_clip_rect({clip_rect.origin.x - layer.border_width, 
+                            clip_rect.origin.y - layer.border_width, 
+                            clip_rect.size.width + layer.border_width * 2, 
+                            clip_rect.size.height + layer.border_width * 2});
 
     builder.add_rect_filled({frame.origin.x, frame.origin.y}, 
                             {frame.origin.x + frame.size.width, frame.origin.y + frame.size.height},
@@ -47,6 +48,13 @@ void button_t::draw(boden::builder_t &builder)
         float width = 0;
         float height = 0;
 
+        frame = frame.inset_by(_image_edge_insets);
+
+        if(_image->size.width == 0 || _image->size.width == 0)
+        {
+            _image->size = builder.get_image_manager()->get_texture_size(_image->key);
+        }
+
         switch(_image_scaling)
         {
             case image_scaling_t::scale_none:
@@ -55,13 +63,32 @@ void button_t::draw(boden::builder_t &builder)
                 width = _image->size.width;
                 height = _image->size.height;
                 break;
+
+            case image_scaling_t::scale_proportionally_down:
+            {
+                float scale = 1.0f;
+                if(_image->size.width > frame.size.width || 
+                   _image->size.height > frame.size.height) 
+                {
+                    float scale_x = frame.size.width / _image->size.width;
+                    float scale_y = frame.size.height / _image->size.height;
+                    scale = std::min(scale_x, scale_y);
+                }
+
+                width = _image->size.width * scale;
+                height = _image->size.height * scale;
+                x = frame.mid_x() - width / 2;
+                y = frame.mid_y() - height / 2;
+                break;
+            }
+
             default:
                 break;
         }
     
         builder.add_image(_image->key, 
-                          {frame.origin.x, frame.origin.y}, 
-                          {frame.origin.x + frame.size.width, frame.origin.y + frame.size.height},
+                          {x, y}, 
+                          {x + width, y + height},
                           _content_tint_color);
     }
 
@@ -92,6 +119,11 @@ void button_t::set_content_tint_color(const boden::layout::color_t &color)
 void button_t::set_image(std::shared_ptr<boden::widget::base::image_t> image)
 {
     _image = image;
+}
+
+void button_t::set_image_edge_insets(const boden::layout::edge_insets_t &insets)
+{
+    _image_edge_insets = insets;
 }
 
 void button_t::set_image_position(image_position_t position)

@@ -19,7 +19,7 @@ image_view_t::~image_view_t()
 {
 }
 
-void image_view_t::draw(boden::builder_t &builder)
+void image_view_t::draw_rect(boden::builder_t &builder, const boden::layout::rect_t &dirty_rect)
 {
     if(_hidden) 
     {
@@ -28,8 +28,9 @@ void image_view_t::draw(boden::builder_t &builder)
     
     boden::layout::point_t origin = convert_point_to_view({0, 0}, nullptr);
     boden::layout::rect_t frame{origin, _frame.size};
-
-    builder.push_clip_rect({frame.origin.x, frame.origin.y, frame.size.width, frame.size.height});
+    boden::layout::rect_t clip_rect{origin + dirty_rect.origin, dirty_rect.size};
+        
+    builder.push_clip_rect(clip_rect);
     
     builder.add_image(_image->key, 
                       {frame.origin.x, frame.origin.y}, 

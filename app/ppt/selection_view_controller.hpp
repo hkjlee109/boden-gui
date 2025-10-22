@@ -12,9 +12,10 @@ class selection_view_controller_t : public boden::widget::view_controller_t
 {
 public:
     selection_view_controller_t();
-    selection_view_controller_t(const boden::layout::rect_t &frame);
     ~selection_view_controller_t();
-
+    
+    void load_view() override;
+    
     void add(std::shared_ptr<boden::widget::view_t> view);
     void remove(std::shared_ptr<boden::widget::view_t> view);
     void remove_all();

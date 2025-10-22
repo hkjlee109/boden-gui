@@ -2,6 +2,7 @@
 
 #include <boden/layout/point.hpp>
 #include <boden/layout/rect.hpp>
+#include <boden/layout/vec.hpp>
 #include <boden/widget/view.hpp>
 #include <memory>
 
@@ -16,6 +17,7 @@ public:
     virtual void did_canvas_view_mouse_down(const boden::layout::point_t &location) = 0;
     virtual void did_canvas_view_mouse_dragged(const boden::layout::point_t &location) = 0;
     virtual void did_canvas_view_mouse_up(const boden::layout::point_t &location) = 0;
+    virtual void did_canvas_view_scroll_wheel(const boden::layout::vec2_t &delta) = 0;
     virtual ~canvas_view_delegate_t() = default;
 };
 
@@ -34,6 +36,7 @@ public:
     void mouse_down(const boden::event_t &event) override;
     void mouse_dragged(const boden::event_t &event) override;
     void mouse_up(const boden::event_t &event) override;
+    void scroll_wheel(const boden::event_t &event) override;
 
     void set_delegate(ppt::canvas_view_delegate_t *delegate);
 

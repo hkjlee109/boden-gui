@@ -16,8 +16,7 @@ public:
     label_t(const boden::layout::rect_t &frame);
     ~label_t() override;
     
-    void draw(boden::builder_t &builder) override;
-    
+    void draw_rect(boden::builder_t &builder, const boden::layout::rect_t &dirty_rect) override;
     void set_text(const std::string &text);
     void set_text_color(const boden::layout::color_t &color);
     

@@ -1,0 +1,1 @@
+export { useWindowSize } from './hooks/use-window-size';

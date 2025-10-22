@@ -15,8 +15,7 @@ public:
     image_view_t(const boden::layout::rect_t &frame);
     ~image_view_t() override;
     
-    void draw(boden::builder_t &builder) override;
-
+    void draw_rect(boden::builder_t &builder, const boden::layout::rect_t &dirty_rect) override;
     void set_image(std::unique_ptr<boden::widget::base::image_t> image);
     void set_tint_color(const boden::layout::color_t &color);
 

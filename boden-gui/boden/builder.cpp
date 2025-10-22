@@ -28,6 +28,11 @@ void builder_t::set_font_manager(boden::font::font_manager_t *_manager)
     _font_manager = _manager;
 }
 
+const boden::asset::image_manager_t * builder_t::get_image_manager() const
+{
+    return _image_manager;
+}
+
 void builder_t::set_image_manager(boden::asset::image_manager_t *_manager)
 {
     _image_manager = _manager;
@@ -65,19 +70,17 @@ void builder_t::add_rect_filled(const boden::layout::vec2_t &p1,
 
     boden::layout::vec2_t top_left = {p1.x + r, p1.y + r};
     boden::layout::vec2_t top_right = {p2.x - r, p1.y + r};
-    boden::layout::vec2_t bottom_right = {p2.x - r, p2.y - r};
     boden::layout::vec2_t bottom_left = {p1.x + r, p2.y - r};
+    boden::layout::vec2_t bottom_right = {p2.x - r, p2.y - r};
 
     _batch->vertices.emplace_back(top_left, boden::layout::vec2_t{0, 0}, color);
     _batch->vertices.emplace_back(top_right, boden::layout::vec2_t{0, 0}, color);
-    _batch->vertices.emplace_back(bottom_right, boden::layout::vec2_t{0, 0}, color);
     _batch->vertices.emplace_back(bottom_left, boden::layout::vec2_t{0, 0}, color);
+    _batch->vertices.emplace_back(bottom_right, boden::layout::vec2_t{0, 0}, color);
 
     _batch->indices.insert(_batch->indices.end(), {vertex_buffer_offset + 0, 
                                                    vertex_buffer_offset + 1, 
                                                    vertex_buffer_offset + 2,
-                                                   vertex_buffer_offset + 0, 
-                                                   vertex_buffer_offset + 2, 
                                                    vertex_buffer_offset + 3});
 
     _batch->commands.back().count = _batch->indices.size() - index_buffer_offset;
@@ -167,8 +170,6 @@ void builder_t::add_polyline(const std::vector<boden::layout::vec2_t> &path,
 
         _batch->indices.insert(_batch->indices.end(), {vertex_buffer_offset + 0,
                                                        vertex_buffer_offset + 1,
-                                                       vertex_buffer_offset + 2});
-        _batch->indices.insert(_batch->indices.end(), {vertex_buffer_offset + 1,
                                                        vertex_buffer_offset + 2,
                                                        vertex_buffer_offset + 3});
     }
@@ -203,11 +204,9 @@ void builder_t::add_image(const std::string &key,
                                   color);
 
     _batch->indices.insert(_batch->indices.end(), {vertex_buffer_offset + 0,
-                                                  vertex_buffer_offset + 1,
-                                                  vertex_buffer_offset + 2});
-    _batch->indices.insert(_batch->indices.end(), {vertex_buffer_offset + 1,
-                                                  vertex_buffer_offset + 2,
-                                                  vertex_buffer_offset + 3});
+                                                   vertex_buffer_offset + 1,
+                                                   vertex_buffer_offset + 2,
+                                                   vertex_buffer_offset + 3});
 
     _batch->commands.back().count = _batch->indices.size() - index_buffer_offset;
 }
@@ -260,8 +259,6 @@ void builder_t::add_text(const std::string &text,
 
         _batch->indices.insert(_batch->indices.end(), {vertex_buffer_offset + 0,
                                                        vertex_buffer_offset + 1,
-                                                       vertex_buffer_offset + 2});
-        _batch->indices.insert(_batch->indices.end(), {vertex_buffer_offset + 1,
                                                        vertex_buffer_offset + 2,
                                                        vertex_buffer_offset + 3});
 

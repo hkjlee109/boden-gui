@@ -14,7 +14,7 @@ public:
     rectangle_t(const boden::layout::rect_t &frame);
     ~rectangle_t() override;
 
-    void draw(boden::builder_t &builder) override;
+    void draw_rect(boden::builder_t &builder, const boden::layout::rect_t &dirty_rect) override;
 
 private:
 };

@@ -31,9 +31,12 @@ public:
 
     boden::widget::base::layer_t layer;
     
-    virtual void draw(boden::builder_t &builder);
+    virtual void draw_rect(boden::builder_t &builder, const boden::layout::rect_t &dirty_rect);
     virtual std::shared_ptr<boden::widget::view_t> hit_test(boden::layout::point_t point);
     virtual void did_add_subview(const boden::widget::view_t *view);
+    virtual void view_will_move_to_window(std::shared_ptr<boden::widget::window_t> window);
+
+    const boden::layout::rect_t & get_bounds() const;
 
     const boden::layout::rect_t & get_frame() const;
     void set_frame(const boden::layout::rect_t& frame);
@@ -68,6 +71,7 @@ public:
 
     boden::layout::point_t convert_point_to_view(const boden::layout::point_t &point, 
                                                  const boden::widget::view_t *to_view) const;
+
     void layout_if_needed();
     void layout_subviews();
                                      
@@ -76,8 +80,10 @@ public:
 protected:
     boden::layout::rect_t _bounds;
     boden::layout::rect_t _frame;
+    boden::layout::rect_t _dirty_rect;
     uint32_t _tag;
     bool _hidden;
+    bool _needs_display;
     bool _needs_layout;
 
     std::vector<std::shared_ptr<boden::widget::view_t>> _subviews;

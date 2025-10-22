@@ -1,9 +1,6 @@
 [submodule "boden-gui/tools/googletest"]
 	path = boden-gui/tools/googletest
 	url = https://github.com/google/googletest
-[submodule "projects/www/deps/emsdk"]
-	path = projects/www/deps/emsdk
-	url = https://github.com/emscripten-core/emsdk
 [submodule "boden-gui/deps/boost"]
 	path = boden-gui/deps/boost
 	url = https://github.com/boostorg/boost
@@ -13,3 +10,6 @@
 [submodule "boden-gui/deps/harfbuzz"]
 	path = boden-gui/deps/harfbuzz
 	url = https://github.com/harfbuzz/harfbuzz
+[submodule "projects/www/deps/emsdk"]
+	path = projects/www/deps/emsdk
+	url = https://github.com/emscripten-core/emsdk
