@@ -5,7 +5,7 @@
 namespace platform {
 
 mtl_texture_manager_t::mtl_texture_manager_t(MTL::Device *device)
-    : boden::gpu::texture_manager_t(),
+    : boden::graphic::texture_manager_t(),
       _device{device}
 {
 }
@@ -33,7 +33,7 @@ mtl_texture_manager_t::~mtl_texture_manager_t()
     _textures.clear();
 }
 
-void mtl_texture_manager_t::bake(boden::gpu::gpu_texture_handle_t gpu_texture_handle,
+void mtl_texture_manager_t::bake(boden::graphic::gpu_texture_handle_t gpu_texture_handle,
                                  boden::layout::rect_t rect,
                                  const uint8_t *bytes,
                                  size_t length,
@@ -51,7 +51,7 @@ void mtl_texture_manager_t::bake(boden::gpu::gpu_texture_handle_t gpu_texture_ha
                            rect.size.width * number_of_channels);
 }
 
-boden::gpu::gpu_texture_handle_t mtl_texture_manager_t::create_gpu_texture(boden::layout::size_t size, 
+boden::graphic::gpu_texture_handle_t mtl_texture_manager_t::create_gpu_texture(boden::layout::size_t size, 
                                                                            uint8_t number_of_channels)
 {
     MTL::PixelFormat pixel_format;
@@ -76,7 +76,7 @@ boden::gpu::gpu_texture_handle_t mtl_texture_manager_t::create_gpu_texture(boden
     desc->setHeight(size.height);
     desc->setMipmapLevelCount(1);
     
-    return reinterpret_cast<boden::gpu::gpu_texture_handle_t>(_device->newTexture(desc));
+    return reinterpret_cast<boden::graphic::gpu_texture_handle_t>(_device->newTexture(desc));
 }
 
 } // platform

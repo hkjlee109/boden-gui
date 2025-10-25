@@ -14,7 +14,7 @@ void renderer_t::render(boden::context_t &ctx)
 {
 }
 
-void renderer_t::set_texture_manager(boden::gpu::texture_manager_t *manager)
+void renderer_t::set_texture_manager(boden::graphic::texture_manager_t *manager)
 {
     _texture_manager = manager;
 }

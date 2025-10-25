@@ -3,9 +3,9 @@
 #include <cstdint>
 
 namespace boden {
-namespace gpu {
+namespace graphic {
 
 using gpu_texture_handle_t = uint64_t;
 
-} // gpu
+} // graphic
 } // boden

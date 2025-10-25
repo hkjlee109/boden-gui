@@ -18,7 +18,7 @@ const boden::font::font_metrics_t & font_manager_t::get_font_metrics() const
     return _font_atlases[0]->get_font_metrics();
 }
 
-void font_manager_t::set_texture_manager(boden::gpu::texture_manager_t *manager)
+void font_manager_t::set_texture_manager(boden::graphic::texture_manager_t *manager)
 {
     _texture_manager = manager;
     

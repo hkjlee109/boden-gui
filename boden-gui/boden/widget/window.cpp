@@ -122,9 +122,29 @@ void window_t::set_needs_display(bool needs)
     }
 }
 
-void window_t::set_texture_manager(boden::gpu::texture_manager_t *texture_manager)
+void window_t::set_texture_manager(boden::graphic::texture_manager_t *texture_manager)
 {
     _texture_manager = texture_manager;
+}
+
+boden::graphic::texture_id_t window_t::create_view_texture(const boden::layout::size_t &size)
+{
+    if(_texture_manager == nullptr)
+    {
+        return 0;
+    }
+
+    return _texture_manager->create(size, 4);
+}
+
+void window_t::destroy_view_texture(boden::graphic::texture_id_t tid)
+{
+    if(_texture_manager == nullptr)
+    {
+        return;
+    }
+
+    return _texture_manager->destroy(tid);
 }
 
 void window_t::system(const boden::system_event_t &system_event)

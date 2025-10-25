@@ -1,7 +1,7 @@
 #pragma once
 
 #include <boden/font/glyph_texture.hpp>
-#include <boden/gpu/texture_id.hpp>
+#include <boden/graphic/texture_id.hpp>
 
 namespace boden {
 namespace font {

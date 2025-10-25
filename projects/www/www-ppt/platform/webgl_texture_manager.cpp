@@ -18,7 +18,7 @@ extern uint32_t em_create_gpu_texture(float_t width, float_t height);
 } // "C"
 
 webgl_texture_manager_t::webgl_texture_manager_t()
-    : boden::gpu::texture_manager_t()
+    : boden::graphic::texture_manager_t()
 {
 }
 
@@ -26,7 +26,7 @@ webgl_texture_manager_t::~webgl_texture_manager_t()
 {
 }
 
-void webgl_texture_manager_t::bake(boden::gpu::gpu_texture_handle_t gpu_texture_handle,
+void webgl_texture_manager_t::bake(boden::graphic::gpu_texture_handle_t gpu_texture_handle,
                                    boden::layout::rect_t rect,
                                    const uint8_t *bytes,
                                    size_t length,
@@ -42,8 +42,8 @@ void webgl_texture_manager_t::bake(boden::gpu::gpu_texture_handle_t gpu_texture_
             number_of_channels);
 }
     
-boden::gpu::gpu_texture_handle_t webgl_texture_manager_t::create_gpu_texture(boden::layout::size_t size,
-                                                                             uint8_t number_of_channels)
+boden::graphic::gpu_texture_handle_t webgl_texture_manager_t::create_gpu_texture(boden::layout::size_t size,
+                                                                                 uint8_t number_of_channels)
 {
     return (uint64_t)em_create_gpu_texture(size.width, size.height);
 }

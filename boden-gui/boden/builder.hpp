@@ -3,7 +3,7 @@
 #include <boden/batch.hpp>
 #include <boden/asset/image_manager.hpp>
 #include <boden/font/font_manager.hpp>
-#include <boden/gpu/texture_id.hpp>
+#include <boden/graphic/texture_id.hpp>
 #include <boden/layout/color.hpp>
 #include <boden/layout/rect.hpp>
 #include <boden/layout/vec.hpp>

@@ -3,7 +3,8 @@
 #include <boden/backend.hpp>
 #include <boden/builder.hpp>
 #include <boden/layout/rect.hpp>
-#include <boden/gpu/texture_manager.hpp>
+#include <boden/graphic/texture_id.hpp>
+#include <boden/graphic/texture_manager.hpp>
 #include <boden/system_event.hpp>
 #include <boden/tracking_area_manager.hpp>
 #include <boden/widget/base/responder.hpp>
@@ -26,7 +27,6 @@ public:
     virtual void order_front();
     virtual void draw(boden::builder_t &builder);
 
-
     void mouse_down(const boden::event_t &system_event) override;
     void mouse_dragged(const boden::event_t &system_event) override;
     void mouse_moved(const boden::event_t &system_event) override;
@@ -39,7 +39,10 @@ public:
     void set_content_view(std::shared_ptr<boden::widget::view_t> view);
     void set_content_view_controller(std::shared_ptr<boden::widget::view_controller_t> ctrl);
     void set_needs_display(bool needs);
-    void set_texture_manager(boden::gpu::texture_manager_t *texture_manager);
+    void set_texture_manager(boden::graphic::texture_manager_t *texture_manager);
+
+    boden::graphic::texture_id_t create_view_texture(const boden::layout::size_t &size);
+    void destroy_view_texture(boden::graphic::texture_id_t tid);
 
     void system(const boden::system_event_t &system_event);
     void enqueue_system_event(const boden::system_event_t &system_event);
@@ -52,7 +55,7 @@ protected:
     std::shared_ptr<boden::widget::base::responder_t> _first_responder;
 
     boden::backend_t *_backend;
-    boden::gpu::texture_manager_t *_texture_manager;
+    boden::graphic::texture_manager_t *_texture_manager;
     boden::tracking_area_manager_t _tracking_area_manager;
 };
 

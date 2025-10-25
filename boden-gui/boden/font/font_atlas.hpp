@@ -3,8 +3,8 @@
 #include <boden/font/font_metrics.hpp>
 #include <boden/font/glyph_render_info.hpp>
 #include <boden/font/rect_packer.hpp>
-#include <boden/gpu/texture_id.hpp>
-#include <boden/gpu/texture_manager.hpp>
+#include <boden/graphic/texture_id.hpp>
+#include <boden/graphic/texture_manager.hpp>
 
 #include <ft2build.h>
 #include FT_FREETYPE_H
@@ -24,7 +24,7 @@ public:
     ~font_atlas_t();
 
     const boden::font::font_metrics_t & get_font_metrics() const;
-    void set_texture_manager(boden::gpu::texture_manager_t *manager);
+    void set_texture_manager(boden::graphic::texture_manager_t *manager);
 
     void collect_glyph_render_info(const std::string &text, 
                                    std::vector<boden::font::glyph_render_info_t> &out);
@@ -32,12 +32,12 @@ public:
     void load_font(const uint8_t *bytes, size_t size);
 
 private:
-    boden::gpu::texture_id_t _tid;
+    boden::graphic::texture_id_t _tid;
     boden::layout::size_t _size;
     boden::font::font_metrics_t _metrics;
 
     boden::font::rect_packer_t _rect_packer;
-    boden::gpu::texture_manager_t *_texture_manager;
+    boden::graphic::texture_manager_t *_texture_manager;
     std::unordered_map<uint32_t, boden::font::glyph_texture_t> _glyph_textures;
 
     std::vector<uint8_t> _font_data;

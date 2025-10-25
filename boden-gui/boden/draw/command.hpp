@@ -1,6 +1,6 @@
 #pragma once
 
-#include <boden/gpu/texture_id.hpp>
+#include <boden/graphic/texture_id.hpp>
 #include <boden/layout/rect.hpp>
 #include <cstdint>
 
@@ -14,7 +14,7 @@ struct command_t
                         uint32_t _index_buffer_offset,
                         uint32_t _vertex_buffer_offset,
                         const boden::layout::rect_t &_clip_rect,
-                        boden::gpu::texture_id_t _texture_id = 0)
+                        boden::graphic::texture_id_t _texture_id = 0)
         : count{_count},
           index_buffer_offset{_index_buffer_offset},
           vertex_buffer_offset{_vertex_buffer_offset},
@@ -26,7 +26,7 @@ struct command_t
     uint32_t vertex_buffer_offset;
 
     boden::layout::rect_t clip_rect;
-    boden::gpu::texture_id_t texture_id;
+    boden::graphic::texture_id_t texture_id;
 };
 
 } // draw

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <boden/graphic/texture_id.hpp>
 #include <boden/layout/color.hpp>
 
 namespace boden {
@@ -16,6 +17,8 @@ public:
     boden::layout::color_t border_color;
     float border_width;
     float corner_radius;
+
+    boden::graphic::texture_id_t tid;
 };
 
 } // base

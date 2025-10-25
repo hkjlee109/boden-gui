@@ -157,7 +157,7 @@ addToLibrary({
          * uint32_t index_buffer_offset;
          * uint32_t vertex_buffer_offset;
          * boden::layout::rect_t clip_rect;
-         * boden::gpu::texture_id_t texture_id;
+         * boden::graphic::texture_id_t texture_id;
          */
         let commands = [];
         for(let i = 0; i < commands_count; i++) {

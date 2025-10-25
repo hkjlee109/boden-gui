@@ -1,9 +1,9 @@
 #include "texture_manager.hpp"
 
 namespace boden {
-namespace gpu {
+namespace graphic {
 
-texture_t::texture_t(boden::gpu::texture_id_t _id,  
+texture_t::texture_t(boden::graphic::texture_id_t _id,  
                      boden::layout::size_t _size,
                      uint8_t _number_of_channels)
     : id{_id},
@@ -12,12 +12,19 @@ texture_t::texture_t(boden::gpu::texture_id_t _id,
       needs_update{false},
       gpu_texture_handle{0}
 {
-    data.resize(size.height * size.width * number_of_channels);
 }
 
 texture_t::~texture_t()
 {
 }
 
-} // gpu
+void texture_t::alloc_data_if_needed()
+{
+    if(data.size() == 0)
+    {
+        data.resize(size.width * size.height * number_of_channels);
+    }
+}
+
+} // graphic
 } // boden

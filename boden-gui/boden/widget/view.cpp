@@ -23,6 +23,13 @@ view_t::view_t(const boden::layout::rect_t &frame)
 
 view_t::~view_t()
 {
+    if(layer.tid)
+    {
+        if(auto window = _window.lock()) 
+        {
+            window->destroy_view_texture(layer.tid);
+        }
+    }
 }
 
 void view_t::draw_rect(boden::builder_t &builder, const boden::layout::rect_t &dirty_rect)
@@ -102,6 +109,11 @@ void view_t::did_add_subview(const boden::widget::view_t *view)
 void view_t::view_will_move_to_window(std::shared_ptr<boden::widget::window_t> window)
 {
     _window = window;
+
+    if(layer.tid == 0)
+    {
+        layer.tid = window->create_view_texture(_bounds.size);
+    }
 
     for(auto subview : _subviews)
     {
