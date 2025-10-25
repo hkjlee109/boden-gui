@@ -54,6 +54,8 @@ void mtl_renderer_t::render(boden::context_t &ctx)
         return;
     }
     
+    _texture_manager->cleanup_unused_texture();
+
     CA::MetalDrawable *surface = reinterpret_cast<CA::MetalDrawable *>(ctx.surface_handle);
 
     MTL::CommandBuffer *command_buffer = _command_queue->commandBuffer();

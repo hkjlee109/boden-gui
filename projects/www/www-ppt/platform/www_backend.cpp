@@ -36,6 +36,7 @@ www_backend_t::www_backend_t()
 
     _window = std::make_shared<ppt::main_window_t>(boden::layout::rect_t{0, 0, 640, 480});
     _window->set_backend(this);
+    _window->set_texture_manager(&_webgl_texture_manager);
     _window->order_front();
 }
 

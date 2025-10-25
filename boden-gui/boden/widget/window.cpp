@@ -122,6 +122,11 @@ void window_t::set_needs_display(bool needs)
     }
 }
 
+void window_t::set_texture_manager(boden::gpu::texture_manager_t *texture_manager)
+{
+    _texture_manager = texture_manager;
+}
+
 void window_t::system(const boden::system_event_t &system_event)
 {
     if(_first_responder)

@@ -45,11 +45,6 @@ std::shared_ptr<boden::widget::view_t> view_controller_t::get_view()
     return _view;
 }
 
-void view_controller_t::set_backend(boden::backend_t *backend)
-{
-    _backend = backend;
-}
-
 void view_controller_t::set_parent(std::shared_ptr<boden::widget::view_controller_t> ctrl)
 {
     _parent = ctrl;

@@ -25,7 +25,6 @@ public:
 
     std::shared_ptr<boden::widget::view_t> get_view();
 
-    void set_backend(boden::backend_t *backend);
     void set_parent(std::shared_ptr<boden::widget::view_controller_t> ctrl);
     
     void add_child_view_controller(std::shared_ptr<boden::widget::view_controller_t> ctrl);

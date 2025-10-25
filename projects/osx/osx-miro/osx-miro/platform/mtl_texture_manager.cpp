@@ -75,8 +75,14 @@ boden::gpu::gpu_texture_handle_t mtl_texture_manager_t::create_gpu_texture(boden
     desc->setWidth(size.width);
     desc->setHeight(size.height);
     desc->setMipmapLevelCount(1);
+    MTL::Texture *texture = _device->newTexture(desc);
+    desc->release();
     
-    return reinterpret_cast<boden::gpu::gpu_texture_handle_t>(_device->newTexture(desc));
+    return reinterpret_cast<boden::gpu::gpu_texture_handle_t>(texture);
+}
+
+void mtl_texture_manager_t::destroy_gpu_texture(boden::gpu::gpu_texture_handle_t handle)
+{
 }
 
 } // platform

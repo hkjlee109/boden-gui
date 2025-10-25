@@ -20,6 +20,7 @@ public:
     
     boden::gpu::gpu_texture_handle_t create_gpu_texture(boden::layout::size_t size, 
                                                         uint8_t number_of_channels) override;
+    void destroy_gpu_texture(boden::gpu::gpu_texture_handle_t handle) override;
     
 private:
     MTL::Device *_device;

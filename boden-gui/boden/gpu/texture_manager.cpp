@@ -81,6 +81,16 @@ texture_id_t texture_manager_t::create(boden::layout::size_t size,
     return _last_texture_id;
 }
 
+void texture_manager_t::destroy(texture_id_t tid)
+{
+    auto it = _textures.find(tid);
+    if (it != _textures.end())
+    {
+        _unused_textures.push_back(std::move(it->second));
+        _textures.erase(it);
+    }
+}
+
 bool texture_manager_t::load(boden::gpu::texture_id_t tid, 
                              boden::layout::rect_t rect,
                              const uint8_t *bytes, 
@@ -110,6 +120,23 @@ bool texture_manager_t::load(boden::gpu::texture_id_t tid,
 
     texture.needs_update = true;
     return true;
+}
+
+void texture_manager_t::cleanup_unused_texture()
+{
+    if(_unused_textures.empty())
+    {
+        return;
+    }
+    
+    for(auto &texure : _unused_textures)
+    {
+        if(texure && texure->gpu_texture_handle)
+        {
+            destroy_gpu_texture(texure->gpu_texture_handle);
+        }
+    }
+    _unused_textures.clear();
 }
 
 } // gpu
