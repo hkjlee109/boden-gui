@@ -26,18 +26,17 @@ void button_t::draw_rect(boden::builder_t &builder, const boden::layout::rect_t 
     {
         return;
     }
+    
+    if(layer.tid == 0)
+    {
+        return;
+    }
 
-    boden::layout::point_t origin = convert_point_to_view({0, 0}, nullptr);
-    boden::layout::rect_t frame{origin, _frame.size};
-    boden::layout::rect_t clip_rect{origin + dirty_rect.origin, dirty_rect.size};
+    boden::layout::rect_t frame_in_window = convert_rect_to_view(_bounds, nullptr);
 
-    builder.push_clip_rect({clip_rect.origin.x - layer.border_width, 
-                            clip_rect.origin.y - layer.border_width, 
-                            clip_rect.size.width + layer.border_width * 2, 
-                            clip_rect.size.height + layer.border_width * 2});
-
-    builder.add_rect_filled({frame.origin.x, frame.origin.y}, 
-                            {frame.origin.x + frame.size.width, frame.origin.y + frame.size.height},
+    builder.begin(layer.tid, frame_in_window, dirty_rect);
+    builder.add_rect_filled({_bounds.origin.x, _bounds.origin.y}, 
+                            {_bounds.origin.x + _bounds.size.width, _bounds.origin.y + _bounds.size.height},
                             layer.background_color, 
                             layer.corner_radius);
 
@@ -48,7 +47,7 @@ void button_t::draw_rect(boden::builder_t &builder, const boden::layout::rect_t 
         float width = 0;
         float height = 0;
 
-        frame = frame.inset_by(_image_edge_insets);
+        boden::layout::rect_t bounds = _bounds.inset_by(_image_edge_insets);
 
         if(_image->size.width == 0 || _image->size.width == 0)
         {
@@ -58,8 +57,8 @@ void button_t::draw_rect(boden::builder_t &builder, const boden::layout::rect_t 
         switch(_image_scaling)
         {
             case image_scaling_t::scale_none:
-                x = frame.mid_x() - _image->size.width / 2;
-                y = frame.mid_y() - _image->size.height / 2;
+                x = bounds.mid_x() - _image->size.width / 2;
+                y = bounds.mid_y() - _image->size.height / 2;
                 width = _image->size.width;
                 height = _image->size.height;
                 break;
@@ -67,18 +66,18 @@ void button_t::draw_rect(boden::builder_t &builder, const boden::layout::rect_t 
             case image_scaling_t::scale_proportionally_down:
             {
                 float scale = 1.0f;
-                if(_image->size.width > frame.size.width || 
-                   _image->size.height > frame.size.height) 
+                if(_image->size.width > bounds.size.width || 
+                   _image->size.height > bounds.size.height) 
                 {
-                    float scale_x = frame.size.width / _image->size.width;
-                    float scale_y = frame.size.height / _image->size.height;
+                    float scale_x = bounds.size.width / _image->size.width;
+                    float scale_y = bounds.size.height / _image->size.height;
                     scale = std::min(scale_x, scale_y);
                 }
 
                 width = _image->size.width * scale;
                 height = _image->size.height * scale;
-                x = frame.mid_x() - width / 2;
-                y = frame.mid_y() - height / 2;
+                x = bounds.mid_x() - width / 2;
+                y = bounds.mid_y() - height / 2;
                 break;
             }
 
@@ -94,16 +93,13 @@ void button_t::draw_rect(boden::builder_t &builder, const boden::layout::rect_t 
 
     if(layer.border_width > 0)
     {
-        boden::layout::point_t origin = convert_point_to_view({0, 0}, nullptr);
-        boden::layout::rect_t frame{origin, _frame.size};
-    
-        builder.add_rect({frame.origin.x, frame.origin.y}, 
-                         {frame.origin.x + frame.size.width, frame.origin.y + frame.size.height},
+        builder.add_rect({_bounds.origin.x, _bounds.origin.y}, 
+                         {_bounds.origin.x + _bounds.size.width, _bounds.origin.y + _bounds.size.height},
                          layer.border_color,
                          layer.border_width);
     }
 
-    builder.pop_clip_rect();
+    builder.end();
 }
 
 void button_t::mouse_down(const boden::event_t &ev)

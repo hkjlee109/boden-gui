@@ -71,6 +71,8 @@ public:
 
     boden::layout::point_t convert_point_to_view(const boden::layout::point_t &point, 
                                                  const boden::widget::view_t *to_view) const;
+    boden::layout::rect_t convert_rect_to_view(const boden::layout::rect_t &rect,
+                                               const boden::widget::view_t *to_view) const;
 
     void layout_if_needed();
     void layout_subviews();

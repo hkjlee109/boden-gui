@@ -62,7 +62,7 @@ boden::graphic::gpu_texture_handle_t mtl_texture_manager_t::create_gpu_texture(b
         break;
     
     case 4:
-        pixel_format = MTL::PixelFormatRGBA8Unorm;
+        pixel_format = MTL::PixelFormatBGRA8Unorm;
         break;
 
     default:
@@ -75,6 +75,8 @@ boden::graphic::gpu_texture_handle_t mtl_texture_manager_t::create_gpu_texture(b
     desc->setWidth(size.width);
     desc->setHeight(size.height);
     desc->setMipmapLevelCount(1);
+    desc->setUsage(MTL::TextureUsageRenderTarget | MTL::TextureUsageShaderRead);
+    
     MTL::Texture *texture = _device->newTexture(desc);
     desc->release();
     

@@ -18,8 +18,9 @@ public:
               size_t length,
               uint8_t number_of_channels) override;
     
-    boden::graphic::gpu_texture_handle_t create_gpu_texture(boden::layout::size_t size, 
-                                                        uint8_t number_of_channels) override;
+    boden::graphic::gpu_texture_handle_t create_gpu_texture(boden::layout::size_t size,
+                                                            uint8_t number_of_channels) override;
+    void destroy_gpu_texture(boden::graphic::gpu_texture_handle_t handle) override;
     
 private:
     MTL::Device *_device;

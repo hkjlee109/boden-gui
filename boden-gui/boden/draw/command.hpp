@@ -3,6 +3,7 @@
 #include <boden/graphic/texture_id.hpp>
 #include <boden/layout/rect.hpp>
 #include <cstdint>
+#include <vector>
 
 namespace boden {
 namespace draw {
@@ -27,6 +28,19 @@ struct command_t
 
     boden::layout::rect_t clip_rect;
     boden::graphic::texture_id_t texture_id;
+};
+
+struct command_group_t
+{
+    constexpr command_group_t(boden::graphic::texture_id_t _tid, 
+                              const boden::layout::rect_t &_frame)
+        : tid{_tid},
+          frame{_frame} {}
+
+    boden::graphic::texture_id_t tid;
+    boden::layout::rect_t frame;
+
+    std::vector<boden::draw::command_t> commands;
 };
 
 } // draw

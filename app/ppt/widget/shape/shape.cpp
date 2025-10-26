@@ -36,19 +36,17 @@ void shape_t::draw_rect(boden::builder_t &builder, const boden::layout::rect_t &
 {
     if(!_text.empty())
     {
-        boden::layout::point_t origin = convert_point_to_view({0, 0}, nullptr);
-        boden::layout::rect_t frame{origin, _frame.size};
-        boden::layout::rect_t clip_rect{origin + dirty_rect.origin, dirty_rect.size};
-        
-        builder.push_clip_rect(clip_rect);
+        boden::layout::rect_t frame_in_window = convert_rect_to_view(_bounds, nullptr);
+
+        builder.begin(layer.tid, frame_in_window, dirty_rect);
     
         float padding = 5;
         builder.add_text(_text,
-                         {frame.origin.x + padding, frame.origin.y + padding},
-                         {frame.origin.x + frame.size.width - padding, frame.origin.y + frame.size.height - padding},
+                         {_bounds.origin.x + padding, _bounds.origin.y + padding},
+                         {_bounds.origin.x + _bounds.size.width - padding, _bounds.origin.y + _bounds.size.height - padding},
                          _text_color);
     
-        builder.pop_clip_rect();
+        builder.end();
     }
 }
 

@@ -21,8 +21,8 @@ struct grid_uniforms_t
 {
     float pan[2];
     float zoom;
-    float gridSpacing;
-    float screenSize[2];
+    float grid_spacing;
+    float screen_size[2];
     float padding[2];
 };
 
@@ -49,64 +49,16 @@ void mtl_renderer_t::render(boden::context_t &ctx)
 {
     boden::renderer_t::render(ctx);
     
-    if(ctx.batch->indices.size() == 0 || ctx.batch->vertices.size() == 0)
+    if(ctx.batch->command_groups.empty()
+       || ctx.batch->indices.empty()
+       || ctx.batch->vertices.empty())
     {
         return;
     }
     
     _texture_manager->cleanup_unused_texture();
 
-    CA::MetalDrawable *surface = reinterpret_cast<CA::MetalDrawable *>(ctx.surface_handle);
-
     MTL::CommandBuffer *command_buffer = _command_queue->commandBuffer();
-    MTL::RenderPassDescriptor *desc = MTL::RenderPassDescriptor::alloc()->init();
-
-    desc->colorAttachments()->object(0)->setTexture(surface->texture());
-    desc->colorAttachments()->object(0)->setLoadAction(MTL::LoadActionClear);
-    desc->colorAttachments()->object(0)->setClearColor(MTL::ClearColor::Make(0.95f, 0.95f, 0.95f, 1.0f));
-    
-    MTL::RenderCommandEncoder *encoder = command_buffer->renderCommandEncoder(desc);
-    desc->release();
-    
-    encoder->pushDebugGroup(NS::String::string("Boden Gui rendering",
-                                               NS::StringEncoding::UTF8StringEncoding));
-    
-    encoder->setCullMode(MTL::CullModeNone);
-    encoder->setDepthStencilState(_depth_stencil.get());
-    encoder->setRenderPipelineState(_render_pipeline.get());
-    
-    MTL::Viewport viewport =
-    {
-        .originX = 0.0,
-        .originY = 0.0,
-        .width = (double)(ctx.display_size.width * ctx.display_scale.x),
-        .height = (double)(ctx.display_size.height * ctx.display_scale.y),
-        .znear = 0.0,
-        .zfar = 1.0
-    };
-    
-    float L = 0;
-    float R = ctx.display_size.width * ctx.display_scale.x;
-    float T = 0;
-    float B = ctx.display_size.height * ctx.display_scale.y;
-    float N = (float)viewport.znear;
-    float F = (float)viewport.zfar;
-    float X = ctx.display_scale.x;
-    float Y = ctx.display_scale.y;
-    
-    main_uniforms_t main_uniform =
-    {
-        .projection_matrix =
-        {
-            { (2.0f * X)/(R-L),   0.0f,                 0.0f,   0.0f },
-            { 0.0f,               (2.0f * Y)/(T-B),     0.0f,   0.0f },
-            { 0.0f,               0.0f,                 1/(F-N),   0.0f },
-            { (R+L)/(L-R),        (T+B)/(B-T),          N/(F-N),   1.0f },
-        }
-    };
-    
-    encoder->setViewport(viewport);
-    encoder->setVertexBytes(&main_uniform, sizeof(main_uniform), 1);
     
     mtl_buffer_ref_t vertex_buffer = buffer_manager.dequeue_reusable_buffer(_device,
                                                                             ctx.batch->vertices.size() * sizeof(boden::draw::vertex_t));
@@ -119,40 +71,102 @@ void mtl_renderer_t::render(boden::context_t &ctx)
     memcpy((char*)index_buffer->get_buffer()->contents(),
            ctx.batch->indices.data(),
            ctx.batch->indices.size() * sizeof(boden::draw::index_t));
-
-    encoder->setVertexBuffer(vertex_buffer->get_buffer(), 0, 0);
     
-    for(const boden::draw::command_t &command : ctx.batch->commands)
+    for(auto &command_group : ctx.batch->command_groups)
     {
-        int32_t x = std::clamp<int32_t>(command.clip_rect.origin.x, 0, ctx.display_size.width);
-        int32_t y = std::clamp<int32_t>(command.clip_rect.origin.y, 0, ctx.display_size.height);
-        int32_t width = std::min<int32_t>(command.clip_rect.size.width, ctx.display_size.width - x);
-        int32_t height = std::min<int32_t>(command.clip_rect.size.height, ctx.display_size.height - y);
-        
-        MTL::ScissorRect scissorRect =
+        boden::layout::rect_t dst_frame = command_group.frame;
+        boden::graphic::texture_id_t dst_tid = command_group.tid;
+
+        MTL::Texture *dst_texture = reinterpret_cast<MTL::Texture *>(
+                _texture_manager->get_gpu_texture_handle(dst_tid));
+        if(!dst_texture)
         {
-            .x = (NS::UInteger)(x * ctx.display_scale.x),
-            .y = (NS::UInteger)(y * ctx.display_scale.y),
-            .width = (NS::UInteger)(width * ctx.display_scale.x),
-            .height = (NS::UInteger)(height * ctx.display_scale.y)
+            continue;
+        }
+
+        MTL::Viewport viewport =
+        {
+            .originX = 0.0,
+            .originY = 0.0,
+            .width = (double)(dst_frame.size.width),
+            .height = (double)(dst_frame.size.height),
+            .znear = 0.0,
+            .zfar = 1.0
         };
-        encoder->setScissorRect(scissorRect);
         
-        if(command.texture_id) 
-        {
-            auto texture = reinterpret_cast<const MTL::Texture *>(_texture_manager->get_gpu_texture_handle(command.texture_id));
-            encoder->setFragmentTexture(texture, 0);
-        }
-        else 
-        {
-            encoder->setFragmentTexture(_texture.get(), 0);
-        }
+        float L = 0;
+        float R = dst_frame.size.width;
+        float T = 0;
+        float B = dst_frame.size.height;
+        float N = (float)viewport.znear;
+        float F = (float)viewport.zfar;
+        float X = 1;
+        float Y = 1;
         
-        encoder->drawIndexedPrimitives(MTL::PrimitiveTypeTriangleStrip,
-                                       command.count,
-                                       MTL::IndexTypeUInt32,
-                                       index_buffer->get_buffer(),
-                                       command.index_buffer_offset * sizeof(boden::draw::index_t));
+        main_uniforms_t main_uniform =
+        {
+            .projection_matrix =
+            {
+                { (2.0f * X)/(R-L),   0.0f,                 0.0f,   0.0f },
+                { 0.0f,               (2.0f * Y)/(T-B),     0.0f,   0.0f },
+                { 0.0f,               0.0f,                 1/(F-N),   0.0f },
+                { (R+L)/(L-R),        (T+B)/(B-T),          N/(F-N),   1.0f },
+            }
+        };
+        
+        MTL::RenderPassDescriptor *desc = MTL::RenderPassDescriptor::alloc()->init();
+        auto color_attachment = desc->colorAttachments()->object(0);
+        color_attachment->setTexture(dst_texture);
+        color_attachment->setLoadAction(MTL::LoadActionLoad);
+
+        MTL::RenderCommandEncoder *encoder = command_buffer->renderCommandEncoder(desc);
+        desc->release();
+
+        encoder->pushDebugGroup(NS::String::string(
+            "Render to texture",
+            NS::StringEncoding::UTF8StringEncoding));
+
+        encoder->setCullMode(MTL::CullModeNone);
+        encoder->setDepthStencilState(_depth_stencil.get());
+        encoder->setRenderPipelineState(_render_pipeline.get());
+        encoder->setViewport(viewport);
+        encoder->setVertexBytes(&main_uniform, sizeof(main_uniform), 1);
+        encoder->setVertexBuffer(vertex_buffer->get_buffer(), 0, 0);
+        
+        for(auto &command : command_group.commands)
+        {
+            int32_t x = std::clamp<int32_t>(command.clip_rect.origin.x, 0, dst_frame.size.width);
+            int32_t y = std::clamp<int32_t>(command.clip_rect.origin.y, 0, dst_frame.size.height);
+            int32_t width = std::min<int32_t>(command.clip_rect.size.width, dst_frame.size.width - x);
+            int32_t height = std::min<int32_t>(command.clip_rect.size.height, dst_frame.size.height - y);
+            
+            MTL::ScissorRect scissorRect =
+            {
+                .x = (NS::UInteger)(x),
+                .y = (NS::UInteger)(y),
+                .width = (NS::UInteger)(width),
+                .height = (NS::UInteger)(height)
+            };
+            encoder->setScissorRect(scissorRect);
+            
+            if(command.texture_id)
+            {
+                auto src_texture = reinterpret_cast<const MTL::Texture *>(_texture_manager->get_gpu_texture_handle(command.texture_id));
+                encoder->setFragmentTexture(src_texture, 0);
+            }
+            else
+            {
+                encoder->setFragmentTexture(_texture.get(), 0);
+            }
+            
+            encoder->drawIndexedPrimitives(MTL::PrimitiveTypeTriangleStrip,
+                                           command.count,
+                                           MTL::IndexTypeUInt32,
+                                           index_buffer->get_buffer(),
+                                           command.index_buffer_offset * sizeof(boden::draw::index_t));
+        }
+        encoder->popDebugGroup();
+        encoder->endEncoding();
     }
     
     command_buffer->addCompletedHandler([vertex_buffer, index_buffer](MTL::CommandBuffer* buffer)
@@ -161,8 +175,187 @@ void mtl_renderer_t::render(boden::context_t &ctx)
         buffer_manager.queue_reusable_buffer(index_buffer);
     });
     
-    encoder->popDebugGroup();
-    encoder->endEncoding();
+    {
+        boden::graphic::texture_id_t dst_tid = ctx.batch->command_groups[0].tid;
+        boden::layout::rect_t dst_frame = ctx.batch->command_groups[0].frame;
+        
+        MTL::Texture *dst_texture = reinterpret_cast<MTL::Texture *>(_texture_manager->get_gpu_texture_handle(dst_tid));
+        if(!dst_texture)
+        {
+            return;
+        }
+
+        MTL::Viewport viewport =
+        {
+            .originX = 0.0,
+            .originY = 0.0,
+            .width = (double)(dst_frame.size.width),
+            .height = (double)(dst_frame.size.height),
+            .znear = 0.0,
+            .zfar = 1.0
+        };
+        
+        float L = 0;
+        float R = dst_frame.size.width;
+        float T = 0;
+        float B = dst_frame.size.height;
+        float N = (float)viewport.znear;
+        float F = (float)viewport.zfar;
+        float X = 1;
+        float Y = 1;
+        
+        main_uniforms_t main_uniform =
+        {
+            .projection_matrix =
+            {
+                { (2.0f * X)/(R-L),   0.0f,                 0.0f,   0.0f },
+                { 0.0f,               (2.0f * Y)/(T-B),     0.0f,   0.0f },
+                { 0.0f,               0.0f,                 1/(F-N),   0.0f },
+                { (R+L)/(L-R),        (T+B)/(B-T),          N/(F-N),   1.0f },
+            }
+        };
+        
+        MTL::RenderPassDescriptor *desc = MTL::RenderPassDescriptor::alloc()->init();
+        auto color_attachment = desc->colorAttachments()->object(0);
+        color_attachment->setTexture(dst_texture);
+        color_attachment->setLoadAction(MTL::LoadActionLoad);
+        
+        MTL::RenderCommandEncoder *encoder = command_buffer->renderCommandEncoder(desc);
+        desc->release();
+        
+        encoder->pushDebugGroup(NS::String::string(
+                                                   "Render to root texture",
+                                                   NS::StringEncoding::UTF8StringEncoding));
+        
+        encoder->setCullMode(MTL::CullModeNone);
+        encoder->setDepthStencilState(_depth_stencil.get());
+        encoder->setRenderPipelineState(_render_pipeline.get());
+        encoder->setViewport(viewport);
+        encoder->setVertexBytes(&main_uniform, sizeof(main_uniform), 1);
+        
+        for(auto &command_group : ctx.batch->command_groups)
+        {
+            if(command_group.tid == dst_tid)
+            {
+                continue;
+            }
+            
+            auto src_texture = reinterpret_cast<MTL::Texture *>(_texture_manager->get_gpu_texture_handle(command_group.tid));
+            
+            float x = command_group.frame.origin.x;
+            float y = command_group.frame.origin.y;
+            float w = command_group.frame.size.width;
+            float h = command_group.frame.size.height;
+            
+            MTL::ScissorRect scissor_rect =
+            {
+                .x = (NS::UInteger)(x),
+                .y = (NS::UInteger)(y),
+                .width = (NS::UInteger)(w),
+                .height = (NS::UInteger)(h)
+            };
+
+            boden::draw::vertex_t quad[4] =
+            {
+                { {x,     y},     {0.0f, 0.0f}, 0xFFFFFFFF },
+                { {x + w, y},     {1.0f, 0.0f}, 0xFFFFFFFF },
+                { {x,     y + h}, {0.0f, 1.0f}, 0xFFFFFFFF },
+                { {x + w, y + h}, {1.0f, 1.0f}, 0xFFFFFFFF }
+            };
+            
+            encoder->setScissorRect(scissor_rect);
+            encoder->setVertexBytes(quad, sizeof(quad), 0);
+            encoder->setFragmentTexture(src_texture, 0);
+            encoder->drawPrimitives(MTL::PrimitiveTypeTriangleStrip,
+                                    static_cast<NS::UInteger>(0),
+                                    static_cast<NS::UInteger>(4));
+        }
+        
+        encoder->popDebugGroup();
+        encoder->endEncoding();
+    }
+
+    CA::MetalDrawable *surface = reinterpret_cast<CA::MetalDrawable *>(ctx.surface_handle);
+    {
+        boden::graphic::texture_id_t srd_tid = ctx.batch->command_groups[0].tid;
+        boden::layout::rect_t src_frame = ctx.batch->command_groups[0].frame;
+
+        MTL::Texture *src_texture = reinterpret_cast<MTL::Texture *>(_texture_manager->get_gpu_texture_handle(srd_tid));
+        if(!src_texture)
+        {
+            return;
+        }
+
+        MTL::Viewport viewport =
+        {
+            .originX = 0.0,
+            .originY = 0.0,
+            .width = (double)(ctx.display_size.width * ctx.display_scale.x),
+            .height = (double)(ctx.display_size.height * ctx.display_scale.y),
+            .znear = 0.0,
+            .zfar = 1.0
+        };
+        
+        float L = 0;
+        float R = ctx.display_size.width * ctx.display_scale.x;
+        float T = 0;
+        float B = ctx.display_size.height * ctx.display_scale.y;
+        float N = (float)viewport.znear;
+        float F = (float)viewport.zfar;
+        float X = ctx.display_scale.x;
+        float Y = ctx.display_scale.y;
+        
+        main_uniforms_t main_uniform =
+        {
+            .projection_matrix =
+            {
+                { (2.0f * X)/(R-L),   0.0f,                 0.0f,   0.0f },
+                { 0.0f,               (2.0f * Y)/(T-B),     0.0f,   0.0f },
+                { 0.0f,               0.0f,                 1/(F-N),   0.0f },
+                { (R+L)/(L-R),        (T+B)/(B-T),          N/(F-N),   1.0f },
+            }
+        };
+        
+        float x = src_frame.origin.x;
+        float y = src_frame.origin.y;
+        float w = src_frame.size.width;
+        float h = src_frame.size.height;
+
+        boden::draw::vertex_t quad[4] =
+        {
+            { {x,     y},     {0.0f, 0.0f}, 0xFFFFFFFF },
+            { {x + w, y},     {1.0f, 0.0f}, 0xFFFFFFFF },
+            { {x,     y + h}, {0.0f, 1.0f}, 0xFFFFFFFF },
+            { {x + w, y + h}, {1.0f, 1.0f}, 0xFFFFFFFF }
+        };
+        
+        MTL::RenderPassDescriptor *desc = MTL::RenderPassDescriptor::alloc()->init();
+        auto color_attachment = desc->colorAttachments()->object(0);
+        color_attachment->setTexture(surface->texture());
+        color_attachment->setLoadAction(MTL::LoadActionClear);
+        color_attachment->setClearColor(MTL::ClearColor::Make(0.95f, 0.95f, 0.95f, 1.0f));
+        
+        MTL::RenderCommandEncoder *encoder = command_buffer->renderCommandEncoder(desc);
+        desc->release();
+        
+        encoder->pushDebugGroup(NS::String::string(
+                                                   "Render to surface",
+                                                   NS::StringEncoding::UTF8StringEncoding));
+        
+        encoder->setCullMode(MTL::CullModeNone);
+        encoder->setDepthStencilState(_depth_stencil.get());
+        encoder->setRenderPipelineState(_render_pipeline.get());
+        encoder->setViewport(viewport);
+        encoder->setVertexBytes(quad, sizeof(quad), 0);
+        encoder->setVertexBytes(&main_uniform, sizeof(main_uniform), 1);
+        encoder->setFragmentTexture(src_texture, 0);
+        encoder->drawPrimitives(MTL::PrimitiveTypeTriangleStrip,
+                                    static_cast<NS::UInteger>(0),
+                                    static_cast<NS::UInteger>(4));
+        
+        encoder->popDebugGroup();
+        encoder->endEncoding();
+    }
     
     command_buffer->presentDrawable(surface);
     command_buffer->commit();

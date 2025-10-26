@@ -30,18 +30,21 @@ void label_t::draw_rect(boden::builder_t &builder, const boden::layout::rect_t &
         return;
     }
     
-    boden::layout::point_t origin = convert_point_to_view({0, 0}, nullptr);
-    boden::layout::rect_t frame{origin, _frame.size};
-    boden::layout::rect_t clip_rect{origin + dirty_rect.origin, dirty_rect.size};
-        
-    builder.push_clip_rect(clip_rect);
+    if(layer.tid == 0)
+    {
+        return;
+    }
     
-    builder.add_text(_text,
-                     {frame.origin.x, frame.origin.y}, 
-                     {frame.origin.x + frame.size.width, frame.origin.y + frame.size.height},
-                     _text_color);
+    boden::layout::rect_t frame_in_window = convert_rect_to_view(_bounds, nullptr);
 
-    builder.pop_clip_rect();
+    builder.begin(layer.tid, frame_in_window, dirty_rect);
+
+    builder.add_text(_text,
+                     {_bounds.origin.x, _bounds.origin.y}, 
+                     {_bounds.origin.x + _bounds.size.width, _bounds.origin.y + _bounds.size.height},
+                     _text_color);
+    
+    builder.end();
 }
 
 void label_t::set_text(const std::string &text)

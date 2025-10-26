@@ -38,22 +38,19 @@ void view_t::draw_rect(boden::builder_t &builder, const boden::layout::rect_t &d
     {
         return;
     }
+
+    if(layer.tid == 0)
+    {
+        return;
+    }
     
-    boden::layout::point_t origin = convert_point_to_view({0, 0}, nullptr);
-    boden::layout::rect_t frame{origin, _frame.size};
-    boden::layout::rect_t clip_rect{origin + dirty_rect.origin, dirty_rect.size};
+    boden::layout::rect_t frame_in_window = convert_rect_to_view(_bounds, nullptr);
 
-    builder.push_clip_rect({clip_rect.origin.x - layer.border_width, 
-                            clip_rect.origin.y - layer.border_width, 
-                            clip_rect.size.width + layer.border_width * 2, 
-                            clip_rect.size.height + layer.border_width * 2});
-
-    builder.add_rect_filled({frame.origin.x, frame.origin.y}, 
-                            {frame.origin.x + frame.size.width, frame.origin.y + frame.size.height},
+    builder.begin(layer.tid, frame_in_window, dirty_rect);
+    builder.add_rect_filled({_bounds.origin.x, _bounds.origin.y}, 
+                            {_bounds.origin.x + _bounds.size.width, _bounds.origin.y + _bounds.size.height},
                             layer.background_color, 
                             layer.corner_radius);
-    
-    builder.pop_clip_rect();
 
     for(auto subview : _subviews)
     {
@@ -69,6 +66,8 @@ void view_t::draw_rect(boden::builder_t &builder, const boden::layout::rect_t &d
             subview->draw_rect(builder, dirty_in_subview);
         }
     }
+    
+    builder.end();
 }
 
 std::shared_ptr<boden::widget::view_t> view_t::hit_test(boden::layout::point_t point)
@@ -110,7 +109,7 @@ void view_t::view_will_move_to_window(std::shared_ptr<boden::widget::window_t> w
 {
     _window = window;
 
-    if(layer.tid == 0)
+    if(layer.tid == 0 && _bounds.size.width > 0 && _bounds.size.height > 0)
     {
         layer.tid = window->create_view_texture(_bounds.size);
     }
@@ -134,6 +133,20 @@ const boden::layout::rect_t & view_t::get_frame() const
 void view_t::set_frame(const boden::layout::rect_t &frame)
 {
     _frame = frame;
+    _bounds = {0, 0, frame.size.width, frame.size.height};
+
+    if(_bounds.size.width > 0 && _bounds.size.height > 0)
+    {
+        if(auto window = _window.lock())
+        {
+            if(layer.tid)
+            {
+                window->destroy_view_texture(layer.tid);
+            }
+
+            layer.tid = window->create_view_texture(_bounds.size);
+        }
+    }
 }
 
 const std::vector<std::shared_ptr<boden::widget::view_t>> & view_t::get_subviews() const
@@ -295,6 +308,16 @@ boden::layout::point_t view_t::convert_point_to_view(const boden::layout::point_
     }
 
     return {point.x + _frame.origin.x, point.y + _frame.origin.y};                                           
+}
+
+boden::layout::rect_t view_t::convert_rect_to_view(const boden::layout::rect_t &rect,
+                                                   const boden::widget::view_t *to_view) const
+{
+    return 
+    {
+        convert_point_to_view(rect.origin, to_view),
+        rect.size
+    };
 }
 
 void view_t::layout_if_needed()

@@ -24,28 +24,27 @@ void rectangle_t::draw_rect(boden::builder_t &builder, const boden::layout::rect
         return;
     }
 
-    boden::layout::point_t origin = convert_point_to_view({0, 0}, nullptr);
-    boden::layout::rect_t frame{origin, _frame.size};
-    boden::layout::rect_t clip_rect{origin + dirty_rect.origin, dirty_rect.size};
-        
-    float padding = layer.border_width + 1;
-    builder.push_clip_rect({clip_rect.origin.x - padding, 
-                            clip_rect.origin.y - padding, 
-                            clip_rect.size.width + padding * 2, 
-                            clip_rect.size.height + padding * 2});
+    if(layer.tid == 0)
+    {
+        return;
+    }
     
-    builder.add_rect_filled({frame.origin.x, frame.origin.y}, 
-                            {frame.origin.x + frame.size.width, frame.origin.y + frame.size.height},
+    boden::layout::rect_t frame_in_window = convert_rect_to_view(_bounds, nullptr);
+
+    builder.begin(layer.tid, frame_in_window, dirty_rect);
+    
+    builder.add_rect_filled({_bounds.origin.x, _bounds.origin.y}, 
+                            {_bounds.origin.x + _bounds.size.width, _bounds.origin.y + _bounds.size.height},
                             layer.background_color);
 
-    builder.add_rect({frame.origin.x, frame.origin.y}, 
-                     {frame.origin.x + frame.size.width, frame.origin.y + frame.size.height},
+    builder.add_rect({_bounds.origin.x, _bounds.origin.y}, 
+                     {_bounds.origin.x + _bounds.size.width, _bounds.origin.y + _bounds.size.height},
                      layer.border_color,
                      layer.border_width);
     
-    builder.pop_clip_rect();
-
     shape_t::draw_rect(builder, dirty_rect);
+
+    builder.end();
 }
 
 } // shape

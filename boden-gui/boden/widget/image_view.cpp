@@ -26,18 +26,21 @@ void image_view_t::draw_rect(boden::builder_t &builder, const boden::layout::rec
         return;
     }
     
-    boden::layout::point_t origin = convert_point_to_view({0, 0}, nullptr);
-    boden::layout::rect_t frame{origin, _frame.size};
-    boden::layout::rect_t clip_rect{origin + dirty_rect.origin, dirty_rect.size};
-        
-    builder.push_clip_rect(clip_rect);
+    if(layer.tid == 0)
+    {
+        return;
+    }
     
-    builder.add_image(_image->key, 
-                      {frame.origin.x, frame.origin.y}, 
-                      {frame.origin.x + frame.size.width, frame.origin.y + frame.size.height},
-                      _tint_color);
+    boden::layout::rect_t frame_in_window = convert_rect_to_view(_bounds, nullptr);
 
-    builder.pop_clip_rect();
+    builder.begin(layer.tid, frame_in_window, dirty_rect);
+
+    builder.add_image(_image->key, 
+                      {_bounds.origin.x, _bounds.origin.y}, 
+                      {_bounds.origin.x + _bounds.size.width, _bounds.origin.y + _bounds.size.height},
+                      _tint_color);
+                      
+    builder.end();
 }
 
 void image_view_t::set_image(std::unique_ptr<boden::widget::base::image_t> image)

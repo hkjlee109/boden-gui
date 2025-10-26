@@ -18,7 +18,6 @@ void zoom_view_controller_t::load_view()
 {
     boden::widget::view_controller_t::load_view();
     _view->set_frame(boden::layout::rect_t(10, 10, 100, 48));
-    
     _view->layer.background_color = miro::theme::color::control_background;
     _view->layer.corner_radius = 4;
 }
