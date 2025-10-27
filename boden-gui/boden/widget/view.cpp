@@ -47,8 +47,8 @@ void view_t::draw_rect(boden::builder_t &builder, const boden::layout::rect_t &d
     boden::layout::rect_t frame_in_window = convert_rect_to_view(_bounds, nullptr);
 
     builder.begin(layer.tid, frame_in_window, dirty_rect);
-    builder.add_rect_filled({_bounds.origin.x, _bounds.origin.y}, 
-                            {_bounds.origin.x + _bounds.size.width, _bounds.origin.y + _bounds.size.height},
+    builder.add_rect_filled({_bounds.min_x(), _bounds.min_y()}, 
+                            {_bounds.max_x(), _bounds.max_y()},
                             layer.background_color, 
                             layer.corner_radius);
 

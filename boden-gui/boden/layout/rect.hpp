@@ -50,14 +50,34 @@ struct rect_t
                 size.height - insets.top - insets.bottom};
     }
 
-    constexpr float mid_x() const 
+    constexpr float max_x() const noexcept 
+    { 
+        return origin.x + size.width; 
+    }
+    
+    constexpr float max_y() const noexcept 
+    { 
+        return origin.y + size.height; 
+    }
+
+    constexpr float mid_x() const noexcept
     {
         return origin.x + (size.width / 2);
     }
 
-    constexpr float mid_y() const 
+    constexpr float mid_y() const noexcept
     {
         return origin.y + (size.height / 2);
+    }
+
+    constexpr float min_x() const noexcept 
+    { 
+        return origin.x; 
+    }
+    
+    constexpr float min_y() const noexcept 
+    { 
+        return origin.y; 
     }
 
     constexpr rect_t unify_with(const rect_t &other) const

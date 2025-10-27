@@ -34,12 +34,12 @@ void rectangle_t::draw_rect(boden::builder_t &builder, const boden::layout::rect
     builder.begin(layer.tid, frame_in_window, dirty_rect);
     
     boden::layout::rect_t bounds = _bounds.inset_by(1, 1);
-    builder.add_rect_filled({bounds.origin.x, bounds.origin.y},
-                            {bounds.origin.x + bounds.size.width, bounds.origin.y + bounds.size.height},
+    builder.add_rect_filled({bounds.min_x(), bounds.min_y()}, 
+                            {bounds.max_x(), bounds.max_y()},
                             layer.background_color);
 
-    builder.add_rect({bounds.origin.x, bounds.origin.y},
-                     {bounds.origin.x + bounds.size.width, bounds.origin.y + bounds.size.height},
+    builder.add_rect({bounds.min_x(), bounds.min_y()}, 
+                     {bounds.max_x(), bounds.max_y()},
                      layer.border_color,
                      layer.border_width);
     
