@@ -33,12 +33,13 @@ void rectangle_t::draw_rect(boden::builder_t &builder, const boden::layout::rect
 
     builder.begin(layer.tid, frame_in_window, dirty_rect);
     
-    builder.add_rect_filled({_bounds.origin.x, _bounds.origin.y}, 
-                            {_bounds.origin.x + _bounds.size.width, _bounds.origin.y + _bounds.size.height},
+    boden::layout::rect_t bounds = _bounds.inset_by(1, 1);
+    builder.add_rect_filled({bounds.origin.x, bounds.origin.y},
+                            {bounds.origin.x + bounds.size.width, bounds.origin.y + bounds.size.height},
                             layer.background_color);
 
-    builder.add_rect({_bounds.origin.x, _bounds.origin.y}, 
-                     {_bounds.origin.x + _bounds.size.width, _bounds.origin.y + _bounds.size.height},
+    builder.add_rect({bounds.origin.x, bounds.origin.y},
+                     {bounds.origin.x + bounds.size.width, bounds.origin.y + bounds.size.height},
                      layer.border_color,
                      layer.border_width);
     

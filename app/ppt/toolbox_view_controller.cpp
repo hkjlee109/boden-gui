@@ -47,6 +47,7 @@ void toolbox_view_controller_t::load_view()
 
     _rectangle->layer.background_color = ppt::theme::color::background;
     _rectangle->set_image(std::make_unique<boden::widget::base::image_t>("rectangle"));
+    _rectangle->set_image_scaling(boden::widget::button_t::image_scaling_t::scale_proportionally_down);
     _rectangle->set_content_tint_color({0xB7, 0xB7, 0xB7, 0xFF});
     _rectangle->set_hover_enabled(true);
     _rectangle->set_tag(0);
@@ -58,6 +59,7 @@ void toolbox_view_controller_t::load_view()
     _textbox = std::make_shared<ppt::widget::hover_button_t>(boden::layout::rect_t(10, 55, 50, 40));
     _textbox->layer.background_color = ppt::theme::color::background;
     _textbox->set_image(std::make_unique<boden::widget::base::image_t>("textbox"));
+    _textbox->set_image_scaling(boden::widget::button_t::image_scaling_t::scale_proportionally_down);
     _textbox->set_content_tint_color({0xB7, 0xB7, 0xB7, 0xFF});
     _textbox->set_hover_enabled(true);
     _textbox->set_tag(1);

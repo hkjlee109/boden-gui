@@ -66,25 +66,25 @@ void button_t::draw_rect(boden::builder_t &builder, const boden::layout::rect_t 
             case image_scaling_t::scale_proportionally_down:
             {
                 float scale = 1.0f;
-                if(_image->size.width > bounds.size.width || 
-                   _image->size.height > bounds.size.height) 
+                if(_image->size.width > bounds.size.width 
+                   || _image->size.height > bounds.size.height) 
                 {
                     float scale_x = bounds.size.width / _image->size.width;
                     float scale_y = bounds.size.height / _image->size.height;
                     scale = std::min(scale_x, scale_y);
                 }
-
-                width = _image->size.width * scale;
-                height = _image->size.height * scale;
-                x = bounds.mid_x() - width / 2;
-                y = bounds.mid_y() - height / 2;
+                width = std::round(_image->size.width * scale);
+                height = std::round(_image->size.height * scale);
+                x = std::round(bounds.mid_x() - width / 2);
+                y = std::round(bounds.mid_y() - height / 2);
+                printf("# scale = %f\n", scale);
                 break;
             }
 
             default:
                 break;
         }
-    
+
         builder.add_image(_image->key, 
                           {x, y}, 
                           {x + width, y + height},
