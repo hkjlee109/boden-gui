@@ -149,9 +149,9 @@ bool font_atlas_t::collect_glyph_texture(uint32_t codepoint, boden::font::glyph_
             {
                 uint8_t alpha = slot->bitmap.buffer[y * slot->bitmap.pitch + x];
 
-                rgba[(y * slot->bitmap.width + x) * 4 + 0] = 255;
-                rgba[(y * slot->bitmap.width + x) * 4 + 1] = 255;
-                rgba[(y * slot->bitmap.width + x) * 4 + 2] = 255;
+                rgba[(y * slot->bitmap.width + x) * 4 + 0] = alpha;
+                rgba[(y * slot->bitmap.width + x) * 4 + 1] = alpha;
+                rgba[(y * slot->bitmap.width + x) * 4 + 2] = alpha;
                 rgba[(y * slot->bitmap.width + x) * 4 + 3] = alpha;
             }
         }

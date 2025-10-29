@@ -26,19 +26,20 @@ struct grid_uniforms_t
     float padding[2];
 };
 
-mtl_renderer_t::mtl_renderer_t(MTL::Device* device)
+mtl_renderer_t::mtl_renderer_t(MTL::Device *device)
     : boden::renderer_t(),
       _device{device},
       _command_queue{nullptr, [](MTL::CommandQueue *ptr) { if (ptr) ptr->release(); }},
-      _render_pipeline{nullptr, [](MTL::RenderPipelineState *ptr) { if (ptr) ptr->release(); }},
       _depth_stencil{nullptr, [](MTL::DepthStencilState *ptr) { if (ptr) ptr->release(); }},
-      _texture{nullptr, [](MTL::Texture *ptr) { if (ptr) ptr->release(); }}
+      _pipeline_default{nullptr, [](MTL::RenderPipelineState *ptr) { if (ptr) ptr->release(); }},
+      _pipeline_premultiplied{nullptr, [](MTL::RenderPipelineState *ptr) { if (ptr) ptr->release(); }},
+      _texture_default{nullptr, [](MTL::Texture *ptr) { if (ptr) ptr->release(); }}
 {
     _command_queue.reset(_device->newCommandQueue());
     
-    setup_render_pipeline();
+    setup_pipeline();
     setup_depth_stencil();
-    setup_default_texture();
+    setup_texture();
 }
 
 mtl_renderer_t::~mtl_renderer_t()
@@ -115,9 +116,9 @@ void mtl_renderer_t::render(boden::context_t &ctx)
         };
         
         MTL::RenderPassDescriptor *desc = MTL::RenderPassDescriptor::alloc()->init();
-        auto color_attachment = desc->colorAttachments()->object(0);
-        color_attachment->setTexture(dst_texture);
-        color_attachment->setLoadAction(MTL::LoadActionLoad);
+        desc->colorAttachments()->object(0)->setTexture(dst_texture);
+        desc->colorAttachments()->object(0)->setLoadAction(MTL::LoadActionLoad);
+        desc->colorAttachments()->object(0)->setStoreAction(MTL::StoreActionStore);
 
         MTL::RenderCommandEncoder *encoder = command_buffer->renderCommandEncoder(desc);
         desc->release();
@@ -128,7 +129,7 @@ void mtl_renderer_t::render(boden::context_t &ctx)
 
         encoder->setCullMode(MTL::CullModeNone);
         encoder->setDepthStencilState(_depth_stencil.get());
-        encoder->setRenderPipelineState(_render_pipeline.get());
+        encoder->setRenderPipelineState(_pipeline_default.get());
         encoder->setViewport(viewport);
         encoder->setVertexBytes(&main_uniform, sizeof(main_uniform), 1);
         encoder->setVertexBuffer(vertex_buffer->get_buffer(), 0, 0);
@@ -140,14 +141,14 @@ void mtl_renderer_t::render(boden::context_t &ctx)
             int32_t width = std::min<int32_t>(command.clip_rect.size.width, dst_frame.size.width - x);
             int32_t height = std::min<int32_t>(command.clip_rect.size.height, dst_frame.size.height - y);
             
-            MTL::ScissorRect scissorRect =
+            MTL::ScissorRect scissor_rect =
             {
                 .x = (NS::UInteger)(x),
                 .y = (NS::UInteger)(y),
                 .width = (NS::UInteger)(width),
                 .height = (NS::UInteger)(height)
             };
-            encoder->setScissorRect(scissorRect);
+            encoder->setScissorRect(scissor_rect);
             
             if(command.texture_id)
             {
@@ -156,7 +157,7 @@ void mtl_renderer_t::render(boden::context_t &ctx)
             }
             else
             {
-                encoder->setFragmentTexture(_texture.get(), 0);
+                encoder->setFragmentTexture(_texture_default.get(), 0);
             }
             
             encoder->drawIndexedPrimitives(MTL::PrimitiveTypeTriangleStrip,
@@ -216,9 +217,9 @@ void mtl_renderer_t::render(boden::context_t &ctx)
         };
         
         MTL::RenderPassDescriptor *desc = MTL::RenderPassDescriptor::alloc()->init();
-        auto color_attachment = desc->colorAttachments()->object(0);
-        color_attachment->setTexture(dst_texture);
-        color_attachment->setLoadAction(MTL::LoadActionLoad);
+        desc->colorAttachments()->object(0)->setTexture(dst_texture);
+        desc->colorAttachments()->object(0)->setLoadAction(MTL::LoadActionLoad);
+        desc->colorAttachments()->object(0)->setStoreAction(MTL::StoreActionStore);
         
         MTL::RenderCommandEncoder *encoder = command_buffer->renderCommandEncoder(desc);
         desc->release();
@@ -229,7 +230,7 @@ void mtl_renderer_t::render(boden::context_t &ctx)
         
         encoder->setCullMode(MTL::CullModeNone);
         encoder->setDepthStencilState(_depth_stencil.get());
-        encoder->setRenderPipelineState(_render_pipeline.get());
+        encoder->setRenderPipelineState(_pipeline_default.get());
         encoder->setViewport(viewport);
         encoder->setVertexBytes(&main_uniform, sizeof(main_uniform), 1);
         
@@ -330,10 +331,9 @@ void mtl_renderer_t::render(boden::context_t &ctx)
         };
         
         MTL::RenderPassDescriptor *desc = MTL::RenderPassDescriptor::alloc()->init();
-        auto color_attachment = desc->colorAttachments()->object(0);
-        color_attachment->setTexture(surface->texture());
-        color_attachment->setLoadAction(MTL::LoadActionClear);
-        color_attachment->setClearColor(MTL::ClearColor::Make(0.16f, 0.16f, 0.16f, 1.0f));
+        desc->colorAttachments()->object(0)->setTexture(surface->texture());
+        desc->colorAttachments()->object(0)->setLoadAction(MTL::LoadActionClear);
+        desc->colorAttachments()->object(0)->setClearColor(MTL::ClearColor::Make(1.0f, 0.0f, 1.0f, 1.0f));
         
         MTL::RenderCommandEncoder *encoder = command_buffer->renderCommandEncoder(desc);
         desc->release();
@@ -344,7 +344,7 @@ void mtl_renderer_t::render(boden::context_t &ctx)
         
         encoder->setCullMode(MTL::CullModeNone);
         encoder->setDepthStencilState(_depth_stencil.get());
-        encoder->setRenderPipelineState(_render_pipeline.get());
+        encoder->setRenderPipelineState(_pipeline_default.get());
         encoder->setViewport(viewport);
         encoder->setVertexBytes(quad, sizeof(quad), 0);
         encoder->setVertexBytes(&main_uniform, sizeof(main_uniform), 1);
@@ -369,20 +369,20 @@ void mtl_renderer_t::setup_depth_stencil()
     _depth_stencil.reset(_device->newDepthStencilState(desc));
 }
 
-void mtl_renderer_t::setup_default_texture()
+void mtl_renderer_t::setup_texture()
 {
     MTL::TextureDescriptor *desc = MTL::TextureDescriptor::alloc()->init();
-    desc->setPixelFormat(MTL::PixelFormatRGBA8Unorm);
+    desc->setPixelFormat(MTL::PixelFormatBGRA8Unorm);
     desc->setWidth(1);
     desc->setHeight(1);
     desc->setUsage(MTL::TextureUsageShaderRead);
-    _texture.reset(_device->newTexture(desc));
+    _texture_default.reset(_device->newTexture(desc));
     uint8_t whitePixel[4] = {255, 255, 255, 255};
     MTL::Region region = MTL::Region::Make3D(0, 0, 0, 1, 1, 1);
-    _texture->replaceRegion(region, 0, whitePixel, 4);
+    _texture_default->replaceRegion(region, 0, whitePixel, 4);
 }
 
-void mtl_renderer_t::setup_render_pipeline()
+void mtl_renderer_t::setup_pipeline()
 {
     NS::String *source = NS::String::alloc()->init(R"(
     #include <metal_stdlib>
@@ -422,7 +422,6 @@ void mtl_renderer_t::setup_render_pipeline()
     {
         constexpr sampler linear_sampler(coord::normalized, min_filter::linear, mag_filter::linear, mip_filter::linear);
         half4 tex_color = texture.sample(linear_sampler, in.tex_coords);
-    
         return half4(in.color) * tex_color;
     }
     
@@ -502,7 +501,6 @@ void mtl_renderer_t::setup_render_pipeline()
     pipeline_desc->setVertexDescriptor(vertex_desc);
     pipeline_desc->setRasterSampleCount(1);
     pipeline_desc->colorAttachments()->object(0)->setPixelFormat(MTL::PixelFormatBGRA8Unorm);
-    
     pipeline_desc->colorAttachments()->object(0)->setBlendingEnabled(true);
     pipeline_desc->colorAttachments()->object(0)->setRgbBlendOperation(MTL::BlendOperationAdd);
     pipeline_desc->colorAttachments()->object(0)->setSourceRGBBlendFactor(MTL::BlendFactorSourceAlpha);
@@ -513,8 +511,23 @@ void mtl_renderer_t::setup_render_pipeline()
     pipeline_desc->setDepthAttachmentPixelFormat(MTL::PixelFormatInvalid);
     pipeline_desc->setStencilAttachmentPixelFormat(MTL::PixelFormatInvalid);
     
-    _render_pipeline.reset(_device->newRenderPipelineState(pipeline_desc, &error));
-    if(_render_pipeline == nullptr)
+    _pipeline_default.reset(_device->newRenderPipelineState(pipeline_desc, &error));
+    if(_pipeline_default == nullptr)
+    {
+        std::cout << "Error: failed to create Metal pipeline state: " << error << std::endl;
+        if(vertex_desc) vertex_desc->release();
+        if(pipeline_desc) pipeline_desc->release();
+        vertex_func->release();
+        fragment_func->release();
+        library->release();
+        return;
+    }
+    
+    pipeline_desc->colorAttachments()->object(0)->setSourceRGBBlendFactor(MTL::BlendFactorOne);
+    pipeline_desc->colorAttachments()->object(0)->setDestinationRGBBlendFactor(MTL::BlendFactorZero);
+    
+    _pipeline_premultiplied.reset(_device->newRenderPipelineState(pipeline_desc, &error));
+    if(_pipeline_premultiplied == nullptr)
     {
         std::cout << "Error: failed to create Metal pipeline state: " << error << std::endl;
         if(vertex_desc) vertex_desc->release();
