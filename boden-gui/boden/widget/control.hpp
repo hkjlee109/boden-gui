@@ -22,6 +22,9 @@ public:
     control_t(const boden::layout::rect_t &frame);
     ~control_t() override;
 
+    virtual bool is_enabled() const;
+    virtual void set_enabled(bool enabled);
+
     template <typename T>
     void add_target(T* target, void (T::*method)(void *), control_event_t event)
     {
@@ -30,10 +33,7 @@ public:
 
     void send_actions(control_event_t event);
 
-    bool is_enabled() const;
-    void set_enabled(bool enabled);
-
-private:
+protected:
     std::unordered_map<control_event_t, std::vector<std::function<void(void *sender)>>> _actions;
     bool _enabled;
 };

@@ -3,6 +3,20 @@
 namespace boden {
 namespace widget {
 
+std::shared_ptr<view_t> view_t::alloc()
+{
+    auto instance = std::make_shared<view_t>();
+    instance->init();
+    return instance;
+}
+
+std::shared_ptr<view_t> view_t::alloc(const boden::layout::rect_t &frame)
+{    
+    auto instance = std::make_shared<view_t>(frame);
+    instance->init(frame);
+    return instance;
+}
+
 view_t::view_t()
     : responder_t{},
       _bounds{0, 0, 0, 0},
@@ -120,11 +134,6 @@ void view_t::view_will_move_to_window(std::shared_ptr<boden::widget::window_t> w
     }
 }
 
-const boden::layout::rect_t & view_t::get_bounds() const
-{
-    return _bounds;
-}
-
 const boden::layout::rect_t & view_t::get_frame() const
 {
     return _frame;
@@ -147,6 +156,11 @@ void view_t::set_frame(const boden::layout::rect_t &frame)
             layer.tid = window->create_view_texture(_bounds.size);
         }
     }
+}
+
+const boden::layout::rect_t & view_t::get_bounds() const
+{
+    return _bounds;
 }
 
 const std::vector<std::shared_ptr<boden::widget::view_t>> & view_t::get_subviews() const
@@ -341,6 +355,14 @@ void view_t::enqueue_system_event(const boden::system_event_t &event)
     {
         window->enqueue_system_event(event);
     }   
+}
+
+void view_t::init()
+{
+}
+
+void view_t::init(const boden::layout::rect_t &frame)
+{
 }
 
 } // widget

@@ -70,9 +70,9 @@ void selection_view_controller_t::anchor()
 
 void selection_view_controller_t::move_by(float dx, float dy)
 {
-    for(const auto &weak_view : _selection) 
+    for(const auto &weak_view : _selection)
     {
-        if(auto view = weak_view.lock()) 
+        if(auto view = weak_view.lock())
         {
             auto shape = std::static_pointer_cast<ppt::widget::shape::shape_t>(view);
             shape->set_frame(shape->get_frame_cache().offset_by(dx, dy));

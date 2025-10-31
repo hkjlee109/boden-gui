@@ -24,15 +24,17 @@ public:
     
 private:
     void setup_depth_stencil();
-    void setup_render_pipeline();
-    void setup_default_texture();
+    void setup_pipeline();
+    void setup_texture();
 
     MTL::Device *_device;
     
     command_queue_ref_t _command_queue;
-    pipeline_ref_t _render_pipeline;
     depth_stencil_ref_t _depth_stencil;
-    texture_ref_t _texture;
+    
+    pipeline_ref_t _render_pipeline;
+    
+    texture_ref_t _texture_default;
 };
 
 } // platform

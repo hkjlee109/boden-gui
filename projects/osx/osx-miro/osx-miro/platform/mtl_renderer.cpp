@@ -32,13 +32,13 @@ mtl_renderer_t::mtl_renderer_t(MTL::Device* device)
       _command_queue{nullptr, [](MTL::CommandQueue *ptr) { if (ptr) ptr->release(); }},
       _render_pipeline{nullptr, [](MTL::RenderPipelineState *ptr) { if (ptr) ptr->release(); }},
       _depth_stencil{nullptr, [](MTL::DepthStencilState *ptr) { if (ptr) ptr->release(); }},
-      _texture{nullptr, [](MTL::Texture *ptr) { if (ptr) ptr->release(); }}
+      _texture_default{nullptr, [](MTL::Texture *ptr) { if (ptr) ptr->release(); }}
 {
     _command_queue.reset(_device->newCommandQueue());
     
-    setup_render_pipeline();
+    setup_pipeline();
     setup_depth_stencil();
-    setup_default_texture();
+    setup_texture();
 }
 
 mtl_renderer_t::~mtl_renderer_t()
@@ -156,7 +156,7 @@ void mtl_renderer_t::render(boden::context_t &ctx)
             }
             else
             {
-                encoder->setFragmentTexture(_texture.get(), 0);
+                encoder->setFragmentTexture(_texture_default.get(), 0);
             }
             
             encoder->drawIndexedPrimitives(MTL::PrimitiveTypeTriangleStrip,
@@ -369,20 +369,20 @@ void mtl_renderer_t::setup_depth_stencil()
     _depth_stencil.reset(_device->newDepthStencilState(desc));
 }
 
-void mtl_renderer_t::setup_default_texture()
+void mtl_renderer_t::setup_texture()
 {
     MTL::TextureDescriptor *desc = MTL::TextureDescriptor::alloc()->init();
     desc->setPixelFormat(MTL::PixelFormatRGBA8Unorm);
     desc->setWidth(1);
     desc->setHeight(1);
     desc->setUsage(MTL::TextureUsageShaderRead);
-    _texture.reset(_device->newTexture(desc));
+    _texture_default.reset(_device->newTexture(desc));
     uint8_t whitePixel[4] = {255, 255, 255, 255};
     MTL::Region region = MTL::Region::Make3D(0, 0, 0, 1, 1, 1);
-    _texture->replaceRegion(region, 0, whitePixel, 4);
+    _texture_default->replaceRegion(region, 0, whitePixel, 4);
 }
 
-void mtl_renderer_t::setup_render_pipeline()
+void mtl_renderer_t::setup_pipeline()
 {
     NS::String *source = NS::String::alloc()->init(R"(
     #include <metal_stdlib>

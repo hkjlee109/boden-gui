@@ -19,6 +19,9 @@ class view_t : public boden::widget::base::responder_t,
                public std::enable_shared_from_this<boden::widget::view_t>
 {
 public:
+    static std::shared_ptr<view_t> alloc();
+    static std::shared_ptr<view_t> alloc(const boden::layout::rect_t &frame);
+
     view_t();
     view_t(const boden::layout::rect_t &frame);
     ~view_t() override;
@@ -35,11 +38,10 @@ public:
     virtual std::shared_ptr<boden::widget::view_t> hit_test(boden::layout::point_t point);
     virtual void did_add_subview(const boden::widget::view_t *view);
     virtual void view_will_move_to_window(std::shared_ptr<boden::widget::window_t> window);
+    virtual const boden::layout::rect_t & get_frame() const;
+    virtual void set_frame(const boden::layout::rect_t &frame);
 
     const boden::layout::rect_t & get_bounds() const;
-
-    const boden::layout::rect_t & get_frame() const;
-    void set_frame(const boden::layout::rect_t& frame);
 
     const std::vector<std::shared_ptr<boden::widget::view_t>> & get_subviews() const;
 
@@ -93,6 +95,9 @@ protected:
     std::weak_ptr<boden::widget::window_t> _window;
 
     std::vector<std::shared_ptr<boden::widget::base::tracking_area_t>> _tracking_areas;
+
+    virtual void init();
+    virtual void init(const boden::layout::rect_t &frame);
 };
 
 } // widget

@@ -19,6 +19,16 @@ control_t::~control_t()
 {
 }
 
+bool control_t::is_enabled() const
+{
+    return _enabled;
+}
+
+void control_t::set_enabled(bool enabled)
+{
+    _enabled = enabled;
+}
+
 void control_t::send_actions(control_event_t event)
 {
     if(!is_enabled()) 
@@ -30,16 +40,6 @@ void control_t::send_actions(control_event_t event)
     {
         action(this);
     }   
-}
-
-bool control_t::is_enabled() const
-{
-    return _enabled;
-}
-
-void control_t::set_enabled(bool enabled)
-{
-    _enabled = enabled;
 }
 
 } // widget
