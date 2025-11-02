@@ -13,6 +13,8 @@ namespace widget {
 class text_field_t : public boden::widget::control_t
 {
 public:
+    static std::shared_ptr<text_field_t> alloc(const boden::layout::rect_t &frame);
+
     text_field_t();
     explicit text_field_t(const boden::layout::rect_t &frame);
     ~text_field_t() override;
@@ -28,6 +30,9 @@ public:
     void set_text(const std::string &text);
     void set_text_color(const boden::layout::color_t &color);
     
+protected:
+    void init(const boden::layout::rect_t &frame) override;
+
 private:
     std::string _text;
     boden::layout::color_t _text_color;

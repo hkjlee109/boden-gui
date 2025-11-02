@@ -13,12 +13,12 @@ image_manager_t::~image_manager_t()
 {
 }
 
-std::optional<boden::graphic::texture_id_t> image_manager_t::get_texture_id(const std::string &key) const
+boden::graphic::texture_id_t image_manager_t::get_texture_id(const std::string &key) const
 {
     auto it = _map.find(key);
     if(it == _map.end()) 
     {
-        return std::nullopt;
+        return 0;
     }
     return it->second;
 }

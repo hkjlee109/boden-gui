@@ -78,7 +78,7 @@ void shape_t::set_text_color(const boden::layout::color_t &color)
 void shape_t::init(const boden::layout::rect_t &frame)
 {
     boden::widget::view_t::init(frame);
-    _text_field = std::make_shared<boden::widget::text_field_t>(boden::layout::rect_t{{0, 0}, frame.size});
+    _text_field = boden::widget::text_field_t::alloc({{0, 0}, frame.size});
     add_subview(_text_field);
 }
 

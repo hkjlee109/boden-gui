@@ -1,7 +1,7 @@
 #pragma once
 
 #include <boden/builder.hpp>
-#include <boden/widget/base/layer.hpp>
+#include <boden/widget/layer/layer.hpp>
 #include <boden/widget/base/responder.hpp>
 #include <boden/widget/window.hpp>
 #include <boden/layout/rect.hpp>
@@ -32,8 +32,6 @@ public:
     view_t(view_t &&) noexcept = default;
     view_t& operator=(view_t &&) noexcept = default;
 
-    boden::widget::base::layer_t layer;
-    
     virtual void draw_rect(boden::builder_t &builder, const boden::layout::rect_t &dirty_rect);
     virtual std::shared_ptr<boden::widget::view_t> hit_test(boden::layout::point_t point);
     virtual void did_add_subview(const boden::widget::view_t *view);
@@ -42,6 +40,8 @@ public:
     virtual void set_frame(const boden::layout::rect_t &frame);
 
     const boden::layout::rect_t & get_bounds() const;
+
+    std::shared_ptr<boden::widget::layer::layer_t> get_layer();
 
     const std::vector<std::shared_ptr<boden::widget::view_t>> & get_subviews() const;
 
@@ -94,6 +94,8 @@ protected:
     std::weak_ptr<boden::widget::view_t> _superview;
     std::weak_ptr<boden::widget::window_t> _window;
 
+    std::shared_ptr<boden::widget::layer::layer_t> _layer;
+    
     std::vector<std::shared_ptr<boden::widget::base::tracking_area_t>> _tracking_areas;
 
     virtual void init();

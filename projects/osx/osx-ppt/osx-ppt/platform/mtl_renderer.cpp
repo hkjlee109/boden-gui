@@ -77,7 +77,8 @@ void mtl_renderer_t::render(boden::context_t &ctx)
     {
         boden::layout::rect_t dst_frame = command_group.frame;
         boden::graphic::texture_id_t dst_tid = command_group.tid;
-
+        boden::graphic::compositing_operation_t operation = command_group.operation;
+        
         MTL::Texture *dst_texture = reinterpret_cast<MTL::Texture *>(
                 _texture_manager->get_gpu_texture_handle(dst_tid));
         if(!dst_texture)
@@ -129,10 +130,23 @@ void mtl_renderer_t::render(boden::context_t &ctx)
 
         encoder->setCullMode(MTL::CullModeNone);
         encoder->setDepthStencilState(_depth_stencil.get());
-        encoder->setRenderPipelineState(_pipeline_default.get());
         encoder->setViewport(viewport);
         encoder->setVertexBytes(&main_uniform, sizeof(main_uniform), 1);
         encoder->setVertexBuffer(vertex_buffer->get_buffer(), 0, 0);
+        
+        switch(operation)
+        {
+            case boden::graphic::compositing_operation_t::copy:
+                encoder->setRenderPipelineState(_pipeline_premultiplied.get());
+                break;
+                
+            case boden::graphic::compositing_operation_t::source_over:
+                encoder->setRenderPipelineState(_pipeline_default.get());
+                break;
+                
+            default:
+                break;
+        }
         
         for(auto &command : command_group.commands)
         {

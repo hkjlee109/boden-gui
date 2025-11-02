@@ -16,7 +16,7 @@ selection_view_controller_t::~selection_view_controller_t()
 
 void selection_view_controller_t::load_view()
 {
-    auto selection_view{std::make_shared<ppt::selection_view_t>(boden::layout::rect_t(0, 0, 570, 480))};
+    auto selection_view{ppt::selection_view_t::alloc({0, 0, 570, 480})};
     _view = selection_view;
 }
 
@@ -132,7 +132,6 @@ void selection_view_controller_t::set_editable_if_needed(bool editable)
         _editing_view.reset();
     }
 }
-
 
 void selection_view_controller_t::update_view()
 {

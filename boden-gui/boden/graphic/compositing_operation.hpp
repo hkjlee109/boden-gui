@@ -3,10 +3,11 @@
 namespace boden {
 namespace graphic {
 
-enum class gpu_pipeline_t
+enum class compositing_operation_t
 {
-    normal,
-    premultiplied,
+    clear,
+    copy,
+    source_over,
 };
 
 } // graphic

@@ -18,6 +18,9 @@ enum class control_event_t
 class control_t : public boden::widget::view_t
 {
 public:
+    static std::shared_ptr<control_t> alloc();
+    static std::shared_ptr<control_t> alloc(const boden::layout::rect_t &frame);
+
     control_t();
     control_t(const boden::layout::rect_t &frame);
     ~control_t() override;
@@ -36,6 +39,9 @@ public:
 protected:
     std::unordered_map<control_event_t, std::vector<std::function<void(void *sender)>>> _actions;
     bool _enabled;
+
+    void init() override;
+    void init(const boden::layout::rect_t &frame) override;
 };
 
 } // widget

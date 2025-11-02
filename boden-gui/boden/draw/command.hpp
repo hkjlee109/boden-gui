@@ -1,5 +1,6 @@
 #pragma once
 
+#include <boden/graphic/compositing_operation.hpp>
 #include <boden/graphic/texture_id.hpp>
 #include <boden/layout/rect.hpp>
 #include <cstdint>
@@ -33,12 +34,15 @@ struct command_t
 struct command_group_t
 {
     constexpr command_group_t(boden::graphic::texture_id_t _tid, 
-                              const boden::layout::rect_t &_frame)
+                              const boden::layout::rect_t &_frame,
+                              boden::graphic::compositing_operation_t _operation)
         : tid{_tid},
-          frame{_frame} {}
+          frame{_frame},
+          operation{_operation} {}
 
     boden::graphic::texture_id_t tid;
     boden::layout::rect_t frame;
+    boden::graphic::compositing_operation_t operation;
 
     std::vector<boden::draw::command_t> commands;
 };

@@ -26,7 +26,7 @@ void view_controller_t::mouse_up(const boden::event_t &ev)
 
 void view_controller_t::load_view()
 {
-    _view = std::make_shared<boden::widget::view_t>();
+    _view = boden::widget::view_t::alloc();
 }
 
 void view_controller_t::view_did_load()
@@ -36,12 +36,15 @@ void view_controller_t::view_did_load()
 
 std::shared_ptr<boden::widget::view_t> view_controller_t::get_view() 
 {
+    printf("# 1\n");
     if(_view == nullptr) 
     {
+        printf("# 2\n");
         load_view();
         view_did_load();
+        printf("# 3\n");
     }
-
+    printf("# 4\n");
     return _view;
 }
 

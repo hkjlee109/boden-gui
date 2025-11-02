@@ -3,6 +3,20 @@
 namespace boden {
 namespace widget {
 
+std::shared_ptr<control_t> control_t::alloc()
+{
+    auto instance = std::make_shared<control_t>();
+    instance->init();
+    return instance;
+}
+
+std::shared_ptr<control_t> control_t::alloc(const boden::layout::rect_t &frame)
+{
+    auto instance = std::make_shared<control_t>(frame);
+    instance->init(frame);
+    return instance;
+}
+
 control_t::control_t()
     : view_t{},
       _enabled{true}
@@ -40,6 +54,16 @@ void control_t::send_actions(control_event_t event)
     {
         action(this);
     }   
+}
+
+void control_t::init()
+{
+    boden::widget::view_t::init();
+}
+
+void control_t::init(const boden::layout::rect_t &frame)
+{
+    boden::widget::view_t::init(frame);
 }
 
 } // widget

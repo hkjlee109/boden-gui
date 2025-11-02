@@ -116,7 +116,7 @@ void canvas_view_controller_t::did_canvas_view_scroll_wheel(const boden::layout:
 
 void canvas_view_controller_t::load_view()
 {
-    auto canvas_view{std::make_shared<ppt::canvas_view_t>(boden::layout::rect_t(70, 0, 570, 480))};
+    auto canvas_view{ppt::canvas_view_t::alloc({70, 0, 570, 480})};
     canvas_view->set_delegate(this);
     _view = canvas_view;
     
@@ -140,9 +140,10 @@ void canvas_view_controller_t::create_shape(ppt::shape_type_t type)
         case ppt::shape_type_t::rectangle:
         {
             auto rectangle{ppt::widget::shape::rectangle_t::alloc({50, 50, 150, 80})};
-            rectangle->layer.background_color = {0x21, 0x21, 0x21, 0xFF};
-            rectangle->layer.border_color = {0xFF, 0xFF, 0xFF, 0xFF};
-            rectangle->layer.border_width = 1;
+            std::shared_ptr<boden::widget::layer::layer_t> layer = rectangle->get_layer();
+            layer->set_background_color({0x21, 0x21, 0x21, 0xFF});
+            layer->set_border_color({0xFF, 0xFF, 0xFF, 0xFF});
+            layer->set_border_width(1);
             _shapes.push_back(rectangle);
             _view->add_subview(rectangle);
             _selection_ctrl->add(rectangle);

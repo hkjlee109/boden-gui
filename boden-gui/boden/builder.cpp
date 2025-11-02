@@ -188,7 +188,7 @@ void builder_t::add_image(const std::string &key,
 {
     assert(_image_manager && "Error: _image_manager is null.");
 
-    auto tid = _image_manager->get_texture_id(key).value_or(0);
+    auto tid = _image_manager->get_texture_id(key);
 
     uint32_t index_buffer_offset = _batch->indices.size();
     uint32_t vertex_buffer_offset = _batch->vertices.size();
@@ -273,9 +273,10 @@ void builder_t::add_text(const std::string &text,
 
 void builder_t::begin(boden::graphic::texture_id_t tid,
                       const boden::layout::rect_t &frame,
-                      const boden::layout::rect_t &clip_rect)
+                      const boden::layout::rect_t &clip_rect,
+                      boden::graphic::compositing_operation_t operation)
 {
-    _batch->command_groups.emplace_back(tid, frame);
+    _batch->command_groups.emplace_back(tid, frame, operation);
     push_clip_rect(clip_rect);
 }
 

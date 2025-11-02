@@ -21,12 +21,12 @@ struct ViewTests: public testing::Test
 
     void GivenTheModuleIsInitialized(const boden::layout::rect_t &frame)
     {
-        mut = std::make_shared<boden::widget::view_t>(frame);
+        mut = boden::widget::view_t::alloc(frame);
     }
 
     void GivenAnotherViewIsInitializedAndAdded(const boden::layout::rect_t &frame)
     {
-        another_view = std::make_shared<boden::widget::view_t>(frame);
+        another_view = boden::widget::view_t::alloc(frame);
         mut->add_subview(another_view);
     }
 

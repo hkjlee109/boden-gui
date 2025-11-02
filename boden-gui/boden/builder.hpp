@@ -3,6 +3,7 @@
 #include <boden/batch.hpp>
 #include <boden/asset/image_manager.hpp>
 #include <boden/font/font_manager.hpp>
+#include <boden/graphic/compositing_operation.hpp>
 #include <boden/graphic/texture_id.hpp>
 #include <boden/layout/color.hpp>
 #include <boden/layout/rect.hpp>
@@ -54,7 +55,8 @@ public:
 
     void begin(boden::graphic::texture_id_t tid, 
                const boden::layout::rect_t &frame,
-               const boden::layout::rect_t &clip_rect);
+               const boden::layout::rect_t &clip_rect,
+               boden::graphic::compositing_operation_t operation = boden::graphic::compositing_operation_t::source_over);
                
     void end();
 

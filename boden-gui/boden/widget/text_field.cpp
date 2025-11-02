@@ -1,8 +1,16 @@
 #include "text_field.hpp"
-#include <boden/renderer.hpp>
+
+#include <boden/graphic/compositing_operation.hpp>
 
 namespace boden {
 namespace widget {
+
+std::shared_ptr<text_field_t> text_field_t::alloc(const boden::layout::rect_t &frame)
+{
+    auto instance = std::make_shared<text_field_t>(frame);
+    instance->init(frame);
+    return instance;
+}
 
 text_field_t::text_field_t()
     : control_t(),
@@ -52,7 +60,7 @@ void text_field_t::draw_rect(boden::builder_t &builder, const boden::layout::rec
 
     boden::layout::rect_t frame_in_window = convert_rect_to_view(_bounds, nullptr);
 
-    builder.begin(layer.tid, convert_rect_to_view(_bounds, nullptr), dirty_rect);
+    builder.begin(_tid, convert_rect_to_view(_bounds, nullptr), dirty_rect, boden::graphic::compositing_operation_t::copy);
     
     float padding = 5;
     builder.add_text(_text,
@@ -157,6 +165,11 @@ void text_field_t::set_text(const std::string &text)
 void text_field_t::set_text_color(const boden::layout::color_t &color)
 {
     _text_color = color;
+}
+
+void text_field_t::init(const boden::layout::rect_t &frame)
+{
+    boden::widget::view_t::init(frame);
 }
 
 } // widget

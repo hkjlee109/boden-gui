@@ -24,6 +24,8 @@ public:
 class canvas_view_t : public boden::widget::view_t
 {
 public:
+    static std::shared_ptr<canvas_view_t> alloc(const boden::layout::rect_t &frame);
+
     canvas_view_t();
     canvas_view_t(const boden::layout::rect_t &frame);
     ~canvas_view_t() override;
@@ -39,6 +41,9 @@ public:
     void scroll_wheel(const boden::event_t &event) override;
 
     void set_delegate(ppt::canvas_view_delegate_t *delegate);
+
+protected:
+    void init(const boden::layout::rect_t &frame) override;
 
 private:
     ppt::canvas_view_delegate_t *_delegate;

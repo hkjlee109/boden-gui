@@ -2,6 +2,13 @@
 
 namespace ppt {
 
+std::shared_ptr<selection_view_t> selection_view_t::alloc(const boden::layout::rect_t &frame)
+{
+    auto instance = std::make_shared<selection_view_t>(frame);
+    instance->init(frame);
+    return instance;
+}
+
 selection_view_t::selection_view_t()
     : boden::widget::view_t{}
 {
@@ -18,14 +25,15 @@ selection_view_t::~selection_view_t()
 
 void selection_view_t::draw_rect(boden::builder_t &builder, const boden::layout::rect_t &dirty_rect)
 {
-    if(layer.tid == 0)
+    std::shared_ptr<boden::widget::layer::layer_t> layer = get_layer();
+    if(layer->get_texture_id() == 0)
     {
         return;
     }
     
     boden::layout::rect_t frame_in_window = convert_rect_to_view(_bounds, nullptr);
 
-    builder.begin(layer.tid, frame_in_window, dirty_rect);
+    builder.begin(layer->get_texture_id(), frame_in_window, dirty_rect);
 
     for(auto &frame_ : _selection_frames)
     {
@@ -66,6 +74,11 @@ void selection_view_t::set_selection_frames(std::vector<boden::layout::rect_t> &
 {
     _selection_frames = std::move(frames); 
     set_needs_display(true);
+}
+
+void selection_view_t::init(const boden::layout::rect_t &frame)
+{
+    boden::widget::view_t::init(frame);
 }
 
 } // boden

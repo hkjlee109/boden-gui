@@ -43,9 +43,9 @@ void canvas_view_controller_t::did_canvas_view_scroll_wheel(const boden::layout:
 
 void canvas_view_controller_t::load_view()
 {
-    auto document_view{std::make_shared<boden::widget::view_t>(boden::layout::rect_t(0, 0, 8192, 4096))};
-    auto canvas_view{std::make_shared<miro::canvas_view_t>(boden::layout::rect_t(0, 0, 640, 480))};
-
+    auto document_view{boden::widget::view_t::alloc({0, 0, 8192, 4096})};
+    auto canvas_view{miro::canvas_view_t::alloc({0, 0, 640, 480})};
+    
     canvas_view->set_delegate(this);
     canvas_view->set_document_view(document_view);
     _view = canvas_view;

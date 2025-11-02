@@ -37,11 +37,12 @@ view_t::view_t(const boden::layout::rect_t &frame)
 
 view_t::~view_t()
 {
-    if(layer.tid)
+    boden::graphic::texture_id_t tid = _layer->get_texture_id();
+    if(tid)
     {
         if(auto window = _window.lock()) 
         {
-            window->destroy_view_texture(layer.tid);
+            window->destroy_view_texture(tid);
         }
     }
 }
@@ -53,18 +54,19 @@ void view_t::draw_rect(boden::builder_t &builder, const boden::layout::rect_t &d
         return;
     }
 
-    if(layer.tid == 0)
+    boden::graphic::texture_id_t tid = _layer->get_texture_id();
+    if(tid == 0)
     {
         return;
     }
     
     boden::layout::rect_t frame_in_window = convert_rect_to_view(_bounds, nullptr);
 
-    builder.begin(layer.tid, frame_in_window, dirty_rect);
+    builder.begin(tid, frame_in_window, dirty_rect);
     builder.add_rect_filled({_bounds.min_x(), _bounds.min_y()}, 
                             {_bounds.max_x(), _bounds.max_y()},
-                            layer.background_color, 
-                            layer.corner_radius);
+                            _layer->get_background_color(), 
+                            _layer->get_corner_radius());
 
     for(auto subview : _subviews)
     {
@@ -118,20 +120,24 @@ std::shared_ptr<boden::widget::view_t> view_t::hit_test(boden::layout::point_t p
 void view_t::did_add_subview(const boden::widget::view_t *view)
 {
 }
+#include <typeinfo>
 
 void view_t::view_will_move_to_window(std::shared_ptr<boden::widget::window_t> window)
 {
     _window = window;
 
-    if(layer.tid == 0 && _bounds.size.width > 0 && _bounds.size.height > 0)
+    printf("# view_will_move_to_window 1 %d %s\n", _layer == nullptr,  typeid(*this).name());
+    if(_layer->get_texture_id() == 0 && _bounds.size.width > 0 && _bounds.size.height > 0)
     {
-        layer.tid = window->create_view_texture(_bounds.size);
+        printf("# view_will_move_to_window 2\n");
+        _layer->set_texture_id(window->create_view_texture(_bounds.size));
     }
-
+    printf("# view_will_move_to_window 3\n");
     for(auto subview : _subviews)
     {
         subview->view_will_move_to_window(window);
     }
+    printf("# view_will_move_to_window 4\n");
 }
 
 const boden::layout::rect_t & view_t::get_frame() const
@@ -148,12 +154,13 @@ void view_t::set_frame(const boden::layout::rect_t &frame)
     {
         if(auto window = _window.lock())
         {
-            if(layer.tid)
+            boden::graphic::texture_id_t tid = _layer->get_texture_id();
+            if(tid)
             {
-                window->destroy_view_texture(layer.tid);
+                window->destroy_view_texture(tid);
             }
 
-            layer.tid = window->create_view_texture(_bounds.size);
+            _layer->set_texture_id(window->create_view_texture(_bounds.size));
         }
     }
 }
@@ -161,6 +168,11 @@ void view_t::set_frame(const boden::layout::rect_t &frame)
 const boden::layout::rect_t & view_t::get_bounds() const
 {
     return _bounds;
+}
+
+std::shared_ptr<boden::widget::layer::layer_t> view_t::get_layer()
+{
+    return _layer;
 }
 
 const std::vector<std::shared_ptr<boden::widget::view_t>> & view_t::get_subviews() const
@@ -359,10 +371,13 @@ void view_t::enqueue_system_event(const boden::system_event_t &event)
 
 void view_t::init()
 {
+    _layer = boden::widget::layer::layer_t::alloc();
 }
 
 void view_t::init(const boden::layout::rect_t &frame)
 {
+    _layer = boden::widget::layer::layer_t::alloc(frame);
+    set_frame(frame);
 }
 
 } // widget

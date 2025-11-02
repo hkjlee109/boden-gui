@@ -11,15 +11,20 @@ namespace widget {
 class image_view_t : public boden::widget::view_t
 {
 public:
+    static std::shared_ptr<image_view_t> alloc(const boden::layout::rect_t &frame);
+
     image_view_t();
     image_view_t(const boden::layout::rect_t &frame);
     ~image_view_t() override;
     
     void draw_rect(boden::builder_t &builder, const boden::layout::rect_t &dirty_rect) override;
     void set_image(std::unique_ptr<boden::widget::base::image_t> image);
-    void set_tint_color(const boden::layout::color_t &color);
 
     const boden::layout::color_t & get_tint_color() const;
+    void set_tint_color(const boden::layout::color_t &color);
+
+protected:
+    void init(const boden::layout::rect_t &frame) override;
 
 private:
     std::unique_ptr<boden::widget::base::image_t> _image;

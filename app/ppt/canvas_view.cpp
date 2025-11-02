@@ -2,6 +2,13 @@
 
 namespace ppt {
 
+std::shared_ptr<canvas_view_t> canvas_view_t::alloc(const boden::layout::rect_t &frame)
+{
+    auto instance = std::make_shared<canvas_view_t>(frame);
+    instance->init(frame);
+    return instance;
+}
+
 canvas_view_t::canvas_view_t()
     : boden::widget::view_t{},
       _delegate{nullptr}
@@ -104,6 +111,11 @@ void canvas_view_t::scroll_wheel(const boden::event_t &event)
 void canvas_view_t::set_delegate(ppt::canvas_view_delegate_t *delegate)
 {
     _delegate = delegate;
+}
+
+void canvas_view_t::init(const boden::layout::rect_t &frame)
+{
+    boden::widget::view_t::init(frame);
 }
 
 } // boden
