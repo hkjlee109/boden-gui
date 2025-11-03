@@ -118,8 +118,19 @@ void mtl_renderer_t::render(boden::context_t &ctx)
         
         MTL::RenderPassDescriptor *desc = MTL::RenderPassDescriptor::alloc()->init();
         desc->colorAttachments()->object(0)->setTexture(dst_texture);
-        desc->colorAttachments()->object(0)->setLoadAction(MTL::LoadActionLoad);
-        desc->colorAttachments()->object(0)->setStoreAction(MTL::StoreActionStore);
+        
+        switch(operation)
+        {
+            case boden::graphic::compositing_operation_t::clear:
+                desc->colorAttachments()->object(0)->setLoadAction(MTL::LoadActionClear);
+                desc->colorAttachments()->object(0)->setClearColor(MTL::ClearColor::Make(0.0f, 0.0f, 0.0f, 0.0f));
+                break;
+                
+            default:
+                desc->colorAttachments()->object(0)->setLoadAction(MTL::LoadActionLoad);
+                desc->colorAttachments()->object(0)->setStoreAction(MTL::StoreActionStore);
+                break;
+        }
 
         MTL::RenderCommandEncoder *encoder = command_buffer->renderCommandEncoder(desc);
         desc->release();
@@ -136,6 +147,10 @@ void mtl_renderer_t::render(boden::context_t &ctx)
         
         switch(operation)
         {
+            case boden::graphic::compositing_operation_t::clear:
+                encoder->setRenderPipelineState(_pipeline_default.get());
+                break;
+                
             case boden::graphic::compositing_operation_t::copy:
                 encoder->setRenderPipelineState(_pipeline_premultiplied.get());
                 break;

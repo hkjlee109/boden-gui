@@ -18,7 +18,7 @@ public:
     explicit layer_t(const boden::layout::rect_t &frame);
     ~layer_t();
 
-    virtual void draw(boden::builder_t &builder);
+    virtual void draw(boden::builder_t &builder, const boden::layout::rect_t &parent_frame_in_window);
 
     const boden::layout::color_t & get_background_color() const;
     void set_background_color(const boden::layout::color_t &color);
@@ -38,8 +38,13 @@ public:
     bool get_needs_display() const;
     void set_needs_display(bool needs);
 
+    const std::vector<std::shared_ptr<boden::widget::layer::layer_t>> & get_sublayers() const;
+
     boden::graphic::texture_id_t get_texture_id() const;
     void set_texture_id(boden::graphic::texture_id_t tid);
+
+    void add_layer(std::shared_ptr<boden::widget::layer::layer_t> layer);
+    void remove_layer(std::shared_ptr<boden::widget::layer::layer_t> layer);
 
 protected:
     boden::layout::rect_t _bounds;
@@ -50,6 +55,8 @@ protected:
     float _corner_radius;
     bool _needs_display;
     boden::graphic::texture_id_t _tid;
+
+    std::vector<std::shared_ptr<boden::widget::layer::layer_t>> _sublayers;
 
     virtual void init();
     virtual void init(const boden::layout::rect_t &frame);

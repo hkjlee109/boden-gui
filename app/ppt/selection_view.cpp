@@ -25,7 +25,7 @@ selection_view_t::~selection_view_t()
 
 void selection_view_t::draw_rect(boden::builder_t &builder, const boden::layout::rect_t &dirty_rect)
 {
-    std::shared_ptr<boden::widget::layer::layer_t> layer = get_layer();
+    auto layer = get_layer();
     if(layer->get_texture_id() == 0)
     {
         return;
@@ -33,7 +33,7 @@ void selection_view_t::draw_rect(boden::builder_t &builder, const boden::layout:
     
     boden::layout::rect_t frame_in_window = convert_rect_to_view(_bounds, nullptr);
 
-    builder.begin(layer->get_texture_id(), frame_in_window, dirty_rect);
+    builder.begin(layer->get_texture_id(), frame_in_window, dirty_rect, boden::graphic::compositing_operation_t::clear);
 
     for(auto &frame_ : _selection_frames)
     {

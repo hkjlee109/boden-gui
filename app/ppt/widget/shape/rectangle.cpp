@@ -31,7 +31,7 @@ void rectangle_t::draw_rect(boden::builder_t &builder, const boden::layout::rect
         return;
     }
 
-    std::shared_ptr<boden::widget::layer::layer_t> layer = get_layer();
+    auto layer = get_layer();
     if(layer->get_texture_id() == 0)
     {
         return;

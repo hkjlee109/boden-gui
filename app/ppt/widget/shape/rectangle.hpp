@@ -18,7 +18,7 @@ public:
     
     void draw_rect(boden::builder_t &builder, const boden::layout::rect_t &dirty_rect) override;
 
-private:
+protected:
     void init(const boden::layout::rect_t &frame) override;
 };
 

@@ -18,6 +18,9 @@ public:
     ~image_view_t() override;
     
     void draw_rect(boden::builder_t &builder, const boden::layout::rect_t &dirty_rect) override;
+    void view_will_move_to_window(std::shared_ptr<boden::widget::window_t> window) override;
+    void set_frame(const boden::layout::rect_t &frame) override;
+
     void set_image(std::unique_ptr<boden::widget::base::image_t> image);
 
     const boden::layout::color_t & get_tint_color() const;
@@ -27,8 +30,7 @@ protected:
     void init(const boden::layout::rect_t &frame) override;
 
 private:
-    std::unique_ptr<boden::widget::base::image_t> _image;
-    boden::layout::color_t _tint_color;
+    void create_image_layer_texture();
 };
 
 } // widget

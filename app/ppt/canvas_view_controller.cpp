@@ -140,7 +140,7 @@ void canvas_view_controller_t::create_shape(ppt::shape_type_t type)
         case ppt::shape_type_t::rectangle:
         {
             auto rectangle{ppt::widget::shape::rectangle_t::alloc({50, 50, 150, 80})};
-            std::shared_ptr<boden::widget::layer::layer_t> layer = rectangle->get_layer();
+            auto layer = rectangle->get_layer();
             layer->set_background_color({0x21, 0x21, 0x21, 0xFF});
             layer->set_border_color({0xFF, 0xFF, 0xFF, 0xFF});
             layer->set_border_width(1);

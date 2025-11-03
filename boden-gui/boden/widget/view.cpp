@@ -39,7 +39,7 @@ view_t::view_t(const boden::layout::rect_t &frame)
 
 view_t::~view_t()
 {
-    boden::graphic::texture_id_t tid = _layer->get_texture_id();
+    auto tid = _layer->get_texture_id();
     if(tid)
     {
         if(auto window = _window.lock()) 
@@ -56,7 +56,7 @@ void view_t::draw_rect(boden::builder_t &builder, const boden::layout::rect_t &d
         return;
     }
 
-    boden::graphic::texture_id_t tid = _layer->get_texture_id();
+    auto tid = _layer->get_texture_id();
     if(tid == 0)
     {
         return;
@@ -154,7 +154,7 @@ void view_t::set_frame(const boden::layout::rect_t &frame)
     {
         if(auto window = _window.lock())
         {
-            boden::graphic::texture_id_t tid = _layer->get_texture_id();
+            auto tid = _layer->get_texture_id();
             if(tid)
             {
                 window->destroy_view_texture(tid);
@@ -377,7 +377,6 @@ void view_t::init()
 void view_t::init(const boden::layout::rect_t &frame)
 {
     _layer = boden::widget::layer::layer_t::alloc(frame);
-    set_frame(frame);
 }
 
 } // widget

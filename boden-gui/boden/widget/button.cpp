@@ -32,13 +32,13 @@ void button_t::draw_rect(boden::builder_t &builder, const boden::layout::rect_t 
         return;
     }
     
-    std::shared_ptr<boden::widget::layer::layer_t> layer = get_layer();
+    auto layer = get_layer();
     if(layer->get_texture_id() == 0)
     {
         return;
     }
 
-    boden::layout::rect_t frame_in_window = convert_rect_to_view(_bounds, nullptr);
+    auto frame_in_window = convert_rect_to_view(_bounds, nullptr);
 
     builder.begin(layer->get_texture_id(), frame_in_window, dirty_rect);
     builder.add_rect_filled({_bounds.min_x(), _bounds.min_y()}, 
@@ -155,7 +155,7 @@ void button_t::init(const boden::layout::rect_t &frame)
     _image_position = boden::widget::base::cell_image_position_t::no_image;
     _image_scaling = boden::widget::base::image_scaling_t::none;
 
-    std::shared_ptr<boden::widget::layer::layer_t> layer = get_layer();
+    auto layer = get_layer();
     layer->set_background_color({0x8F, 0x8F, 0x8F, 0xFF});
     layer->set_corner_radius(4);
 }

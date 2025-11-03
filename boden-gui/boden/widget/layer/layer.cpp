@@ -25,7 +25,7 @@ layer_t::layer_t()
       _border_color{},
       _border_width{0},
       _corner_radius{0},
-      _needs_display{true},
+      _needs_display{false},
       _tid{0}
 {
 }
@@ -37,7 +37,7 @@ layer_t::layer_t(const boden::layout::rect_t &frame)
       _border_color{},
       _border_width{0},
       _corner_radius{0},
-      _needs_display{true},
+      _needs_display{false},
       _tid{0}
 {
 }
@@ -46,7 +46,7 @@ layer_t::~layer_t()
 {
 }
 
-void layer_t::draw(boden::builder_t &builder)
+void layer_t::draw(boden::builder_t &builder, const boden::layout::rect_t &parent_frame_in_window)
 {
 }
 
@@ -99,6 +99,8 @@ void layer_t::set_frame(const boden::layout::rect_t &frame)
 {
     _frame = frame;
     _bounds = {0, 0, frame.size.width, frame.size.height};
+    
+    _needs_display = true;
 }
 
 boden::graphic::texture_id_t layer_t::get_texture_id() const 
@@ -119,6 +121,27 @@ void layer_t::set_needs_display(bool needs)
 void layer_t::set_texture_id(boden::graphic::texture_id_t tid) 
 { 
     _tid = tid; 
+}
+
+const std::vector<std::shared_ptr<boden::widget::layer::layer_t>> & layer_t::get_sublayers() const
+{
+    return _sublayers;
+}
+
+void layer_t::add_layer(std::shared_ptr<boden::widget::layer::layer_t> layer)
+{
+    _sublayers.push_back(layer);
+}
+
+void layer_t::remove_layer(std::shared_ptr<boden::widget::layer::layer_t> layer)
+{
+    _sublayers.erase(std::remove_if(_sublayers.begin(), 
+                                    _sublayers.end(),
+                                    [layer](const std::shared_ptr<boden::widget::layer::layer_t> &child) 
+                                    {
+                                        return child.get() == layer.get();
+                                    }), 
+                                    _sublayers.end());
 }
 
 void layer_t::init()

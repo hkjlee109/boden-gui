@@ -28,13 +28,13 @@ hover_button_t::~hover_button_t()
 
 void hover_button_t::mouse_entered(const boden::event_t &ev)
 {
-    layer.set_background_color(miro::theme::color::control_highlight);
+    get_layer()->set_background_color(miro::theme::color::control_highlight);
     set_needs_display(true);
 }
 
 void hover_button_t::mouse_exited(const boden::event_t &ev)
 {
-    layer.set_background_color(miro::theme::color::control_background);
+    get_layer()->set_background_color(miro::theme::color::control_background);
     set_needs_display(true);
 }
 

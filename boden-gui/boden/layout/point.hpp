@@ -13,6 +13,16 @@ struct point_t
     {
         return point_t(lhs.x + rhs.x, lhs.y + rhs.y);
     }
+
+    constexpr bool operator==(const point_t &other) const noexcept
+    {
+        return x == other.x && y == other.y;
+    }
+
+    constexpr bool operator!=(const point_t &other) const noexcept
+    {
+        return !(*this == other);
+    }
 };
 
 } // layout

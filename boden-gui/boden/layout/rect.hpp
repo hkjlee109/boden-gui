@@ -108,6 +108,16 @@ struct rect_t
             return std::nullopt;
         }
     }
+
+    constexpr bool operator==(const rect_t &other) const noexcept
+    {
+        return origin == other.origin && size == other.size;
+    }
+
+    constexpr bool operator!=(const rect_t &other) const noexcept
+    {
+        return !(*this == other);
+    }
 };
 
 } // layout
