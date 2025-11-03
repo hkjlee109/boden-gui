@@ -25,7 +25,6 @@ void canvas_view_controller_t::did_canvas_view_key_up(uint32_t key_code, uint64_
 
 void canvas_view_controller_t::did_canvas_view_mouse_down(const boden::layout::point_t &location)
 {
-    printf("# did_canvas_view_mouse_down\n");
 }
 
 void canvas_view_controller_t::did_canvas_view_mouse_dragged(const boden::layout::point_t &location)
@@ -45,7 +44,7 @@ void canvas_view_controller_t::load_view()
 {
     auto document_view{boden::widget::view_t::alloc({0, 0, 8192, 4096})};
     auto canvas_view{miro::canvas_view_t::alloc({0, 0, 640, 480})};
-    
+
     canvas_view->set_delegate(this);
     canvas_view->set_document_view(document_view);
     _view = canvas_view;

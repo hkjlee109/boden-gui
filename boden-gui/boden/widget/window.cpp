@@ -101,23 +101,16 @@ void window_t::set_backend(boden::backend_t *backend)
 
 void window_t::set_content_view(std::shared_ptr<boden::widget::view_t> view)
 {
-    printf("# set_content_view 1\n");
     _content_view = view;
-    printf("# set_content_view 2\n");
     _content_view->view_will_move_to_window(this->shared_from_this());
-    printf("# set_content_view 3\n");
     _tracking_area_manager.set_content_view(_content_view);
-    printf("# set_content_view 4\n");
 }
 
 void window_t::set_content_view_controller(std::shared_ptr<boden::widget::view_controller_t> ctrl)
 {
-    printf("# set_content_view_controller 1\n");
     _content_view_controller = ctrl;
     set_content_view(_content_view_controller->get_view());
-    printf("# set_content_view_controller 2\n");
     make_first_responder(nullptr);
-    printf("# set_content_view_controller 3\n");
 }
 
 void window_t::set_needs_display(bool needs)

@@ -1,5 +1,7 @@
 #include "view.hpp"
 
+#include <cassert>
+
 namespace boden {
 namespace widget {
 
@@ -120,24 +122,22 @@ std::shared_ptr<boden::widget::view_t> view_t::hit_test(boden::layout::point_t p
 void view_t::did_add_subview(const boden::widget::view_t *view)
 {
 }
-#include <typeinfo>
 
 void view_t::view_will_move_to_window(std::shared_ptr<boden::widget::window_t> window)
 {
+    assert(_layer && "Error: _layer is null.");
+    
     _window = window;
 
-    printf("# view_will_move_to_window 1 %d %s\n", _layer == nullptr,  typeid(*this).name());
     if(_layer->get_texture_id() == 0 && _bounds.size.width > 0 && _bounds.size.height > 0)
     {
-        printf("# view_will_move_to_window 2\n");
         _layer->set_texture_id(window->create_view_texture(_bounds.size));
     }
-    printf("# view_will_move_to_window 3\n");
+
     for(auto subview : _subviews)
     {
         subview->view_will_move_to_window(window);
     }
-    printf("# view_will_move_to_window 4\n");
 }
 
 const boden::layout::rect_t & view_t::get_frame() const
