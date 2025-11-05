@@ -16,11 +16,11 @@ public:
     static std::shared_ptr<image_layer_t> alloc();
     static std::shared_ptr<image_layer_t> alloc(const boden::layout::rect_t &frame);
 
-    void draw(boden::builder_t &builder, const boden::layout::rect_t &parent_frame_in_window) override;
-    
     image_layer_t();
     explicit image_layer_t(const boden::layout::rect_t &frame);
     ~image_layer_t();
+    
+    void draw(boden::builder_t &builder, const boden::layout::rect_t &parent_frame_in_window) override;
     
     void set_image(std::unique_ptr<boden::widget::base::image_t> image);
     void set_image_edge_insets(const boden::layout::edge_insets_t &insets);

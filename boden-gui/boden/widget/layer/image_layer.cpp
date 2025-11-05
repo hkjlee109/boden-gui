@@ -117,11 +117,13 @@ void image_layer_t::set_image(std::unique_ptr<boden::widget::base::image_t> imag
 void image_layer_t::set_image_edge_insets(const boden::layout::edge_insets_t &insets)
 {
     _image_edge_insets = insets;
+    _needs_display = true;
 }
 
 void image_layer_t::set_image_scaling(boden::widget::base::image_scaling_t scaling)
 {
     _image_scaling = scaling;
+    _needs_display = true;
 }
 
 const boden::layout::color_t & image_layer_t::get_tint_color() const
@@ -132,6 +134,7 @@ const boden::layout::color_t & image_layer_t::get_tint_color() const
 void image_layer_t::set_tint_color(const boden::layout::color_t &color)
 {
     _tint_color = color;
+    _needs_display = true;
 }
 
 void image_layer_t::init()

@@ -27,18 +27,18 @@ public:
 
     void set_frame(const boden::layout::rect_t &frame) override;
 
+    const std::string & get_text() const;
     void set_text(const std::string &text);
+
     void set_text_color(const boden::layout::color_t &color);
     
 protected:
     void init(const boden::layout::rect_t &frame) override;
 
 private:
-    std::string _text;
-    boden::layout::color_t _text_color;
     boden::widget::base::text_alignment_t _text_alignment;
 
-    boden::graphic::texture_id_t _tid;
+    void create_text_layer_texture();
 };
 
 } // widget

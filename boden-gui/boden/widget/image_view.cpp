@@ -1,5 +1,6 @@
 #include "image_view.hpp"
 
+#include <boden/widget/constant.hpp>
 #include <boden/widget/layer/image_layer.hpp>
 
 namespace boden {
@@ -90,7 +91,7 @@ const boden::layout::color_t & image_view_t::get_tint_color() const
     auto image_layer = std::dynamic_pointer_cast<boden::widget::layer::image_layer_t>(_layer->get_sublayers()[0]);
     if(!image_layer)
     {
-        return boden::layout::color::none;
+        return boden::widget::constant::color::none;
     }
     return image_layer->get_tint_color();
 }
