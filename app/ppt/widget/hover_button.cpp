@@ -58,7 +58,7 @@ void hover_button_t::set_hover_enabled(bool enabled)
 
 void hover_button_t::init(const boden::layout::rect_t &frame)
 {
-    boden::widget::view_t::init(frame);
+    boden::widget::button_t::init(frame);
 }
 
 } // widget

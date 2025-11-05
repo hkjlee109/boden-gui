@@ -23,11 +23,13 @@ public:
     ~button_t() override;
 
     void draw_rect(boden::builder_t &builder, const boden::layout::rect_t &dirty_rect) override;
+    void view_will_move_to_window(std::shared_ptr<boden::widget::window_t> window) override;
+    void set_frame(const boden::layout::rect_t &frame) override;
     void mouse_down(const boden::event_t &ev) override;
 
     void set_content_tint_color(const boden::layout::color_t &color);
 
-    void set_image(std::shared_ptr<boden::widget::base::image_t> image);
+    void set_image(std::unique_ptr<boden::widget::base::image_t> image);
     void set_image_edge_insets(const boden::layout::edge_insets_t &insets);
     void set_image_position(boden::widget::base::cell_image_position_t position);
     void set_image_scaling(boden::widget::base::image_scaling_t scaling);
@@ -40,11 +42,10 @@ protected:
 
 private:
     boden::layout::color_t _content_tint_color;
-    std::shared_ptr<boden::widget::base::image_t> _image;
-    boden::layout::edge_insets_t _image_edge_insets;
     boden::widget::base::cell_image_position_t _image_position;
-    boden::widget::base::image_scaling_t _image_scaling;
     std::string _title;
+
+    void create_image_layer_texture();
 };
 
 } // widget

@@ -52,7 +52,6 @@ void image_view_t::draw_rect(boden::builder_t &builder, const boden::layout::rec
 void image_view_t::view_will_move_to_window(std::shared_ptr<boden::widget::window_t> window)
 {
     boden::widget::view_t::view_will_move_to_window(window);
-    
     create_image_layer_texture();
 }
 
@@ -111,7 +110,6 @@ void image_view_t::init(const boden::layout::rect_t &frame)
     boden::widget::view_t::init(frame);
 
     auto image_layer = boden::widget::layer::image_layer_t::alloc({0, 0, frame.size.width, frame.size.height});
-
     _layer->add_layer(image_layer);
 }
 
