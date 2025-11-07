@@ -2,7 +2,6 @@
 
 #include <boden/graphic/compositing_operation.hpp>
 #include <boden/widget/constant.hpp>
-#include <boden/widget/layer/text_layer.hpp>
 
 namespace boden {
 namespace widget {
@@ -30,13 +29,7 @@ text_field_t::text_field_t(const boden::layout::rect_t &frame)
 
 text_field_t::~text_field_t()
 {
-    auto text_layer = std::dynamic_pointer_cast<boden::widget::layer::text_layer_t>(_layer->get_sublayers()[0]);
-    if(!text_layer)
-    {
-        return;
-    }
-
-    auto tid = text_layer->get_texture_id();
+    auto tid = _text_layer->get_texture_id();
     if(tid)
     {
         if(auto window = _window.lock()) 
@@ -61,10 +54,7 @@ void text_field_t::draw_rect(boden::builder_t &builder, const boden::layout::rec
     }
 
     auto frame_in_window = convert_rect_to_view(_bounds, nullptr);
-    _layer->draw(builder, frame_in_window);
-
-    auto text_layer = _layer->get_sublayers()[0];
-    text_layer->draw(builder, frame_in_window);
+    _text_layer->draw(builder, frame_in_window);
 }
 
 void text_field_t::set_enabled(bool enabled)
@@ -139,40 +129,25 @@ void text_field_t::set_frame(const boden::layout::rect_t &frame)
 
 const std::string & text_field_t::get_text() const
 {
-    auto text_layer = std::dynamic_pointer_cast<boden::widget::layer::text_layer_t>(_layer->get_sublayers()[0]);
-    if(!text_layer)
-    {
-        return boden::widget::constant::string::empty;
-    }
-    return text_layer->get_text();
+    return _text_layer->get_text();
 }
 
 void text_field_t::set_text(const std::string &text)
 {
-    auto text_layer = std::dynamic_pointer_cast<boden::widget::layer::text_layer_t>(_layer->get_sublayers()[0]);
-    if(!text_layer)
-    {
-        return;
-    }
-    text_layer->set_text(text);
+    _text_layer->set_text(text);
 }
 
 void text_field_t::set_text_color(const boden::layout::color_t &color)
 {
-    auto text_layer = std::dynamic_pointer_cast<boden::widget::layer::text_layer_t>(_layer->get_sublayers()[0]);
-    if(!text_layer)
-    {
-        return;
-    }
-    text_layer->set_text_color(color);
+    _text_layer->set_text_color(color);
 }
 
 void text_field_t::init(const boden::layout::rect_t &frame)
 {
     boden::widget::view_t::init(frame);
 
-    auto text_layer = boden::widget::layer::text_layer_t::alloc({0, 0, frame.size.width, frame.size.height});
-    _layer->add_layer(text_layer);
+    _text_layer = boden::widget::layer::text_layer_t::alloc({0, 0, frame.size.width, frame.size.height});
+    _layer->add_layer(_text_layer);
 }
 
 void text_field_t::create_text_layer_texture()
@@ -183,19 +158,13 @@ void text_field_t::create_text_layer_texture()
         return;
     }
 
-    auto text_layer = std::dynamic_pointer_cast<boden::widget::layer::text_layer_t>(_layer->get_sublayers()[0]);
-    if(!text_layer)
-    {
-        return;
-    }
-
-    auto tid = text_layer->get_texture_id();
+    auto tid = _text_layer->get_texture_id();
     if(tid)
     {
         window->destroy_view_texture(tid);
     }
 
-    text_layer->set_texture_id(window->create_view_texture(text_layer->get_frame().size));
+    _text_layer->set_texture_id(window->create_view_texture(_text_layer->get_frame().size));
 }
 
 } // widget

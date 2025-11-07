@@ -7,6 +7,7 @@
 #include <boden/widget/base/image.hpp>
 #include <boden/widget/base/image_scaling.hpp>
 #include <boden/widget/control.hpp>
+#include <boden/widget/layer/image_layer.hpp>
 #include <memory>
 #include <string>
 
@@ -42,6 +43,7 @@ protected:
 
 private:
     boden::layout::color_t _content_tint_color;
+    std::shared_ptr<boden::widget::layer::image_layer_t> _image_layer;
     boden::widget::base::cell_image_position_t _image_position;
     std::string _title;
 

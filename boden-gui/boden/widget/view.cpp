@@ -55,20 +55,9 @@ void view_t::draw_rect(boden::builder_t &builder, const boden::layout::rect_t &d
     {
         return;
     }
-
-    auto tid = _layer->get_texture_id();
-    if(tid == 0)
-    {
-        return;
-    }
     
-    boden::layout::rect_t frame_in_window = convert_rect_to_view(_bounds, nullptr);
-
-    builder.begin(tid, frame_in_window, dirty_rect);
-    builder.add_rect_filled({_bounds.min_x(), _bounds.min_y()}, 
-                            {_bounds.max_x(), _bounds.max_y()},
-                            _layer->get_background_color(), 
-                            _layer->get_corner_radius());
+    auto frame_in_window = convert_rect_to_view(_bounds, nullptr);
+    _layer->draw(builder, frame_in_window);
 
     for(auto subview : _subviews)
     {
@@ -84,8 +73,6 @@ void view_t::draw_rect(boden::builder_t &builder, const boden::layout::rect_t &d
             subview->draw_rect(builder, dirty_in_subview);
         }
     }
-    
-    builder.end();
 }
 
 std::shared_ptr<boden::widget::view_t> view_t::hit_test(boden::layout::point_t point)

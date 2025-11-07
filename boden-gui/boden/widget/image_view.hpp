@@ -3,6 +3,7 @@
 #include <boden/builder.hpp>
 #include <boden/layout/rect.hpp>
 #include <boden/widget/base/image.hpp>
+#include <boden/widget/layer/image_layer.hpp>
 #include <boden/widget/view.hpp>
 
 namespace boden {
@@ -30,6 +31,7 @@ protected:
     void init(const boden::layout::rect_t &frame) override;
 
 private:
+    std::shared_ptr<boden::widget::layer::image_layer_t> _image_layer;
     void create_image_layer_texture();
 };
 

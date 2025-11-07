@@ -6,6 +6,7 @@
 #include <boden/layout/rect.hpp>
 #include <boden/widget/base/text_alignment.hpp>
 #include <boden/widget/control.hpp>
+#include <boden/widget/layer/text_layer.hpp>
 
 namespace boden {
 namespace widget {
@@ -37,6 +38,7 @@ protected:
 
 private:
     boden::widget::base::text_alignment_t _text_alignment;
+    std::shared_ptr<boden::widget::layer::text_layer_t> _text_layer;
 
     void create_text_layer_texture();
 };
