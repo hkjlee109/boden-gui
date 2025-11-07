@@ -129,6 +129,11 @@ void window_t::set_texture_manager(boden::graphic::texture_manager_t *texture_ma
 
 boden::graphic::texture_id_t window_t::create_view_texture(const boden::layout::size_t &size)
 {
+    if(size.width == 0 || size.height == 0)
+    {
+        return 0;
+    }
+
     if(_texture_manager == nullptr)
     {
         return 0;

@@ -24,6 +24,20 @@ button_t::button_t(const boden::layout::rect_t &frame)
 
 button_t::~button_t()
 {
+    auto image_layer = std::dynamic_pointer_cast<boden::widget::layer::image_layer_t>(_layer->get_sublayers()[0]);
+    if(!image_layer)
+    {
+        return;
+    }
+
+    auto tid = image_layer->get_texture_id();
+    if(tid)
+    {
+        if(auto window = _window.lock()) 
+        {
+            window->destroy_view_texture(tid);
+        }
+    }
 }
 
 void button_t::draw_rect(boden::builder_t &builder, const boden::layout::rect_t &dirty_rect)
@@ -33,29 +47,9 @@ void button_t::draw_rect(boden::builder_t &builder, const boden::layout::rect_t 
         return;
     }
     
-    auto layer = get_layer();
-    auto tid = layer->get_texture_id();
-    if(tid == 0)
-    {
-        return;
-    }
-
     auto frame_in_window = convert_rect_to_view(_bounds, nullptr);
 
-    builder.begin(tid, frame_in_window, dirty_rect);
-    builder.add_rect_filled({_bounds.min_x(), _bounds.min_y()}, 
-                            {_bounds.max_x(), _bounds.max_y()},
-                            layer->get_background_color(), 
-                            layer->get_corner_radius());
-
-    if(layer->get_border_width() > 0)
-    {
-        builder.add_rect({_bounds.min_x(), _bounds.min_y()}, 
-                         {_bounds.max_x(), _bounds.max_y()},
-                         layer->get_border_color(),
-                         layer->get_border_width());
-    }
-    builder.end();
+    _layer->draw(builder, frame_in_window);
 
     auto image_layer = _layer->get_sublayers()[0];
     image_layer->draw(builder, frame_in_window);
@@ -157,9 +151,8 @@ void button_t::init(const boden::layout::rect_t &frame)
     _content_tint_color = {0xFF, 0xFF, 0xFF, 0xFF};
     _image_position = boden::widget::base::cell_image_position_t::no_image;
 
-    auto layer = get_layer();
-    layer->set_background_color({0x8F, 0x8F, 0x8F, 0xFF});
-    layer->set_corner_radius(4);
+    _layer->set_background_color({0x8F, 0x8F, 0x8F, 0xFF});
+    _layer->set_corner_radius(4);
 
     auto image_layer = boden::widget::layer::image_layer_t::alloc({0, 0, frame.size.width, frame.size.height});
     _layer->add_layer(image_layer);
@@ -167,22 +160,25 @@ void button_t::init(const boden::layout::rect_t &frame)
 
 void button_t::create_image_layer_texture()
 {
-    if(auto window = _window.lock())
+    auto image_layer = std::dynamic_pointer_cast<boden::widget::layer::image_layer_t>(_layer->get_sublayers()[0]);
+    if(!image_layer)
     {
-        auto image_layer = std::dynamic_pointer_cast<boden::widget::layer::image_layer_t>(_layer->get_sublayers()[0]);
-        if(!image_layer)
-        {
-            return;
-        }
-
-        auto tid = image_layer->get_texture_id();
-        if(tid)
-        {
-            window->destroy_view_texture(tid);
-        }
-
-        image_layer->set_texture_id(window->create_view_texture(image_layer->get_frame().size));
+        return;
     }
+
+    auto window = _window.lock();
+    if(!window)
+    {
+        return;
+    }
+
+    auto tid = image_layer->get_texture_id();
+    if(tid)
+    {
+        window->destroy_view_texture(tid);
+    }
+
+    image_layer->set_texture_id(window->create_view_texture(image_layer->get_frame().size));
 }
 
 } // widget

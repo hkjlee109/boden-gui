@@ -100,6 +100,9 @@ protected:
 
     virtual void init();
     virtual void init(const boden::layout::rect_t &frame);
+
+private:
+    void create_layer_texture();
 };
 
 } // widget

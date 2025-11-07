@@ -44,29 +44,31 @@ void text_layer_t::draw(boden::builder_t &builder, const boden::layout::rect_t &
     auto frame_in_window = boden::layout::rect_t{parent_frame_in_window.origin + _frame.origin, 
                                                  parent_frame_in_window.size};
     
-    if(_needs_display)
+    if(!_needs_display)
     {
-        builder.begin(_tid, frame_in_window, _frame, boden::graphic::compositing_operation_t::clear);
+        builder.begin(_tid, frame_in_window, _frame);         
         builder.end();
-
-        if(_text.empty())
-        {
-            return;
-        }
-
-        builder.begin(_tid, frame_in_window, _frame, boden::graphic::compositing_operation_t::copy);
-        float padding = 5;
-        builder.add_text(_text,
-                         {_bounds.origin.x + padding, _bounds.origin.y + padding},
-                         {_bounds.origin.x + _bounds.size.width - padding, _bounds.origin.y + _bounds.size.height - padding},
-                         _text_color);
-        builder.end();
-        _needs_display = false;
         return;
     }
 
-    builder.begin(_tid, frame_in_window, _frame);         
+    builder.begin(_tid, frame_in_window, _frame, boden::graphic::compositing_operation_t::clear);
     builder.end();
+
+    if(_text.empty())
+    {
+        return;
+    }
+
+    builder.begin(_tid, frame_in_window, _frame, boden::graphic::compositing_operation_t::copy);
+    float padding = 5;
+    builder.add_text(_text,
+                     {_bounds.origin.x + padding, _bounds.origin.y + padding},
+                     {_bounds.origin.x + _bounds.size.width - padding, _bounds.origin.y + _bounds.size.height - padding},
+                     _text_color);
+    builder.end();
+    
+    _needs_display = false;
+    return;
 }
 
 void text_layer_t::init()

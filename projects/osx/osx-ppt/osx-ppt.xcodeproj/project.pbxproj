@@ -86,8 +86,8 @@
 				BF40B09D2E83E127000EB85D /* libfreetype.a in Frameworks */,
 				BF9759C92D6C9DA6000E9A16 /* libboden-gui.a in Frameworks */,
 				BF40B07F2E7F5A07000EB85D /* libboost_json.a in Frameworks */,
-				BF54B3AB2E697D0100F7D4F9 /* MetalKit.framework in Frameworks */,
 				BFF225A62EA1145400D13EA4 /* libharfbuzz.a in Frameworks */,
+				BF54B3AB2E697D0100F7D4F9 /* MetalKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

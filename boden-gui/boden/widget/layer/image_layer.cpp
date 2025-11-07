@@ -46,66 +46,67 @@ void image_layer_t::draw(boden::builder_t &builder, const boden::layout::rect_t 
     auto frame_in_window = boden::layout::rect_t{parent_frame_in_window.origin + _frame.origin, 
                                                  parent_frame_in_window.size};
     
-    if(_needs_display)
+    if(!_needs_display)
     {
-        builder.begin(_tid, frame_in_window, _frame, boden::graphic::compositing_operation_t::clear);
+        builder.begin(_tid, frame_in_window, _frame);         
         builder.end();
-
-        builder.begin(_tid, frame_in_window, _frame, boden::graphic::compositing_operation_t::copy);
-
-        float x = 0;
-        float y = 0;
-        float width = 0;
-        float height = 0;
-
-        boden::layout::rect_t bounds = _bounds.inset_by(_image_edge_insets);
-
-        if(_image->size.width == 0 || _image->size.width == 0)
-        {
-            _image->size = builder.get_image_manager()->get_texture_size(_image->key);
-        }
-
-        switch(_image_scaling)
-        {
-            case boden::widget::base::image_scaling_t::none:
-                x = bounds.mid_x() - _image->size.width / 2;
-                y = bounds.mid_y() - _image->size.height / 2;
-                width = _image->size.width;
-                height = _image->size.height;
-                break;
-
-            case boden::widget::base::image_scaling_t::proportionally_down:
-            {
-                float scale = 1.0f;
-                if(_image->size.width > bounds.size.width 
-                   || _image->size.height > bounds.size.height) 
-                {
-                    float scale_x = bounds.size.width / _image->size.width;
-                    float scale_y = bounds.size.height / _image->size.height;
-                    scale = std::min(scale_x, scale_y);
-                }
-                width = std::round(_image->size.width * scale) + 2;
-                height = std::round(_image->size.height * scale) + 2;
-                x = std::round(bounds.mid_x() - width / 2);
-                y = std::round(bounds.mid_y() - height / 2);
-                break;
-            }
-
-            default:
-                break;
-        }
-
-        builder.add_image(_image->key, 
-                          {x, y}, 
-                          {x + width, y + height},
-                          _tint_color);
-        builder.end();
-        _needs_display = false;
-        return;
     }
 
-    builder.begin(_tid, frame_in_window, _frame);         
+    builder.begin(_tid, frame_in_window, _frame, boden::graphic::compositing_operation_t::clear);
     builder.end();
+
+    builder.begin(_tid, frame_in_window, _frame, boden::graphic::compositing_operation_t::copy);
+
+    float x = 0;
+    float y = 0;
+    float width = 0;
+    float height = 0;
+
+    boden::layout::rect_t bounds = _bounds.inset_by(_image_edge_insets);
+
+    if(_image->size.width == 0 || _image->size.width == 0)
+    {
+        _image->size = builder.get_image_manager()->get_texture_size(_image->key);
+    }
+
+    switch(_image_scaling)
+    {
+        case boden::widget::base::image_scaling_t::none:
+            x = bounds.mid_x() - _image->size.width / 2;
+            y = bounds.mid_y() - _image->size.height / 2;
+            width = _image->size.width;
+            height = _image->size.height;
+            break;
+
+        case boden::widget::base::image_scaling_t::proportionally_down:
+        {
+            float scale = 1.0f;
+            if(_image->size.width > bounds.size.width 
+               || _image->size.height > bounds.size.height) 
+            {
+                float scale_x = bounds.size.width / _image->size.width;
+                float scale_y = bounds.size.height / _image->size.height;
+                scale = std::min(scale_x, scale_y);
+            }
+
+            width = std::round(_image->size.width * scale);
+            height = std::round(_image->size.height * scale);
+            x = std::round(bounds.mid_x() - width / 2);
+            y = std::round(bounds.mid_y() - height / 2);
+            break;
+        }
+
+        default:
+            break;
+    }
+
+    builder.add_image(_image->key, 
+                      {x, y}, 
+                      {x + width, y + height},
+                      _tint_color);
+    builder.end();
+    
+    _needs_display = false;
 }
 
 void image_layer_t::set_image(std::unique_ptr<boden::widget::base::image_t> image)

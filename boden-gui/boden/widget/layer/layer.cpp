@@ -48,6 +48,40 @@ layer_t::~layer_t()
 
 void layer_t::draw(boden::builder_t &builder, const boden::layout::rect_t &parent_frame_in_window)
 {
+    if(_tid == 0)
+    {
+        return;
+    }
+    
+    auto frame_in_window = boden::layout::rect_t{parent_frame_in_window.origin + _frame.origin, 
+                                                 parent_frame_in_window.size};
+    
+    if(!_needs_display)
+    {
+        builder.begin(_tid, frame_in_window, _frame);         
+        builder.end();
+        return;
+    }
+
+    builder.begin(_tid, frame_in_window, _frame, boden::graphic::compositing_operation_t::clear);
+    builder.end();
+
+    builder.begin(_tid, frame_in_window, _frame);
+    builder.add_rect_filled({_bounds.min_x(), _bounds.min_y()}, 
+                            {_bounds.max_x(), _bounds.max_y()},
+                            _background_color, 
+                            _corner_radius);
+
+    if(_border_width > 0)
+    {
+        builder.add_rect({_bounds.min_x(), _bounds.min_y()}, 
+                         {_bounds.max_x(), _bounds.max_y()},
+                         _border_color,
+                         _border_width);
+    }
+    builder.end();
+
+    _needs_display = false;
 }
 
 const boden::layout::color_t & layer_t::get_background_color() const 
@@ -57,7 +91,8 @@ const boden::layout::color_t & layer_t::get_background_color() const
 
 void layer_t::set_background_color(const boden::layout::color_t &color) 
 { 
-    _background_color = color; 
+    _background_color = color;
+    _needs_display = true;
 }
 
 const boden::layout::color_t & layer_t::get_border_color() const 
@@ -67,7 +102,8 @@ const boden::layout::color_t & layer_t::get_border_color() const
 
 void layer_t::set_border_color(const boden::layout::color_t &color) 
 { 
-    _border_color = color; 
+    _border_color = color;
+    _needs_display = true;
 }
 
 float layer_t::get_border_width() const 
@@ -78,6 +114,7 @@ float layer_t::get_border_width() const
 void layer_t::set_border_width(float width) 
 { 
     _border_width = width; 
+    _needs_display = true;
 }
 
 float layer_t::get_corner_radius() const 
@@ -88,6 +125,7 @@ float layer_t::get_corner_radius() const
 void layer_t::set_corner_radius(float radius) 
 { 
     _corner_radius = radius; 
+    _needs_display = true;
 }
 
 const boden::layout::rect_t & layer_t::get_frame() const
@@ -120,7 +158,8 @@ void layer_t::set_needs_display(bool needs)
 
 void layer_t::set_texture_id(boden::graphic::texture_id_t tid) 
 { 
-    _tid = tid; 
+    _tid = tid;
+    _needs_display = true;
 }
 
 const std::vector<std::shared_ptr<boden::widget::layer::layer_t>> & layer_t::get_sublayers() const

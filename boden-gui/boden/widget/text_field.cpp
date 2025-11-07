@@ -30,6 +30,20 @@ text_field_t::text_field_t(const boden::layout::rect_t &frame)
 
 text_field_t::~text_field_t()
 {
+    auto text_layer = std::dynamic_pointer_cast<boden::widget::layer::text_layer_t>(_layer->get_sublayers()[0]);
+    if(!text_layer)
+    {
+        return;
+    }
+
+    auto tid = text_layer->get_texture_id();
+    if(tid)
+    {
+        if(auto window = _window.lock()) 
+        {
+            window->destroy_view_texture(tid);
+        }
+    }
 }
 
 bool text_field_t::accepts_first_responder() 
@@ -45,18 +59,9 @@ void text_field_t::draw_rect(boden::builder_t &builder, const boden::layout::rec
     {
         return;
     }
-    
-    auto layer = get_layer();
-    auto tid = layer->get_texture_id();
-    if(tid == 0)
-    {
-        return;
-    }
-    
-    auto frame_in_window = convert_rect_to_view(_bounds, nullptr);
 
-    builder.begin(tid, frame_in_window, dirty_rect);
-    builder.end();
+    auto frame_in_window = convert_rect_to_view(_bounds, nullptr);
+    _layer->draw(builder, frame_in_window);
 
     auto text_layer = _layer->get_sublayers()[0];
     text_layer->draw(builder, frame_in_window);
@@ -172,22 +177,25 @@ void text_field_t::init(const boden::layout::rect_t &frame)
 
 void text_field_t::create_text_layer_texture()
 {
-    if(auto window = _window.lock())
+    auto window = _window.lock();
+    if(!window)
     {
-        auto text_layer = std::dynamic_pointer_cast<boden::widget::layer::text_layer_t>(_layer->get_sublayers()[0]);
-        if(!text_layer)
-        {
-            return;
-        }
-
-        auto tid = text_layer->get_texture_id();
-        if(tid)
-        {
-            window->destroy_view_texture(tid);
-        }
-
-        text_layer->set_texture_id(window->create_view_texture(text_layer->get_frame().size));
+        return;
     }
+
+    auto text_layer = std::dynamic_pointer_cast<boden::widget::layer::text_layer_t>(_layer->get_sublayers()[0]);
+    if(!text_layer)
+    {
+        return;
+    }
+
+    auto tid = text_layer->get_texture_id();
+    if(tid)
+    {
+        window->destroy_view_texture(tid);
+    }
+
+    text_layer->set_texture_id(window->create_view_texture(text_layer->get_frame().size));
 }
 
 } // widget

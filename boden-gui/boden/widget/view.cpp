@@ -129,10 +129,7 @@ void view_t::view_will_move_to_window(std::shared_ptr<boden::widget::window_t> w
     
     _window = window;
 
-    if(_layer->get_texture_id() == 0 && _bounds.size.width > 0 && _bounds.size.height > 0)
-    {
-        _layer->set_texture_id(window->create_view_texture(_bounds.size));
-    }
+    create_layer_texture();
 
     for(auto subview : _subviews)
     {
@@ -147,22 +144,16 @@ const boden::layout::rect_t & view_t::get_frame() const
 
 void view_t::set_frame(const boden::layout::rect_t &frame)
 {
+    if(_frame == frame)
+    {
+        return;
+    }
+
     _frame = frame;
     _bounds = {0, 0, frame.size.width, frame.size.height};
 
-    if(_bounds.size.width > 0 && _bounds.size.height > 0)
-    {
-        if(auto window = _window.lock())
-        {
-            auto tid = _layer->get_texture_id();
-            if(tid)
-            {
-                window->destroy_view_texture(tid);
-            }
-
-            _layer->set_texture_id(window->create_view_texture(_bounds.size));
-        }
-    }
+    _layer->set_frame(_bounds);
+    create_layer_texture();
 }
 
 const boden::layout::rect_t & view_t::get_bounds() const
@@ -376,7 +367,24 @@ void view_t::init()
 
 void view_t::init(const boden::layout::rect_t &frame)
 {
-    _layer = boden::widget::layer::layer_t::alloc(frame);
+    _layer = boden::widget::layer::layer_t::alloc({0, 0, frame.size.width, frame.size.height});
+}
+
+void view_t::create_layer_texture()
+{
+    auto window = _window.lock();
+    if(!window)
+    {
+        return;
+    }
+
+    auto tid = _layer->get_texture_id();
+    if(tid)
+    {
+        window->destroy_view_texture(tid);
+    }
+
+    _layer->set_texture_id(window->create_view_texture(_layer->get_frame().size));
 }
 
 } // widget
