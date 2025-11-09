@@ -449,8 +449,16 @@ void mtl_renderer_t::setup_pipeline()
     fragment half4 main_fragment(main_vertex_out_t in [[stage_in]],
                                  texture2d<half, access::sample> texture [[texture(0)]]) 
     {
-        constexpr sampler linear_sampler(coord::normalized, min_filter::linear, mag_filter::linear, mip_filter::linear);
-        half4 tex_color = texture.sample(linear_sampler, in.tex_coords);
+//        constexpr sampler linear_sampler(coord::normalized, min_filter::linear, mag_filter::linear, mip_filter::linear);
+//        half4 tex_color = texture.sample(linear_sampler, in.tex_coords);
+//        return half4(in.color) * tex_color;
+      
+        constexpr sampler nearest_sampler(coord::normalized,
+                                          min_filter::nearest,
+                                          mag_filter::nearest,
+                                          mip_filter::nearest);
+
+        half4 tex_color = texture.sample(nearest_sampler, in.tex_coords);
         return half4(in.color) * tex_color;
     }
     

@@ -1,5 +1,7 @@
 #include "canvas_view.hpp"
 
+#include <ppt/theme/color.hpp>
+
 namespace ppt {
 
 std::shared_ptr<canvas_view_t> canvas_view_t::alloc(const boden::layout::rect_t &frame)
@@ -116,6 +118,8 @@ void canvas_view_t::set_delegate(ppt::canvas_view_delegate_t *delegate)
 void canvas_view_t::init(const boden::layout::rect_t &frame)
 {
     boden::widget::view_t::init(frame);
+    
+    _layer->set_background_color(ppt::theme::color::background);
 }
 
 } // boden

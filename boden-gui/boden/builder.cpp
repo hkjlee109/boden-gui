@@ -50,8 +50,8 @@ void builder_t::add_rect(const boden::layout::vec2_t &_p1,
 
     float padding = thickness / 2;
     const boden::layout::vec2_t p1 = {_p1.x + padding, _p1.y + padding};
-    const boden::layout::vec2_t p2 = {_p2.x - padding, _p2.y - padding};
-    
+    const boden::layout::vec2_t p2 = {_p2.x - padding - 0.5f, _p2.y - padding - 0.5f};
+
     std::vector<boden::layout::vec2_t> path;
     path.push_back(p1);
     path.emplace_back(p1.x, p2.y);
