@@ -33,13 +33,15 @@ mtl_renderer_t::mtl_renderer_t(MTL::Device *device)
       _depth_stencil{nullptr, [](MTL::DepthStencilState *ptr) { if (ptr) ptr->release(); }},
       _pipeline_default{nullptr, [](MTL::RenderPipelineState *ptr) { if (ptr) ptr->release(); }},
       _pipeline_premultiplied{nullptr, [](MTL::RenderPipelineState *ptr) { if (ptr) ptr->release(); }},
-      _texture_default{nullptr, [](MTL::Texture *ptr) { if (ptr) ptr->release(); }}
+      _pipeline_blit{nullptr, [](MTL::RenderPipelineState *ptr) { if (ptr) ptr->release(); }},
+      _root_texture{nullptr, [](MTL::Texture *ptr) { if (ptr) ptr->release(); }},
+      _white_texture{nullptr, [](MTL::Texture *ptr) { if (ptr) ptr->release(); }}
 {
     _command_queue.reset(_device->newCommandQueue());
     
     setup_pipeline();
     setup_depth_stencil();
-    setup_texture();
+    setup_white_texture();
 }
 
 mtl_renderer_t::~mtl_renderer_t()
@@ -186,7 +188,7 @@ void mtl_renderer_t::render(boden::context_t &ctx)
             }
             else
             {
-                encoder->setFragmentTexture(_texture_default.get(), 0);
+                encoder->setFragmentTexture(_white_texture.get(), 0);
             }
             
             encoder->drawIndexedPrimitives(MTL::PrimitiveTypeTriangleStrip,
@@ -205,11 +207,10 @@ void mtl_renderer_t::render(boden::context_t &ctx)
         buffer_manager.queue_reusable_buffer(index_buffer);
     });
     
+    setup_root_texture_if_needed(ctx.display_size);
+    
     {
-        boden::graphic::texture_id_t dst_tid = ctx.batch->command_groups[0].tid;
-        boden::layout::rect_t dst_frame = ctx.batch->command_groups[0].frame;
-        
-        MTL::Texture *dst_texture = reinterpret_cast<MTL::Texture *>(_texture_manager->get_gpu_texture_handle(dst_tid));
+        MTL::Texture *dst_texture = _root_texture.get();
         if(!dst_texture)
         {
             return;
@@ -219,16 +220,16 @@ void mtl_renderer_t::render(boden::context_t &ctx)
         {
             .originX = 0.0,
             .originY = 0.0,
-            .width = (double)(dst_frame.size.width),
-            .height = (double)(dst_frame.size.height),
+            .width = (double)(ctx.display_size.width),
+            .height = (double)(ctx.display_size.height),
             .znear = 0.0,
             .zfar = 1.0
         };
         
         float L = 0;
-        float R = dst_frame.size.width;
+        float R = ctx.display_size.width;
         float T = 0;
-        float B = dst_frame.size.height;
+        float B = ctx.display_size.height;
         float N = (float)viewport.znear;
         float F = (float)viewport.zfar;
         float X = 1;
@@ -259,17 +260,12 @@ void mtl_renderer_t::render(boden::context_t &ctx)
         
         encoder->setCullMode(MTL::CullModeNone);
         encoder->setDepthStencilState(_depth_stencil.get());
-        encoder->setRenderPipelineState(_pipeline_default.get());
+        encoder->setRenderPipelineState(_pipeline_blit.get());
         encoder->setViewport(viewport);
         encoder->setVertexBytes(&main_uniform, sizeof(main_uniform), 1);
         
         for(auto &command_group : ctx.batch->command_groups)
         {
-            if(command_group.tid == dst_tid)
-            {
-                continue;
-            }
-            
             auto src_texture = reinterpret_cast<MTL::Texture *>(_texture_manager->get_gpu_texture_handle(command_group.tid));
             
             float x = command_group.frame.origin.x;
@@ -307,10 +303,7 @@ void mtl_renderer_t::render(boden::context_t &ctx)
 
     CA::MetalDrawable *surface = reinterpret_cast<CA::MetalDrawable *>(ctx.surface_handle);
     {
-        boden::graphic::texture_id_t srd_tid = ctx.batch->command_groups[0].tid;
-        boden::layout::rect_t src_frame = ctx.batch->command_groups[0].frame;
-
-        MTL::Texture *src_texture = reinterpret_cast<MTL::Texture *>(_texture_manager->get_gpu_texture_handle(srd_tid));
+        MTL::Texture *src_texture = _root_texture.get();
         if(!src_texture)
         {
             return;
@@ -346,10 +339,10 @@ void mtl_renderer_t::render(boden::context_t &ctx)
             }
         };
         
-        float x = src_frame.origin.x;
-        float y = src_frame.origin.y;
-        float w = src_frame.size.width;
-        float h = src_frame.size.height;
+        float x = 0;
+        float y = 0;
+        float w = ctx.display_size.width;
+        float h = ctx.display_size.height;
 
         boden::draw::vertex_t quad[4] =
         {
@@ -396,19 +389,40 @@ void mtl_renderer_t::setup_depth_stencil()
     desc->setDepthCompareFunction(MTL::CompareFunctionAlways);
     desc->setDepthWriteEnabled(false);
     _depth_stencil.reset(_device->newDepthStencilState(desc));
+    desc->release();
 }
 
-void mtl_renderer_t::setup_texture()
+void mtl_renderer_t::setup_white_texture()
 {
     MTL::TextureDescriptor *desc = MTL::TextureDescriptor::alloc()->init();
     desc->setPixelFormat(MTL::PixelFormatBGRA8Unorm);
     desc->setWidth(1);
     desc->setHeight(1);
     desc->setUsage(MTL::TextureUsageShaderRead);
-    _texture_default.reset(_device->newTexture(desc));
+    _white_texture.reset(_device->newTexture(desc));
+    desc->release();
+    
     uint8_t whitePixel[4] = {255, 255, 255, 255};
     MTL::Region region = MTL::Region::Make3D(0, 0, 0, 1, 1, 1);
-    _texture_default->replaceRegion(region, 0, whitePixel, 4);
+    _white_texture->replaceRegion(region, 0, whitePixel, 4);
+}
+
+void mtl_renderer_t::setup_root_texture_if_needed(const boden::layout::size_t &size)
+{
+    if(_root_texture == nullptr
+       || _root_texture->width() != size.width
+       || _root_texture->height() != size.height)
+    {
+        MTL::TextureDescriptor *desc = MTL::TextureDescriptor::alloc()->init();
+        desc->setTextureType(MTL::TextureType2D);
+        desc->setPixelFormat(MTL::PixelFormatBGRA8Unorm);
+        desc->setWidth(size.width);
+        desc->setHeight(size.height);
+        desc->setUsage(MTL::TextureUsageRenderTarget | MTL::TextureUsageShaderRead);
+        desc->setStorageMode(MTL::StorageModePrivate);
+        _root_texture.reset(_device->newTexture(desc));
+        desc->release();
+    }
 }
 
 void mtl_renderer_t::setup_pipeline()
@@ -574,6 +588,24 @@ void mtl_renderer_t::setup_pipeline()
         library->release();
         return;
     }
+    
+    pipeline_desc->colorAttachments()->object(0)->setSourceRGBBlendFactor(MTL::BlendFactorOne);
+    pipeline_desc->colorAttachments()->object(0)->setDestinationRGBBlendFactor(MTL::BlendFactorOneMinusSourceAlpha);
+    pipeline_desc->colorAttachments()->object(0)->setSourceAlphaBlendFactor(MTL::BlendFactorZero);
+    pipeline_desc->colorAttachments()->object(0)->setDestinationAlphaBlendFactor(MTL::BlendFactorOne);
+        
+    _pipeline_blit.reset(_device->newRenderPipelineState(pipeline_desc, &error));
+    if(_pipeline_blit == nullptr)
+    {
+        std::cout << "Error: failed to create Metal pipeline state: " << error << std::endl;
+        if(vertex_desc) vertex_desc->release();
+        if(pipeline_desc) pipeline_desc->release();
+        vertex_func->release();
+        fragment_func->release();
+        library->release();
+        return;
+    }
+    
     
     vertex_desc->release();
     pipeline_desc->release();

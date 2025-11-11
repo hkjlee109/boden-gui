@@ -25,8 +25,10 @@ public:
 private:
     void setup_depth_stencil();
     void setup_pipeline();
-    void setup_texture();
+    void setup_white_texture();
 
+    void setup_root_texture_if_needed(const boden::layout::size_t &size);
+    
     MTL::Device *_device;
     
     command_queue_ref_t _command_queue;
@@ -34,8 +36,10 @@ private:
     
     pipeline_ref_t _pipeline_default;
     pipeline_ref_t _pipeline_premultiplied;
+    pipeline_ref_t _pipeline_blit;
     
-    texture_ref_t _texture_default;
+    texture_ref_t _root_texture;
+    texture_ref_t _white_texture;
 };
 
 } // platform

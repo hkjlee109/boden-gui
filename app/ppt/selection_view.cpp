@@ -25,6 +25,7 @@ selection_view_t::~selection_view_t()
 
 void selection_view_t::draw_rect(boden::builder_t &builder, const boden::layout::rect_t &dirty_rect)
 {
+//    return;
     auto layer = get_layer();
     if(layer->get_texture_id() == 0)
     {

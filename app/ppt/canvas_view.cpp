@@ -106,7 +106,7 @@ void canvas_view_t::scroll_wheel(const boden::event_t &event)
 {
     if(_delegate)
     {
-        _delegate->did_canvas_view_scroll_wheel({event.scrolling_delta_x,event.scrolling_delta_y});
+        _delegate->did_canvas_view_scroll_wheel({event.scrolling_delta_x, event.scrolling_delta_y});
     }
 }
 

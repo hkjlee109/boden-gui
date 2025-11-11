@@ -50,6 +50,7 @@ void image_layer_t::draw(boden::builder_t &builder, const boden::layout::rect_t 
     {
         builder.begin(_tid, frame_in_window, _frame);         
         builder.end();
+        return;
     }
 
     builder.begin(_tid, frame_in_window, _frame, boden::graphic::compositing_operation_t::clear);
