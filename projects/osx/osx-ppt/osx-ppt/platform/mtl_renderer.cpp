@@ -167,17 +167,17 @@ void mtl_renderer_t::render(boden::context_t &ctx)
         
         for(auto &command : command_group.commands)
         {
-            int32_t x = std::clamp<int32_t>(command.clip_rect.origin.x, 0, dst_frame.size.width);
-            int32_t y = std::clamp<int32_t>(command.clip_rect.origin.y, 0, dst_frame.size.height);
-            int32_t width = std::min<int32_t>(command.clip_rect.size.width, dst_frame.size.width - x);
-            int32_t height = std::min<int32_t>(command.clip_rect.size.height, dst_frame.size.height - y);
+            float x = std::clamp<float>(command.clip_rect.origin.x, 0, dst_frame.size.width);
+            float y = std::clamp<float>(command.clip_rect.origin.y, 0, dst_frame.size.height);
+            float w = std::min<float>(command.clip_rect.size.width, dst_frame.size.width - x);
+            float h = std::min<float>(command.clip_rect.size.height, dst_frame.size.height - y);
             
             MTL::ScissorRect scissor_rect =
             {
                 .x = (NS::UInteger)(x),
                 .y = (NS::UInteger)(y),
-                .width = (NS::UInteger)(width),
-                .height = (NS::UInteger)(height)
+                .width = (NS::UInteger)(w),
+                .height = (NS::UInteger)(h)
             };
             encoder->setScissorRect(scissor_rect);
             
@@ -264,14 +264,31 @@ void mtl_renderer_t::render(boden::context_t &ctx)
         encoder->setViewport(viewport);
         encoder->setVertexBytes(&main_uniform, sizeof(main_uniform), 1);
         
+        boden::graphic::texture_id_t current_tid = 0;
         for(auto &command_group : ctx.batch->command_groups)
         {
-            auto src_texture = reinterpret_cast<MTL::Texture *>(_texture_manager->get_gpu_texture_handle(command_group.tid));
+            if(current_tid == command_group.tid)
+            {
+                continue;
+            }
             
-            float x = command_group.frame.origin.x;
-            float y = command_group.frame.origin.y;
-            float w = command_group.frame.size.width;
-            float h = command_group.frame.size.height;
+            current_tid = command_group.tid;
+            auto src_texture = reinterpret_cast<MTL::Texture *>(_texture_manager->get_gpu_texture_handle(current_tid));
+            
+            float x = std::clamp<float>(command_group.frame.origin.x, 0, ctx.display_size.width);
+            float y = std::clamp<float>(command_group.frame.origin.y, 0, ctx.display_size.height);
+            float w = std::min<float>(command_group.frame.size.width, ctx.display_size.width - x);
+            float h = std::min<float>(command_group.frame.size.height, ctx.display_size.height - y);
+            
+            float left_cut   = (x - command_group.frame.origin.x) / command_group.frame.size.width;
+            float top_cut    = (y - command_group.frame.origin.y) / command_group.frame.size.height;
+            float right_cut  = 1.0f - ((x + w - command_group.frame.origin.x) / command_group.frame.size.width);
+            float bottom_cut = 1.0f - ((y + h - command_group.frame.origin.y) / command_group.frame.size.height);
+            
+            float u0 = left_cut;
+            float v0 = top_cut;
+            float u1 = 1.0f - right_cut;
+            float v1 = 1.0f - bottom_cut;
             
             MTL::ScissorRect scissor_rect =
             {
@@ -283,10 +300,10 @@ void mtl_renderer_t::render(boden::context_t &ctx)
 
             boden::draw::vertex_t quad[4] =
             {
-                { {x,     y},     {0.0f, 0.0f}, 0xFFFFFFFF },
-                { {x + w, y},     {1.0f, 0.0f}, 0xFFFFFFFF },
-                { {x,     y + h}, {0.0f, 1.0f}, 0xFFFFFFFF },
-                { {x + w, y + h}, {1.0f, 1.0f}, 0xFFFFFFFF }
+                { {x,     y},     {u0, v0}, 0xFFFFFFFF },
+                { {x + w, y},     {u1, v0}, 0xFFFFFFFF },
+                { {x,     y + h}, {u0, v1}, 0xFFFFFFFF },
+                { {x + w, y + h}, {u1, v1}, 0xFFFFFFFF }
             };
             
             encoder->setScissorRect(scissor_rect);
