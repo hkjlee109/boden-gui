@@ -149,7 +149,6 @@ int osx_backend_t::main()
                 break;
 
             case boden::event_type_t::scroll_wheel:
-                printf("#\n");
                 _window->scroll_wheel(event);
                 display_if_needed();
                 break;

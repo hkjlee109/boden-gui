@@ -48,4 +48,8 @@ boden::graphic::gpu_texture_handle_t webgl_texture_manager_t::create_gpu_texture
     return (uint64_t)em_create_gpu_texture(size.width, size.height);
 }
 
+void webgl_texture_manager_t::destroy_gpu_texture(boden::graphic::gpu_texture_handle_t handle)
+{
+}
+
 } // platform

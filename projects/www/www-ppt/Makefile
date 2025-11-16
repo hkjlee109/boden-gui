@@ -14,7 +14,7 @@ APP_DIR := ../../../app
 APP_SRCS := $(shell find $(APP_DIR)/ppt -name '*.cpp')
 WWW_SRCS := $(shell find platform -name '*.cpp')
 
-all: $(BUILD_DIR) $(BODEN_GUI_TARGET) $(TARGET) copy-resources
+all: copy-resources $(BUILD_DIR) $(BODEN_GUI_TARGET) $(TARGET)
 
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)

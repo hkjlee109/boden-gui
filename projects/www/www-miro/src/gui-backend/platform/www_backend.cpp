@@ -3,6 +3,7 @@
 #include <boden/context.hpp>
 #include <boden/utils/config.hpp>
 #include <fstream>
+#include <miro/main_view_controller.hpp>
 
 namespace platform {
     
@@ -37,6 +38,7 @@ www_backend_t::www_backend_t()
     _window = std::make_shared<miro::main_window_t>(boden::layout::rect_t{0, 0, 640, 480});
     _window->set_backend(this);
     _window->set_texture_manager(&_webgl_texture_manager);
+    _window->set_content_view_controller(std::make_shared<miro::main_view_controller_t>());
     _window->order_front();
 }
 
