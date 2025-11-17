@@ -317,12 +317,25 @@ addToLibrary({
                     0
                 );
                 
-                if(operation === 2) {
-                    gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
-                } else {
-                    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-                }
+                switch(operation) {
+                    case 0: // clear
+                        gl.clearColor(0.0, 0.0, 0.0, 0.0);
+                        gl.clear(gl.COLOR_BUFFER_BIT);
+                        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+                        break;
 
+                    case 1: // copy
+                        gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+                        break;
+
+                    case 2: // source_over
+                        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+                        break;
+
+                    default:
+                        break;
+                }
+                
                 let commands = [];
                 for(let i = 0; i < group[4]; i++) {
                     let base_addr = (group[3] >> 2) + i * 8;
@@ -464,10 +477,10 @@ addToLibrary({
                 gl.enableVertexAttribArray(renderInfomation.attribLocations.position);
 
                 const quadTexCoord = new Float32Array([
-                    0, 1,
-                    1, 1,
                     0, 0,
                     1, 0,
+                    0, 1,
+                    1, 1,
                 ]);
 
                 gl.bindBuffer(gl.ARRAY_BUFFER, Module.texCoordBuffer);
