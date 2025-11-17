@@ -36,7 +36,8 @@ extern void em_render(const command_group_view_t *command_groups,
                       uint32_t vertices_count);
 
 EMSCRIPTEN_KEEPALIVE
-uint32_t cpp_get_gpu_texture_id(boden::graphic::texture_id_t tid) 
+__attribute__((export_name("getGpuTextureId")))
+uint32_t get_gpu_texture_id(boden::graphic::texture_id_t tid) 
 {
     return (uint32_t)texture_manager->get_gpu_texture_handle(tid);
 }

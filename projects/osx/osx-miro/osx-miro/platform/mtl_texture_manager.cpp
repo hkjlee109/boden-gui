@@ -12,7 +12,7 @@ mtl_texture_manager_t::mtl_texture_manager_t(MTL::Device *device)
 
 mtl_texture_manager_t::~mtl_texture_manager_t()
 {
-    for (auto& pair : _textures)
+    for(auto &pair : _textures)
     {
         auto &texture = pair.second;
         if(!texture)
@@ -90,7 +90,7 @@ void mtl_texture_manager_t::destroy_gpu_texture(boden::graphic::gpu_texture_hand
         return;
     }
 
-    MTL::Texture* texture = reinterpret_cast<MTL::Texture*>(handle);
+    MTL::Texture *texture = reinterpret_cast<MTL::Texture *>(handle);
     texture->release();
 }
 

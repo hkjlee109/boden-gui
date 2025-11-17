@@ -302,7 +302,7 @@ addToLibrary({
 
             for(const group of command_groups) { 
                 const dst_tid = group[0];
-                const dst_gtid = Module._cpp_get_gpu_texture_id(dst_tid);
+                const dst_gtid = Module._getGpuTextureId(dst_tid);
                 const dst_texture = Module.gpuTextureMap.get(dst_gtid);
                 const dst_frame_size = group[1][1];
                 const operation = group[2];
@@ -373,7 +373,7 @@ addToLibrary({
                     );
 
                     if(tid) {
-                        const gtid = Module._cpp_get_gpu_texture_id(tid); 
+                        const gtid = Module._getGpuTextureId(tid); 
                         const texture = Module.gpuTextureMap.get(gtid);
                         gl.activeTexture(gl.TEXTURE1);
                         gl.bindTexture(gl.TEXTURE_2D, texture);
@@ -455,7 +455,7 @@ addToLibrary({
                 let frame_size = group[1][1];
 
                 current_tid = src_tid;
-                const src_gtid = Module._cpp_get_gpu_texture_id(src_tid);
+                const src_gtid = Module._getGpuTextureId(src_tid);
                 const src_texture = Module.gpuTextureMap.get(src_gtid);
 
                 gl.activeTexture(gl.TEXTURE1);
