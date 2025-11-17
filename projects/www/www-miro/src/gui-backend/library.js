@@ -180,7 +180,6 @@ addToLibrary({
             let commands_addr = HEAP32[base_addr + 6];
             let commands_count = HEAP32[base_addr + 7];
 
-            console.log("# frame_x: ", x);
             command_groups.push([
                 tid,
                 [{x, y}, {width, height}],
@@ -335,7 +334,7 @@ addToLibrary({
                     default:
                         break;
                 }
-                
+
                 let commands = [];
                 for(let i = 0; i < group[4]; i++) {
                     let base_addr = (group[3] >> 2) + i * 8;
@@ -599,6 +598,20 @@ addToLibrary({
         return gtid;
     },
 
+    em_destroy_gpu_texture: function(handle) {
+        const gl = Module.context;
+
+        const texture = Module.gpuTextureMap.get(handle);
+
+        if(!texture) {
+            console.warn("em_destroy_gpu_texture: Tried to destroy unknown texture id: ", handle);
+            return;
+        }
+
+        gl.deleteTexture(texture);
+        Module.gpuTextureMap.delete(handle);
+    },
+    
     em_begin_text_input: function(
         text_,
         textLength,

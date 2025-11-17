@@ -136,11 +136,17 @@ void view_t::set_frame(const boden::layout::rect_t &frame)
         return;
     }
 
+    bool needs_texture_recreate = (_frame.size != frame.size);
+
     _frame = frame;
     _bounds = {0, 0, frame.size.width, frame.size.height};
 
     _layer->set_frame(_bounds);
-    create_layer_texture();
+
+    if(needs_texture_recreate)
+    {
+        create_layer_texture();
+    }
 }
 
 const boden::layout::rect_t & view_t::get_bounds() const

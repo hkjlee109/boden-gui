@@ -75,6 +75,11 @@ void webgl_renderer_t::render(boden::context_t &ctx)
               ctx.batch->indices.size(),
               ctx.batch->vertices.data(),
               ctx.batch->vertices.size());
+
+    if(texture_manager)
+    {
+        texture_manager->cleanup_unused_texture();
+    }
 }
 
 } // platform

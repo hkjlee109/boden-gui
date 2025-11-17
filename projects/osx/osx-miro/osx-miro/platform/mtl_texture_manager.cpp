@@ -85,6 +85,13 @@ boden::graphic::gpu_texture_handle_t mtl_texture_manager_t::create_gpu_texture(b
 
 void mtl_texture_manager_t::destroy_gpu_texture(boden::graphic::gpu_texture_handle_t handle)
 {
+    if(!handle)
+    {
+        return;
+    }
+
+    MTL::Texture* texture = reinterpret_cast<MTL::Texture*>(handle);
+    texture->release();
 }
 
 } // platform

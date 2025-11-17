@@ -14,6 +14,7 @@ extern uint32_t em_bake(uint32_t gtid,
                         uint32_t number_of_channels);
 
 extern uint32_t em_create_gpu_texture(float_t width, float_t height);
+extern void em_destroy_gpu_texture(uint32_t handle);
 
 } // "C"
 
@@ -50,6 +51,7 @@ boden::graphic::gpu_texture_handle_t webgl_texture_manager_t::create_gpu_texture
 
 void webgl_texture_manager_t::destroy_gpu_texture(boden::graphic::gpu_texture_handle_t handle)
 {
+    em_destroy_gpu_texture((uint32_t)handle);
 }
 
 } // platform
