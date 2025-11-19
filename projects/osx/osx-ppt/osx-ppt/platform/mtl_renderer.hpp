@@ -27,16 +27,18 @@ private:
     void setup_pipeline();
     void setup_white_texture();
 
-    void setup_root_texture_if_needed(const boden::layout::size_t &size);
+    void create_default_pipeline(MTL::Library *library);
+    void create_premultiplied_pipeline(MTL::Library *library);
+    
+    void create_root_texture_if_needed(const boden::layout::size_t &size);
     
     MTL::Device *_device;
     
     command_queue_ref_t _command_queue;
     depth_stencil_ref_t _depth_stencil;
     
-    pipeline_ref_t _pipeline_default;
-    pipeline_ref_t _pipeline_premultiplied;
-    pipeline_ref_t _pipeline_blit;
+    pipeline_ref_t _default_pipeline;
+    pipeline_ref_t _premultiplied_pipeline;
     
     texture_ref_t _root_texture;
     texture_ref_t _white_texture;

@@ -42,7 +42,7 @@ void canvas_view_controller_t::did_canvas_view_scroll_wheel(const boden::layout:
 
 void canvas_view_controller_t::load_view()
 {
-    auto document_view{boden::widget::view_t::alloc({0, 0, 8192, 4096})};
+    auto document_view{boden::widget::view_t::alloc({0, 0, 4096, 4096})};
     auto canvas_view{miro::canvas_view_t::alloc({0, 0, 640, 480})};
 
     canvas_view->set_delegate(this);
