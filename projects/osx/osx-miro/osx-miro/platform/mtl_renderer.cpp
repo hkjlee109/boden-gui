@@ -127,7 +127,41 @@ void mtl_renderer_t::render(boden::context_t &ctx)
                 desc->colorAttachments()->object(0)->setLoadAction(MTL::LoadActionClear);
                 desc->colorAttachments()->object(0)->setClearColor(MTL::ClearColor::Make(0.0f, 0.0f, 0.0f, 0.0f));
                 break;
+            
+            case boden::graphic::compositing_operation_t::custom_1:
+            {
+                uint32_t zoom = 0;
+                uint32_t offset_x = 0;
+                uint32_t offset_y = 0;
+
+                std::memcpy(&zoom, command_group.params, 4);
+                std::memcpy(&offset_x, command_group.params + 4, 4);
+                std::memcpy(&offset_y, command_group.params + 8, 4);
                 
+                desc->colorAttachments()->object(0)->setLoadAction(MTL::LoadActionClear);
+                desc->colorAttachments()->object(0)->setClearColor(MTL::ClearColor::Make(0.0f, 0.0f, 0.0f, 0.0f));
+                MTL::RenderCommandEncoder *encoder = command_buffer->renderCommandEncoder(desc);
+                desc->release();
+                
+                encoder->setRenderPipelineState(_grid_pipeline.get());
+                
+                grid_uniforms_t uniforms;
+                uniforms.scroll.x = offset_x;
+                uniforms.scroll.y = offset_y;
+                uniforms.zoom = zoom / 100.0f;
+                uniforms.major_spacing = 100;
+                uniforms.minor_spacing = 25;
+                uniforms.screen_size.x = ctx.display_size.width;
+                uniforms.screen_size.y = ctx.display_size.height;
+
+                encoder->setFragmentBytes(&uniforms, sizeof(uniforms), 0);
+                encoder->drawPrimitives(MTL::PrimitiveTypeTriangle,
+                                        (NS::UInteger)0,
+                                        (NS::UInteger)6);
+                encoder->endEncoding();
+                continue;
+            }
+
             default:
                 desc->colorAttachments()->object(0)->setLoadAction(MTL::LoadActionLoad);
                 desc->colorAttachments()->object(0)->setStoreAction(MTL::StoreActionStore);
@@ -216,12 +250,20 @@ void mtl_renderer_t::render(boden::context_t &ctx)
             return;
         }
 
+        MTL::RenderPassDescriptor *desc = MTL::RenderPassDescriptor::alloc()->init();
+        desc->colorAttachments()->object(0)->setTexture(dst_texture);
+        desc->colorAttachments()->object(0)->setLoadAction(MTL::LoadActionClear);
+        desc->colorAttachments()->object(0)->setClearColor(MTL::ClearColor::Make(0.95f, 0.95f, 0.95f, 1.0f));
+        
+        MTL::RenderCommandEncoder *encoder = command_buffer->renderCommandEncoder(desc);
+        desc->release();
+
         MTL::Viewport viewport =
         {
             .originX = 0.0,
             .originY = 0.0,
-            .width = (double)(ctx.display_size.width),
-            .height = (double)(ctx.display_size.height),
+            .width = (double)ctx.display_size.width,
+            .height = (double)ctx.display_size.height,
             .znear = 0.0,
             .zfar = 1.0
         };
@@ -245,18 +287,7 @@ void mtl_renderer_t::render(boden::context_t &ctx)
                 { (R+L)/(L-R),        (T+B)/(B-T),          N/(F-N),   1.0f },
             }
         };
-        
-        MTL::RenderPassDescriptor *desc = MTL::RenderPassDescriptor::alloc()->init();
-        desc->colorAttachments()->object(0)->setTexture(dst_texture);
-//        desc->colorAttachments()->object(0)->setLoadAction(MTL::LoadActionLoad);
-//        desc->colorAttachments()->object(0)->setStoreAction(MTL::StoreActionStore);
 
-        desc->colorAttachments()->object(0)->setLoadAction(MTL::LoadActionClear);
-        desc->colorAttachments()->object(0)->setClearColor(MTL::ClearColor::Make(0.0f, 0.0f, 0.0f, 0.0f));
-        
-        MTL::RenderCommandEncoder *encoder = command_buffer->renderCommandEncoder(desc);
-        desc->release();
-        
         encoder->pushDebugGroup(NS::String::string(
                                                    "Render to root texture",
                                                    NS::StringEncoding::UTF8StringEncoding));
@@ -336,22 +367,6 @@ void mtl_renderer_t::render(boden::context_t &ctx)
         
         MTL::RenderCommandEncoder *encoder = command_buffer->renderCommandEncoder(desc);
         desc->release();
-        
-        encoder->setRenderPipelineState(_grid_pipeline.get());
-
-        grid_uniforms_t uniforms;
-        uniforms.scroll.x = 0;
-        uniforms.scroll.y = 0;
-        uniforms.zoom = 1;
-        uniforms.major_spacing = 200;
-        uniforms.minor_spacing = 50;
-        uniforms.screen_size.x = ctx.display_size.width * ctx.display_scale.x;
-        uniforms.screen_size.y = ctx.display_size.height * ctx.display_scale.y;
-        
-        encoder->setFragmentBytes(&uniforms, sizeof(uniforms), 0);
-        encoder->drawPrimitives(MTL::PrimitiveTypeTriangle,
-                                (NS::UInteger)0,
-                                (NS::UInteger)6);
 
         MTL::Viewport viewport =
         {

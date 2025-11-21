@@ -32,6 +32,7 @@ protected:
 
 private:
     std::shared_ptr<boden::widget::layer::image_layer_t> _image_layer;
+    
     void create_image_layer_texture();
 };
 

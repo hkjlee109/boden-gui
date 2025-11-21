@@ -57,7 +57,9 @@ public:
                const boden::layout::rect_t &frame,
                const boden::layout::rect_t &clip_rect,
                boden::graphic::compositing_operation_t operation = boden::graphic::compositing_operation_t::source_over);
-               
+        
+    void add_param(std::size_t at, const void *data, std::size_t size);
+    
     void end();
 
     void push_clip_rect(const boden::layout::rect_t &rect);

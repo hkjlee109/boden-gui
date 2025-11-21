@@ -47,7 +47,7 @@ fragment float4 grid_fragment(grid_vertex_out_t in [[stage_in]],
     float2 major_cell = fmod(world_position, uniforms.major_spacing);
     float2 minor_cell = fmod(world_position, uniforms.minor_spacing);
 
-    float major_thickness = 2.0 / uniforms.zoom;
+    float major_thickness = 1.0 / uniforms.zoom;
     float minor_thickness = 1.0 / uniforms.zoom;
 
     bool on_major = (fabs(major_cell.x) < major_thickness) ||

@@ -19,5 +19,4 @@ void renderer_t::set_texture_manager(boden::graphic::texture_manager_t *manager)
     _texture_manager = manager;
 }
 
-
 } // boden

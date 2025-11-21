@@ -33,7 +33,7 @@ struct command_t
 
 struct command_group_t
 {
-    constexpr command_group_t(boden::graphic::texture_id_t _tid, 
+    command_group_t(boden::graphic::texture_id_t _tid, 
                               const boden::layout::rect_t &_frame,
                               boden::graphic::compositing_operation_t _operation)
         : tid{_tid},
@@ -45,6 +45,7 @@ struct command_group_t
     boden::graphic::compositing_operation_t operation;
 
     std::vector<boden::draw::command_t> commands;
+    uint8_t params[12];
 };
 
 } // draw

@@ -280,6 +280,12 @@ void builder_t::begin(boden::graphic::texture_id_t tid,
     push_clip_rect(clip_rect);
 }
 
+void builder_t::add_param(std::size_t at, const void *data, std::size_t size)
+{
+    auto &group = _batch->command_groups.back();
+    std::memcpy(group.params + at, data, size);
+}
+
 void builder_t::end()
 {
     pop_clip_rect();
