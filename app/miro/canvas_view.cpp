@@ -148,6 +148,7 @@ void canvas_view_t::set_delegate(miro::canvas_view_delegate_t *delegate)
 void canvas_view_t::set_offset(const boden::layout::point_t &offset)
 {
     _grid_layer->set_offset(offset);
+    set_needs_display(true);
 }
 
 void canvas_view_t::set_zoom(uint32_t zoom)

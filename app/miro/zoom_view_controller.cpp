@@ -69,7 +69,7 @@ void zoom_view_controller_t::on_zoom_in_click(void *sender)
 {
     if(_zoom_delegate)
     {
-        _zoom_index = (_zoom_index == MAX_ZOOM_INDEX) ? MAX_ZOOM_INDEX : (_zoom_index + 1);
+        _zoom_index = (_zoom_index == MIN_ZOOM_INDEX) ? MIN_ZOOM_INDEX : (_zoom_index - 1);
         _zoom_delegate->did_zoom_change(steps[_zoom_index]);
     }
 }
@@ -78,7 +78,7 @@ void zoom_view_controller_t::on_zoom_out_click(void *sender)
 {
     if(_zoom_delegate)
     {
-        _zoom_index = (_zoom_index == MIN_ZOOM_INDEX) ? MIN_ZOOM_INDEX : (_zoom_index - 1);
+        _zoom_index = (_zoom_index == MAX_ZOOM_INDEX) ? MAX_ZOOM_INDEX : (_zoom_index + 1);
         _zoom_delegate->did_zoom_change(steps[_zoom_index]);
     }
 }

@@ -40,9 +40,7 @@ fragment float4 grid_fragment(grid_vertex_out_t in [[stage_in]],
                               constant grid_uniforms_t &uniforms [[buffer(0)]])
 {
     float2 screen_position = in.uv * uniforms.screen_size;
-
     float2 world_position = screen_position / uniforms.zoom + uniforms.offset;
-
 
     float2 major_cell = fmod(world_position, uniforms.major_spacing);
     float2 minor_cell = fmod(world_position, uniforms.minor_spacing);

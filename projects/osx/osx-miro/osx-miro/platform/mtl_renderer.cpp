@@ -155,13 +155,13 @@ void mtl_renderer_t::render(boden::context_t &ctx)
                 desc->release();
                 
                 encoder->setRenderPipelineState(_grid_pipeline.get());
-                
+
                 grid_uniforms_t uniforms;
                 uniforms.offset.x = offset_x;
                 uniforms.offset.y = offset_y;
                 uniforms.zoom = zoom / 100.0f;
-                uniforms.major_spacing = 100;
-                uniforms.minor_spacing = 25;
+                uniforms.major_spacing = 80;
+                uniforms.minor_spacing = 20;
                 uniforms.screen_size.x = ctx.display_size.width;
                 uniforms.screen_size.y = ctx.display_size.height;
 

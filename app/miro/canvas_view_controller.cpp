@@ -39,7 +39,6 @@ void canvas_view_controller_t::did_canvas_view_mouse_up(const boden::layout::poi
 
 void canvas_view_controller_t::did_canvas_view_scroll_wheel(const boden::layout::vec2_t &delta)
 {
-    printf("# did_canvas_view_scroll_wheel %f %f\n", delta.x, delta.y);
     auto canvas_view = std::dynamic_pointer_cast<miro::canvas_view_t>(_view);
     _offset.x = std::clamp(_offset.x - delta.x, 0.0f, 4096.0f);
     _offset.y = std::clamp(_offset.y - delta.y, 0.0f, 4096.0f);
