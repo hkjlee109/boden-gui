@@ -51,9 +51,7 @@ void mtl_renderer_t::render(boden::context_t &ctx)
 {
     boden::renderer_t::render(ctx);
     
-    if(ctx.batch->command_groups.empty()
-       || ctx.batch->indices.empty()
-       || ctx.batch->vertices.empty())
+    if(ctx.batch->command_groups.empty())
     {
         return;
     }
@@ -62,17 +60,27 @@ void mtl_renderer_t::render(boden::context_t &ctx)
 
     MTL::CommandBuffer *command_buffer = _command_queue->commandBuffer();
     
-    mtl_buffer_ref_t vertex_buffer = buffer_manager.dequeue_reusable_buffer(_device,
-                                                                            ctx.batch->vertices.size() * sizeof(boden::draw::vertex_t));
-    mtl_buffer_ref_t index_buffer = buffer_manager.dequeue_reusable_buffer(_device,
-                                                                           ctx.batch->indices.size() * sizeof(boden::draw::index_t));
+    mtl_buffer_ref_t vertex_buffer;
+    mtl_buffer_ref_t index_buffer;
     
-    memcpy((char*)vertex_buffer->get_buffer()->contents(),
-           ctx.batch->vertices.data(),
-           ctx.batch->vertices.size() * sizeof(boden::draw::vertex_t));
-    memcpy((char*)index_buffer->get_buffer()->contents(),
-           ctx.batch->indices.data(),
-           ctx.batch->indices.size() * sizeof(boden::draw::index_t));
+    if(!ctx.batch->vertices.empty())
+    {
+        vertex_buffer = buffer_manager.dequeue_reusable_buffer(_device,
+                                                               ctx.batch->vertices.size() * sizeof(boden::draw::vertex_t));
+        memcpy((char*)vertex_buffer->get_buffer()->contents(),
+               ctx.batch->vertices.data(),
+               ctx.batch->vertices.size() * sizeof(boden::draw::vertex_t));
+    }
+    
+    if(!ctx.batch->indices.empty())
+    {
+        index_buffer = buffer_manager.dequeue_reusable_buffer(_device,
+                                                              ctx.batch->indices.size() * sizeof(boden::draw::index_t));
+    
+        memcpy((char*)index_buffer->get_buffer()->contents(),
+               ctx.batch->indices.data(),
+               ctx.batch->indices.size() * sizeof(boden::draw::index_t));
+    }
     
     for(auto &command_group : ctx.batch->command_groups)
     {
@@ -144,7 +152,10 @@ void mtl_renderer_t::render(boden::context_t &ctx)
         encoder->setDepthStencilState(_depth_stencil.get());
         encoder->setViewport(viewport);
         encoder->setVertexBytes(&main_uniform, sizeof(main_uniform), 1);
-        encoder->setVertexBuffer(vertex_buffer->get_buffer(), 0, 0);
+        if(vertex_buffer)
+        {
+            encoder->setVertexBuffer(vertex_buffer->get_buffer(), 0, 0);
+        }
         
         switch(operation)
         {

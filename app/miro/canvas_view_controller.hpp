@@ -24,9 +24,13 @@ public:
     void did_canvas_view_mouse_dragged(const boden::layout::point_t &location) override;
     void did_canvas_view_mouse_up(const boden::layout::point_t &location) override;
     void did_canvas_view_scroll_wheel(const boden::layout::vec2_t &delta) override;
-
+    
+    void set_zoom(uint32_t zoom);
+    
 private:
     void init();
+    
+    boden::layout::point_t _offset;
 };
 
 } // miro

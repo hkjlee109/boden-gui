@@ -19,7 +19,7 @@ struct main_uniforms_t
 
 struct grid_uniforms_t
 {
-    simd::float2 scroll;
+    simd::float2 offset;
     float zoom;
     float major_spacing;
     float minor_spacing;
@@ -52,28 +52,36 @@ void mtl_renderer_t::render(boden::context_t &ctx)
 {
     boden::renderer_t::render(ctx);
     
-    if(ctx.batch->command_groups.empty() ||
-       ctx.batch->indices.empty() ||
-       ctx.batch->vertices.empty())
+    if(ctx.batch->command_groups.empty())
     {
         return;
     }
     
     _texture_manager->cleanup_unused_texture();
-
+    
     MTL::CommandBuffer *command_buffer = _command_queue->commandBuffer();
     
-    mtl_buffer_ref_t vertex_buffer = buffer_manager.dequeue_reusable_buffer(_device,
-                                                                            ctx.batch->vertices.size() * sizeof(boden::draw::vertex_t));
-    mtl_buffer_ref_t index_buffer = buffer_manager.dequeue_reusable_buffer(_device,
-                                                                           ctx.batch->indices.size() * sizeof(boden::draw::index_t));
+    mtl_buffer_ref_t vertex_buffer;
+    mtl_buffer_ref_t index_buffer;
     
-    memcpy((char*)vertex_buffer->get_buffer()->contents(),
-           ctx.batch->vertices.data(),
-           ctx.batch->vertices.size() * sizeof(boden::draw::vertex_t));
-    memcpy((char*)index_buffer->get_buffer()->contents(),
-           ctx.batch->indices.data(),
-           ctx.batch->indices.size() * sizeof(boden::draw::index_t));
+    if(!ctx.batch->vertices.empty())
+    {
+        vertex_buffer = buffer_manager.dequeue_reusable_buffer(_device,
+                                                               ctx.batch->vertices.size() * sizeof(boden::draw::vertex_t));
+        memcpy((char*)vertex_buffer->get_buffer()->contents(),
+               ctx.batch->vertices.data(),
+               ctx.batch->vertices.size() * sizeof(boden::draw::vertex_t));
+    }
+    
+    if(!ctx.batch->indices.empty())
+    {
+        index_buffer = buffer_manager.dequeue_reusable_buffer(_device,
+                                                              ctx.batch->indices.size() * sizeof(boden::draw::index_t));
+    
+        memcpy((char*)index_buffer->get_buffer()->contents(),
+               ctx.batch->indices.data(),
+               ctx.batch->indices.size() * sizeof(boden::draw::index_t));
+    }
     
     for(auto &command_group : ctx.batch->command_groups)
     {
@@ -131,12 +139,15 @@ void mtl_renderer_t::render(boden::context_t &ctx)
             case boden::graphic::compositing_operation_t::custom_1:
             {
                 uint32_t zoom = 0;
-                uint32_t offset_x = 0;
-                uint32_t offset_y = 0;
+                float offset_x = 0;
+                float offset_y = 0;
 
-                std::memcpy(&zoom, command_group.params, 4);
-                std::memcpy(&offset_x, command_group.params + 4, 4);
-                std::memcpy(&offset_y, command_group.params + 8, 4);
+                std::size_t offset = 0;
+                std::memcpy(&zoom, command_group.params + offset, sizeof(zoom));
+                offset += sizeof(zoom);
+                std::memcpy(&offset_x, command_group.params + offset, sizeof(float));
+                offset += sizeof(float);
+                std::memcpy(&offset_y, command_group.params + offset, sizeof(float));
                 
                 desc->colorAttachments()->object(0)->setLoadAction(MTL::LoadActionClear);
                 desc->colorAttachments()->object(0)->setClearColor(MTL::ClearColor::Make(0.0f, 0.0f, 0.0f, 0.0f));
@@ -146,8 +157,8 @@ void mtl_renderer_t::render(boden::context_t &ctx)
                 encoder->setRenderPipelineState(_grid_pipeline.get());
                 
                 grid_uniforms_t uniforms;
-                uniforms.scroll.x = offset_x;
-                uniforms.scroll.y = offset_y;
+                uniforms.offset.x = offset_x;
+                uniforms.offset.y = offset_y;
                 uniforms.zoom = zoom / 100.0f;
                 uniforms.major_spacing = 100;
                 uniforms.minor_spacing = 25;
@@ -179,7 +190,10 @@ void mtl_renderer_t::render(boden::context_t &ctx)
         encoder->setDepthStencilState(_depth_stencil.get());
         encoder->setViewport(viewport);
         encoder->setVertexBytes(&main_uniform, sizeof(main_uniform), 1);
-        encoder->setVertexBuffer(vertex_buffer->get_buffer(), 0, 0);
+        if(vertex_buffer)
+        {
+            encoder->setVertexBuffer(vertex_buffer->get_buffer(), 0, 0);
+        }
         
         switch(operation)
         {

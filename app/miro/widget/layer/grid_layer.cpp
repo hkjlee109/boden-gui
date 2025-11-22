@@ -20,16 +20,12 @@ std::shared_ptr<grid_layer_t> grid_layer_t::alloc(const boden::layout::rect_t &f
 
 grid_layer_t::grid_layer_t()
     : boden::widget::layer::layer_t{},
-      _offset_x{0},
-      _offset_y{0},
       _zoom{100}
 {
 }
 
 grid_layer_t::grid_layer_t(const boden::layout::rect_t &frame)
     : boden::widget::layer::layer_t{frame},
-      _offset_x{0},
-      _offset_y{0},
       _zoom{100}
 {
 }
@@ -57,20 +53,22 @@ void grid_layer_t::draw(boden::builder_t &builder, const boden::layout::rect_t &
 
     builder.begin(_tid, frame_in_window, _frame, boden::graphic::compositing_operation_t::clear);
     builder.end();
-
+    
     builder.begin(_tid, frame_in_window, _frame, boden::graphic::compositing_operation_t::custom_1);
-    builder.add_param(0, &_zoom, sizeof(4));
-    builder.add_param(4, &_offset_x, sizeof(4));
-    builder.add_param(8, &_offset_y, sizeof(4));
+    std::size_t offset = 0;
+    builder.add_param(offset, &_zoom, sizeof(_zoom));
+    offset += sizeof(_zoom);
+    builder.add_param(offset, &_offset.x, sizeof(_offset.x));
+    offset += sizeof(_offset.x);
+    builder.add_param(offset, &_offset.y, sizeof(_offset.y));
     builder.end();
     
     _needs_display = false;
 }
 
-void grid_layer_t::set_offset(uint32_t offset_x, uint32_t offset_y)
+void grid_layer_t::set_offset(const boden::layout::point_t &offset)
 {
-    _offset_x = offset_x;
-    _offset_y = offset_y;
+    _offset = offset;
     _needs_display = true;
 }
 

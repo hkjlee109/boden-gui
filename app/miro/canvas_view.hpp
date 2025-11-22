@@ -46,6 +46,8 @@ public:
     void scroll_wheel(const boden::event_t &event) override;
     
     void set_delegate(miro::canvas_view_delegate_t *delegate);
+    void set_offset(const boden::layout::point_t &offset);
+    void set_zoom(uint32_t zoom);
 
 protected:
     void init(const boden::layout::rect_t &frame) override;

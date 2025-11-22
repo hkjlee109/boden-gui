@@ -1,6 +1,7 @@
 #pragma once
 
 #include <boden/layout/rect.hpp>
+#include <boden/layout/point.hpp>
 #include <boden/widget/layer/layer.hpp>
 #include <memory>
 
@@ -20,7 +21,7 @@ public:
     
     void draw(boden::builder_t &builder, const boden::layout::rect_t &parent_frame_in_window) override;
     
-    void set_offset(uint32_t offset_x, uint32_t offset_y);
+    void set_offset(const boden::layout::point_t &offset);
     void set_zoom(uint32_t zoom);
 
 protected:
@@ -28,8 +29,7 @@ protected:
     void init(const boden::layout::rect_t &frame) override;
 
 private:
-    uint32_t _offset_x;
-    uint32_t _offset_y;
+    boden::layout::point_t _offset;
     uint32_t _zoom;
 };
 

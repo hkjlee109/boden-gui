@@ -1,5 +1,7 @@
 #include "canvas_view_controller.hpp"
 
+#include <algorithm>
+
 namespace miro {
 
 canvas_view_controller_t::canvas_view_controller_t()
@@ -38,6 +40,10 @@ void canvas_view_controller_t::did_canvas_view_mouse_up(const boden::layout::poi
 void canvas_view_controller_t::did_canvas_view_scroll_wheel(const boden::layout::vec2_t &delta)
 {
     printf("# did_canvas_view_scroll_wheel %f %f\n", delta.x, delta.y);
+    auto canvas_view = std::dynamic_pointer_cast<miro::canvas_view_t>(_view);
+    _offset.x = std::clamp(_offset.x - delta.x, 0.0f, 4096.0f);
+    _offset.y = std::clamp(_offset.y - delta.y, 0.0f, 4096.0f);
+    canvas_view->set_offset(_offset);
 }
 
 void canvas_view_controller_t::load_view()
@@ -48,6 +54,12 @@ void canvas_view_controller_t::load_view()
     canvas_view->set_delegate(this);
     canvas_view->set_document_view(document_view);
     _view = canvas_view;
+}
+
+void canvas_view_controller_t::set_zoom(uint32_t zoom)
+{
+    auto canvas_view = std::dynamic_pointer_cast<miro::canvas_view_t>(_view);
+    canvas_view->set_zoom(zoom);
 }
 
 } // miro

@@ -29,7 +29,7 @@ vertex grid_vertex_out_t grid_vertex(uint vertex_id [[vertex_id]])
 
 struct grid_uniforms_t
 {
-    float2 scroll;
+    float2 offset;
     float zoom;
     float major_spacing;
     float minor_spacing;
@@ -41,7 +41,7 @@ fragment float4 grid_fragment(grid_vertex_out_t in [[stage_in]],
 {
     float2 screen_position = in.uv * uniforms.screen_size;
 
-    float2 world_position = screen_position / uniforms.zoom + uniforms.scroll;
+    float2 world_position = screen_position / uniforms.zoom + uniforms.offset;
 
 
     float2 major_cell = fmod(world_position, uniforms.major_spacing);

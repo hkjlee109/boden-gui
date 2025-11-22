@@ -45,7 +45,7 @@ struct command_group_t
     boden::graphic::compositing_operation_t operation;
 
     std::vector<boden::draw::command_t> commands;
-    uint8_t params[12];
+    uint8_t params[20];
 };
 
 } // draw

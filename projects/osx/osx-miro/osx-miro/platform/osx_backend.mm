@@ -80,7 +80,6 @@ void osx_backend_t::draw()
         
     dispatch_async(dispatch_get_main_queue(), ^{
         auto strong_batch = batch;
-        
         boden::context_t ctx;
         ctx.surface_handle = (boden::surface_handle_t)(__bridge CA::MetalDrawable *)_provider.currentDrawable;
         ctx.display_size = boden::layout::size_t{(float)_provider.displaySize.width,
