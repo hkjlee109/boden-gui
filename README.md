@@ -1,7 +1,7 @@
 # boden-gui
 Cross platform 2D graphic library.
 
-<video src="https://youtu.be/vQg3jZ5Dae8" width="480" height="320" controls></video>
+[![Watch the video](https://img.youtube.com/vi/vQg3jZ5Dae8/maxresdefault.jpg)](https://www.youtube.com/watch?v=vQg3jZ5Dae8)
 
 ### Supported platforms
 - osx (metal)
