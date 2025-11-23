@@ -11,6 +11,8 @@ namespace widget {
 class scroll_view_t : public boden::widget::view_t
 {
 public:
+    static std::shared_ptr<scroll_view_t> alloc(const boden::layout::rect_t &frame);
+
     scroll_view_t();
     scroll_view_t(const boden::layout::rect_t &frame);
     ~scroll_view_t() override;
@@ -20,6 +22,8 @@ public:
 protected:
     std::shared_ptr<boden::widget::view_t> _document_view;
     std::shared_ptr<boden::widget::clip_view_t> _content_view;
+
+    void init(const boden::layout::rect_t &frame) override;
 };
 
 } // widget

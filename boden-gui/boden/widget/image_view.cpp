@@ -1,12 +1,19 @@
 #include "image_view.hpp"
-#include <boden/renderer.hpp>
+
+#include <boden/widget/constant.hpp>
 
 namespace boden {
 namespace widget {
 
+std::shared_ptr<image_view_t> image_view_t::alloc(const boden::layout::rect_t &frame)
+{
+    auto instance = std::make_shared<image_view_t>(frame);
+    instance->init(frame);
+    return instance;
+}
+
 image_view_t::image_view_t()
-    : view_t(),
-      _tint_color{}
+    : view_t()
 {
 }
 
@@ -17,42 +24,86 @@ image_view_t::image_view_t(const boden::layout::rect_t &frame)
 
 image_view_t::~image_view_t()
 {
+    auto tid = _image_layer->get_texture_id();
+    if(tid)
+    {
+        if(auto window = _window.lock()) 
+        {
+            window->destroy_view_texture(tid);
+        }
+    }
 }
 
 void image_view_t::draw_rect(boden::builder_t &builder, const boden::layout::rect_t &dirty_rect)
 {
+    boden::widget::view_t::draw_rect(builder, dirty_rect);
+
     if(_hidden) 
     {
         return;
     }
     
-    boden::layout::point_t origin = convert_point_to_view({0, 0}, nullptr);
-    boden::layout::rect_t frame{origin, _frame.size};
-    boden::layout::rect_t clip_rect{origin + dirty_rect.origin, dirty_rect.size};
-        
-    builder.push_clip_rect(clip_rect);
-    
-    builder.add_image(_image->key, 
-                      {frame.origin.x, frame.origin.y}, 
-                      {frame.origin.x + frame.size.width, frame.origin.y + frame.size.height},
-                      _tint_color);
+    auto frame_in_window = convert_rect_to_view(_bounds, nullptr);
+    _image_layer->draw(builder, frame_in_window);
+}
 
-    builder.pop_clip_rect();
+void image_view_t::view_will_move_to_window(std::shared_ptr<boden::widget::window_t> window)
+{
+    boden::widget::view_t::view_will_move_to_window(window);
+    create_image_layer_texture();
+}
+
+void image_view_t::set_frame(const boden::layout::rect_t &frame)
+{
+    boden::widget::view_t::set_frame(frame);
+
+    if(_image_layer->get_frame() == frame)
+    {
+        return;
+    }
+
+    _image_layer->set_frame({0, 0, frame.size.width, frame.size.height});    
+    create_image_layer_texture();
 }
 
 void image_view_t::set_image(std::unique_ptr<boden::widget::base::image_t> image)
 {
-    _image = std::move(image);
-}
-
-void image_view_t::set_tint_color(const boden::layout::color_t &color)
-{
-    _tint_color = color;
+    _image_layer->set_image(std::move(image));
 }
 
 const boden::layout::color_t & image_view_t::get_tint_color() const
 {
-    return _tint_color;
+    return _image_layer->get_tint_color();
+}
+
+void image_view_t::set_tint_color(const boden::layout::color_t &color)
+{
+    _image_layer->set_tint_color(color);
+}
+
+void image_view_t::init(const boden::layout::rect_t &frame)
+{
+    boden::widget::view_t::init(frame);
+
+    _image_layer = boden::widget::layer::image_layer_t::alloc({0, 0, frame.size.width, frame.size.height});
+    _layer->add_layer(_image_layer);
+}
+
+void image_view_t::create_image_layer_texture()
+{
+    auto window = _window.lock();
+    if(!window)
+    {
+        return;
+    }
+
+    auto tid = _image_layer->get_texture_id();
+    if(tid)
+    {
+        window->destroy_view_texture(tid);
+    }
+
+    _image_layer->set_texture_id(window->create_view_texture(_image_layer->get_frame().size));
 }
 
 } // widget

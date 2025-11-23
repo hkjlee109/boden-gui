@@ -27,9 +27,9 @@ void toolbox_view_controller_t::load_view()
     boden::widget::view_controller_t::load_view();
     _view->set_frame(boden::layout::rect_t(0, 0, 70, 480));
     
-    _rectangle = std::make_shared<miro::widget::hover_button_t>(boden::layout::rect_t(10, 10, 50, 40));
+    _rectangle = miro::widget::hover_button_t::alloc({10, 10, 50, 40});
 
-    _rectangle->layer.background_color = miro::theme::color::background;
+    _rectangle->get_layer()->set_background_color(miro::theme::color::background);
     _rectangle->set_image(std::make_unique<boden::widget::base::image_t>("rectangle"));
     _rectangle->set_content_tint_color({0xB7, 0xB7, 0xB7, 0xFF});
     _rectangle->set_hover_enabled(true);
@@ -39,8 +39,8 @@ void toolbox_view_controller_t::load_view()
                            boden::widget::control_event_t::mouse_down);
     _view->add_subview(_rectangle);
 
-    _textbox = std::make_shared<miro::widget::hover_button_t>(boden::layout::rect_t(10, 55, 50, 40));
-    _textbox->layer.background_color = miro::theme::color::background;
+    _textbox = miro::widget::hover_button_t::alloc({10, 55, 50, 40});
+    _textbox->get_layer()->set_background_color(miro::theme::color::background);
     _textbox->set_image(std::make_unique<boden::widget::base::image_t>("textbox"));
     _textbox->set_content_tint_color({0xB7, 0xB7, 0xB7, 0xFF});
     _textbox->set_hover_enabled(true);

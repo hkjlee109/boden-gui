@@ -10,7 +10,7 @@ public:
     webgl_renderer_t();
     ~webgl_renderer_t();
 
-    void set_texture_manager(boden::gpu::texture_manager_t *manager) override;
+    void set_texture_manager(boden::graphic::texture_manager_t *manager) override;
 
     void render(boden::context_t &ctx) override;
 };

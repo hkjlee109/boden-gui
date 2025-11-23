@@ -4,7 +4,7 @@
 #include <iostream>
 
 namespace boden {
-namespace gpu {
+namespace graphic {
 
 texture_manager_t::texture_manager_t()
     : _last_texture_id{0}
@@ -16,7 +16,7 @@ texture_manager_t::~texture_manager_t()
     _textures.clear();
 }
 
-boden::gpu::gpu_texture_handle_t texture_manager_t::get_gpu_texture_handle(boden::gpu::texture_id_t tid)
+boden::graphic::gpu_texture_handle_t texture_manager_t::get_gpu_texture_handle(boden::graphic::texture_id_t tid)
 {
     auto it = _textures.find(tid);
     if(it == _textures.end()) 
@@ -62,7 +62,7 @@ boden::gpu::gpu_texture_handle_t texture_manager_t::get_gpu_texture_handle(boden
     return texture.gpu_texture_handle;
 }
 
-boden::layout::size_t texture_manager_t::get_texture_size(boden::gpu::texture_id_t tid) const
+boden::layout::size_t texture_manager_t::get_texture_size(boden::graphic::texture_id_t tid) const
 {
     auto it = _textures.find(tid);
     if(it == _textures.end()) 
@@ -81,7 +81,17 @@ texture_id_t texture_manager_t::create(boden::layout::size_t size,
     return _last_texture_id;
 }
 
-bool texture_manager_t::load(boden::gpu::texture_id_t tid, 
+void texture_manager_t::destroy(texture_id_t tid)
+{
+    auto it = _textures.find(tid);
+    if (it != _textures.end())
+    {
+        _unused_textures.push_back(std::move(it->second));
+        _textures.erase(it);
+    }
+}
+
+bool texture_manager_t::load(boden::graphic::texture_id_t tid, 
                              boden::layout::rect_t rect,
                              const uint8_t *bytes, 
                              size_t length)
@@ -92,6 +102,8 @@ bool texture_manager_t::load(boden::gpu::texture_id_t tid,
         return false;
     }
     texture_t &texture = *(it->second);
+
+    texture.alloc_data_if_needed();
 
     assert(texture.data.size() >= (rect.origin.x + rect.size.width) 
                                   * (rect.origin.y + rect.size.height) 
@@ -112,5 +124,22 @@ bool texture_manager_t::load(boden::gpu::texture_id_t tid,
     return true;
 }
 
-} // gpu
+void texture_manager_t::cleanup_unused_texture()
+{
+    if(_unused_textures.empty())
+    {
+        return;
+    }
+
+    for(auto &texure : _unused_textures)
+    {
+        if(texure && texure->gpu_texture_handle)
+        {
+            destroy_gpu_texture(texure->gpu_texture_handle);
+        }
+    }
+    _unused_textures.clear();
+}
+
+} // graphic
 } // boden

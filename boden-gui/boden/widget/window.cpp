@@ -7,7 +7,7 @@ namespace boden {
 namespace widget {
 
 window_t::window_t() 
-    : _content_view{std::make_shared<boden::widget::view_t>()},
+    : _content_view{boden::widget::view_t::alloc()},
       _first_responder{nullptr},
       _backend{nullptr}
 {
@@ -15,7 +15,7 @@ window_t::window_t()
 }
 
 window_t::window_t(const boden::layout::rect_t &frame)
-    : _content_view{std::make_shared<boden::widget::view_t>(frame)},
+    : _content_view{boden::widget::view_t::alloc(frame)},
       _first_responder{nullptr},
       _backend{nullptr}
 {
@@ -120,6 +120,36 @@ void window_t::set_needs_display(bool needs)
         _backend->set_needs_display(needs);
         return;
     }
+}
+
+void window_t::set_texture_manager(boden::graphic::texture_manager_t *texture_manager)
+{
+    _texture_manager = texture_manager;
+}
+
+boden::graphic::texture_id_t window_t::create_view_texture(const boden::layout::size_t &size)
+{
+    if(size.width == 0 || size.height == 0)
+    {
+        return 0;
+    }
+
+    if(_texture_manager == nullptr)
+    {
+        return 0;
+    }
+
+    return _texture_manager->create(size, 4);
+}
+
+void window_t::destroy_view_texture(boden::graphic::texture_id_t tid)
+{
+    if(_texture_manager == nullptr)
+    {
+        return;
+    }
+
+    return _texture_manager->destroy(tid);
 }
 
 void window_t::system(const boden::system_event_t &system_event)

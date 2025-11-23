@@ -5,6 +5,13 @@
 namespace ppt {
 namespace widget {
 
+std::shared_ptr<hover_button_t> hover_button_t::alloc(const boden::layout::rect_t &frame)
+{
+    auto instance = std::make_shared<hover_button_t>(frame);
+    instance->init(frame);
+    return instance;
+}
+
 hover_button_t::hover_button_t()
     : boden::widget::button_t()
 {
@@ -21,13 +28,13 @@ hover_button_t::~hover_button_t()
 
 void hover_button_t::mouse_entered(const boden::event_t &ev)
 {
-    layer.background_color = ppt::theme::color::background_400;
+    get_layer()->set_background_color(ppt::theme::color::background_400);
     set_needs_display(true);
 }
 
 void hover_button_t::mouse_exited(const boden::event_t &ev)
 {
-    layer.background_color = ppt::theme::color::background;
+    get_layer()->set_background_color(ppt::theme::color::background);
     set_needs_display(true);
 }
 
@@ -47,6 +54,11 @@ void hover_button_t::set_hover_enabled(bool enabled)
         remove_tracking_area(_tracking_area);
         _tracking_area.reset();
     }
+}
+
+void hover_button_t::init(const boden::layout::rect_t &frame)
+{
+    boden::widget::button_t::init(frame);
 }
 
 } // widget

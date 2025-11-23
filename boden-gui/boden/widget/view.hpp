@@ -1,7 +1,7 @@
 #pragma once
 
 #include <boden/builder.hpp>
-#include <boden/widget/base/layer.hpp>
+#include <boden/widget/layer/layer.hpp>
 #include <boden/widget/base/responder.hpp>
 #include <boden/widget/window.hpp>
 #include <boden/layout/rect.hpp>
@@ -19,6 +19,9 @@ class view_t : public boden::widget::base::responder_t,
                public std::enable_shared_from_this<boden::widget::view_t>
 {
 public:
+    static std::shared_ptr<view_t> alloc();
+    static std::shared_ptr<view_t> alloc(const boden::layout::rect_t &frame);
+
     view_t();
     view_t(const boden::layout::rect_t &frame);
     ~view_t() override;
@@ -29,17 +32,16 @@ public:
     view_t(view_t &&) noexcept = default;
     view_t& operator=(view_t &&) noexcept = default;
 
-    boden::widget::base::layer_t layer;
-    
     virtual void draw_rect(boden::builder_t &builder, const boden::layout::rect_t &dirty_rect);
     virtual std::shared_ptr<boden::widget::view_t> hit_test(boden::layout::point_t point);
     virtual void did_add_subview(const boden::widget::view_t *view);
     virtual void view_will_move_to_window(std::shared_ptr<boden::widget::window_t> window);
+    virtual const boden::layout::rect_t & get_frame() const;
+    virtual void set_frame(const boden::layout::rect_t &frame);
 
     const boden::layout::rect_t & get_bounds() const;
 
-    const boden::layout::rect_t & get_frame() const;
-    void set_frame(const boden::layout::rect_t& frame);
+    std::shared_ptr<boden::widget::layer::layer_t> get_layer();
 
     const std::vector<std::shared_ptr<boden::widget::view_t>> & get_subviews() const;
 
@@ -71,6 +73,8 @@ public:
 
     boden::layout::point_t convert_point_to_view(const boden::layout::point_t &point, 
                                                  const boden::widget::view_t *to_view) const;
+    boden::layout::rect_t convert_rect_to_view(const boden::layout::rect_t &rect,
+                                               const boden::widget::view_t *to_view) const;
 
     void layout_if_needed();
     void layout_subviews();
@@ -90,7 +94,15 @@ protected:
     std::weak_ptr<boden::widget::view_t> _superview;
     std::weak_ptr<boden::widget::window_t> _window;
 
+    std::shared_ptr<boden::widget::layer::layer_t> _layer;
+    
     std::vector<std::shared_ptr<boden::widget::base::tracking_area_t>> _tracking_areas;
+
+    virtual void init();
+    virtual void init(const boden::layout::rect_t &frame);
+
+private:
+    void create_layer_texture();
 };
 
 } // widget

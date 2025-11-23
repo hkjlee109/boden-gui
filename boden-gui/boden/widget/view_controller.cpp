@@ -26,7 +26,7 @@ void view_controller_t::mouse_up(const boden::event_t &ev)
 
 void view_controller_t::load_view()
 {
-    _view = std::make_shared<boden::widget::view_t>();
+    _view = boden::widget::view_t::alloc();
 }
 
 void view_controller_t::view_did_load()
@@ -41,13 +41,7 @@ std::shared_ptr<boden::widget::view_t> view_controller_t::get_view()
         load_view();
         view_did_load();
     }
-
     return _view;
-}
-
-void view_controller_t::set_backend(boden::backend_t *backend)
-{
-    _backend = backend;
 }
 
 void view_controller_t::set_parent(std::shared_ptr<boden::widget::view_controller_t> ctrl)

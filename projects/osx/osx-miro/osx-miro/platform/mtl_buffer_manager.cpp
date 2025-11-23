@@ -60,6 +60,11 @@ mtl_buffer_ref_t mtl_buffer_manager_t::dequeue_reusable_buffer(MTL::Device *devi
 
 void mtl_buffer_manager_t::queue_reusable_buffer(mtl_buffer_ref_t buffer)
 {
+    if(!buffer)
+    {
+        return;
+    }
+    
     std::lock_guard<std::mutex> lock(_cache_mutex);
     _cache.push_back(buffer);
 }

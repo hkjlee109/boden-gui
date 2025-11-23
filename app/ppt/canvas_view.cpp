@@ -1,6 +1,15 @@
 #include "canvas_view.hpp"
 
+#include <ppt/theme/color.hpp>
+
 namespace ppt {
+
+std::shared_ptr<canvas_view_t> canvas_view_t::alloc(const boden::layout::rect_t &frame)
+{
+    auto instance = std::make_shared<canvas_view_t>(frame);
+    instance->init(frame);
+    return instance;
+}
 
 canvas_view_t::canvas_view_t()
     : boden::widget::view_t{},
@@ -97,13 +106,20 @@ void canvas_view_t::scroll_wheel(const boden::event_t &event)
 {
     if(_delegate)
     {
-        _delegate->did_canvas_view_scroll_wheel({event.scrolling_delta_x,event.scrolling_delta_y});
+        _delegate->did_canvas_view_scroll_wheel({event.scrolling_delta_x, event.scrolling_delta_y});
     }
 }
 
 void canvas_view_t::set_delegate(ppt::canvas_view_delegate_t *delegate)
 {
     _delegate = delegate;
+}
+
+void canvas_view_t::init(const boden::layout::rect_t &frame)
+{
+    boden::widget::view_t::init(frame);
+    
+    _layer->set_background_color(ppt::theme::color::background);
 }
 
 } // boden

@@ -7,19 +7,20 @@ namespace ppt {
 namespace widget {
 namespace shape {
 
+std::shared_ptr<shape_t> shape_t::alloc(const boden::layout::rect_t &frame)
+{
+    auto instance = std::make_shared<shape_t>(frame);
+    instance->init(frame);
+    return instance;
+}
+
 shape_t::shape_t()
-    : control_t{},
-      _editable{false},
-      _text_alignment{boden::widget::base::text_alignment_t::left},
-      _text_color{ppt::theme::color::label}
+    : control_t{}
 {
 }
 
 shape_t::shape_t(const boden::layout::rect_t &frame)
-    : control_t{frame},
-      _editable{false},
-      _text_alignment{boden::widget::base::text_alignment_t::left},
-      _text_color{ppt::theme::color::label}
+    : control_t{frame}
 {
 }
 
@@ -27,89 +28,31 @@ shape_t::~shape_t()
 {
 }
 
-bool shape_t::accepts_first_responder() 
+std::shared_ptr<boden::widget::view_t> shape_t::hit_test(boden::layout::point_t point)
 {
-    return _editable;
-}
-
-void shape_t::draw_rect(boden::builder_t &builder, const boden::layout::rect_t &dirty_rect)
-{
-    if(!_text.empty())
+    if(_hidden)
     {
-        boden::layout::point_t origin = convert_point_to_view({0, 0}, nullptr);
-        boden::layout::rect_t frame{origin, _frame.size};
-        boden::layout::rect_t clip_rect{origin + dirty_rect.origin, dirty_rect.size};
-        
-        builder.push_clip_rect(clip_rect);
-    
-        float padding = 5;
-        builder.add_text(_text,
-                         {frame.origin.x + padding, frame.origin.y + padding},
-                         {frame.origin.x + frame.size.width - padding, frame.origin.y + frame.size.height - padding},
-                         _text_color);
-    
-        builder.pop_clip_rect();
+        return nullptr;
     }
-}
 
-void shape_t::system_event(const boden::system_event_t &event)
-{
-    switch(event.type)
+    boden::layout::rect_t frame_in_window = convert_rect_to_view(_bounds, nullptr);
+    
+    if(!frame_in_window.contains(point))
     {
-        case (uint32_t)boden::system_event_type_t::text_input_commit:
-            _text = std::any_cast<const std::string &>(event.params.at("text"));
-            set_editable(false);
-            set_needs_display(true);
-
-            if(auto window = _window.lock())
-            {
-                window->make_first_responder(nullptr);
-            }
-            break;
-
-        default:
-            break;
+        return nullptr;
     }
+
+    return shared_from_this();
 }
 
 bool shape_t::is_editable() const
 {
-    return _editable;
+    return _text_field->is_enabled();
 }
 
 void shape_t::set_editable(bool editable)
 {
-    if(_editable == editable)
-    {
-        return;
-    }
-    
-    _editable = editable;
-    if(_editable)
-    {
-        boden::layout::point_t origin = convert_point_to_view({0, 0}, nullptr);
-        boden::layout::rect_t frame{origin, _frame.size};
-
-        boden::system_event_t event; 
-        event.type = static_cast<uint32_t>(boden::system_event_type_t::text_input_begin);
-        event.params["text"] = _text;
-        event.params["frame"] = frame;
-        enqueue_system_event(event);
-
-        if(auto window = _window.lock())
-        {
-            window->make_first_responder(shared_from_this());
-        }
-        
-        _text = "";
-        set_needs_display(true);
-    }
-    else
-    {
-        boden::system_event_t event;
-        event.type = static_cast<uint32_t>(boden::system_event_type_t::text_input_end);
-        enqueue_system_event(event);
-    }
+    _text_field->set_enabled(editable);
 }
 
 const boden::layout::rect_t & shape_t::get_frame_cache() const
@@ -124,12 +67,19 @@ void shape_t::set_frame_cache(const boden::layout::rect_t& frame)
 
 void shape_t::set_text(const std::string &text)
 {
-    _text = text;
+    _text_field->set_text(text);
 }
 
 void shape_t::set_text_color(const boden::layout::color_t &color)
 {
-    _text_color = color;
+    _text_field->set_text_color(color);
+}
+
+void shape_t::init(const boden::layout::rect_t &frame)
+{
+    boden::widget::view_t::init(frame);
+    _text_field = boden::widget::text_field_t::alloc({{0, 0}, frame.size});
+    add_subview(_text_field);
 }
 
 } // shape

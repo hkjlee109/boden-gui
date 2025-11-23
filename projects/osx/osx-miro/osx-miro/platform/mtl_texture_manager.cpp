@@ -5,14 +5,14 @@
 namespace platform {
 
 mtl_texture_manager_t::mtl_texture_manager_t(MTL::Device *device)
-    : boden::gpu::texture_manager_t(),
+    : boden::graphic::texture_manager_t(),
       _device{device}
 {
 }
 
 mtl_texture_manager_t::~mtl_texture_manager_t()
 {
-    for (auto& pair : _textures)
+    for(auto &pair : _textures)
     {
         auto &texture = pair.second;
         if(!texture)
@@ -33,7 +33,7 @@ mtl_texture_manager_t::~mtl_texture_manager_t()
     _textures.clear();
 }
 
-void mtl_texture_manager_t::bake(boden::gpu::gpu_texture_handle_t gpu_texture_handle,
+void mtl_texture_manager_t::bake(boden::graphic::gpu_texture_handle_t gpu_texture_handle,
                                  boden::layout::rect_t rect,
                                  const uint8_t *bytes,
                                  size_t length,
@@ -51,8 +51,8 @@ void mtl_texture_manager_t::bake(boden::gpu::gpu_texture_handle_t gpu_texture_ha
                            rect.size.width * number_of_channels);
 }
 
-boden::gpu::gpu_texture_handle_t mtl_texture_manager_t::create_gpu_texture(boden::layout::size_t size, 
-                                                                           uint8_t number_of_channels)
+boden::graphic::gpu_texture_handle_t mtl_texture_manager_t::create_gpu_texture(boden::layout::size_t size, 
+                                                                               uint8_t number_of_channels)
 {
     MTL::PixelFormat pixel_format;
     switch(number_of_channels)
@@ -62,7 +62,7 @@ boden::gpu::gpu_texture_handle_t mtl_texture_manager_t::create_gpu_texture(boden
         break;
     
     case 4:
-        pixel_format = MTL::PixelFormatRGBA8Unorm;
+        pixel_format = MTL::PixelFormatBGRA8Unorm;
         break;
 
     default:
@@ -75,8 +75,23 @@ boden::gpu::gpu_texture_handle_t mtl_texture_manager_t::create_gpu_texture(boden
     desc->setWidth(size.width);
     desc->setHeight(size.height);
     desc->setMipmapLevelCount(1);
+    desc->setUsage(MTL::TextureUsageRenderTarget | MTL::TextureUsageShaderRead);
     
-    return reinterpret_cast<boden::gpu::gpu_texture_handle_t>(_device->newTexture(desc));
+    MTL::Texture *texture = _device->newTexture(desc);
+    desc->release();
+    
+    return reinterpret_cast<boden::graphic::gpu_texture_handle_t>(texture);
+}
+
+void mtl_texture_manager_t::destroy_gpu_texture(boden::graphic::gpu_texture_handle_t handle)
+{
+    if(!handle)
+    {
+        return;
+    }
+
+    MTL::Texture *texture = reinterpret_cast<MTL::Texture *>(handle);
+    texture->release();
 }
 
 } // platform

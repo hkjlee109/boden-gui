@@ -46,9 +46,10 @@ void canvas_view_controller_t::did_canvas_view_mouse_down(const boden::layout::p
 {
     _selection_ctrl->set_editable_if_needed(false);
     
+
     _mouse_location_cache = location;
     auto &subviews = _view->get_subviews();
-    
+
     for(auto it = subviews.rbegin(); it != subviews.rend(); ++it)
     {
         auto &subview = *it;
@@ -62,7 +63,7 @@ void canvas_view_controller_t::did_canvas_view_mouse_down(const boden::layout::p
         {
             continue;
         }
-        
+
         auto shape = std::dynamic_pointer_cast<ppt::widget::shape::shape_t>(hit_view);
         if(!shape)
         {
@@ -78,7 +79,7 @@ void canvas_view_controller_t::did_canvas_view_mouse_down(const boden::layout::p
         _selection_ctrl->anchor();
         return;
     }
-    
+
     _selection_ctrl->remove_all();
 }
 
@@ -115,7 +116,7 @@ void canvas_view_controller_t::did_canvas_view_scroll_wheel(const boden::layout:
 
 void canvas_view_controller_t::load_view()
 {
-    auto canvas_view{std::make_shared<ppt::canvas_view_t>(boden::layout::rect_t(70, 0, 570, 480))};
+    auto canvas_view{ppt::canvas_view_t::alloc({70, 0, 570, 480})};
     canvas_view->set_delegate(this);
     _view = canvas_view;
     
@@ -138,10 +139,11 @@ void canvas_view_controller_t::create_shape(ppt::shape_type_t type)
     {
         case ppt::shape_type_t::rectangle:
         {
-            auto rectangle{std::make_shared<ppt::widget::shape::rectangle_t>(boden::layout::rect_t(150, 50, 150, 80))};
-            rectangle->layer.background_color = {0x21, 0x21, 0x21, 0xFF};
-            rectangle->layer.border_color = {0xFF, 0xFF, 0xFF, 0xFF};
-            rectangle->layer.border_width = 1;
+            auto rectangle{ppt::widget::shape::rectangle_t::alloc({50, 50, 150, 80})};
+            auto layer = rectangle->get_layer();
+            layer->set_background_color({0x21, 0x21, 0x21, 0xFF});
+            layer->set_border_color({0xFF, 0xFF, 0xFF, 0xFF});
+            layer->set_border_width(1);
             _shapes.push_back(rectangle);
             _view->add_subview(rectangle);
             _selection_ctrl->add(rectangle);
@@ -150,7 +152,7 @@ void canvas_view_controller_t::create_shape(ppt::shape_type_t type)
             
         case ppt::shape_type_t::textbox:
         {
-            auto textbox{std::make_shared<ppt::widget::shape::textbox_t>(boden::layout::rect_t(100, 50, 150, 50))};
+            auto textbox{ppt::widget::shape::textbox_t::alloc({100, 50, 150, 50})};
             _shapes.push_back(textbox);
             _view->add_subview(textbox);
             _selection_ctrl->add(textbox);

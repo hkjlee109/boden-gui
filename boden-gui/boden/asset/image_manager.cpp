@@ -13,12 +13,12 @@ image_manager_t::~image_manager_t()
 {
 }
 
-std::optional<boden::gpu::texture_id_t> image_manager_t::get_texture_id(const std::string &key) const
+boden::graphic::texture_id_t image_manager_t::get_texture_id(const std::string &key) const
 {
     auto it = _map.find(key);
     if(it == _map.end()) 
     {
-        return std::nullopt;
+        return 0;
     }
     return it->second;
 }
@@ -33,7 +33,7 @@ boden::layout::size_t image_manager_t::get_texture_size(const std::string &key) 
     return _texture_manager->get_texture_size(it->second);
 }
 
-void image_manager_t::set_texture_manager(boden::gpu::texture_manager_t *manager)
+void image_manager_t::set_texture_manager(boden::graphic::texture_manager_t *manager)
 {
     _texture_manager = manager;
 }

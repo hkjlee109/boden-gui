@@ -1,7 +1,7 @@
 #pragma once
 
 #include <boden/context.hpp>
-#include <boden/gpu/texture_manager.hpp>
+#include <boden/graphic/texture_manager.hpp>
 
 namespace boden {
 
@@ -12,10 +12,10 @@ public:
     virtual ~renderer_t();
     
     virtual void render(boden::context_t &ctx);
-    virtual void set_texture_manager(boden::gpu::texture_manager_t *manager);
+    virtual void set_texture_manager(boden::graphic::texture_manager_t *manager);
 
 protected:
-    boden::gpu::texture_manager_t *_texture_manager;
+    boden::graphic::texture_manager_t *_texture_manager;
 };
 
 } // boden

@@ -12,6 +12,8 @@ namespace ppt {
 class selection_view_t : public boden::widget::view_t
 {
 public:
+    static std::shared_ptr<selection_view_t> alloc(const boden::layout::rect_t &frame);
+
     selection_view_t();
     selection_view_t(const boden::layout::rect_t &frame);
     ~selection_view_t() override;
@@ -21,6 +23,9 @@ public:
 
     void set_selection_frames(std::vector<boden::layout::rect_t> &&frames);
 
+protected:
+    void init(const boden::layout::rect_t &frame) override;
+    
 private:
     static constexpr float HANDLE_SIZE = 8.0f;
     static constexpr float HANDLE_SIZE_HALF = HANDLE_SIZE / 2;

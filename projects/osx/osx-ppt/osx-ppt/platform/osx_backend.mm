@@ -52,6 +52,7 @@ osx_backend_t::osx_backend_t(MTL::Device *device, platform::osx_queue_t &queue, 
     
     _window = std::make_shared<ppt::main_window_t>(boden::layout::rect_t{0, 0, 640, 480});
     _window->set_backend(this);
+    _window->set_texture_manager(&_mtl_texture_manager);
     _window->set_content_view_controller(std::make_shared<ppt::main_view_controller_t>());
     _window->order_front();
 }

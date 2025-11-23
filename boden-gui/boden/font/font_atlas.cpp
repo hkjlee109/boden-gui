@@ -36,7 +36,7 @@ const boden::font::font_metrics_t & font_atlas_t::get_font_metrics() const
     return _metrics;
 }
 
-void font_atlas_t::set_texture_manager(boden::gpu::texture_manager_t *manager)
+void font_atlas_t::set_texture_manager(boden::graphic::texture_manager_t *manager)
 {
     _texture_manager = manager;
     _tid = _texture_manager->create(_size, 4);
@@ -149,9 +149,9 @@ bool font_atlas_t::collect_glyph_texture(uint32_t codepoint, boden::font::glyph_
             {
                 uint8_t alpha = slot->bitmap.buffer[y * slot->bitmap.pitch + x];
 
-                rgba[(y * slot->bitmap.width + x) * 4 + 0] = 255;
-                rgba[(y * slot->bitmap.width + x) * 4 + 1] = 255;
-                rgba[(y * slot->bitmap.width + x) * 4 + 2] = 255;
+                rgba[(y * slot->bitmap.width + x) * 4 + 0] = alpha;
+                rgba[(y * slot->bitmap.width + x) * 4 + 1] = alpha;
+                rgba[(y * slot->bitmap.width + x) * 4 + 2] = alpha;
                 rgba[(y * slot->bitmap.width + x) * 4 + 3] = alpha;
             }
         }

@@ -3,9 +3,9 @@
 #include <cstdint>
 
 namespace boden {
-namespace gpu {
+namespace graphic {
 
 using texture_id_t = uint32_t;
 
-} // gpu
+} // graphic
 } // boden

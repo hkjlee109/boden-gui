@@ -15,6 +15,7 @@
 		BF4BC3A62EA37D63000B9174 /* minus.png in Resources */ = {isa = PBXBuildFile; fileRef = BF4BC3A52EA37D63000B9174 /* minus.png */; };
 		BF54B3AB2E697D0100F7D4F9 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF54B3AA2E697D0100F7D4F9 /* MetalKit.framework */; };
 		BF9759C92D6C9DA6000E9A16 /* libboden-gui.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF9759C82D6C9DA6000E9A16 /* libboden-gui.a */; };
+		BFD5A9AA2ECE76350057F6C7 /* grid_layer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFD5A9A92ECE76350057F6C7 /* grid_layer.cpp */; };
 		BFF225722EA108FF00D13EA4 /* NotoSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BFF225582EA108FF00D13EA4 /* NotoSans-Regular.ttf */; };
 		BFF225732EA108FF00D13EA4 /* images-config.json in Resources */ = {isa = PBXBuildFile; fileRef = BFF2255B2EA108FF00D13EA4 /* images-config.json */; };
 		BFF225772EA108FF00D13EA4 /* fonts-config.json in Resources */ = {isa = PBXBuildFile; fileRef = BFF225572EA108FF00D13EA4 /* fonts-config.json */; };
@@ -30,13 +31,15 @@
 		BF40B07E2E7F5A07000EB85D /* libboost_json.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_json.a; path = ../../../build/lib/libboost_json.a; sourceTree = "<group>"; };
 		BF40B09C2E83E127000EB85D /* libfreetype.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype.a; path = ../../../build/lib/libfreetype.a; sourceTree = "<group>"; };
 		BF40B09E2E849084000EB85D /* libharfbuzz.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libharfbuzz.a; path = ../../../build/lib/libharfbuzz.a; sourceTree = "<group>"; };
-		BF4BC3502EA2F910000B9174 /* zoom_view_controller.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = zoom_view_controller.hpp; sourceTree = "<group>"; };
 		BF4BC3512EA2F910000B9174 /* zoom_view_controller.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = zoom_view_controller.cpp; sourceTree = "<group>"; };
 		BF4BC3532EA37779000B9174 /* plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plus.png; sourceTree = "<group>"; };
 		BF4BC3A52EA37D63000B9174 /* minus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = minus.png; sourceTree = "<group>"; };
 		BF54B3AA2E697D0100F7D4F9 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
 		BF9757F22D6C7871000E9A16 /* osx-miro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "osx-miro.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF9759C82D6C9DA6000E9A16 /* libboden-gui.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboden-gui.a"; path = "../../../build/lib/libboden-gui.a"; sourceTree = "<group>"; };
+		BFBF0CFC2ED0AD5600B7DB3B /* zoom_view_controller.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = zoom_view_controller.hpp; sourceTree = "<group>"; };
+		BFD5A9A82ECE76350057F6C7 /* grid_layer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = grid_layer.hpp; sourceTree = "<group>"; };
+		BFD5A9A92ECE76350057F6C7 /* grid_layer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = grid_layer.cpp; sourceTree = "<group>"; };
 		BFF225572EA108FF00D13EA4 /* fonts-config.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "fonts-config.json"; sourceTree = "<group>"; };
 		BFF225582EA108FF00D13EA4 /* NotoSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSans-Regular.ttf"; sourceTree = "<group>"; };
 		BFF2255B2EA108FF00D13EA4 /* images-config.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "images-config.json"; sourceTree = "<group>"; };
@@ -110,6 +113,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		BFD5A9A52ECE75CB0057F6C7 /* layer */ = {
+			isa = PBXGroup;
+			children = (
+				BFD5A9A82ECE76350057F6C7 /* grid_layer.hpp */,
+				BFD5A9A92ECE76350057F6C7 /* grid_layer.cpp */,
+			);
+			path = layer;
+			sourceTree = "<group>";
+		};
 		BFF225592EA108FF00D13EA4 /* fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -157,6 +169,7 @@
 		BFF225662EA108FF00D13EA4 /* widget */ = {
 			isa = PBXGroup;
 			children = (
+				BFD5A9A52ECE75CB0057F6C7 /* layer */,
 				BFF225642EA108FF00D13EA4 /* hover_button.hpp */,
 				BFF225652EA108FF00D13EA4 /* hover_button.cpp */,
 			);
@@ -180,7 +193,7 @@
 				BFF2256E2EA108FF00D13EA4 /* main_window.cpp */,
 				BFF2256F2EA108FF00D13EA4 /* toolbox_view_controller.hpp */,
 				BFF225702EA108FF00D13EA4 /* toolbox_view_controller.cpp */,
-				BF4BC3502EA2F910000B9174 /* zoom_view_controller.hpp */,
+				BFBF0CFC2ED0AD5600B7DB3B /* zoom_view_controller.hpp */,
 				BF4BC3512EA2F910000B9174 /* zoom_view_controller.cpp */,
 			);
 			name = miro;
@@ -223,6 +236,7 @@
 				TargetAttributes = {
 					BF9757F12D6C7871000E9A16 = {
 						CreatedOnToolsVersion = 16.2;
+						LastSwiftMigration = 1640;
 					};
 				};
 			};
@@ -271,6 +285,7 @@
 				BFF2257A2EA108FF00D13EA4 /* main_window.cpp in Sources */,
 				BFF2257B2EA108FF00D13EA4 /* main_view_controller.cpp in Sources */,
 				BFF2257C2EA108FF00D13EA4 /* canvas_view.cpp in Sources */,
+				BFD5A9AA2ECE76350057F6C7 /* grid_layer.cpp in Sources */,
 				BFF2257D2EA108FF00D13EA4 /* toolbox_view_controller.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -402,6 +417,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "osx-miro/osx-miro.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -428,6 +444,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.kartoffelsoft.osx-miro";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
 			};
 			name = Debug;
 		};
@@ -436,6 +454,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "osx-miro/osx-miro.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -462,6 +481,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.kartoffelsoft.osx-miro";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
 			};
 			name = Release;
 		};

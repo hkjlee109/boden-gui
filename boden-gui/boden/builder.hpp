@@ -3,7 +3,8 @@
 #include <boden/batch.hpp>
 #include <boden/asset/image_manager.hpp>
 #include <boden/font/font_manager.hpp>
-#include <boden/gpu/texture_id.hpp>
+#include <boden/graphic/compositing_operation.hpp>
+#include <boden/graphic/texture_id.hpp>
 #include <boden/layout/color.hpp>
 #include <boden/layout/rect.hpp>
 #include <boden/layout/vec.hpp>
@@ -47,10 +48,19 @@ public:
                    const boden::layout::vec2_t &p2,
                    const boden::layout::color_t &color);
 
-   void add_text(const std::string &text,
+    void add_text(const std::string &text,
                  const boden::layout::vec2_t &p1, 
                  const boden::layout::vec2_t &p2,
                  const boden::layout::color_t &color);
+
+    void begin(boden::graphic::texture_id_t tid, 
+               const boden::layout::rect_t &frame,
+               const boden::layout::rect_t &clip_rect,
+               boden::graphic::compositing_operation_t operation = boden::graphic::compositing_operation_t::source_over);
+        
+    void add_param(std::size_t at, const void *data, std::size_t size);
+    
+    void end();
 
     void push_clip_rect(const boden::layout::rect_t &rect);
     void pop_clip_rect();

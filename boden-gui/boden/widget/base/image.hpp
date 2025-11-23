@@ -1,6 +1,6 @@
 #pragma once
 
-#include <boden/gpu/texture_id.hpp>
+#include <boden/graphic/texture_id.hpp>
 #include <boden/layout/size.hpp>
 #include <string>
 #include <vector>
@@ -18,7 +18,7 @@ public:
 
     std::vector<uint8_t> data;
     boden::layout::size_t size;
-    boden::gpu::texture_id_t texture_id;
+    boden::graphic::texture_id_t texture_id;
     std::string key;
 
 private:

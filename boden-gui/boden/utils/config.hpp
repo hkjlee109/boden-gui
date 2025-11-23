@@ -6,8 +6,6 @@
 namespace boden {
 namespace utils {
 
-
-
 class config_t
 {
 public:

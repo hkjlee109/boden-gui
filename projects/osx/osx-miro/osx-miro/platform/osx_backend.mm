@@ -53,6 +53,7 @@ osx_backend_t::osx_backend_t(MTL::Device *device, platform::osx_queue_t &queue, 
     
     _window = std::make_shared<miro::main_window_t>(boden::layout::rect_t{0, 0, 640, 480});
     _window->set_backend(this);
+    _window->set_texture_manager(&_mtl_texture_manager);
     _window->set_content_view_controller(std::make_shared<miro::main_view_controller_t>());
     _window->order_front();
 }
@@ -79,7 +80,6 @@ void osx_backend_t::draw()
         
     dispatch_async(dispatch_get_main_queue(), ^{
         auto strong_batch = batch;
-        
         boden::context_t ctx;
         ctx.surface_handle = (boden::surface_handle_t)(__bridge CA::MetalDrawable *)_provider.currentDrawable;
         ctx.display_size = boden::layout::size_t{(float)_provider.displaySize.width,
@@ -148,7 +148,6 @@ int osx_backend_t::main()
                 break;
 
             case boden::event_type_t::scroll_wheel:
-                printf("#\n");
                 _window->scroll_wheel(event);
                 display_if_needed();
                 break;
