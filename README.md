@@ -1,6 +1,8 @@
 # boden-gui
 Cross platform 2D graphic library.
 
+<video src="https://youtu.be/vQg3jZ5Dae8" width="480" height="320" controls></video>
+
 ### Supported platforms
 - osx (metal)
 - web (webgl)
