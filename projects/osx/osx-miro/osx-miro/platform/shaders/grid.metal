@@ -7,6 +7,12 @@ struct grid_vertex_out_t
     float2 uv;
 };
 
+float dist_to_line(float v, float spacing)
+{
+    float m = fmod(v, spacing);
+    return min(m, spacing - m);
+}
+
 vertex grid_vertex_out_t grid_vertex(uint vertex_id [[vertex_id]])
 {
     float2 positions[6] =
@@ -18,7 +24,6 @@ vertex grid_vertex_out_t grid_vertex(uint vertex_id [[vertex_id]])
         float2( 1.0, -1.0),
         float2( 1.0,  1.0)
     };
-
 
     grid_vertex_out_t out;
     out.position = float4(positions[vertex_id], 0.0, 1.0);
@@ -42,26 +47,29 @@ fragment float4 grid_fragment(grid_vertex_out_t in [[stage_in]],
     float2 screen_position = in.uv * uniforms.screen_size;
     float2 world_position = screen_position / uniforms.zoom + uniforms.offset;
 
-    float2 major_cell = fmod(world_position, uniforms.major_spacing);
-    float2 minor_cell = fmod(world_position, uniforms.minor_spacing);
-
     float major_thickness = 1.0 / uniforms.zoom;
     float minor_thickness = 1.0 / uniforms.zoom;
-
-    bool on_major = (fabs(major_cell.x) < major_thickness) ||
-                    (fabs(major_cell.y) < major_thickness);
-
+    
     bool minor_visible = (uniforms.zoom > 0.75);
 
+    float major_dist_x = dist_to_line(world_position.x, uniforms.major_spacing);
+    float major_dist_y = dist_to_line(world_position.y, uniforms.major_spacing);
+
+    bool on_major = (major_dist_x < major_thickness ||
+                     major_dist_y < major_thickness);
+
+    float minor_dist_x = dist_to_line(world_position.x, uniforms.minor_spacing);
+    float minor_dist_y = dist_to_line(world_position.y, uniforms.minor_spacing);
+
     bool on_minor = false;
-    if(minor_visible)
+    if (minor_visible)
     {
-        on_minor = (fabs(minor_cell.x) < minor_thickness) ||
-                   (fabs(minor_cell.y) < minor_thickness);
+        on_minor = (minor_dist_x < minor_thickness ||
+                    minor_dist_y < minor_thickness);
     }
 
     float4 major_color = float4(0.88, 0.88, 0.88, 1.0);
-    float4 minor_color = float4(0.92, 0.92, 0.92, 1.0);
+    float4 minor_color = float4(0.93, 0.93, 0.93, 1.0);
 
     if(on_major) return major_color;
     if(on_minor) return minor_color;
