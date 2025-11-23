@@ -20,9 +20,7 @@ struct main_uniforms_t
 struct grid_uniforms_t
 {
     simd::float2 offset;
-    float zoom;
-    float major_spacing;
-    float minor_spacing;
+    simd::float1 zoom;
     simd::float2 screen_size;
 };
 
@@ -160,8 +158,6 @@ void mtl_renderer_t::render(boden::context_t &ctx)
                 uniforms.offset.x = offset_x;
                 uniforms.offset.y = offset_y;
                 uniforms.zoom = zoom / 100.0f;
-                uniforms.major_spacing = 80;
-                uniforms.minor_spacing = 20;
                 uniforms.screen_size.x = ctx.display_size.width;
                 uniforms.screen_size.y = ctx.display_size.height;
 
@@ -267,7 +263,7 @@ void mtl_renderer_t::render(boden::context_t &ctx)
         MTL::RenderPassDescriptor *desc = MTL::RenderPassDescriptor::alloc()->init();
         desc->colorAttachments()->object(0)->setTexture(dst_texture);
         desc->colorAttachments()->object(0)->setLoadAction(MTL::LoadActionClear);
-        desc->colorAttachments()->object(0)->setClearColor(MTL::ClearColor::Make(0.95f, 0.95f, 0.95f, 1.0f));
+        desc->colorAttachments()->object(0)->setClearColor(MTL::ClearColor::Make(0.96f, 0.96f, 0.96f, 1.0f));
         
         MTL::RenderCommandEncoder *encoder = command_buffer->renderCommandEncoder(desc);
         desc->release();

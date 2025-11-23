@@ -6,7 +6,7 @@
 namespace miro {
 
 #define MIN_ZOOM_INDEX      0
-#define MAX_ZOOM_INDEX      16
+#define MAX_ZOOM_INDEX      13
 #define DEFAULT_ZOOM_INDEX  10
 
 static uint32_t steps[] = {
@@ -14,8 +14,7 @@ static uint32_t steps[] = {
     5, 10, 15, 20,
     33,
     50, 75, 100, 125, 150,
-    200, 250, 300,
-    400
+    200
 };
 
 zoom_view_controller_t::zoom_view_controller_t()
