@@ -147,6 +147,11 @@ int osx_backend_t::main()
                 display_if_needed();
                 break;
 
+            case boden::event_type_t::scroll_wheel:
+                _window->scroll_wheel(event);
+                display_if_needed();
+                break;
+                
             case boden::event_type_t::system:
                 auto system_event = std::any_cast<const boden::system_event_t &>(event.params.at("system_event"));
                 _window->system(system_event);

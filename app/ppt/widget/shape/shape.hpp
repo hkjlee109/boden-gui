@@ -20,7 +20,7 @@ public:
     explicit shape_t(const boden::layout::rect_t &frame);
     ~shape_t() override;
     
-    virtual std::shared_ptr<boden::widget::view_t> hit_test(boden::layout::point_t point) override;
+    virtual boden::widget::view_ref_t hit_test(boden::layout::point_t point) override;
     
     bool is_editable() const;
     void set_editable(bool editable);

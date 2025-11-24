@@ -9,7 +9,8 @@ namespace miro {
 
 class zoom_delegate_t {
 public:
-    virtual void did_zoom_change(uint32_t zoom) = 0;
+    virtual void did_zoom_change(boden::widget::view_controller_ref_t sender,
+                                 uint32_t zoom) = 0;
     
     virtual ~zoom_delegate_t() = default;
 };

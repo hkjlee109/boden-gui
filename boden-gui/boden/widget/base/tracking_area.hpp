@@ -18,7 +18,7 @@ public:
 
     tracking_area_t(boden::layout::rect_t rect,
                     options options,
-                    std::shared_ptr<boden::widget::view_t> owner);
+                    boden::widget::view_ref_t owner);
 
     virtual ~tracking_area_t();
 

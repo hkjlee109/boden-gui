@@ -18,23 +18,8 @@ void toolbox_view_controller_t::on_tool_button_click(void *sender)
     if(_toolbox_delegate)
     {
         boden::widget::view_t *view = static_cast<boden::widget::view_t*>(sender);
-        ppt::shape_type_t shape_type;
-        
-        switch(view->get_tag())
-        {
-            case 0:
-                shape_type = ppt::shape_type_t::rectangle;
-                break;
-                
-            case 1:
-                shape_type = ppt::shape_type_t::textbox;
-                break;
-            
-            default:
-                return;
-        }
-        
-        _toolbox_delegate->did_toolbox_select(shared_from_this(), shape_type);
+        _toolbox_delegate->did_tool_select(shared_from_this(),
+                                              static_cast<ppt::shape_type_t>(view->get_tag()));
     }
 }
 
@@ -50,7 +35,7 @@ void toolbox_view_controller_t::load_view()
     _rectangle->set_image_scaling(boden::widget::base::image_scaling_t::proportionally_down);
     _rectangle->set_content_tint_color({0xB7, 0xB7, 0xB7, 0xFF});
     _rectangle->set_hover_enabled(true);
-    _rectangle->set_tag(0);
+    _rectangle->set_tag(static_cast<uint32_t>(ppt::shape_type_t::rectangle));
     _rectangle->add_target(this,
                            &toolbox_view_controller_t::on_tool_button_click,
                            boden::widget::control_event_t::mouse_down);
@@ -62,7 +47,7 @@ void toolbox_view_controller_t::load_view()
     _textbox->set_image_scaling(boden::widget::base::image_scaling_t::proportionally_down);
     _textbox->set_content_tint_color({0xB7, 0xB7, 0xB7, 0xFF});
     _textbox->set_hover_enabled(true);
-    _textbox->set_tag(1);
+    _textbox->set_tag(static_cast<uint32_t>(ppt::shape_type_t::textbox));
     _textbox->add_target(this,
                          &toolbox_view_controller_t::on_tool_button_click,
                          boden::widget::control_event_t::mouse_down);

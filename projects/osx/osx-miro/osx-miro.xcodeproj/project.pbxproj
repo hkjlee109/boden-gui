@@ -14,6 +14,7 @@
 		BF4BC3542EA37779000B9174 /* plus.png in Resources */ = {isa = PBXBuildFile; fileRef = BF4BC3532EA37779000B9174 /* plus.png */; };
 		BF4BC3A62EA37D63000B9174 /* minus.png in Resources */ = {isa = PBXBuildFile; fileRef = BF4BC3A52EA37D63000B9174 /* minus.png */; };
 		BF54B3AB2E697D0100F7D4F9 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF54B3AA2E697D0100F7D4F9 /* MetalKit.framework */; };
+		BF85A3AB2ED39101006D93D7 /* cursorarrow.png in Resources */ = {isa = PBXBuildFile; fileRef = BF85A3AA2ED39101006D93D7 /* cursorarrow.png */; };
 		BF9759C92D6C9DA6000E9A16 /* libboden-gui.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF9759C82D6C9DA6000E9A16 /* libboden-gui.a */; };
 		BFD5A9AA2ECE76350057F6C7 /* grid_layer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFD5A9A92ECE76350057F6C7 /* grid_layer.cpp */; };
 		BFF225722EA108FF00D13EA4 /* NotoSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BFF225582EA108FF00D13EA4 /* NotoSans-Regular.ttf */; };
@@ -35,6 +36,8 @@
 		BF4BC3532EA37779000B9174 /* plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plus.png; sourceTree = "<group>"; };
 		BF4BC3A52EA37D63000B9174 /* minus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = minus.png; sourceTree = "<group>"; };
 		BF54B3AA2E697D0100F7D4F9 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
+		BF85A3AA2ED39101006D93D7 /* cursorarrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cursorarrow.png; sourceTree = "<group>"; };
+		BF85A3D62ED44936006D93D7 /* tool_type.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = tool_type.hpp; sourceTree = "<group>"; };
 		BF9757F22D6C7871000E9A16 /* osx-miro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "osx-miro.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF9759C82D6C9DA6000E9A16 /* libboden-gui.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboden-gui.a"; path = "../../../build/lib/libboden-gui.a"; sourceTree = "<group>"; };
 		BFBF0CFC2ED0AD5600B7DB3B /* zoom_view_controller.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = zoom_view_controller.hpp; sourceTree = "<group>"; };
@@ -134,6 +137,7 @@
 		BFF2255E2EA108FF00D13EA4 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				BF85A3AA2ED39101006D93D7 /* cursorarrow.png */,
 				BF4BC3A52EA37D63000B9174 /* minus.png */,
 				BF4BC3532EA37779000B9174 /* plus.png */,
 				BFF2255B2EA108FF00D13EA4 /* images-config.json */,
@@ -191,6 +195,7 @@
 				BFF2256C2EA108FF00D13EA4 /* main_view_controller.cpp */,
 				BFF2256D2EA108FF00D13EA4 /* main_window.hpp */,
 				BFF2256E2EA108FF00D13EA4 /* main_window.cpp */,
+				BF85A3D62ED44936006D93D7 /* tool_type.hpp */,
 				BFF2256F2EA108FF00D13EA4 /* toolbox_view_controller.hpp */,
 				BFF225702EA108FF00D13EA4 /* toolbox_view_controller.cpp */,
 				BFBF0CFC2ED0AD5600B7DB3B /* zoom_view_controller.hpp */,
@@ -264,6 +269,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF85A3AB2ED39101006D93D7 /* cursorarrow.png in Resources */,
 				BFF225722EA108FF00D13EA4 /* NotoSans-Regular.ttf in Resources */,
 				BFF225732EA108FF00D13EA4 /* images-config.json in Resources */,
 				BF4BC3A62EA37D63000B9174 /* minus.png in Resources */,

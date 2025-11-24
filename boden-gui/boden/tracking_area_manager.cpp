@@ -1,7 +1,6 @@
 #include "tracking_area_manager.hpp"
 
 #include <boden/widget/base/tracking_area.hpp>
-#include <boden/widget/view.hpp>
 
 namespace boden {
 

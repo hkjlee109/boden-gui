@@ -4,8 +4,8 @@
 
 struct ViewTests: public testing::Test 
 {
-    std::shared_ptr<boden::widget::view_t> mut;
-    std::shared_ptr<boden::widget::view_t> another_view;
+    boden::widget::view_ref_t mut;
+    boden::widget::view_ref_t another_view;
 
     void SetUp() override 
     {
@@ -30,14 +30,14 @@ struct ViewTests: public testing::Test
         mut->add_subview(another_view);
     }
 
-    void HideView(std::shared_ptr<boden::widget::view_t> &view)
+    void HideView(boden::widget::view_ref_t view)
     {
         view->set_hidden(true);
     }
 
     void HitTestShouldReturn(const boden::layout::point_t &point, boden::widget::view_t *expected)
     {
-        std::shared_ptr<boden::widget::view_t> actual = mut->hit_test(point);
+        boden::widget::view_ref_t actual = mut->hit_test(point);
         EXPECT_EQ(
             expected,
             actual.get()

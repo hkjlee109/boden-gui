@@ -40,7 +40,7 @@ void canvas_view_t::did_add_subview(const boden::widget::view_t *view)
     }
 }
 
-std::shared_ptr<boden::widget::view_t> canvas_view_t::hit_test(boden::layout::point_t point)
+boden::widget::view_ref_t canvas_view_t::hit_test(boden::layout::point_t point)
 {
     if(_hidden) 
     {

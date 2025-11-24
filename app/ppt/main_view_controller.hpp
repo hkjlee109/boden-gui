@@ -18,8 +18,8 @@ public:
     
     void load_view() override;
     
-    void did_toolbox_select(std::shared_ptr<boden::widget::view_controller_t> sender,
-                            ppt::shape_type_t shape_type) override;
+    void did_tool_select(boden::widget::view_controller_ref_t sender,
+                         ppt::shape_type_t shape_type) override;
     
 private:
     std::shared_ptr<ppt::canvas_view_controller_t> _canvas_ctrl;

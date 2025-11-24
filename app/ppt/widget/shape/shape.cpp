@@ -28,7 +28,7 @@ shape_t::~shape_t()
 {
 }
 
-std::shared_ptr<boden::widget::view_t> shape_t::hit_test(boden::layout::point_t point)
+boden::widget::view_ref_t shape_t::hit_test(boden::layout::point_t point)
 {
     if(_hidden)
     {

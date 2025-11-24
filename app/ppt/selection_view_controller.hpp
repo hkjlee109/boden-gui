@@ -16,14 +16,14 @@ public:
     
     void load_view() override;
     
-    void add(std::shared_ptr<boden::widget::view_t> view);
-    void remove(std::shared_ptr<boden::widget::view_t> view);
+    void add(boden::widget::view_ref_t view);
+    void remove(boden::widget::view_ref_t view);
     void remove_all();
 
     void anchor();
     void move_by(float dx, float dy);
     
-    bool contains(const std::shared_ptr<boden::widget::view_t> &view) const;
+    bool contains(const boden::widget::view_ref_t view) const;
     bool is_empty() const;
     bool is_editing() const;
 

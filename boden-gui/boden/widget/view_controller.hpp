@@ -9,6 +9,8 @@
 namespace boden {
 namespace widget {
 
+using view_controller_ref_t = std::shared_ptr<boden::widget::view_controller_t>;
+
 class view_controller_t : public boden::widget::base::responder_t,
                           public std::enable_shared_from_this<boden::widget::view_controller_t>
 {
@@ -23,17 +25,17 @@ public:
     virtual void load_view();
     virtual void view_did_load();
 
-    std::shared_ptr<boden::widget::view_t> get_view();
+    boden::widget::view_ref_t get_view();
 
-    void set_parent(std::shared_ptr<boden::widget::view_controller_t> ctrl);
+    void set_parent(boden::widget::view_controller_ref_t ctrl);
     
-    void add_child_view_controller(std::shared_ptr<boden::widget::view_controller_t> ctrl);
+    void add_child_view_controller(boden::widget::view_controller_ref_t ctrl);
 
 protected:
-    std::shared_ptr<boden::widget::view_t> _view;
+    boden::widget::view_ref_t _view;
 
     boden::backend_t *_backend;
-    std::vector<std::shared_ptr<boden::widget::view_controller_t>> _child_view_controllers;
+    std::vector<boden::widget::view_controller_ref_t> _child_view_controllers;
     std::weak_ptr<boden::widget::view_controller_t> _parent;
 };
 

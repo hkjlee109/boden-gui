@@ -75,7 +75,7 @@ void view_t::draw_rect(boden::builder_t &builder, const boden::layout::rect_t &d
     }
 }
 
-std::shared_ptr<boden::widget::view_t> view_t::hit_test(boden::layout::point_t point)
+boden::widget::view_ref_t view_t::hit_test(boden::layout::point_t point)
 {
     if(_hidden) 
     {
@@ -159,7 +159,7 @@ std::shared_ptr<boden::widget::layer::layer_t> view_t::get_layer()
     return _layer;
 }
 
-const std::vector<std::shared_ptr<boden::widget::view_t>> & view_t::get_subviews() const
+const std::vector<boden::widget::view_ref_t> & view_t::get_subviews() const
 {
     return _subviews;
 }
@@ -169,7 +169,7 @@ std::shared_ptr<const boden::widget::view_t> view_t::get_superview() const
     return _superview.lock();
 }
 
-void view_t::set_superview(std::shared_ptr<boden::widget::view_t> view)
+void view_t::set_superview(boden::widget::view_ref_t view)
 {
     _superview = view;
 }
@@ -253,7 +253,7 @@ const std::vector<std::shared_ptr<boden::widget::base::tracking_area_t>> & view_
     return _tracking_areas;
 }
 
-void view_t::add_subview(std::shared_ptr<boden::widget::view_t> view)
+void view_t::add_subview(boden::widget::view_ref_t view)
 {
     view->set_superview(this->shared_from_this());
 
@@ -267,11 +267,11 @@ void view_t::add_subview(std::shared_ptr<boden::widget::view_t> view)
     did_add_subview(view.get());
 }
 
-void view_t::remove_subview(std::shared_ptr<boden::widget::view_t> view)
+void view_t::remove_subview(boden::widget::view_ref_t view)
 {
     _subviews.erase(std::remove_if(_subviews.begin(), 
                                    _subviews.end(),
-                                   [view](const std::shared_ptr<boden::widget::view_t> &child) 
+                                   [view](const boden::widget::view_ref_t child) 
                                    {
                                        return child.get() == view.get();
                                    }), 

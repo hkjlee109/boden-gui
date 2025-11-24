@@ -1,5 +1,10 @@
 {
   "images": {
+    "cursorarrow": {
+        "path": "images",
+        "name": "cursorarrow",
+        "type": "png"
+    },
     "minus": {
       "path": "images",
       "name": "minus",

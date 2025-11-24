@@ -24,7 +24,7 @@ scroll_view_t::~scroll_view_t()
 {
 }
 
-void scroll_view_t::set_document_view(std::shared_ptr<boden::widget::view_t> view)
+void scroll_view_t::set_document_view(boden::widget::view_ref_t view)
 {
     _document_view = view;
 }

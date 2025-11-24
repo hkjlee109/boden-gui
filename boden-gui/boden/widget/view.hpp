@@ -15,6 +15,8 @@ class tracking_area_t;
 namespace boden {
 namespace widget {
 
+using view_ref_t = std::shared_ptr<boden::widget::view_t>;
+
 class view_t : public boden::widget::base::responder_t, 
                public std::enable_shared_from_this<boden::widget::view_t>
 {
@@ -33,7 +35,7 @@ public:
     view_t& operator=(view_t &&) noexcept = default;
 
     virtual void draw_rect(boden::builder_t &builder, const boden::layout::rect_t &dirty_rect);
-    virtual std::shared_ptr<boden::widget::view_t> hit_test(boden::layout::point_t point);
+    virtual boden::widget::view_ref_t hit_test(boden::layout::point_t point);
     virtual void did_add_subview(const boden::widget::view_t *view);
     virtual void view_will_move_to_window(std::shared_ptr<boden::widget::window_t> window);
     virtual const boden::layout::rect_t & get_frame() const;
@@ -43,10 +45,10 @@ public:
 
     std::shared_ptr<boden::widget::layer::layer_t> get_layer();
 
-    const std::vector<std::shared_ptr<boden::widget::view_t>> & get_subviews() const;
+    const std::vector<boden::widget::view_ref_t> & get_subviews() const;
 
     std::shared_ptr<const boden::widget::view_t> get_superview() const;
-    void set_superview(std::shared_ptr<boden::widget::view_t> view);
+    void set_superview(boden::widget::view_ref_t view);
 
     std::shared_ptr<const boden::widget::view_t> get_view_with_tag(uint32_t tag) const;
 
@@ -64,8 +66,8 @@ public:
 
     const std::vector<std::shared_ptr<boden::widget::base::tracking_area_t>> & get_tracking_areas() const;
 
-    void add_subview(std::shared_ptr<boden::widget::view_t> view);
-    void remove_subview(std::shared_ptr<boden::widget::view_t> view);
+    void add_subview(boden::widget::view_ref_t view);
+    void remove_subview(boden::widget::view_ref_t view);
     void remove_from_superview();
     
     void add_tracking_area(std::shared_ptr<boden::widget::base::tracking_area_t> area);
@@ -90,7 +92,7 @@ protected:
     bool _needs_display;
     bool _needs_layout;
 
-    std::vector<std::shared_ptr<boden::widget::view_t>> _subviews;
+    std::vector<boden::widget::view_ref_t> _subviews;
     std::weak_ptr<boden::widget::view_t> _superview;
     std::weak_ptr<boden::widget::window_t> _window;
 

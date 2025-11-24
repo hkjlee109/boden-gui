@@ -66,7 +66,7 @@ void selection_view_t::draw_rect(boden::builder_t &builder, const boden::layout:
     builder.end();
 }
 
-std::shared_ptr<boden::widget::view_t> selection_view_t::hit_test(boden::layout::point_t point)
+boden::widget::view_ref_t selection_view_t::hit_test(boden::layout::point_t point)
 {
     return nullptr;
 }

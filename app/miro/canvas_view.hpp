@@ -37,7 +37,7 @@ public:
 
     bool accepts_first_responder() override;
     void did_add_subview(const boden::widget::view_t *view) override;
-    std::shared_ptr<boden::widget::view_t> hit_test(boden::layout::point_t point) override;
+    boden::widget::view_ref_t hit_test(boden::layout::point_t point) override;
     void key_down(const boden::event_t &event) override;
     void key_up(const boden::event_t &event) override;
     void mouse_down(const boden::event_t &event) override;

@@ -20,7 +20,7 @@ void selection_view_controller_t::load_view()
     _view = selection_view;
 }
 
-void selection_view_controller_t::add(std::shared_ptr<boden::widget::view_t> view)
+void selection_view_controller_t::add(boden::widget::view_ref_t view)
 {
     std::weak_ptr<boden::widget::view_t> weak_view = view;
     if(_selection.find(weak_view) == _selection.end()) 
@@ -31,7 +31,7 @@ void selection_view_controller_t::add(std::shared_ptr<boden::widget::view_t> vie
     update_view();
 }
 
-void selection_view_controller_t::remove(std::shared_ptr<boden::widget::view_t> view)
+void selection_view_controller_t::remove(boden::widget::view_ref_t view)
 {
     std::weak_ptr<boden::widget::view_t> weak_view = view;
     if(_selection.erase(weak_view))
@@ -81,7 +81,7 @@ void selection_view_controller_t::move_by(float dx, float dy)
     update_view();
 }
 
-bool selection_view_controller_t::contains(const std::shared_ptr<boden::widget::view_t> &view) const
+bool selection_view_controller_t::contains(const boden::widget::view_ref_t view) const
 {
     std::weak_ptr<boden::widget::view_t> weak_view = view;
     return _selection.find(weak_view) != _selection.end();
