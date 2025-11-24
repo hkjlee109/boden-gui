@@ -99,14 +99,14 @@ void window_t::set_backend(boden::backend_t *backend)
     _backend = backend;
 }
 
-void window_t::set_content_view(std::shared_ptr<boden::widget::view_t> view)
+void window_t::set_content_view(boden::widget::view_ref_t view)
 {
     _content_view = view;
     _content_view->view_will_move_to_window(this->shared_from_this());
     _tracking_area_manager.set_content_view(_content_view);
 }
 
-void window_t::set_content_view_controller(std::shared_ptr<boden::widget::view_controller_t> ctrl)
+void window_t::set_content_view_controller(boden::widget::view_controller_ref_t  ctrl)
 {
     _content_view_controller = ctrl;
     set_content_view(_content_view_controller->get_view());
