@@ -8,16 +8,18 @@ namespace widget {
 
 window_t::window_t() 
     : _content_view{boden::widget::view_t::alloc()},
-      _first_responder{nullptr},
-      _backend{nullptr}
+      _backend{nullptr},
+      _texture_manager{nullptr},
+      _contents_scale{0}
 {
     _tracking_area_manager.set_content_view(_content_view);
 }
 
 window_t::window_t(const boden::layout::rect_t &frame)
     : _content_view{boden::widget::view_t::alloc(frame)},
-      _first_responder{nullptr},
-      _backend{nullptr}
+      _backend{nullptr},
+      _texture_manager{nullptr},
+      _contents_scale{0}
 {
     _tracking_area_manager.set_content_view(_content_view);
 }

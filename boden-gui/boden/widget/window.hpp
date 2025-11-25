@@ -60,6 +60,8 @@ protected:
     boden::backend_t *_backend;
     boden::graphic::texture_manager_t *_texture_manager;
     boden::tracking_area_manager_t _tracking_area_manager;
+
+    float _contents_scale;
 };
 
 } // widget

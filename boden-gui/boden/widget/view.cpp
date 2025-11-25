@@ -110,6 +110,10 @@ void view_t::did_add_subview(const boden::widget::view_t *view)
 {
 }
 
+void view_t::view_did_change_backing_propoerties()
+{
+}
+
 void view_t::view_will_move_to_window(std::shared_ptr<boden::widget::window_t> window)
 {
     assert(_layer && "Error: _layer is null.");

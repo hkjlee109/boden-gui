@@ -24,6 +24,7 @@ layer_t::layer_t()
       _background_color{},
       _border_color{},
       _border_width{0},
+      _contents_scale{0},
       _corner_radius{0},
       _needs_display{false},
       _tid{0}
@@ -36,6 +37,7 @@ layer_t::layer_t(const boden::layout::rect_t &frame)
       _background_color{},
       _border_color{},
       _border_width{0},
+      _contents_scale{0},
       _corner_radius{0},
       _needs_display{false},
       _tid{0}
@@ -114,6 +116,23 @@ float layer_t::get_border_width() const
 void layer_t::set_border_width(float width) 
 { 
     _border_width = width; 
+    _needs_display = true;
+}
+
+float layer_t::get_contents_scale() const 
+{ 
+    return _contents_scale; 
+}
+
+void layer_t::set_contents_scale(float scale) 
+{ 
+    _contents_scale = scale;
+
+    for(const auto &layer : _sublayers) 
+    {
+        layer->set_contents_scale(scale);
+    }
+
     _needs_display = true;
 }
 

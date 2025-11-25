@@ -160,7 +160,7 @@ void mtl_renderer_t::render(boden::context_t &ctx)
                 uniforms.zoom = zoom / 100.0f;
                 uniforms.screen_size.x = ctx.display_size.width;
                 uniforms.screen_size.y = ctx.display_size.height;
-                printf("# %f\n",  ctx.display_size.width);
+ 
                 encoder->setFragmentBytes(&uniforms, sizeof(uniforms), 0);
                 encoder->drawPrimitives(MTL::PrimitiveTypeTriangle,
                                         (NS::UInteger)0,
