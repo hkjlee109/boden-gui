@@ -43,6 +43,7 @@ public:
     void set_content_view_controller(boden::widget::view_controller_ref_t ctrl);
     void set_needs_display(bool needs);
     void set_texture_manager(boden::graphic::texture_manager_t *texture_manager);
+    float get_backing_scale_factor() const; 
 
     boden::graphic::texture_id_t create_view_texture(const boden::layout::size_t &size);
     void destroy_view_texture(boden::graphic::texture_id_t tid);
@@ -61,7 +62,7 @@ protected:
     boden::graphic::texture_manager_t *_texture_manager;
     boden::tracking_area_manager_t _tracking_area_manager;
 
-    float _contents_scale;
+    float _backing_scale_factor;
 };
 
 } // widget

@@ -37,4 +37,12 @@
     }
 }
 
+- (void)viewDidChangeBackingProperties {
+    [super viewDidChangeBackingProperties];
+    
+    if([self.viewDelegate respondsToSelector:@selector(viewDidChangeBackingProperties)]) {
+        [self.viewDelegate viewDidChangeBackingProperties];
+    }
+}
+
 @end

@@ -55,7 +55,7 @@ void view_t::draw_rect(boden::builder_t &builder, const boden::layout::rect_t &d
     {
         return;
     }
-    
+
     auto frame_in_window = convert_rect_to_view(_bounds, nullptr);
     _layer->draw(builder, frame_in_window);
 
@@ -110,15 +110,27 @@ void view_t::did_add_subview(const boden::widget::view_t *view)
 {
 }
 
-void view_t::view_did_change_backing_propoerties()
+void view_t::view_did_change_backing_properties()
 {
+    auto window = _window.lock();
+    if(!window)
+    {
+        return;
+    }
+
+    _layer->set_contents_scale(window->get_backing_scale_factor());
+    for(auto &view : _subviews)
+    {
+        view->view_did_change_backing_properties();
+    }
 }
 
 void view_t::view_will_move_to_window(std::shared_ptr<boden::widget::window_t> window)
 {
     assert(_layer && "Error: _layer is null.");
-    
+
     _window = window;
+    _layer->set_contents_scale(window->get_backing_scale_factor());
 
     create_layer_texture();
 
@@ -315,7 +327,7 @@ boden::layout::point_t view_t::convert_point_to_view(const boden::layout::point_
         return {point.x + _frame.origin.x, point.y + _frame.origin.y};
     }
 
-    if (auto superview = _superview.lock()) 
+    if(auto superview = _superview.lock()) 
     {
         return superview->convert_point_to_view({point.x + _frame.origin.x, point.y + _frame.origin.y},
                                                 to_view);

@@ -70,37 +70,33 @@
 
 - (void)mouseDown:(NSEvent *)event {
     boden::event_t out_event;
-    platform::utils_t::convert_to_event((__bridge void *)event, &out_event);
-    
     out_event.type = boden::event_type_t::left_mouse_down;
-    out_event.location.y = self.view.frame.size.height - out_event.location.y;
+    out_event.location = boden::layout::point_t(event.locationInWindow.x,
+                                                self.view.frame.size.height - event.locationInWindow.y);
     _queue->push(out_event);
 }
 
 - (void)mouseDragged:(NSEvent *)event {
     boden::event_t out_event;
-    platform::utils_t::convert_to_event((__bridge void *)event, &out_event);
-    
     out_event.type = boden::event_type_t::left_mouse_dragged;
-    out_event.location.y = self.view.frame.size.height - out_event.location.y;
+    out_event.location = boden::layout::point_t(event.locationInWindow.x,
+                                                self.view.frame.size.height - event.locationInWindow.y);
     _queue->push(out_event);
 }
 
 - (void)mouseMoved:(NSEvent *)event {
     boden::event_t out_event;
-    platform::utils_t::convert_to_event((__bridge void *)event, &out_event);
-    
     out_event.type = boden::event_type_t::mouse_moved;
-    out_event.location.y = self.view.frame.size.height - out_event.location.y;
+    out_event.location = boden::layout::point_t(event.locationInWindow.x,
+                                                self.view.frame.size.height - event.locationInWindow.y);
     _queue->push(out_event);
 }
 
 - (void)mouseUp:(NSEvent *)event {
     boden::event_t out_event;
-    platform::utils_t::convert_to_event((__bridge void *)event, &out_event);
-    
     out_event.type = boden::event_type_t::left_mouse_up;
-    out_event.location.y = self.view.frame.size.height - out_event.location.y;
+    out_event.location = boden::layout::point_t(event.locationInWindow.x,
+                                                self.view.frame.size.height - event.locationInWindow.y);
     _queue->push(out_event);
 }
 
@@ -198,6 +194,17 @@
     out_event.modifier_flags_msb = static_cast<uint32_t>(event.modifierFlags >> 32);
     out_event.modifier_flags_lsb = static_cast<uint32_t>(event.modifierFlags & 0xFFFFFFFF);
     _queue->push(out_event);
+}
+
+- (void)viewDidChangeBackingProperties {
+    boden::system_event_t system_event;
+    system_event.type = (uint32_t)boden::system_event_type_t::backing_properties_change;
+    system_event.params["scale"] = self.displayScale;
+    
+    boden::event_t event;
+    event.type = boden::event_type_t::system;
+    event.params["system_event"] = system_event;
+    _queue->push(event);
 }
 
 @end

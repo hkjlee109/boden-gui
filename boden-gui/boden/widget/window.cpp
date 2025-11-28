@@ -10,7 +10,7 @@ window_t::window_t()
     : _content_view{boden::widget::view_t::alloc()},
       _backend{nullptr},
       _texture_manager{nullptr},
-      _contents_scale{0}
+      _backing_scale_factor{1}
 {
     _tracking_area_manager.set_content_view(_content_view);
 }
@@ -19,7 +19,7 @@ window_t::window_t(const boden::layout::rect_t &frame)
     : _content_view{boden::widget::view_t::alloc(frame)},
       _backend{nullptr},
       _texture_manager{nullptr},
-      _contents_scale{0}
+      _backing_scale_factor{1}
 {
     _tracking_area_manager.set_content_view(_content_view);
 }
@@ -129,6 +129,11 @@ void window_t::set_texture_manager(boden::graphic::texture_manager_t *texture_ma
     _texture_manager = texture_manager;
 }
 
+float window_t::get_backing_scale_factor() const
+{
+    return _backing_scale_factor;
+}
+
 boden::graphic::texture_id_t window_t::create_view_texture(const boden::layout::size_t &size)
 {
     if(size.width == 0 || size.height == 0)
@@ -156,9 +161,21 @@ void window_t::destroy_view_texture(boden::graphic::texture_id_t tid)
 
 void window_t::system(const boden::system_event_t &system_event)
 {
-    if(_first_responder)
+    switch(system_event.type)
     {
-        _first_responder->system_event(system_event);
+        case (uint32_t)boden::system_event_type_t::text_input_begin:
+        case (uint32_t)boden::system_event_type_t::text_input_commit:
+        case (uint32_t)boden::system_event_type_t::text_input_end:
+            if(_first_responder)
+            {
+                _first_responder->system_event(system_event);
+            }
+            break;
+         
+        case (uint32_t)boden::system_event_type_t::backing_properties_change:
+            _backing_scale_factor = std::any_cast<float>(system_event.params.at("scale"));
+            _content_view->view_did_change_backing_properties();
+            break;
     }
 }
 

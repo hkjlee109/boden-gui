@@ -24,7 +24,7 @@ layer_t::layer_t()
       _background_color{},
       _border_color{},
       _border_width{0},
-      _contents_scale{0},
+      _contents_scale{1},
       _corner_radius{0},
       _needs_display{false},
       _tid{0}
@@ -37,7 +37,7 @@ layer_t::layer_t(const boden::layout::rect_t &frame)
       _background_color{},
       _border_color{},
       _border_width{0},
-      _contents_scale{0},
+      _contents_scale{1},
       _corner_radius{0},
       _needs_display{false},
       _tid{0}
@@ -188,6 +188,7 @@ const std::vector<std::shared_ptr<boden::widget::layer::layer_t>> & layer_t::get
 
 void layer_t::add_layer(std::shared_ptr<boden::widget::layer::layer_t> layer)
 {
+    layer->set_contents_scale(_contents_scale);
     _sublayers.push_back(layer);
 }
 

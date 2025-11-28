@@ -8,6 +8,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)didKeyDown:(NSEvent *)event;
 - (void)didKeyUp:(NSEvent *)event;
 
+- (void)viewDidChangeBackingProperties;
+
 @end
 
 @interface View : MTKView

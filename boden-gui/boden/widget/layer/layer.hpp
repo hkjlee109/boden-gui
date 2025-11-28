@@ -32,7 +32,6 @@ public:
     float get_contents_scale() const;
     void set_contents_scale(float scale);
 
-
     float get_corner_radius() const;
     void set_corner_radius(float radius);
 

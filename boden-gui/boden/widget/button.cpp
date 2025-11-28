@@ -48,13 +48,13 @@ void button_t::draw_rect(boden::builder_t &builder, const boden::layout::rect_t 
 
 void button_t::view_will_move_to_window(std::shared_ptr<boden::widget::window_t> window)
 {
-    boden::widget::view_t::view_will_move_to_window(window);
+    boden::widget::control_t::view_will_move_to_window(window);
     create_image_layer_texture();
 }
 
 void button_t::set_frame(const boden::layout::rect_t &frame)
 {
-    boden::widget::view_t::set_frame(frame);
+    boden::widget::control_t::set_frame(frame);
 
     if(_image_layer->get_frame() == frame)
     {
