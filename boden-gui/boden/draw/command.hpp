@@ -1,6 +1,7 @@
 #pragma once
 
 #include <boden/graphic/compositing_operation.hpp>
+#include <boden/draw/primitive_type.hpp>
 #include <boden/graphic/texture_id.hpp>
 #include <boden/layout/rect.hpp>
 #include <cstdint>
@@ -12,17 +13,20 @@ namespace draw {
 struct command_t
 {
     command_t() = default;
-    constexpr command_t(uint32_t _count,
+    constexpr command_t(boden::draw::primitive_type_t _type,
+                        uint32_t _count,
                         uint32_t _index_buffer_offset,
                         uint32_t _vertex_buffer_offset,
                         const boden::layout::rect_t &_clip_rect,
                         boden::graphic::texture_id_t _texture_id = 0)
-        : count{_count},
+        : type{_type},
+          count{_count},
           index_buffer_offset{_index_buffer_offset},
           vertex_buffer_offset{_vertex_buffer_offset},
           clip_rect{_clip_rect},
           texture_id{_texture_id} {}
 
+    boden::draw::primitive_type_t type;
     uint32_t count;
     uint32_t index_buffer_offset;
     uint32_t vertex_buffer_offset;

@@ -238,7 +238,23 @@ void mtl_renderer_t::render(boden::context_t &ctx)
                 encoder->setFragmentTexture(_white_texture.get(), 0);
             }
             
-            encoder->drawIndexedPrimitives(MTL::PrimitiveTypeTriangleStrip,
+            MTL::PrimitiveType primitive_type;
+            switch(command.type)
+            {
+                case boden::draw::primitive_type_t::triangle_strip:
+                    primitive_type = MTL::PrimitiveTypeTriangleStrip;
+                    break;
+                    
+                case boden::draw::primitive_type_t::line:
+                    primitive_type = MTL::PrimitiveTypeLine;
+                    break;
+                    
+                default:
+                    primitive_type = MTL::PrimitiveTypeTriangleStrip;
+                    break;
+            }
+            
+            encoder->drawIndexedPrimitives(primitive_type,
                                            command.count,
                                            MTL::IndexTypeUInt32,
                                            index_buffer->get_buffer(),
@@ -301,8 +317,7 @@ void mtl_renderer_t::render(boden::context_t &ctx)
             }
         };
 
-        encoder->pushDebugGroup(NS::String::string(
-                                                   "Render to root texture",
+        encoder->pushDebugGroup(NS::String::string("Render to root texture",
                                                    NS::StringEncoding::UTF8StringEncoding));
         
         encoder->setCullMode(MTL::CullModeNone);
