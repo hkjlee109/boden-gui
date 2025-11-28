@@ -18,6 +18,11 @@ struct size_t
     {
         return !(*this == other);
     }
+
+    constexpr size_t operator*(float scale) const noexcept
+    {
+        return size_t(width * scale, height * scale);
+    }
 };
 
 } // layout

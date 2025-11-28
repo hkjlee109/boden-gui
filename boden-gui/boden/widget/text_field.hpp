@@ -22,6 +22,7 @@ public:
     
     bool accepts_first_responder() override;
     void draw_rect(boden::builder_t &builder, const boden::layout::rect_t &dirty_rect) override;
+    void make_backing_layer() override;
     void set_enabled(bool enabled) override;
     void system_event(const boden::system_event_t &event) override;
     void view_will_move_to_window(std::shared_ptr<boden::widget::window_t> window) override;
@@ -39,8 +40,6 @@ protected:
 private:
     boden::widget::base::text_alignment_t _text_alignment;
     std::shared_ptr<boden::widget::layer::text_layer_t> _text_layer;
-
-    void create_text_layer_texture();
 };
 
 } // widget

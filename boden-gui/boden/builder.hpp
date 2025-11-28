@@ -51,7 +51,8 @@ public:
     void add_text(const std::string &text,
                  const boden::layout::vec2_t &p1, 
                  const boden::layout::vec2_t &p2,
-                 const boden::layout::color_t &color);
+                 const boden::layout::color_t &color,
+                 float scale);
 
     void begin(boden::graphic::texture_id_t tid, 
                const boden::layout::rect_t &frame,

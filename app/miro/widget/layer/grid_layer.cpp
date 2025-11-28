@@ -42,19 +42,20 @@ void grid_layer_t::draw(boden::builder_t &builder, const boden::layout::rect_t &
     }
 
     auto frame_in_window = boden::layout::rect_t{parent_frame_in_window.origin + _frame.origin, 
-                                                 parent_frame_in_window.size};
-    
+                                                 parent_frame_in_window.size} * _contents_scale;
+    auto frame = _frame * _contents_scale;
+
     if(!_needs_display)
     {
-        builder.begin(_tid, frame_in_window, _frame);         
+        builder.begin(_tid, frame_in_window, frame);         
         builder.end();
         return;
     }
 
-    builder.begin(_tid, frame_in_window, _frame, boden::graphic::compositing_operation_t::clear);
+    builder.begin(_tid, frame_in_window, frame, boden::graphic::compositing_operation_t::clear);
     builder.end();
     
-    builder.begin(_tid, frame_in_window, _frame, boden::graphic::compositing_operation_t::custom_1);
+    builder.begin(_tid, frame_in_window, frame, boden::graphic::compositing_operation_t::custom_1);
     std::size_t offset = 0;
     builder.add_param(offset, &_zoom, sizeof(_zoom));
     offset += sizeof(_zoom);

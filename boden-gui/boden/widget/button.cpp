@@ -46,10 +46,30 @@ void button_t::draw_rect(boden::builder_t &builder, const boden::layout::rect_t 
     _image_layer->draw(builder, frame_in_window);
 }
 
+void button_t::make_backing_layer()
+{
+    boden::widget::control_t::make_backing_layer();
+
+    auto window = _window.lock();
+    if(!window)
+    {
+        return;
+    }
+
+    auto tid = _image_layer->get_texture_id();
+    if(tid)
+    {
+        window->destroy_view_texture(tid);
+    }
+
+    auto size = _image_layer->get_frame().size * _image_layer->get_contents_scale();
+    _image_layer->set_texture_id(window->create_view_texture(size));
+}
+
 void button_t::view_will_move_to_window(std::shared_ptr<boden::widget::window_t> window)
 {
     boden::widget::control_t::view_will_move_to_window(window);
-    create_image_layer_texture();
+    make_backing_layer();
 }
 
 void button_t::set_frame(const boden::layout::rect_t &frame)
@@ -62,7 +82,7 @@ void button_t::set_frame(const boden::layout::rect_t &frame)
     }
 
     _image_layer->set_frame({0, 0, frame.size.width, frame.size.height});    
-    create_image_layer_texture();
+    make_backing_layer();
 }
 
 void button_t::mouse_down(const boden::event_t &ev)
@@ -118,23 +138,6 @@ void button_t::init(const boden::layout::rect_t &frame)
 
     _image_layer = boden::widget::layer::image_layer_t::alloc({0, 0, frame.size.width, frame.size.height});
     _layer->add_layer(_image_layer);
-}
-
-void button_t::create_image_layer_texture()
-{
-    auto window = _window.lock();
-    if(!window)
-    {
-        return;
-    }
-
-    auto tid = _image_layer->get_texture_id();
-    if(tid)
-    {
-        window->destroy_view_texture(tid);
-    }
-
-    _image_layer->set_texture_id(window->create_view_texture(_image_layer->get_frame().size));
 }
 
 } // widget

@@ -37,6 +37,7 @@ public:
     virtual void draw_rect(boden::builder_t &builder, const boden::layout::rect_t &dirty_rect);
     virtual boden::widget::view_ref_t hit_test(boden::layout::point_t point);
     virtual void did_add_subview(const boden::widget::view_t *view);
+    virtual void make_backing_layer();
     virtual void view_did_change_backing_properties();
     virtual void view_will_move_to_window(std::shared_ptr<boden::widget::window_t> window);
 

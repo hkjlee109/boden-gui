@@ -44,54 +44,58 @@ void image_layer_t::draw(boden::builder_t &builder, const boden::layout::rect_t 
     }
 
     auto frame_in_window = boden::layout::rect_t{parent_frame_in_window.origin + _frame.origin, 
-                                                 parent_frame_in_window.size};
+                                                 parent_frame_in_window.size} * _contents_scale;
+    auto frame = _frame * _contents_scale;
     
     if(!_needs_display)
     {
-        builder.begin(_tid, frame_in_window, _frame);         
+        builder.begin(_tid, frame_in_window, frame);         
         builder.end();
         return;
     }
 
-    builder.begin(_tid, frame_in_window, _frame, boden::graphic::compositing_operation_t::clear);
+    builder.begin(_tid, frame_in_window, frame, boden::graphic::compositing_operation_t::clear);
     builder.end();
 
-    builder.begin(_tid, frame_in_window, _frame, boden::graphic::compositing_operation_t::copy);
+    builder.begin(_tid, frame_in_window, frame, boden::graphic::compositing_operation_t::copy);
 
     float x = 0;
     float y = 0;
     float width = 0;
     float height = 0;
 
-    boden::layout::rect_t bounds = _bounds.inset_by(_image_edge_insets);
+    auto bounds = _bounds.inset_by(_image_edge_insets) * _contents_scale;
 
     if(_image->size.width == 0 || _image->size.width == 0)
     {
         _image->size = builder.get_image_manager()->get_texture_size(_image->key);
     }
 
+    auto image_width = _image->size.width * _contents_scale;
+    auto image_height = _image->size.height * _contents_scale;
+
     switch(_image_scaling)
     {
         case boden::widget::base::image_scaling_t::none:
-            x = bounds.mid_x() - _image->size.width / 2;
-            y = bounds.mid_y() - _image->size.height / 2;
-            width = _image->size.width;
-            height = _image->size.height;
+            x = bounds.mid_x() - image_width / 2;
+            y = bounds.mid_y() - image_height / 2;
+            width = image_width;
+            height = image_height;
             break;
 
         case boden::widget::base::image_scaling_t::proportionally_down:
         {
             float scale = 1.0f;
-            if(_image->size.width > bounds.size.width 
-               || _image->size.height > bounds.size.height) 
+            if(image_width > bounds.size.width 
+               || image_height > bounds.size.height) 
             {
-                float scale_x = bounds.size.width / _image->size.width;
-                float scale_y = bounds.size.height / _image->size.height;
+                float scale_x = bounds.size.width / image_width;
+                float scale_y = bounds.size.height / image_height;
                 scale = std::min(scale_x, scale_y);
             }
 
-            width = std::round(_image->size.width * scale);
-            height = std::round(_image->size.height * scale);
+            width = std::round(image_width * scale);
+            height = std::round(image_height * scale);
             x = std::round(bounds.mid_x() - width / 2);
             y = std::round(bounds.mid_y() - height / 2);
             break;

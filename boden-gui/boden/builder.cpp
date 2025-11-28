@@ -218,7 +218,8 @@ void builder_t::add_image(const std::string &key,
 void builder_t::add_text(const std::string &text,
                          const boden::layout::vec2_t &p1, 
                          const boden::layout::vec2_t &p2,
-                         const boden::layout::color_t &color)
+                         const boden::layout::color_t &color,
+                         float scale)
 {
     assert(_font_manager && "Error: _font_manager is null.");
 
@@ -242,10 +243,10 @@ void builder_t::add_text(const std::string &text,
                                                             get_clip_rect_top(), 
                                                             info.texture.tid);
         
-        float glyph_x = pen_x + info.x_offset + info.texture.rect.origin.x;
-        float glyph_y = p1.y + info.y_offset + font_metrics.ascender - info.texture.rect.origin.y;
-        float glyph_width = info.texture.rect.size.width;
-        float glyph_height = info.texture.rect.size.height;
+        float glyph_x = (pen_x + info.x_offset + info.texture.rect.origin.x) * scale;
+        float glyph_y = (p1.y + info.y_offset + font_metrics.ascender - info.texture.rect.origin.y) * scale;
+        float glyph_width = (info.texture.rect.size.width) * scale;
+        float glyph_height = (info.texture.rect.size.height) * scale;
 
         _batch->vertices.emplace_back(boden::layout::vec2_t{glyph_x, glyph_y},
                                       info.texture.uv_min,

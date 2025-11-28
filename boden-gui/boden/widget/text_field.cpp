@@ -57,6 +57,26 @@ void text_field_t::draw_rect(boden::builder_t &builder, const boden::layout::rec
     _text_layer->draw(builder, frame_in_window);
 }
 
+void text_field_t::make_backing_layer()
+{
+    boden::widget::control_t::make_backing_layer();
+    
+    auto window = _window.lock();
+    if(!window)
+    {
+        return;
+    }
+
+    auto tid = _text_layer->get_texture_id();
+    if(tid)
+    {
+        window->destroy_view_texture(tid);
+    }
+
+    auto size = _text_layer->get_frame().size * _text_layer->get_contents_scale();
+    _text_layer->set_texture_id(window->create_view_texture(size));
+}
+
 void text_field_t::set_enabled(bool enabled)
 {
     if(_enabled == enabled)
@@ -118,13 +138,13 @@ void text_field_t::system_event(const boden::system_event_t &event)
 void text_field_t::view_will_move_to_window(std::shared_ptr<boden::widget::window_t> window)
 {
     boden::widget::view_t::view_will_move_to_window(window);
-    create_text_layer_texture();
+    make_backing_layer();
 }
 
 void text_field_t::set_frame(const boden::layout::rect_t &frame)
 {
     boden::widget::view_t::set_frame(frame);
-    create_text_layer_texture();
+    make_backing_layer();
 }
 
 const std::string & text_field_t::get_text() const
@@ -148,23 +168,6 @@ void text_field_t::init(const boden::layout::rect_t &frame)
 
     _text_layer = boden::widget::layer::text_layer_t::alloc({0, 0, frame.size.width, frame.size.height});
     _layer->add_layer(_text_layer);
-}
-
-void text_field_t::create_text_layer_texture()
-{
-    auto window = _window.lock();
-    if(!window)
-    {
-        return;
-    }
-
-    auto tid = _text_layer->get_texture_id();
-    if(tid)
-    {
-        window->destroy_view_texture(tid);
-    }
-
-    _text_layer->set_texture_id(window->create_view_texture(_text_layer->get_frame().size));
 }
 
 } // widget

@@ -24,6 +24,7 @@ public:
     ~button_t() override;
 
     void draw_rect(boden::builder_t &builder, const boden::layout::rect_t &dirty_rect) override;
+    void make_backing_layer() override;
     void view_will_move_to_window(std::shared_ptr<boden::widget::window_t> window) override;
     void set_frame(const boden::layout::rect_t &frame) override;
     void mouse_down(const boden::event_t &ev) override;
@@ -46,8 +47,6 @@ private:
     std::shared_ptr<boden::widget::layer::image_layer_t> _image_layer;
     boden::widget::base::cell_image_position_t _image_position;
     std::string _title;
-
-    void create_image_layer_texture();
 };
 
 } // widget

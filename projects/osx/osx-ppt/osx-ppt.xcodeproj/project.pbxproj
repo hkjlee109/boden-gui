@@ -18,6 +18,7 @@
 		BF40B09D2E83E127000EB85D /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF40B09C2E83E127000EB85D /* libfreetype.a */; };
 		BF54B2912E68A48D00F7D4F9 /* canvas_view_controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF54B2902E68A48C00F7D4F9 /* canvas_view_controller.cpp */; };
 		BF54B3AB2E697D0100F7D4F9 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF54B3AA2E697D0100F7D4F9 /* MetalKit.framework */; };
+		BF85A4582ED9D06B006D93D7 /* selection_layer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BF85A4572ED9D06B006D93D7 /* selection_layer.cpp */; };
 		BF9759C92D6C9DA6000E9A16 /* libboden-gui.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BF9759C82D6C9DA6000E9A16 /* libboden-gui.a */; };
 		BFC989C32E92A01C00566F80 /* hover_button.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFC989C12E92A01C00566F80 /* hover_button.cpp */; };
 		BFC989C42E92A01C00566F80 /* rectangle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFC989BC2E92A01C00566F80 /* rectangle.cpp */; };
@@ -49,6 +50,8 @@
 		BF54B28F2E68A48C00F7D4F9 /* canvas_view_controller.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = canvas_view_controller.hpp; sourceTree = "<group>"; };
 		BF54B2902E68A48C00F7D4F9 /* canvas_view_controller.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = canvas_view_controller.cpp; sourceTree = "<group>"; };
 		BF54B3AA2E697D0100F7D4F9 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
+		BF85A4562ED9D06B006D93D7 /* selection_layer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = selection_layer.hpp; sourceTree = "<group>"; };
+		BF85A4572ED9D06B006D93D7 /* selection_layer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = selection_layer.cpp; sourceTree = "<group>"; };
 		BF9757F22D6C7871000E9A16 /* osx-ppt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "osx-ppt.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF9759C82D6C9DA6000E9A16 /* libboden-gui.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboden-gui.a"; path = "../../../build/lib/libboden-gui.a"; sourceTree = "<group>"; };
 		BFC989BB2E92A01C00566F80 /* rectangle.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = rectangle.hpp; sourceTree = "<group>"; };
@@ -157,6 +160,15 @@
 			path = fonts;
 			sourceTree = "<group>";
 		};
+		BF85A4552ED9D04B006D93D7 /* layer */ = {
+			isa = PBXGroup;
+			children = (
+				BF85A4562ED9D06B006D93D7 /* selection_layer.hpp */,
+				BF85A4572ED9D06B006D93D7 /* selection_layer.cpp */,
+			);
+			path = layer;
+			sourceTree = "<group>";
+		};
 		BF9757E92D6C7871000E9A16 = {
 			isa = PBXGroup;
 			children = (
@@ -203,6 +215,7 @@
 		BFC989C22E92A01C00566F80 /* widget */ = {
 			isa = PBXGroup;
 			children = (
+				BF85A4552ED9D04B006D93D7 /* layer */,
 				BFC989BF2E92A01C00566F80 /* shape */,
 				BFC989C02E92A01C00566F80 /* hover_button.hpp */,
 				BFC989C12E92A01C00566F80 /* hover_button.cpp */,
@@ -294,6 +307,7 @@
 				BF54B2912E68A48D00F7D4F9 /* canvas_view_controller.cpp in Sources */,
 				BF17A67C2D73419000477794 /* main_view_controller.cpp in Sources */,
 				BFC98BF92E9A7D7200566F80 /* selection_view.cpp in Sources */,
+				BF85A4582ED9D06B006D93D7 /* selection_layer.cpp in Sources */,
 				BFC989C32E92A01C00566F80 /* hover_button.cpp in Sources */,
 				BFC989C42E92A01C00566F80 /* rectangle.cpp in Sources */,
 				BFC989C52E92A01C00566F80 /* shape.cpp in Sources */,

@@ -57,6 +57,9 @@ void mtl_renderer_t::render(boden::context_t &ctx)
     
     _texture_manager->cleanup_unused_texture();
     
+    float display_width = ctx.display_size.width * ctx.display_scale.x;
+    float display_height = ctx.display_size.height * ctx.display_scale.y;
+    
     MTL::CommandBuffer *command_buffer = _command_queue->commandBuffer();
     
     mtl_buffer_ref_t vertex_buffer;
@@ -158,8 +161,8 @@ void mtl_renderer_t::render(boden::context_t &ctx)
                 uniforms.offset.x = offset_x;
                 uniforms.offset.y = offset_y;
                 uniforms.zoom = zoom / 100.0f;
-                uniforms.screen_size.x = ctx.display_size.width;
-                uniforms.screen_size.y = ctx.display_size.height;
+                uniforms.screen_size.x = display_width;
+                uniforms.screen_size.y = display_height;
  
                 encoder->setFragmentBytes(&uniforms, sizeof(uniforms), 0);
                 encoder->drawPrimitives(MTL::PrimitiveTypeTriangle,
@@ -251,7 +254,7 @@ void mtl_renderer_t::render(boden::context_t &ctx)
         buffer_manager.queue_reusable_buffer(index_buffer);
     });
     
-    create_root_texture_if_needed(ctx.display_size);
+    create_root_texture_if_needed({display_width, display_height});
     
     {
         MTL::Texture *dst_texture = _root_texture.get();
@@ -272,16 +275,16 @@ void mtl_renderer_t::render(boden::context_t &ctx)
         {
             .originX = 0.0,
             .originY = 0.0,
-            .width = (double)ctx.display_size.width,
-            .height = (double)ctx.display_size.height,
+            .width = (double)display_width,
+            .height = (double)display_height,
             .znear = 0.0,
             .zfar = 1.0
         };
         
         float L = 0;
-        float R = ctx.display_size.width;
+        float R = display_width;
         float T = 0;
-        float B = ctx.display_size.height;
+        float B = display_height;
         float N = (float)viewport.znear;
         float F = (float)viewport.zfar;
         float X = 1;
@@ -319,10 +322,10 @@ void mtl_renderer_t::render(boden::context_t &ctx)
             current_tid = command_group.tid;
             auto src_texture = reinterpret_cast<MTL::Texture *>(_texture_manager->get_gpu_texture_handle(current_tid));
             
-            float x = std::clamp<float>(command_group.frame.origin.x, 0, ctx.display_size.width);
-            float y = std::clamp<float>(command_group.frame.origin.y, 0, ctx.display_size.height);
-            float w = std::min<float>(command_group.frame.size.width, ctx.display_size.width - x);
-            float h = std::min<float>(command_group.frame.size.height, ctx.display_size.height - y);
+            float x = std::clamp<float>(command_group.frame.origin.x, 0, display_width);
+            float y = std::clamp<float>(command_group.frame.origin.y, 0, display_height);
+            float w = std::min<float>(command_group.frame.size.width, display_width - x);
+            float h = std::min<float>(command_group.frame.size.height, display_height - y);
             
             float left_cut   = (x - command_group.frame.origin.x) / command_group.frame.size.width;
             float top_cut    = (y - command_group.frame.origin.y) / command_group.frame.size.height;
@@ -382,21 +385,21 @@ void mtl_renderer_t::render(boden::context_t &ctx)
         {
             .originX = 0.0,
             .originY = 0.0,
-            .width = (double)(ctx.display_size.width * ctx.display_scale.x),
-            .height = (double)(ctx.display_size.height * ctx.display_scale.y),
+            .width = (double)display_width,
+            .height = (double)display_height,
             .znear = 0.0,
             .zfar = 1.0
         };
         
         float L = 0;
-        float R = ctx.display_size.width * ctx.display_scale.x;
+        float R = display_width;
         float T = 0;
-        float B = ctx.display_size.height * ctx.display_scale.y;
+        float B = display_height;
         float N = (float)viewport.znear;
         float F = (float)viewport.zfar;
-        float X = ctx.display_scale.x;
-        float Y = ctx.display_scale.y;
-        
+        float X = 1;
+        float Y = 1;
+
         main_uniforms_t main_uniform =
         {
             .projection_matrix =
@@ -410,8 +413,8 @@ void mtl_renderer_t::render(boden::context_t &ctx)
         
         float x = 0;
         float y = 0;
-        float w = ctx.display_size.width;
-        float h = ctx.display_size.height;
+        float w = display_width;
+        float h = display_height;
 
         boden::draw::vertex_t quad[4] =
         {
@@ -421,8 +424,7 @@ void mtl_renderer_t::render(boden::context_t &ctx)
             { {x + w, y + h}, {1.0f, 1.0f}, 0xFFFFFFFF }
         };
         
-        encoder->pushDebugGroup(NS::String::string(
-                                                   "Render to surface",
+        encoder->pushDebugGroup(NS::String::string("Render to surface",
                                                    NS::StringEncoding::UTF8StringEncoding));
         
         encoder->setCullMode(MTL::CullModeNone);
