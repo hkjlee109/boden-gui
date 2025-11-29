@@ -31,11 +31,13 @@ public:
     void set_toolbox_delegate(miro::toolbox_delegate_t *delegate);
     
     void on_selector_click(void *sender);
+    void on_sticky_click(void *sender);
     
 private:
     miro::toolbox_delegate_t *_toolbox_delegate;
     
     std::shared_ptr<miro::widget::hover_button_t> _selector;
+    std::shared_ptr<miro::widget::hover_button_t> _sticky;
     
     void init();
 };

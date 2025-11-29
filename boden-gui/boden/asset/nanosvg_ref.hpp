@@ -1,21 +1,26 @@
 #pragma once
 
+#include <vector>
+
 namespace boden {
 namespace asset {
 
-struct stb_ref_t 
+struct nanosvg_ref_t 
 {
-    unsigned char *data = nullptr;
     int width = 0;
     int height = 0;
     int number_of_channels = 0;
 
-    stb_ref_t(const char *full_path);
-    ~stb_ref_t();
+    nanosvg_ref_t(const char *full_path, uint32_t scale);
+    ~nanosvg_ref_t();
 
     operator const unsigned char * () const {
-        return data;
+        return _data.data();
     }
+
+private:
+    std::vector<unsigned char> _data;
+
 };
     
 } // asset

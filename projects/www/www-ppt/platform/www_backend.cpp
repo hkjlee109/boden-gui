@@ -17,7 +17,7 @@ www_backend_t::www_backend_t()
     auto images_configs = boden::utils::config_t::parse_images_config_file("./images/images-config.json");
     for(auto config : images_configs)
     {
-        _image_manager.load(config.key, "./images/" + config.name + "." + config.type);
+        _image_manager.load(config.key, "./images/" + config.name + "." + config.type, config.scale);
     }
 
     auto fonts_configs = boden::utils::config_t::parse_fonts_config_file("./fonts/fonts-config.json");

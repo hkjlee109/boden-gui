@@ -1,5 +1,6 @@
 #pragma once
 
+namespace boden {
 namespace utils {
 
 struct severity 
@@ -36,11 +37,11 @@ struct severity
     severity_enum value;
 };
 
-class log 
+class log_t
 {
 public:
-    log(const char *name);
-    ~log();
+    log_t(const char *name);
+    ~log_t();
 
     void emerg(const char *, ...) const;
     void alert(const char *, ...) const;
@@ -56,3 +57,4 @@ private:
 };
 
 } // utils
+} // boden

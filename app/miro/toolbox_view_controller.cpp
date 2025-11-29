@@ -23,10 +23,15 @@ void toolbox_view_controller_t::on_selector_click(void *sender)
     }
 }
 
+void toolbox_view_controller_t::on_sticky_click(void *sender)
+{
+
+}
+
 void toolbox_view_controller_t::load_view()
 {
     boden::widget::view_controller_t::load_view();
-    _view->set_frame(boden::layout::rect_t(8, 100, 56, 300));
+    _view->set_frame(boden::layout::rect_t(8, 100, 48, 300));
     
     auto layer = _view->get_layer();
     layer->set_background_color(miro::theme::color::control_background);
@@ -35,10 +40,10 @@ void toolbox_view_controller_t::load_view()
 
 void toolbox_view_controller_t::view_did_load()
 {
-    _selector = miro::widget::hover_button_t::alloc({8, 8, 40, 40});
+    _selector = miro::widget::hover_button_t::alloc({4, 4, 40, 40});
 
     _selector->get_layer()->set_background_color(miro::theme::color::background);
-    _selector->set_image(std::make_unique<boden::widget::base::image_t>("cursorarrow"));
+    _selector->set_image(std::make_unique<boden::widget::base::image_t>("selector"));
     _selector->set_image_edge_insets(boden::layout::edge_insets_t(8, 8, 8, 8));
     _selector->set_image_scaling(boden::widget::base::image_scaling_t::proportionally_down);
     _selector->set_content_tint_color({0x00, 0x00, 0x00, 0xFF});
@@ -48,6 +53,20 @@ void toolbox_view_controller_t::view_did_load()
                            &toolbox_view_controller_t::on_selector_click,
                            boden::widget::control_event_t::mouse_down);
     _view->add_subview(_selector);
+    
+    _sticky = miro::widget::hover_button_t::alloc({4, 48, 40, 40});
+
+    _sticky->get_layer()->set_background_color(miro::theme::color::background);
+    _sticky->set_image(std::make_unique<boden::widget::base::image_t>("sticky"));
+    _sticky->set_image_edge_insets(boden::layout::edge_insets_t(8, 8, 8, 8));
+    _sticky->set_image_scaling(boden::widget::base::image_scaling_t::proportionally_down);
+    _sticky->set_content_tint_color({0x00, 0x00, 0x00, 0xFF});
+    _sticky->set_hover_enabled(true);
+    _sticky->set_tag(static_cast<uint32_t>(miro::tool_type_t::selector));
+    _sticky->add_target(this,
+                        &toolbox_view_controller_t::on_sticky_click,
+                        boden::widget::control_event_t::mouse_down);
+    _view->add_subview(_sticky);
 }
 
 void toolbox_view_controller_t::set_toolbox_delegate(miro::toolbox_delegate_t *delegate)

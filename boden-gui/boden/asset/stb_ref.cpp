@@ -6,7 +6,7 @@
 namespace boden {
 namespace asset {
 
-stb_ref_t::stb_ref_t(const char* full_path)
+stb_ref_t::stb_ref_t(const char *full_path)
 {    
     data = stbi_load(full_path, &width, &height, &number_of_channels, 4);
 

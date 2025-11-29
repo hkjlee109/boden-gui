@@ -1,19 +1,28 @@
 {
   "images": {
-    "cursorarrow": {
-        "path": "images",
-        "name": "cursorarrow",
-        "type": "png"
-    },
     "minus": {
       "path": "images",
       "name": "minus",
-      "type": "png"
+      "type": "png",
+      "scale": 1
     },
     "plus": {
       "path": "images",
       "name": "plus",
-      "type": "png"
+      "type": "png",
+      "scale": 1
+    },
+    "selector": {
+        "path": "images",
+        "name": "selector",
+        "type": "svg",
+        "scale": 2
+    },
+    "sticky": {
+        "path": "images",
+        "name": "sticky",
+        "type": "svg",
+        "scale": 2
     }
   }
 }

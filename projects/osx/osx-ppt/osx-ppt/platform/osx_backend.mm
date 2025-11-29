@@ -30,7 +30,7 @@ osx_backend_t::osx_backend_t(MTL::Device *device, platform::osx_queue_t &queue, 
     {
         NSString *path = [[NSBundle mainBundle] pathForResource:[NSString stringWithUTF8String:config.name.c_str()]
                                                          ofType:[NSString stringWithUTF8String:config.type.c_str()]];
-        _image_manager.load(config.key, path.UTF8String);
+        _image_manager.load(config.key, path.UTF8String, config.scale);
     }
 
     NSString *fonts_config_path = [[NSBundle mainBundle] pathForResource:@"fonts-config" ofType:@"json"];
