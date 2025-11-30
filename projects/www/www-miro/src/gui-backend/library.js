@@ -337,7 +337,7 @@ addToLibrary({
 
                 let commands = [];
                 for(let i = 0; i < group[4]; i++) {
-                    let base_addr = (group[3] >> 2) + i * 8;
+                    let base_addr = (group[3] >> 2) + i * 9;
                     let type = HEAP32[base_addr]; 
                     let count = HEAP32[base_addr + 1];           
                     let index_buffer_offset = HEAP32[base_addr + 2];  
@@ -399,6 +399,7 @@ addToLibrary({
                         gl.bindTexture(gl.TEXTURE_2D, texture);
                         gl.uniform1i(renderInfomation.uniformLocations.texture, 0);
                     }
+
                     gl.drawElements(draw_type, count, gl.UNSIGNED_SHORT, offset * 2);
 
                     gl.disable(gl.SCISSOR_TEST);

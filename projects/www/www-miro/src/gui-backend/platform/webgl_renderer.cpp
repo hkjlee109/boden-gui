@@ -18,7 +18,7 @@ struct command_group_view_t {
     boden::graphic::texture_id_t tid;
     boden::layout::rect_t frame;
     boden::graphic::compositing_operation_t operation;
-    const boden::draw::command_t* commands;
+    const boden::draw::command_t *commands;
     size_t command_count;
 };
 
