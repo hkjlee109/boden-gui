@@ -69,6 +69,10 @@ self.onmessage = async (event) => {
         backend.keyDown(arg1, 0, 0);
         break;
 
+    case 'scroll_wheel': 
+        backend.scrollWheel(arg1, arg2);
+        break;
+
     case 'system_display_scale_changed': 
         display_scale = arg1;
         canvas.width = display_width * display_scale;

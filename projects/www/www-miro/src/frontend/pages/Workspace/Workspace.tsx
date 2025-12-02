@@ -12,9 +12,13 @@ const Workspace: FC<{}> = () => {
   const { width, height } = useWindowSize();
 
   const { dispatchDisplaySize } = useDispatchDisplayEvents(workerRef);
-  const { dispatchMouseDown, dispatchMouseMove, dispatchMouseUp } = useDispatchMouseEvents(workerRef);
+  const { 
+    dispatchMouseDown, 
+    dispatchMouseMove, 
+    dispatchMouseUp, 
+    dispatchScrollWheel 
+  } = useDispatchMouseEvents(workerRef);
   const { dispatchKeyDown, dispatchKeyUp } = useDispatchKeyEvents(workerRef);
-
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -68,6 +72,15 @@ const Workspace: FC<{}> = () => {
       window.removeEventListener('keyup', dispatchKeyUp);
     };
   }, [dispatchKeyDown, dispatchKeyUp]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current!;
+    canvas.addEventListener("wheel", dispatchScrollWheel, { passive: false });
+
+    return () => {
+      canvas.removeEventListener("wheel", dispatchScrollWheel);
+    };
+  }, []);
 
   return (
     <div className="w-screen h-screen bg-[#f2f2f2]">

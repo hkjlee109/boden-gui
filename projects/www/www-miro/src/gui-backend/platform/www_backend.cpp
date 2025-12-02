@@ -133,6 +133,19 @@ void www_backend_t::system_display_size_changed(float width, float height)
     process_system_event_if_needed();
 }
 
+void www_backend_t::scroll_wheel(float dx, float dy)
+{
+    printf("# dx = %f, dy = %f\n", dx, dy);
+    boden::event_t event;
+    event.type = boden::event_type_t::scroll_wheel;
+    event.scrolling_delta_x = dx;
+    event.scrolling_delta_y = dy;
+    _window->scroll_wheel(event);
+    
+    display_if_needed();
+    process_system_event_if_needed();
+}
+
 void www_backend_t::system_text_input_committed(const std::string &text)
 {
     boden::system_event_t system_event;
