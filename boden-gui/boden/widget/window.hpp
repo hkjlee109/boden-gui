@@ -41,6 +41,10 @@ public:
     void set_backend(boden::backend_t *backend);
     void set_content_view(boden::widget::view_ref_t view);
     void set_content_view_controller(boden::widget::view_controller_ref_t ctrl);
+    
+    const boden::layout::rect_t & get_frame() const;
+    void set_frame(const boden::layout::rect_t &frame);
+    
     void set_needs_display(bool needs);
     void set_texture_manager(boden::graphic::texture_manager_t *texture_manager);
     float get_backing_scale_factor() const; 
@@ -54,6 +58,7 @@ public:
     bool make_first_responder(std::shared_ptr<boden::widget::base::responder_t> responder);
 
 protected:
+    boden::layout::rect_t _frame;
     boden::widget::view_ref_t _content_view;
     boden::widget::view_controller_ref_t _content_view_controller;
     std::shared_ptr<boden::widget::base::responder_t> _first_responder;

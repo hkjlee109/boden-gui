@@ -115,6 +115,16 @@ void window_t::set_content_view_controller(boden::widget::view_controller_ref_t 
     make_first_responder(nullptr);
 }
 
+const boden::layout::rect_t & window_t::get_frame() const
+{
+    return _frame;
+}
+
+void window_t::set_frame(const boden::layout::rect_t &frame)
+{
+    _frame = frame;
+}
+
 void window_t::set_needs_display(bool needs)
 {
     if(_backend)
@@ -175,6 +185,12 @@ void window_t::system(const boden::system_event_t &system_event)
         case (uint32_t)boden::system_event_type_t::backing_properties_change:
             _backing_scale_factor = std::any_cast<float>(system_event.params.at("scale"));
             _content_view->view_did_change_backing_properties();
+            break;
+
+        case (uint32_t)boden::system_event_type_t::frame_change:
+            float width = std::any_cast<float>(system_event.params.at("width"));
+            float height = std::any_cast<float>(system_event.params.at("height"));
+            set_frame({0, 0, width, height});
             break;
     }
 }

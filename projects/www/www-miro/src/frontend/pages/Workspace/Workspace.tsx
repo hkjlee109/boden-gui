@@ -1,5 +1,9 @@
 import { FC, useEffect, useRef } from 'react';
-import { useDispatchKeyEvents, useDispatchMouseEvents } from '@frontend/packages/worker';
+import { 
+  useDispatchDisplayEvents, 
+  useDispatchKeyEvents, 
+  useDispatchMouseEvents 
+} from '@frontend/packages/worker';
 import { useWindowSize } from '@frontend/packages/utils';
 
 const Workspace: FC<{}> = () => {
@@ -7,12 +11,17 @@ const Workspace: FC<{}> = () => {
   const workerRef = useRef<Worker | null>(null);
   const { width, height } = useWindowSize();
 
+  const { dispatchDisplaySize } = useDispatchDisplayEvents(workerRef);
+  const { dispatchMouseDown, dispatchMouseMove, dispatchMouseUp } = useDispatchMouseEvents(workerRef);
+  const { dispatchKeyDown, dispatchKeyUp } = useDispatchKeyEvents(workerRef);
+
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    canvas.width = width;
-    canvas.height = height;
+    canvas.width = width * window.devicePixelRatio;
+    canvas.height = height * window.devicePixelRatio;
 
     const offscreen = canvas.transferControlToOffscreen();
 
@@ -21,7 +30,13 @@ const Workspace: FC<{}> = () => {
       { type: 'module' }
     );
 
-    worker.postMessage({ type: 'init', arg1: offscreen }, [offscreen]);
+    worker.postMessage({ 
+      type: 'init', 
+      arg1: offscreen,
+      arg2: window.devicePixelRatio,
+      arg3: width,
+      arg4: height
+    }, [offscreen]);
     workerRef.current = worker;
 
     return () => {
@@ -31,12 +46,19 @@ const Workspace: FC<{}> = () => {
   }, []); 
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if(!canvas) { return; }
-  }, [width, height]);
+    const handleDPRChange = () => {
+      console.log("DPR changed:", window.devicePixelRatio);
+    };
+    console.log("######", window.devicePixelRatio);
+    const mq = window.matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`);
+    mq.addEventListener("change", handleDPRChange);
 
-  const { dispatchMouseDown, dispatchMouseMove, dispatchMouseUp } = useDispatchMouseEvents(workerRef);
-  const { dispatchKeyDown, dispatchKeyUp } = useDispatchKeyEvents(workerRef);
+    return () => mq.removeEventListener("change", handleDPRChange);
+  }, []);
+
+  useEffect(() => {
+    dispatchDisplaySize(width, height);
+  }, [width, height]);
 
   useEffect(() => {
     window.addEventListener('keydown', dispatchKeyDown);

@@ -158,7 +158,8 @@ addToLibrary({
     em_render: function(
         command_groups_addr, command_groups_count,
         indices_addr, indices_count,
-        vertices_addr, vertices_count
+        vertices_addr, vertices_count,
+        display_width, display_height
     ) {
         /*
          * struct command_group_view_t
@@ -318,9 +319,9 @@ addToLibrary({
                 
                 switch(operation) {
                     case 0: // clear
+                        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
                         gl.clearColor(0.0, 0.0, 0.0, 0.0);
                         gl.clear(gl.COLOR_BUFFER_BIT);
-                        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
                         break;
 
                     case 1: // copy
@@ -456,6 +457,9 @@ addToLibrary({
                 Module.rootTexture,
                 0
             );
+
+            gl.clearColor(0, 0, 0, 0);
+            gl.clear(gl.COLOR_BUFFER_BIT);
 
             gl.viewport(0, 0, Module.rootTextureSize.width, Module.rootTextureSize.height);
 

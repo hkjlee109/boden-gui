@@ -84,7 +84,7 @@ worker.onmessage = function(event) {
 
     case 'end_text_input':
         worker.postMessage({
-            type: 'system_text_input_commit',
+            type: 'system_text_input_committed',
             arg1: textInput.value
         });
         textInput.value = '';
@@ -102,7 +102,7 @@ textInput.addEventListener('keydown', (event) => {
         console.log('Escape key pressed!');
         textInput.style.display = 'none';
         worker.postMessage({
-            type: 'system_text_input_commit',
+            type: 'system_text_input_committed',
             arg1: textInput.value
         });
         break;

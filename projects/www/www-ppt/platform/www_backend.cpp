@@ -46,18 +46,6 @@ www_backend_t::~www_backend_t()
 {
 }
 
-void www_backend_t::commit_text_input(const std::string &text)
-{
-    boden::system_event_t system_event;
-    system_event.type = (uint32_t)boden::system_event_type_t::text_input_commit;
-    system_event.params["text"] = text;
-
-    _window->system(system_event);
-
-    display_if_needed();
-    process_system_event_if_needed();
-}
-
 void www_backend_t::key_down(uint32_t key_code, uint32_t flags_msb, uint32_t flags_lsb)
 {
     boden::event_t event;
@@ -120,15 +108,43 @@ void www_backend_t::mouse_up(float x, float y)
     process_system_event_if_needed();
 }
 
+void www_backend_t::system_display_scale_changed(float scale)
+{
+    boden::system_event_t system_event;
+    system_event.type = (uint32_t)boden::system_event_type_t::backing_properties_change;
+    system_event.params["scale"] = scale;
+
+    _window->system(system_event);
+
+    display_if_needed();
+    process_system_event_if_needed();
+}
+
+void www_backend_t::system_display_size_changed(float width, float height)
+{
+
+}
+
+void www_backend_t::system_text_input_committed(const std::string &text)
+{
+    boden::system_event_t system_event;
+    system_event.type = (uint32_t)boden::system_event_type_t::text_input_commit;
+    system_event.params["text"] = text;
+
+    _window->system(system_event);
+
+    display_if_needed();
+    process_system_event_if_needed();
+}
+
 void www_backend_t::draw()
 {
     _builder->reset();
-
     _window->draw(*_builder.get());
-
+        
     boden::context_t ctx;
     ctx.batch = _builder->get_batch();
-
+    ctx.display_scale = _window->get_backing_scale_factor();
     _renderer->render(ctx);
 }
 

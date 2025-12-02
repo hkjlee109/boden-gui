@@ -58,8 +58,8 @@ void mtl_renderer_t::render(boden::context_t &ctx)
     
     _texture_manager->cleanup_unused_texture();
 
-    float display_width = ctx.display_size.width * ctx.display_scale.x;
-    float display_height = ctx.display_size.height * ctx.display_scale.y;
+    float display_width = ctx.display_size.width * ctx.display_scale;
+    float display_height = ctx.display_size.height * ctx.display_scale;
     
     MTL::CommandBuffer *command_buffer = _command_queue->commandBuffer();
     

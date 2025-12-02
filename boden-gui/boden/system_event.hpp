@@ -14,6 +14,7 @@ enum class system_event_type_t : uint32_t
     text_input_commit,
     
     backing_properties_change,
+    frame_change
 };
 
 struct system_event_t

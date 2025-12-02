@@ -46,8 +46,16 @@ self.onmessage = async (event) => {
         backend.keyDown(arg1, 0, 0);
         break;
 
-    case 'system_text_input_commit': 
-        backend.commitTextInput(arg1);
+    case 'system_display_scale_changed': 
+        backend.systemDisplayScaleChanged(arg1);
+        break;
+        
+    case 'system_display_size_changed': 
+        backend.systemDisplaySizeChanged(arg1, arg2);
+        break;
+    
+    case 'system_text_input_committed': 
+        backend.systemTextInputCommitted(arg1);
         break;
     }
 };
