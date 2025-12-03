@@ -28,6 +28,7 @@ public:
     void view_will_move_to_window(std::shared_ptr<boden::widget::window_t> window) override;
     void set_frame(const boden::layout::rect_t &frame) override;
     void mouse_down(const boden::event_t &ev) override;
+    void mouse_up(const boden::event_t &ev) override;
 
     void set_content_tint_color(const boden::layout::color_t &color);
 

@@ -282,7 +282,7 @@ void mtl_renderer_t::render(boden::context_t &ctx)
         MTL::RenderPassDescriptor *desc = MTL::RenderPassDescriptor::alloc()->init();
         desc->colorAttachments()->object(0)->setTexture(dst_texture);
         desc->colorAttachments()->object(0)->setLoadAction(MTL::LoadActionClear);
-        desc->colorAttachments()->object(0)->setClearColor(MTL::ClearColor::Make(0.96f, 0.96f, 0.96f, 1.0f));
+        desc->colorAttachments()->object(0)->setClearColor(MTL::ClearColor::Make(1.0f, 0.0f, 1.0f, 1.0f));
         
         MTL::RenderCommandEncoder *encoder = command_buffer->renderCommandEncoder(desc);
         desc->release();
@@ -391,7 +391,7 @@ void mtl_renderer_t::render(boden::context_t &ctx)
         MTL::RenderPassDescriptor *desc = MTL::RenderPassDescriptor::alloc()->init();
         desc->colorAttachments()->object(0)->setTexture(surface->texture());
         desc->colorAttachments()->object(0)->setLoadAction(MTL::LoadActionClear);
-        desc->colorAttachments()->object(0)->setClearColor(MTL::ClearColor::Make(0.95f, 0.95f, 0.95f, 1.0f));
+        desc->colorAttachments()->object(0)->setClearColor(MTL::ClearColor::Make(1.0f, 0.0f, 1.0f, 1.0f));
         
         MTL::RenderCommandEncoder *encoder = command_buffer->renderCommandEncoder(desc);
         desc->release();

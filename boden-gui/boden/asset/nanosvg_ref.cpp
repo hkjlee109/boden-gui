@@ -31,6 +31,16 @@ nanosvg_ref_t::nanosvg_ref_t(const char *full_path, uint32_t scale)
 
     nsvgDeleteRasterizer(rasterizer);
     nsvgDelete(image);
+
+    uint32_t size = width * height;
+    auto data = _data.data();
+    for(uint32_t i = 0; i < size; ++i) 
+    {
+        float a = data[i * 4 + 3] / 255.0f;
+        data[i * 4 + 0] = static_cast<unsigned char>(data[i * 4 + 0] * a);
+        data[i * 4 + 1] = static_cast<unsigned char>(data[i * 4 + 1] * a);
+        data[i * 4 + 2] = static_cast<unsigned char>(data[i * 4 + 2] * a);
+    }
 }
 
 nanosvg_ref_t::~nanosvg_ref_t()

@@ -87,7 +87,14 @@ void button_t::set_frame(const boden::layout::rect_t &frame)
 
 void button_t::mouse_down(const boden::event_t &ev)
 {
+    boden::widget::control_t::mouse_down(ev);
     send_actions(boden::widget::control_event_t::mouse_down);
+}
+
+void button_t::mouse_up(const boden::event_t &ev)
+{
+    boden::widget::control_t::mouse_up(ev);
+    send_actions(boden::widget::control_event_t::mouse_up);
 }
 
 void button_t::set_content_tint_color(const boden::layout::color_t &color)

@@ -1,13 +1,14 @@
 # boden-gui
 Cross platform 2D graphic library.
 
+Click to watch the video:
 [![Watch the video](https://img.youtube.com/vi/vQg3jZ5Dae8/maxresdefault.jpg)](https://www.youtube.com/watch?v=vQg3jZ5Dae8)
 
 ### Supported platforms
-- osx (metal)
-- web (webgl)
-- windows (TBD)
-- android (TBD)
+- OSX (Metal)
+- WWW (WebGL)
+- Windows (TBD)
+- Android (TBD)
 
 ### Build GUI library
 ```
