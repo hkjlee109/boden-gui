@@ -42,7 +42,7 @@ void zoom_view_controller_t::view_did_load()
     _zoom_in = miro::widget::hover_button_t::alloc({8, 4, 40, 40});
     _zoom_in->get_layer()->set_background_color(miro::theme::color::control_background);
     _zoom_in->set_image(std::make_unique<boden::widget::base::image_t>("minus"));
-    _zoom_in->set_image_edge_insets(boden::layout::edge_insets_t(12, 12, 12, 12));
+    _zoom_in->set_image_edge_insets(boden::layout::edge_insets_t(8, 8, 8, 8));
     _zoom_in->set_image_scaling(boden::widget::base::image_scaling_t::proportionally_down);
     _zoom_in->set_content_tint_color(miro::theme::color::control_accent);
     _zoom_in->set_hover_enabled(true);
@@ -54,7 +54,7 @@ void zoom_view_controller_t::view_did_load()
     _zoom_out = miro::widget::hover_button_t::alloc({52, 4, 40, 40});
     _zoom_out->get_layer()->set_background_color(miro::theme::color::control_background);
     _zoom_out->set_image(std::make_unique<boden::widget::base::image_t>("plus"));
-    _zoom_out->set_image_edge_insets(boden::layout::edge_insets_t(12, 12, 12, 12));
+    _zoom_out->set_image_edge_insets(boden::layout::edge_insets_t(8, 8, 8, 8));
     _zoom_out->set_image_scaling(boden::widget::base::image_scaling_t::proportionally_down);
     _zoom_out->set_content_tint_color(miro::theme::color::control_accent);
     _zoom_out->set_hover_enabled(true);

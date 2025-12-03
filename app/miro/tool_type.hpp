@@ -4,7 +4,10 @@ namespace miro {
 
 enum class tool_type_t : uint8_t
 {
-    selector
+    pen,
+    selector,
+    sticky,
+    text,
 };
 
 } // miro

@@ -135,7 +135,6 @@ void www_backend_t::system_display_size_changed(float width, float height)
 
 void www_backend_t::scroll_wheel(float dx, float dy)
 {
-    printf("# dx = %f, dy = %f\n", dx, dy);
     boden::event_t event;
     event.type = boden::event_type_t::scroll_wheel;
     event.scrolling_delta_x = dx;

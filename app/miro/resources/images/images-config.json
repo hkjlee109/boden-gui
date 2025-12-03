@@ -1,16 +1,28 @@
 {
   "images": {
+    "fonts": {
+        "path": "images",
+        "name": "fonts",
+        "type": "svg",
+        "scale": 2
+    },
     "minus": {
-      "path": "images",
-      "name": "minus",
-      "type": "png",
-      "scale": 1
+        "path": "images",
+        "name": "minus",
+        "type": "svg",
+        "scale": 2
+    },
+    "pencil": {
+        "path": "images",
+        "name": "pencil",
+        "type": "svg",
+        "scale": 2
     },
     "plus": {
-      "path": "images",
-      "name": "plus",
-      "type": "png",
-      "scale": 1
+        "path": "images",
+        "name": "plus",
+        "type": "svg",
+        "scale": 2
     },
     "selector": {
         "path": "images",

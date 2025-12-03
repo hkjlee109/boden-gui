@@ -74,6 +74,7 @@ self.onmessage = async (event) => {
         break;
 
     case 'system_display_scale_changed': 
+        if(!backend) break;
         display_scale = arg1;
         canvas.width = display_width * display_scale;
         canvas.height = display_height * display_scale;
@@ -82,7 +83,6 @@ self.onmessage = async (event) => {
         
     case 'system_display_size_changed': 
         if(!backend) break;
-        
         display_width = arg1;
         display_height = arg2;
         canvas.width = display_width * display_scale;

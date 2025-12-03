@@ -11,7 +11,7 @@ const Workspace: FC<{}> = () => {
   const workerRef = useRef<Worker | null>(null);
   const { width, height } = useWindowSize();
 
-  const { dispatchDisplaySize } = useDispatchDisplayEvents(workerRef);
+  const { dispatchDisplayScale, dispatchDisplaySize } = useDispatchDisplayEvents(workerRef);
   const { 
     dispatchMouseDown, 
     dispatchMouseMove, 
@@ -50,14 +50,9 @@ const Workspace: FC<{}> = () => {
   }, []); 
 
   useEffect(() => {
-    const handleDPRChange = () => {
-      console.log("DPR changed:", window.devicePixelRatio);
-    };
-    console.log("######", window.devicePixelRatio);
     const mq = window.matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`);
-    mq.addEventListener("change", handleDPRChange);
-
-    return () => mq.removeEventListener("change", handleDPRChange);
+    mq.addEventListener("change", dispatchDisplayScale);
+    return () => mq.removeEventListener("change", dispatchDisplayScale);
   }, []);
 
   useEffect(() => {
