@@ -26,7 +26,7 @@ nanosvg_ref_t::nanosvg_ref_t(const char *full_path, uint32_t scale)
 
     NSVGrasterizer* rasterizer = nsvgCreateRasterizer();
 
-    _data.reserve(width * height * 4);
+    _data.resize(width * height * 4);
     nsvgRasterize(rasterizer, image, 0, 0, scale, _data.data(), width, height, width * 4);
 
     nsvgDeleteRasterizer(rasterizer);
@@ -34,12 +34,13 @@ nanosvg_ref_t::nanosvg_ref_t(const char *full_path, uint32_t scale)
 
     uint32_t size = width * height;
     auto data = _data.data();
-    for(uint32_t i = 0; i < size; ++i) 
+
+    for (int i = 0; i < width * height; ++i) 
     {
-        float a = data[i * 4 + 3] / 255.0f;
-        data[i * 4 + 0] = static_cast<unsigned char>(data[i * 4 + 0] * a);
-        data[i * 4 + 1] = static_cast<unsigned char>(data[i * 4 + 1] * a);
-        data[i * 4 + 2] = static_cast<unsigned char>(data[i * 4 + 2] * a);
+        float a = data[i*4+3] / 255.0f;
+        data[i*4+0] = std::min(255, int(data[i * 4 + 0] * 2));
+        data[i*4+1] = std::min(255, int(data[i * 4 + 1] * 2));
+        data[i*4+2] = std::min(255, int(data[i * 4 + 2] * 2));
     }
 }
 
