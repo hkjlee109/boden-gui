@@ -45,7 +45,7 @@ void zoom_view_controller_t::view_did_load()
     _zoom_in->set_image_edge_insets(boden::layout::edge_insets_t(8, 8, 8, 8));
     _zoom_in->set_image_scaling(boden::widget::base::image_scaling_t::proportionally_down);
     _zoom_in->set_content_tint_color(miro::theme::color::control_accent);
-    _zoom_in->set_hover_enabled(true);
+    _zoom_in->set_tracking_enabled(true);
     _zoom_in->add_target(this,
                          &zoom_view_controller_t::on_zoom_in_click,
                          boden::widget::control_event_t::mouse_down);
@@ -57,7 +57,7 @@ void zoom_view_controller_t::view_did_load()
     _zoom_out->set_image_edge_insets(boden::layout::edge_insets_t(8, 8, 8, 8));
     _zoom_out->set_image_scaling(boden::widget::base::image_scaling_t::proportionally_down);
     _zoom_out->set_content_tint_color(miro::theme::color::control_accent);
-    _zoom_out->set_hover_enabled(true);
+    _zoom_out->set_tracking_enabled(true);
     _zoom_out->add_target(this,
                          &zoom_view_controller_t::on_zoom_out_click,
                          boden::widget::control_event_t::mouse_down);

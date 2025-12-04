@@ -34,7 +34,7 @@ void toolbox_view_controller_t::load_view()
     _rectangle->set_image(std::make_unique<boden::widget::base::image_t>("rectangle"));
     _rectangle->set_image_scaling(boden::widget::base::image_scaling_t::proportionally_down);
     _rectangle->set_content_tint_color({0xB7, 0xB7, 0xB7, 0xFF});
-    _rectangle->set_hover_enabled(true);
+    _rectangle->set_tracking_enabled(true);
     _rectangle->set_tag(static_cast<uint32_t>(ppt::shape_type_t::rectangle));
     _rectangle->add_target(this,
                            &toolbox_view_controller_t::on_tool_button_click,
@@ -46,7 +46,7 @@ void toolbox_view_controller_t::load_view()
     _textbox->set_image(std::make_unique<boden::widget::base::image_t>("textbox"));
     _textbox->set_image_scaling(boden::widget::base::image_scaling_t::proportionally_down);
     _textbox->set_content_tint_color({0xB7, 0xB7, 0xB7, 0xFF});
-    _textbox->set_hover_enabled(true);
+    _textbox->set_tracking_enabled(true);
     _textbox->set_tag(static_cast<uint32_t>(ppt::shape_type_t::textbox));
     _textbox->add_target(this,
                          &toolbox_view_controller_t::on_tool_button_click,

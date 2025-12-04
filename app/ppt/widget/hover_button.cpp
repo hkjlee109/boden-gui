@@ -38,7 +38,7 @@ void hover_button_t::mouse_exited(const boden::event_t &ev)
     set_needs_display(true);
 }
 
-void hover_button_t::set_hover_enabled(bool enabled)
+void hover_button_t::set_tracking_enabled(bool enabled)
 {
     if(enabled)
     {

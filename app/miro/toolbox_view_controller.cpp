@@ -65,7 +65,7 @@ void toolbox_view_controller_t::view_did_load()
     _selector->set_image_edge_insets(boden::layout::edge_insets_t(10, 10, 10, 10));
     _selector->set_image_scaling(boden::widget::base::image_scaling_t::proportionally_down);
     _selector->set_content_tint_color({0x00, 0x00, 0x00, 0xFF});
-    _selector->set_hover_enabled(true);
+    _selector->set_tracking_enabled(true);
     _selector->set_tag(static_cast<uint32_t>(miro::tool_type_t::selector));
     _selector->add_target(this,
                           &toolbox_view_controller_t::on_tool_button_click,
@@ -78,7 +78,7 @@ void toolbox_view_controller_t::view_did_load()
     _sticky->set_image_edge_insets(boden::layout::edge_insets_t(10, 10, 10, 10));
     _sticky->set_image_scaling(boden::widget::base::image_scaling_t::proportionally_down);
     _sticky->set_content_tint_color({0x00, 0x00, 0x00, 0xFF});
-    _sticky->set_hover_enabled(true);
+    _sticky->set_tracking_enabled(true);
     _sticky->set_tag(static_cast<uint32_t>(miro::tool_type_t::sticky));
     _sticky->add_target(this,
                         &toolbox_view_controller_t::on_tool_button_click,
@@ -91,7 +91,7 @@ void toolbox_view_controller_t::view_did_load()
     _text->set_image_edge_insets(boden::layout::edge_insets_t(8, 8, 8, 8));
     _text->set_image_scaling(boden::widget::base::image_scaling_t::proportionally_down);
     _text->set_content_tint_color({0x00, 0x00, 0x00, 0xFF});
-    _text->set_hover_enabled(true);
+    _text->set_tracking_enabled(true);
     _text->set_tag(static_cast<uint32_t>(miro::tool_type_t::text));
     _text->add_target(this,
                       &toolbox_view_controller_t::on_tool_button_click,
@@ -104,7 +104,7 @@ void toolbox_view_controller_t::view_did_load()
     _pen->set_image_edge_insets(boden::layout::edge_insets_t(10, 10, 10, 10));
     _pen->set_image_scaling(boden::widget::base::image_scaling_t::proportionally_down);
     _pen->set_content_tint_color({0x00, 0x00, 0x00, 0xFF});
-    _pen->set_hover_enabled(true);
+    _pen->set_tracking_enabled(true);
     _pen->set_tag(static_cast<uint32_t>(miro::tool_type_t::pen));
     _pen->add_target(this,
                      &toolbox_view_controller_t::on_tool_button_click,

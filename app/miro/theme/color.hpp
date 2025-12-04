@@ -7,6 +7,7 @@ namespace theme {
 namespace color {
 
 inline const boden::layout::color_t secondary          = {0x31, 0x4D, 0xD9, 0xFF};
+inline const boden::layout::color_t secondary_light    = {0xE8, 0xEC, 0xEF, 0xFF};
 
 inline const boden::layout::color_t background         = {0xFF, 0xFF, 0xFF, 0xFF};
 
