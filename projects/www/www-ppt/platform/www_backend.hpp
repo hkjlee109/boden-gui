@@ -24,7 +24,10 @@ public:
     void mouse_dragged(float x, float y);
     void mouse_moved(float x, float y);
     void mouse_up(float x, float y);
-
+    void system_display_scale_changed(float scale);
+    void system_display_size_changed(float width, float height);
+    void system_text_input_committed(const std::string &text);
+    
     void draw();
 
 private:

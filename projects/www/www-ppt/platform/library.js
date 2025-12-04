@@ -158,7 +158,8 @@ addToLibrary({
     em_render: function(
         command_groups_addr, command_groups_count,
         indices_addr, indices_count,
-        vertices_addr, vertices_count
+        vertices_addr, vertices_count,
+        display_width, display_height
     ) {
         /*
          * struct command_group_view_t
@@ -318,9 +319,9 @@ addToLibrary({
                 
                 switch(operation) {
                     case 0: // clear
+                        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
                         gl.clearColor(0.0, 0.0, 0.0, 0.0);
                         gl.clear(gl.COLOR_BUFFER_BIT);
-                        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
                         break;
 
                     case 1: // copy
@@ -337,17 +338,19 @@ addToLibrary({
 
                 let commands = [];
                 for(let i = 0; i < group[4]; i++) {
-                    let base_addr = (group[3] >> 2) + i * 8;
-                    let count = HEAP32[base_addr];           
-                    let index_buffer_offset = HEAP32[base_addr + 1];  
-                    let vertex_buffer_offset = HEAP32[base_addr + 2];
-                    let x = HEAPF32[base_addr + 3];
-                    let y = HEAPF32[base_addr + 4];
-                    let width = HEAPF32[base_addr + 5];
-                    let height = HEAPF32[base_addr + 6];
-                    let tid = HEAPU32[base_addr + 7]; 
+                    let base_addr = (group[3] >> 2) + i * 9;
+                    let type = HEAP32[base_addr];  
+                    let count = HEAP32[base_addr + 1];           
+                    let index_buffer_offset = HEAP32[base_addr + 2];  
+                    let vertex_buffer_offset = HEAP32[base_addr + 3];
+                    let x = HEAPF32[base_addr + 4];
+                    let y = HEAPF32[base_addr + 5];
+                    let width = HEAPF32[base_addr + 6];
+                    let height = HEAPF32[base_addr + 7];
+                    let tid = HEAPU32[base_addr + 8]; 
 
                     commands.push([
+                        type,
                         count,
                         index_buffer_offset,
                         vertex_buffer_offset,
@@ -357,12 +360,25 @@ addToLibrary({
                 }
 
                 for(let i = 0; i < commands.length; i++) {
-                    const offset = commands[i][1];
-                    const count = commands[i][0];
-                    const clip_rect_origin = commands[i][3][0];
-                    const clip_rect_size = commands[i][3][1];
-                    const tid = commands[i][4];
-                    const type = gl.UNSIGNED_SHORT;
+                    const type = commands[i][0];
+                    const count = commands[i][1];
+                    const offset = commands[i][2];
+                    const clip_rect_origin = commands[i][4][0];
+                    const clip_rect_size = commands[i][4][1];
+                    const tid = commands[i][5];
+
+                    let draw_type;
+                    switch(type) {
+                        case 0:
+                            draw_type = gl.TRIANGLE_STRIP;
+                            break;
+                        case 1:
+                            draw_type = gl.LINES;
+                            break;
+                        default:
+                            draw_type = gl.TRIANGLE_STRIP;
+                            break;
+                    }
 
                     gl.enable(gl.SCISSOR_TEST);
                     gl.scissor(
@@ -384,7 +400,7 @@ addToLibrary({
                         gl.bindTexture(gl.TEXTURE_2D, texture);
                         gl.uniform1i(renderInfomation.uniformLocations.texture, 0);
                     }
-                    gl.drawElements(gl.TRIANGLE_STRIP, count, type, offset*2);
+                    gl.drawElements(draw_type, count, gl.UNSIGNED_SHORT, offset * 2);
 
                     gl.disable(gl.SCISSOR_TEST);
                 }
@@ -441,6 +457,9 @@ addToLibrary({
                 Module.rootTexture,
                 0
             );
+
+            gl.clearColor(0, 0, 0, 0);
+            gl.clear(gl.COLOR_BUFFER_BIT);
 
             gl.viewport(0, 0, Module.rootTextureSize.width, Module.rootTextureSize.height);
 

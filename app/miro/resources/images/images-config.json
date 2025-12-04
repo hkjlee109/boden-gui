@@ -1,19 +1,40 @@
 {
   "images": {
-    "cursorarrow": {
+    "fonts": {
         "path": "images",
-        "name": "cursorarrow",
-        "type": "png"
+        "name": "fonts",
+        "type": "png",
+        "scale": 1
     },
     "minus": {
-      "path": "images",
-      "name": "minus",
-      "type": "png"
+        "path": "images",
+        "name": "minus",
+        "type": "svg",
+        "scale": 2
+    },
+    "pencil": {
+        "path": "images",
+        "name": "pencil",
+        "type": "png",
+        "scale": 1
     },
     "plus": {
-      "path": "images",
-      "name": "plus",
-      "type": "png"
+        "path": "images",
+        "name": "plus",
+        "type": "svg",
+        "scale": 2
+    },
+    "selector": {
+        "path": "images",
+        "name": "selector",
+        "type": "png",
+        "scale": 1
+    },
+    "sticky": {
+        "path": "images",
+        "name": "sticky",
+        "type": "png",
+        "scale": 1
     }
   }
 }

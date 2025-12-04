@@ -29,6 +29,9 @@ public:
     float get_border_width() const;
     void set_border_width(float width);
 
+    float get_contents_scale() const;
+    void set_contents_scale(float scale);
+
     float get_corner_radius() const;
     void set_corner_radius(float radius);
 
@@ -52,6 +55,7 @@ protected:
     boden::layout::color_t _background_color;
     boden::layout::color_t _border_color;
     float _border_width;
+    float _contents_scale;
     float _corner_radius;
     bool _needs_display;
     boden::graphic::texture_id_t _tid;

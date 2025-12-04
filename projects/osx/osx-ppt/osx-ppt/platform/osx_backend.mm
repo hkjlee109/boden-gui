@@ -30,7 +30,7 @@ osx_backend_t::osx_backend_t(MTL::Device *device, platform::osx_queue_t &queue, 
     {
         NSString *path = [[NSBundle mainBundle] pathForResource:[NSString stringWithUTF8String:config.name.c_str()]
                                                          ofType:[NSString stringWithUTF8String:config.type.c_str()]];
-        _image_manager.load(config.key, path.UTF8String);
+        _image_manager.load(config.key, path.UTF8String, config.scale);
     }
 
     NSString *fonts_config_path = [[NSBundle mainBundle] pathForResource:@"fonts-config" ofType:@"json"];
@@ -84,8 +84,7 @@ void osx_backend_t::draw()
         ctx.surface_handle = (boden::surface_handle_t)(__bridge CA::MetalDrawable *)_provider.currentDrawable;
         ctx.display_size = boden::layout::size_t{(float)_provider.displaySize.width,
                                                  (float)_provider.displaySize.height};
-        ctx.display_scale = boden::layout::vec2_t{(float)_provider.displayScale,
-                                                  (float)_provider.displayScale};
+        ctx.display_scale = _window->get_backing_scale_factor();
         ctx.batch = strong_batch;
         _renderer->render(ctx);
     });

@@ -158,7 +158,8 @@ addToLibrary({
     em_render: function(
         command_groups_addr, command_groups_count,
         indices_addr, indices_count,
-        vertices_addr, vertices_count
+        vertices_addr, vertices_count,
+        display_width, display_height
     ) {
         /*
          * struct command_group_view_t
@@ -246,9 +247,9 @@ addToLibrary({
         const projectionMatrix = mat4.create();
 
         const left = 0;
-        const right = gl.canvas.width;
+        const right = display_width;
         const bottom = 0;
-        const top = gl.canvas.height;
+        const top = display_height;
         const near = -1;
         const far = 1;
 
@@ -318,9 +319,9 @@ addToLibrary({
                 
                 switch(operation) {
                     case 0: // clear
+                        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
                         gl.clearColor(0.0, 0.0, 0.0, 0.0);
                         gl.clear(gl.COLOR_BUFFER_BIT);
-                        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
                         break;
 
                     case 1: // copy
@@ -337,17 +338,19 @@ addToLibrary({
 
                 let commands = [];
                 for(let i = 0; i < group[4]; i++) {
-                    let base_addr = (group[3] >> 2) + i * 8;
-                    let count = HEAP32[base_addr];           
-                    let index_buffer_offset = HEAP32[base_addr + 1];  
-                    let vertex_buffer_offset = HEAP32[base_addr + 2];
-                    let x = HEAPF32[base_addr + 3];
-                    let y = HEAPF32[base_addr + 4];
-                    let width = HEAPF32[base_addr + 5];
-                    let height = HEAPF32[base_addr + 6];
-                    let tid = HEAPU32[base_addr + 7]; 
+                    let base_addr = (group[3] >> 2) + i * 9;
+                    let type = HEAP32[base_addr]; 
+                    let count = HEAP32[base_addr + 1];           
+                    let index_buffer_offset = HEAP32[base_addr + 2];  
+                    let vertex_buffer_offset = HEAP32[base_addr + 3];
+                    let x = HEAPF32[base_addr + 4];
+                    let y = HEAPF32[base_addr + 5];
+                    let width = HEAPF32[base_addr + 6];
+                    let height = HEAPF32[base_addr + 7];
+                    let tid = HEAPU32[base_addr + 8]; 
 
                     commands.push([
+                        type,
                         count,
                         index_buffer_offset,
                         vertex_buffer_offset,
@@ -357,12 +360,25 @@ addToLibrary({
                 }
 
                 for(let i = 0; i < commands.length; i++) {
-                    const offset = commands[i][1];
-                    const count = commands[i][0];
-                    const clip_rect_origin = commands[i][3][0];
-                    const clip_rect_size = commands[i][3][1];
-                    const tid = commands[i][4];
-                    const type = gl.UNSIGNED_SHORT;
+                    const type =  commands[i][0];
+                    const count = commands[i][1];
+                    const offset = commands[i][2];
+                    const clip_rect_origin = commands[i][4][0];
+                    const clip_rect_size = commands[i][4][1];
+                    const tid = commands[i][5];
+
+                    let draw_type;
+                    switch(type) {
+                        case 0:
+                            draw_type = gl.TRIANGLE_STRIP;
+                            break;
+                        case 1:
+                            draw_type = gl.LINES;
+                            break;
+                        default:
+                            draw_type = gl.TRIANGLE_STRIP;
+                            break;
+                    }
 
                     gl.enable(gl.SCISSOR_TEST);
                     gl.scissor(
@@ -384,7 +400,8 @@ addToLibrary({
                         gl.bindTexture(gl.TEXTURE_2D, texture);
                         gl.uniform1i(renderInfomation.uniformLocations.texture, 0);
                     }
-                    gl.drawElements(gl.TRIANGLE_STRIP, count, type, offset*2);
+
+                    gl.drawElements(draw_type, count, gl.UNSIGNED_SHORT, offset * 2);
 
                     gl.disable(gl.SCISSOR_TEST);
                 }
@@ -400,15 +417,15 @@ addToLibrary({
             };
         }
 
-        if(gl.canvas.width !== Module.rootTextureSize.width || 
-           gl.canvas.height !== Module.rootTextureSize.height) {
+        if(display_width !== Module.rootTextureSize.width || 
+           display_height !== Module.rootTextureSize.height) {
             if(Module.rootTexture) {
                 gl.deleteTexture(Module.rootTexture);
             }
 
             Module.rootTexture = gl.createTexture();
-            Module.rootTextureSize.width = gl.canvas.width;
-            Module.rootTextureSize.height = gl.canvas.height;
+            Module.rootTextureSize.width = display_width;
+            Module.rootTextureSize.height = display_height;
 
             gl.bindTexture(gl.TEXTURE_2D, Module.rootTexture);
 
@@ -416,8 +433,8 @@ addToLibrary({
                 gl.TEXTURE_2D,
                 0,
                 gl.RGBA,
-                gl.canvas.width,
-                gl.canvas.height,
+                display_width,
+                display_height,
                 0,
                 gl.RGBA,
                 gl.UNSIGNED_BYTE,
@@ -432,6 +449,7 @@ addToLibrary({
 
         {
             console.log("# blit textures on the root texture");
+
             gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
             gl.bindFramebuffer(gl.FRAMEBUFFER, Module.sharedFramebuffer);
             gl.framebufferTexture2D(
@@ -441,6 +459,9 @@ addToLibrary({
                 Module.rootTexture,
                 0
             );
+
+            gl.clearColor(0, 0, 0, 0);
+            gl.clear(gl.COLOR_BUFFER_BIT);
 
             gl.viewport(0, 0, Module.rootTextureSize.width, Module.rootTextureSize.height);
 
@@ -519,7 +540,7 @@ addToLibrary({
         {
             console.log("# display on screen");
             gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-            gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+            gl.viewport(0, 0, display_width, display_height);
             gl.clearColor(0, 0, 0, 0);
             gl.clear(gl.COLOR_BUFFER_BIT);
 
@@ -528,10 +549,10 @@ addToLibrary({
             gl.uniform1i(renderInfomation.uniformLocations.texture, 2);
 
             const quad = new Float32Array([
-                0,                0,                
-                gl.canvas.width,  0,                
-                0,                gl.canvas.height, 
-                gl.canvas.width,  gl.canvas.height,
+                0,             0,                
+                display_width, 0,                
+                0,             display_height, 
+                display_width, display_height,
             ]);
             gl.bindBuffer(gl.ARRAY_BUFFER, Module.positionBuffer);
             gl.bufferData(gl.ARRAY_BUFFER, quad, gl.STREAM_DRAW);

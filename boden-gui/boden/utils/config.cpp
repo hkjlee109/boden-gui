@@ -39,7 +39,8 @@ std::vector<config_t::image_entry_t> config_t::parse_images_config_file(const st
             r.emplace_back(config_t::image_entry_t{std::string(id), 
                                                    std::string(entry.at("path").as_string().c_str()),
                                                    std::string(entry.at("name").as_string().c_str()),
-                                                   std::string(entry.at("type").as_string().c_str())});
+                                                   std::string(entry.at("type").as_string().c_str()),
+                                                   (uint32_t)entry.at("scale").as_int64()});
         }
     } 
     catch(const std::exception &e) 

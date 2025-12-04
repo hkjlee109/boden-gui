@@ -18,12 +18,15 @@ public:
     www_backend_t();
     ~www_backend_t();
 
-    void commit_text_input(const std::string &text);
     void key_down(uint32_t key_code, uint32_t flags_msb, uint32_t flags_lsb);
     void mouse_down(float x, float y);
     void mouse_dragged(float x, float y);
     void mouse_moved(float x, float y);
     void mouse_up(float x, float y);
+    void scroll_wheel(float dx, float dy);
+    void system_display_scale_changed(float scale);
+    void system_display_size_changed(float width, float height);
+    void system_text_input_committed(const std::string &text);
 
     void draw();
 

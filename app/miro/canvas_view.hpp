@@ -32,6 +32,7 @@ public:
     ~canvas_view_t() override;
     
     void draw_rect(boden::builder_t &builder, const boden::layout::rect_t &dirty_rect) override;
+    void make_backing_layer() override;
     void view_will_move_to_window(std::shared_ptr<boden::widget::window_t> window) override;
     void set_frame(const boden::layout::rect_t &frame) override;
 
@@ -55,8 +56,6 @@ protected:
 private:
     miro::canvas_view_delegate_t *_delegate;
     std::shared_ptr<miro::widget::layer::grid_layer_t> _grid_layer;
-
-    void create_grid_layer_texture();
 };
 
 } // miro

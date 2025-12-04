@@ -118,6 +118,14 @@ struct rect_t
     {
         return !(*this == other);
     }
+
+    constexpr rect_t operator*(float scale) const noexcept
+    {
+        return {origin.x * scale,
+                origin.y * scale,
+                size.width * scale,
+                size.height * scale};
+    }
 };
 
 } // layout

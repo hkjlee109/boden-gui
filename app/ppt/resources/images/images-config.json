@@ -3,17 +3,20 @@
     "rectangle": {
       "path": "images",
       "name": "rectangle",
-      "type": "png"
+      "type": "png",
+      "scale": 1
     },
     "textbox": {
       "path": "images",
       "name": "textbox",
-      "type": "png"
+      "type": "png",
+      "scale": 1
     },
     "gearshape": {
       "path": "images",
       "name": "gearshape",
-      "type": "png"
+      "type": "png",
+      "scale": 1
     }
   }
 }

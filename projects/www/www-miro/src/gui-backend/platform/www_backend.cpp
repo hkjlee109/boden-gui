@@ -17,7 +17,7 @@ www_backend_t::www_backend_t()
     auto images_configs = boden::utils::config_t::parse_images_config_file("./src/gui-backend/assets/images/images-config.json");
     for(auto config : images_configs)
     {
-        _image_manager.load(config.key, "./src/gui-backend/assets/images/" + config.name + "." + config.type);
+        _image_manager.load(config.key, "./src/gui-backend/assets/images/" + config.name + "." + config.type, config.scale);
     }
 
     auto fonts_configs = boden::utils::config_t::parse_fonts_config_file("./src/gui-backend/assets/fonts/fonts-config.json");
@@ -44,18 +44,6 @@ www_backend_t::www_backend_t()
 
 www_backend_t::~www_backend_t()
 {
-}
-
-void www_backend_t::commit_text_input(const std::string &text)
-{
-    boden::system_event_t system_event;
-    system_event.type = (uint32_t)boden::system_event_type_t::text_input_commit;
-    system_event.params["text"] = text;
-
-    _window->system(system_event);
-
-    display_if_needed();
-    process_system_event_if_needed();
 }
 
 void www_backend_t::key_down(uint32_t key_code, uint32_t flags_msb, uint32_t flags_lsb)
@@ -120,14 +108,65 @@ void www_backend_t::mouse_up(float x, float y)
     process_system_event_if_needed();
 }
 
+void www_backend_t::system_display_scale_changed(float scale)
+{
+    boden::system_event_t system_event;
+    system_event.type = (uint32_t)boden::system_event_type_t::backing_properties_change;
+    system_event.params["scale"] = scale;
+
+    _window->system(system_event);
+
+    display_if_needed();
+    process_system_event_if_needed();
+}
+
+void www_backend_t::system_display_size_changed(float width, float height)
+{
+    boden::system_event_t system_event;
+    system_event.type = (uint32_t)boden::system_event_type_t::frame_change;
+    system_event.params["width"] = width;
+    system_event.params["height"] = height;
+
+    _window->system(system_event);
+
+    draw();
+    process_system_event_if_needed();
+}
+
+void www_backend_t::scroll_wheel(float dx, float dy)
+{
+    boden::event_t event;
+    event.type = boden::event_type_t::scroll_wheel;
+    event.scrolling_delta_x = dx;
+    event.scrolling_delta_y = dy;
+    _window->scroll_wheel(event);
+    
+    display_if_needed();
+    process_system_event_if_needed();
+}
+
+void www_backend_t::system_text_input_committed(const std::string &text)
+{
+    boden::system_event_t system_event;
+    system_event.type = (uint32_t)boden::system_event_type_t::text_input_commit;
+    system_event.params["text"] = text;
+
+    _window->system(system_event);
+
+    display_if_needed();
+    process_system_event_if_needed();
+}
+
 void www_backend_t::draw()
 {
     _builder->reset();
-
     _window->draw(*_builder.get());
-
+        
     boden::context_t ctx;
     ctx.batch = _builder->get_batch();
+    ctx.display_scale = _window->get_backing_scale_factor();
+    ctx.display_size = _window->get_frame().size;
+    
     _renderer->render(ctx);
 }
 

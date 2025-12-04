@@ -29,6 +29,14 @@ public:
     const boden::asset::image_manager_t * get_image_manager() const;
     void set_image_manager(boden::asset::image_manager_t *_manager);
 
+    void add_grid(const boden::layout::vec2_t &p1, 
+                  const boden::layout::vec2_t &p2,
+                  const boden::layout::vec2_t &offset,
+                  const boden::layout::color_t &primary_color,
+                  const boden::layout::color_t &secondary_color,
+                  float spacing,
+                  float zoom);
+
     void add_rect(const boden::layout::vec2_t &p1, 
                   const boden::layout::vec2_t &p2,
                   const boden::layout::color_t &color, 
@@ -51,7 +59,8 @@ public:
     void add_text(const std::string &text,
                  const boden::layout::vec2_t &p1, 
                  const boden::layout::vec2_t &p2,
-                 const boden::layout::color_t &color);
+                 const boden::layout::color_t &color,
+                 float scale);
 
     void begin(boden::graphic::texture_id_t tid, 
                const boden::layout::rect_t &frame,

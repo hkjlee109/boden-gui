@@ -20,7 +20,7 @@ public:
     void mouse_entered(const boden::event_t &ev) override;
     void mouse_exited(const boden::event_t &ev) override;
 
-    void set_hover_enabled(bool enabled);
+    void set_tracking_enabled(bool enabled);
 
 protected:
     void init(const boden::layout::rect_t &frame) override;

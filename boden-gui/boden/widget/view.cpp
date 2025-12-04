@@ -55,7 +55,7 @@ void view_t::draw_rect(boden::builder_t &builder, const boden::layout::rect_t &d
     {
         return;
     }
-    
+
     auto frame_in_window = convert_rect_to_view(_bounds, nullptr);
     _layer->draw(builder, frame_in_window);
 
@@ -110,13 +110,53 @@ void view_t::did_add_subview(const boden::widget::view_t *view)
 {
 }
 
+void view_t::make_backing_layer() 
+{
+    auto window = _window.lock();
+    if(!window)
+    {
+        return;
+    }
+
+    auto tid = _layer->get_texture_id();
+    if(tid)
+    {
+        window->destroy_view_texture(tid);
+    }
+
+    auto size = _layer->get_frame().size * _layer->get_contents_scale();
+    _layer->set_texture_id(window->create_view_texture(size));
+}
+
+void view_t::view_did_change_backing_properties()
+{
+    auto window = _window.lock();
+    if(!window)
+    {
+        return;
+    }
+
+    float new_scale = window->get_backing_scale_factor();
+    if(new_scale != _layer->get_contents_scale())
+    {
+        _layer->set_contents_scale(window->get_backing_scale_factor());
+        make_backing_layer();
+    }
+
+    for(auto &view : _subviews)
+    {
+        view->view_did_change_backing_properties();
+    }
+}
+
 void view_t::view_will_move_to_window(std::shared_ptr<boden::widget::window_t> window)
 {
     assert(_layer && "Error: _layer is null.");
-    
-    _window = window;
 
-    create_layer_texture();
+    _window = window;
+    _layer->set_contents_scale(window->get_backing_scale_factor());
+
+    make_backing_layer();
 
     for(auto subview : _subviews)
     {
@@ -136,16 +176,16 @@ void view_t::set_frame(const boden::layout::rect_t &frame)
         return;
     }
 
-    bool needs_texture_recreate = (_frame.size != frame.size);
+    bool needs_backing_layer_recreate = (_frame.size != frame.size);
 
     _frame = frame;
     _bounds = {0, 0, frame.size.width, frame.size.height};
 
     _layer->set_frame(_bounds);
 
-    if(needs_texture_recreate)
+    if(needs_backing_layer_recreate)
     {
-        create_layer_texture();
+        make_backing_layer();
     }
 }
 
@@ -311,7 +351,7 @@ boden::layout::point_t view_t::convert_point_to_view(const boden::layout::point_
         return {point.x + _frame.origin.x, point.y + _frame.origin.y};
     }
 
-    if (auto superview = _superview.lock()) 
+    if(auto superview = _superview.lock()) 
     {
         return superview->convert_point_to_view({point.x + _frame.origin.x, point.y + _frame.origin.y},
                                                 to_view);
@@ -361,23 +401,6 @@ void view_t::init()
 void view_t::init(const boden::layout::rect_t &frame)
 {
     _layer = boden::widget::layer::layer_t::alloc({0, 0, frame.size.width, frame.size.height});
-}
-
-void view_t::create_layer_texture()
-{
-    auto window = _window.lock();
-    if(!window)
-    {
-        return;
-    }
-
-    auto tid = _layer->get_texture_id();
-    if(tid)
-    {
-        window->destroy_view_texture(tid);
-    }
-
-    _layer->set_texture_id(window->create_view_texture(_layer->get_frame().size));
 }
 
 } // widget

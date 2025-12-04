@@ -38,6 +38,105 @@ void builder_t::set_image_manager(boden::asset::image_manager_t *_manager)
     _image_manager = _manager;
 }
 
+void builder_t::add_grid(const boden::layout::vec2_t &p1,
+                         const boden::layout::vec2_t &p2,
+                         const boden::layout::vec2_t &offset,
+                         const boden::layout::color_t &primary_color,
+                         const boden::layout::color_t &secondary_color,
+                         float spacing,
+                         float zoom)
+{
+    uint32_t index_buffer_offset = _batch->indices.size();
+    uint32_t vertex_buffer_offset = _batch->vertices.size();
+
+    _batch->command_groups.back().commands.emplace_back(boden::draw::primitive_type_t::line,
+                                                        0, 
+                                                        index_buffer_offset, 
+                                                        vertex_buffer_offset, 
+                                                        get_clip_rect_top());
+    
+    const float major_spacing = spacing;
+    const float minor_spacing = spacing / 4;
+    const bool  minor_visible = zoom > 0.5f;
+
+    float width = p2.x - p1.x;
+    float height = p2.y - p1.y;
+
+    float world_x_min = offset.x;
+    float world_y_min = offset.y;
+
+    float world_x_max = offset.x + width / zoom;
+    float world_y_max = offset.y + height / zoom;
+
+    auto world_to_screen = [&](float wx, float wy) -> boden::layout::vec2_t
+    {
+        return 
+        {
+            p1.x + (wx - offset.x) * zoom,
+            p1.y + (wy - offset.y) * zoom
+        };
+    };
+
+    auto draw_line = [&](const boden::layout::vec2_t &a,
+                         const boden::layout::vec2_t &b,
+                         const boden::layout::color_t &color)
+    {
+        uint32_t index = _batch->vertices.size();
+        _batch->vertices.emplace_back(a, boden::layout::vec2_t{0, 0}, color);
+        _batch->vertices.emplace_back(b, boden::layout::vec2_t{0, 0}, color);
+
+        _batch->indices.push_back(index);
+        _batch->indices.push_back(index + 1);
+    };
+
+    auto draw_verticals = [&](float spacing, const boden::layout::color_t &color)
+    {
+        float x0 = floor(world_x_min / spacing) * spacing;
+
+        for(float x = x0; x <= world_x_max; x += spacing)
+        {
+            auto from = world_to_screen(x, world_y_min);
+            auto to = world_to_screen(x, world_y_max);
+
+            if(from.x < p1.x || from.x > p2.x)
+            {
+                continue;
+            }
+
+            draw_line(from, to, color);
+        }
+    };
+
+    auto draw_horizontals = [&](float spacing, const boden::layout::color_t &color)
+    {
+        float y0 = floor(world_y_min / spacing) * spacing;
+
+        for(float y = y0; y <= world_y_max; y += spacing)
+        {
+            auto from = world_to_screen(world_x_min, y);
+            auto to = world_to_screen(world_x_max, y);
+
+            if(from.y < p1.y || from.y > p2.y)
+            {
+                continue;
+            }
+
+            draw_line(from, to, color);
+        }
+    };
+
+    if(minor_visible)
+    {
+        draw_verticals(minor_spacing, secondary_color);
+        draw_horizontals(minor_spacing, secondary_color);
+    }
+
+    draw_verticals(major_spacing, primary_color);
+    draw_horizontals(major_spacing, primary_color);
+
+    _batch->command_groups.back().commands.back().count = _batch->indices.size() - index_buffer_offset;
+}
+
 void builder_t::add_rect(const boden::layout::vec2_t &_p1,
                          const boden::layout::vec2_t &_p2,
                          const boden::layout::color_t &color,
@@ -68,7 +167,12 @@ void builder_t::add_rect_filled(const boden::layout::vec2_t &p1,
 {
     uint32_t index_buffer_offset = _batch->indices.size();
     uint32_t vertex_buffer_offset = _batch->vertices.size();
-    _batch->command_groups.back().commands.emplace_back(0, index_buffer_offset, vertex_buffer_offset, get_clip_rect_top());
+
+    _batch->command_groups.back().commands.emplace_back(boden::draw::primitive_type_t::triangle_strip,
+                                                        0, 
+                                                        index_buffer_offset, 
+                                                        vertex_buffer_offset, 
+                                                        get_clip_rect_top());
 
     float r = std::min(corner_radius, std::min(p2.x - p1.x, p2.y - p1.y) * 0.5f);
 
@@ -96,7 +200,12 @@ void builder_t::add_rect_filled(const boden::layout::vec2_t &p1,
         add_rect_filled(bottom_left, {bottom_right.x, bottom_right.y + r}, color);
         add_rect_filled({top_left.x - r, top_left.y}, bottom_left, color);
 
-        _batch->command_groups.back().commands.emplace_back(0, index_buffer_offset, vertex_buffer_offset, get_clip_rect_top());
+        _batch->command_groups.back().commands.emplace_back(boden::draw::primitive_type_t::triangle_strip,
+                                                            0, 
+                                                            index_buffer_offset, 
+                                                            vertex_buffer_offset, 
+                                                            get_clip_rect_top());
+
         uint32_t index_buffer_offset = _batch->indices.size();
         uint32_t number_of_steps = 4;
         const float step = (0.5f * M_PI) / number_of_steps;
@@ -143,7 +252,12 @@ void builder_t::add_polyline(const std::vector<boden::layout::vec2_t> &path,
 
     uint32_t index_buffer_offset = _batch->indices.size();
     uint32_t vertex_buffer_offset = _batch->vertices.size();
-    _batch->command_groups.back().commands.emplace_back(0, index_buffer_offset, vertex_buffer_offset, get_clip_rect_top());
+
+    _batch->command_groups.back().commands.emplace_back(boden::draw::primitive_type_t::triangle_strip,
+                                                        0, 
+                                                        index_buffer_offset, 
+                                                        vertex_buffer_offset, 
+                                                        get_clip_rect_top());
 
     for (int i1 = 0; i1 < count; i1++)
     {
@@ -192,7 +306,13 @@ void builder_t::add_image(const std::string &key,
 
     uint32_t index_buffer_offset = _batch->indices.size();
     uint32_t vertex_buffer_offset = _batch->vertices.size();
-    _batch->command_groups.back().commands.emplace_back(0, index_buffer_offset, vertex_buffer_offset, get_clip_rect_top(), tid);
+
+    _batch->command_groups.back().commands.emplace_back(boden::draw::primitive_type_t::triangle_strip,
+                                                        0, 
+                                                        index_buffer_offset, 
+                                                        vertex_buffer_offset, 
+                                                        get_clip_rect_top(), 
+                                                        tid);
 
     _batch->vertices.emplace_back(boden::layout::vec2_t{p1.x, p1.y},
                                   boden::layout::vec2_t{0, 0},
@@ -218,7 +338,8 @@ void builder_t::add_image(const std::string &key,
 void builder_t::add_text(const std::string &text,
                          const boden::layout::vec2_t &p1, 
                          const boden::layout::vec2_t &p2,
-                         const boden::layout::color_t &color)
+                         const boden::layout::color_t &color,
+                         float scale)
 {
     assert(_font_manager && "Error: _font_manager is null.");
 
@@ -236,16 +357,17 @@ void builder_t::add_text(const std::string &text,
     {
         uint32_t index_buffer_offset = _batch->indices.size();
         uint32_t vertex_buffer_offset = _batch->vertices.size();
-        _batch->command_groups.back().commands.emplace_back(0, 
+        _batch->command_groups.back().commands.emplace_back(boden::draw::primitive_type_t::triangle_strip,
+                                                            0,
                                                             index_buffer_offset, 
                                                             vertex_buffer_offset, 
                                                             get_clip_rect_top(), 
                                                             info.texture.tid);
         
-        float glyph_x = pen_x + info.x_offset + info.texture.rect.origin.x;
-        float glyph_y = p1.y + info.y_offset + font_metrics.ascender - info.texture.rect.origin.y;
-        float glyph_width = info.texture.rect.size.width;
-        float glyph_height = info.texture.rect.size.height;
+        float glyph_x = (pen_x + info.x_offset + info.texture.rect.origin.x) * scale;
+        float glyph_y = (p1.y + info.y_offset + font_metrics.ascender - info.texture.rect.origin.y) * scale;
+        float glyph_width = (info.texture.rect.size.width) * scale;
+        float glyph_height = (info.texture.rect.size.height) * scale;
 
         _batch->vertices.emplace_back(boden::layout::vec2_t{glyph_x, glyph_y},
                                       info.texture.uv_min,

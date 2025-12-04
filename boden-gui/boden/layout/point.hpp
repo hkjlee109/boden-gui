@@ -23,6 +23,11 @@ struct point_t
     {
         return !(*this == other);
     }
+
+    constexpr point_t operator*(float scale) const noexcept
+    {
+        return point_t(x * scale, y * scale);
+    }
 };
 
 } // layout

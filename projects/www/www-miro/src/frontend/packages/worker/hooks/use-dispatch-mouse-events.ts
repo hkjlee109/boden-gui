@@ -62,9 +62,23 @@ export function useDispatchMouseEvents(workerRef: React.RefObject<Worker | null>
         }
     }, []);
 
+    const dispatchScrollWheel = useCallback((e: WheelEvent) => {
+        const worker = workerRef.current;
+        if(!worker) return;
+
+        e.preventDefault(); 
+
+        worker.postMessage({
+            type: 'scroll_wheel',
+            arg1: -e.deltaX,
+            arg2: -e.deltaY
+        });
+    }, []);
+
     return {
         dispatchMouseDown,
         dispatchMouseMove,
         dispatchMouseUp,
+        dispatchScrollWheel
     };
 }

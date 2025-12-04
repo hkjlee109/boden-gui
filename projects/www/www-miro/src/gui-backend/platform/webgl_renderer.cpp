@@ -18,7 +18,7 @@ struct command_group_view_t {
     boden::graphic::texture_id_t tid;
     boden::layout::rect_t frame;
     boden::graphic::compositing_operation_t operation;
-    const boden::draw::command_t* commands;
+    const boden::draw::command_t *commands;
     size_t command_count;
 };
 
@@ -33,7 +33,9 @@ extern void em_render(const command_group_view_t *command_groups,
                       const boden::draw::index_t *indices,
                       uint32_t indices_count,
                       const boden::draw::vertex_t *vertices,
-                      uint32_t vertices_count);
+                      uint32_t vertices_count,
+                      float display_width,
+                      float display_height);
 
 EMSCRIPTEN_KEEPALIVE
 __attribute__((export_name("getGpuTextureId")))
@@ -75,7 +77,9 @@ void webgl_renderer_t::render(boden::context_t &ctx)
               ctx.batch->indices.data(),
               ctx.batch->indices.size(),
               ctx.batch->vertices.data(),
-              ctx.batch->vertices.size());
+              ctx.batch->vertices.size(),
+              ctx.display_size.width * ctx.display_scale,
+              ctx.display_size.height * ctx.display_scale);
 
     if(texture_manager)
     {

@@ -16,6 +16,9 @@ namespace widget {
 class view_t;
 class view_controller_t;
 
+using view_ref_t = std::shared_ptr<view_t>; 
+using view_controller_ref_t = std::shared_ptr<view_controller_t>; 
+
 class window_t : public boden::widget::base::responder_t,
                  public std::enable_shared_from_this<boden::widget::window_t>
 {
@@ -36,10 +39,15 @@ public:
     void scroll_wheel(const boden::event_t &system_event) override;
 
     void set_backend(boden::backend_t *backend);
-    void set_content_view(std::shared_ptr<boden::widget::view_t> view);
-    void set_content_view_controller(std::shared_ptr<boden::widget::view_controller_t> ctrl);
+    void set_content_view(boden::widget::view_ref_t view);
+    void set_content_view_controller(boden::widget::view_controller_ref_t ctrl);
+    
+    const boden::layout::rect_t & get_frame() const;
+    void set_frame(const boden::layout::rect_t &frame);
+    
     void set_needs_display(bool needs);
     void set_texture_manager(boden::graphic::texture_manager_t *texture_manager);
+    float get_backing_scale_factor() const; 
 
     boden::graphic::texture_id_t create_view_texture(const boden::layout::size_t &size);
     void destroy_view_texture(boden::graphic::texture_id_t tid);
@@ -50,13 +58,16 @@ public:
     bool make_first_responder(std::shared_ptr<boden::widget::base::responder_t> responder);
 
 protected:
-    std::shared_ptr<boden::widget::view_t> _content_view;
-    std::shared_ptr<boden::widget::view_controller_t> _content_view_controller;
+    boden::layout::rect_t _frame;
+    boden::widget::view_ref_t _content_view;
+    boden::widget::view_controller_ref_t _content_view_controller;
     std::shared_ptr<boden::widget::base::responder_t> _first_responder;
 
     boden::backend_t *_backend;
     boden::graphic::texture_manager_t *_texture_manager;
     boden::tracking_area_manager_t _tracking_area_manager;
+
+    float _backing_scale_factor;
 };
 
 } // widget

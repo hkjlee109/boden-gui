@@ -13,7 +13,7 @@ struct context_t
 {
     surface_handle_t surface_handle;
     boden::layout::size_t display_size;
-    boden::layout::vec2_t display_scale;
+    float display_scale;
     
     std::shared_ptr<boden::batch_t> batch;
 };

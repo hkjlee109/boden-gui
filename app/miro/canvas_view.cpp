@@ -38,10 +38,29 @@ void canvas_view_t::draw_rect(boden::builder_t &builder, const boden::layout::re
     _grid_layer->draw(builder, frame_in_window);
 }
 
+void canvas_view_t::make_backing_layer()
+{
+    boden::widget::scroll_view_t::make_backing_layer();
+    auto window = _window.lock();
+    if(!window)
+    {
+        return;
+    }
+
+    auto tid = _grid_layer->get_texture_id();
+    if(tid)
+    {
+        window->destroy_view_texture(tid);
+    }
+
+    auto size = _grid_layer->get_frame().size * _grid_layer->get_contents_scale();
+    _grid_layer->set_texture_id(window->create_view_texture(size));
+}
+
 void canvas_view_t::view_will_move_to_window(std::shared_ptr<boden::widget::window_t> window)
 {
     boden::widget::view_t::view_will_move_to_window(window);
-    create_grid_layer_texture();
+    make_backing_layer();
 }
 
 void canvas_view_t::set_frame(const boden::layout::rect_t &frame)
@@ -54,7 +73,7 @@ void canvas_view_t::set_frame(const boden::layout::rect_t &frame)
     }
 
     _grid_layer->set_frame({0, 0, frame.size.width, frame.size.height});    
-    create_grid_layer_texture();
+    make_backing_layer();
 }
 
 bool canvas_view_t::accepts_first_responder()
@@ -163,23 +182,6 @@ void canvas_view_t::init(const boden::layout::rect_t &frame)
 
     _grid_layer = miro::widget::layer::grid_layer_t::alloc({0, 0, frame.size.width, frame.size.height});
     _layer->add_layer(_grid_layer);
-}
-
-void canvas_view_t::create_grid_layer_texture()
-{
-    auto window = _window.lock();
-    if(!window)
-    {
-        return;
-    }
-
-    auto tid = _grid_layer->get_texture_id();
-    if(tid)
-    {
-        window->destroy_view_texture(tid);
-    }
-
-    _grid_layer->set_texture_id(window->create_view_texture(_grid_layer->get_frame().size));
 }
 
 } // miro

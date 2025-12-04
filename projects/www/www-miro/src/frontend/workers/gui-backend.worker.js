@@ -3,12 +3,22 @@ import Module from './gui-backend.js';
 
 let instance = null;
 let backend = null;
+let canvas = null;
+
+let display_width = 0;
+let display_height = 0;
+let display_scale = 1;
 
 self.onmessage = async (event) => {
-    const { type, arg1, arg2 } = event.data;
+    const { type, arg1, arg2, arg3, arg4 } = event.data;
 
     switch (type) {
     case 'init':
+        canvas = arg1;
+        display_scale = arg2;
+        display_width = arg3;
+        display_height = arg4;
+
         instance = await Module({
           locateFile: (filename) => {
             if (filename.endsWith('.wasm') || filename.endsWith('.data')) {
@@ -19,7 +29,7 @@ self.onmessage = async (event) => {
         });
 
         instance.worker = self;
-        instance.context = arg1.getContext('webgl');
+        instance.context = canvas.getContext('webgl');
         instance.mat4 = mat4
     
         if(instance.context === null) {
@@ -27,8 +37,13 @@ self.onmessage = async (event) => {
            return;
         }
 
-        backend = new instance.www_backend_t();
+        canvas.width = display_width * display_scale;
+        canvas.height = display_height * display_scale;
 
+        backend = new instance.www_backend_t();
+        backend.systemDisplayScaleChanged(display_scale);
+        backend.systemDisplaySizeChanged(display_width, display_height);
+        
         console.log('[Worker] Init done.');
 
         backend.draw();
@@ -54,8 +69,30 @@ self.onmessage = async (event) => {
         backend.keyDown(arg1, 0, 0);
         break;
 
-    case 'system_text_input_commit': 
-        backend.commitTextInput(arg1);
+    case 'scroll_wheel': 
+        backend.scrollWheel(arg1, arg2);
+        break;
+
+    case 'system_display_scale_changed': 
+        if(!backend) break;
+        display_scale = arg1;
+        canvas.width = display_width * display_scale;
+        canvas.height = display_height * display_scale;
+        backend.systemDisplayScaleChanged(arg1);
+        break;
+        
+    case 'system_display_size_changed': 
+        if(!backend) break;
+        display_width = arg1;
+        display_height = arg2;
+        canvas.width = display_width * display_scale;
+        canvas.height = display_height * display_scale;
+
+        backend.systemDisplaySizeChanged(arg1, arg2);
+        break;
+    
+    case 'system_text_input_committed': 
+        backend.systemTextInputCommitted(arg1);
         break;
     }
 };

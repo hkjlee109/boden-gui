@@ -4,7 +4,7 @@
 #include <boden/widget/view_controller.hpp>
 #include <memory>
 #include <miro/tool_type.hpp>
-#include <miro/widget/hover_button.hpp>
+#include <miro/widget/tool_button.hpp>
 
 namespace miro {
 
@@ -30,12 +30,15 @@ public:
     
     void set_toolbox_delegate(miro::toolbox_delegate_t *delegate);
     
-    void on_selector_click(void *sender);
+    void on_tool_button_click(void *sender);
     
 private:
     miro::toolbox_delegate_t *_toolbox_delegate;
     
-    std::shared_ptr<miro::widget::hover_button_t> _selector;
+    std::shared_ptr<miro::widget::tool_button_t> _pen;
+    std::shared_ptr<miro::widget::tool_button_t> _selector;
+    std::shared_ptr<miro::widget::tool_button_t> _sticky;
+    std::shared_ptr<miro::widget::tool_button_t> _text;
     
     void init();
 };
