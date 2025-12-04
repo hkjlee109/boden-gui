@@ -62,7 +62,7 @@ void toolbox_view_controller_t::view_did_load()
     _selector = miro::widget::tool_button_t::alloc({4, 4, 40, 40});
     _selector->get_layer()->set_background_color(miro::theme::color::background);
     _selector->set_image(std::make_unique<boden::widget::base::image_t>("selector"));
-    _selector->set_image_edge_insets(boden::layout::edge_insets_t(10, 10, 10, 10));
+    _selector->set_image_edge_insets(boden::layout::edge_insets_t(8, 8, 8, 8));
     _selector->set_image_scaling(boden::widget::base::image_scaling_t::proportionally_down);
     _selector->set_content_tint_color({0x00, 0x00, 0x00, 0xFF});
     _selector->set_tracking_enabled(true);
@@ -75,7 +75,7 @@ void toolbox_view_controller_t::view_did_load()
     _sticky = miro::widget::tool_button_t::alloc({4, 48, 40, 40});
     _sticky->get_layer()->set_background_color(miro::theme::color::background);
     _sticky->set_image(std::make_unique<boden::widget::base::image_t>("sticky"));
-    _sticky->set_image_edge_insets(boden::layout::edge_insets_t(10, 10, 10, 10));
+    _sticky->set_image_edge_insets(boden::layout::edge_insets_t(8, 8, 8, 8));
     _sticky->set_image_scaling(boden::widget::base::image_scaling_t::proportionally_down);
     _sticky->set_content_tint_color({0x00, 0x00, 0x00, 0xFF});
     _sticky->set_tracking_enabled(true);
@@ -88,7 +88,7 @@ void toolbox_view_controller_t::view_did_load()
     _text = miro::widget::tool_button_t::alloc({4, 92, 40, 40});
     _text->get_layer()->set_background_color(miro::theme::color::background);
     _text->set_image(std::make_unique<boden::widget::base::image_t>("fonts"));
-    _text->set_image_edge_insets(boden::layout::edge_insets_t(8, 8, 8, 8));
+    _text->set_image_edge_insets(boden::layout::edge_insets_t(10, 10, 10, 10));
     _text->set_image_scaling(boden::widget::base::image_scaling_t::proportionally_down);
     _text->set_content_tint_color({0x00, 0x00, 0x00, 0xFF});
     _text->set_tracking_enabled(true);
@@ -101,7 +101,7 @@ void toolbox_view_controller_t::view_did_load()
     _pen = miro::widget::tool_button_t::alloc({4, 136, 40, 40});
     _pen->get_layer()->set_background_color(miro::theme::color::background);
     _pen->set_image(std::make_unique<boden::widget::base::image_t>("pencil"));
-    _pen->set_image_edge_insets(boden::layout::edge_insets_t(10, 10, 10, 10));
+    _pen->set_image_edge_insets(boden::layout::edge_insets_t(8, 8, 8, 8));
     _pen->set_image_scaling(boden::widget::base::image_scaling_t::proportionally_down);
     _pen->set_content_tint_color({0x00, 0x00, 0x00, 0xFF});
     _pen->set_tracking_enabled(true);
