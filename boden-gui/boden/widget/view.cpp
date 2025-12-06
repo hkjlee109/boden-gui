@@ -187,6 +187,8 @@ void view_t::set_frame(const boden::layout::rect_t &frame)
     {
         make_backing_layer();
     }
+
+    _needs_layout = true;
 }
 
 const boden::layout::rect_t & view_t::get_bounds() const
@@ -370,10 +372,44 @@ boden::layout::rect_t view_t::convert_rect_to_view(const boden::layout::rect_t &
     };
 }
 
+void view_t::layout()
+{
+    auto superview = _superview.lock();
+    if(!superview)
+    {
+        return;
+    }
+
+    auto superview_frame = superview->get_frame();
+
+}
+
 void view_t::layout_if_needed()
 {
-    if(_needs_layout)
+    if(!_needs_layout)
     {
+        return;
+    }
+
+    _needs_layout = false;
+    layout_subtree_if_needed();
+}
+
+void view_t::layout_subtree_if_needed()
+{
+    printf("####\n");
+    layout();
+
+    if(!_needs_layout)
+    {
+        return;
+    }
+    
+    _needs_layout = false;
+
+    for(auto subview : _subviews)
+    {
+        subview->layout_subtree_if_needed();
     }
 }
 
@@ -383,6 +419,11 @@ void view_t::layout_subviews()
     {
         subview->layout_subviews();
     }
+}
+
+void view_t::update_constraints()
+{
+
 }
 
 void view_t::enqueue_system_event(const boden::system_event_t &event)

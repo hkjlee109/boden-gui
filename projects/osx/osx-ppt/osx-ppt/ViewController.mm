@@ -109,6 +109,16 @@
 
 - (void)mtkView:(nonnull MTKView *)view drawableSizeWillChange:(CGSize)size {
     NSLog(@"# mtkView drawableSizeWillChange");
+
+    boden::system_event_t system_event;
+    system_event.type = (uint32_t)boden::system_event_type_t::frame_change;
+    system_event.params["width"] = static_cast<float>(self.displaySize.width);
+    system_event.params["height"] = static_cast<float>(self.displaySize.height);
+    
+    boden::event_t event;
+    event.type = boden::event_type_t::system;
+    event.params["system_event"] = system_event;
+    _queue->push(event);
 }
 
 #pragma mark NSWindowDelegate

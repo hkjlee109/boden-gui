@@ -81,8 +81,12 @@ public:
     boden::layout::rect_t convert_rect_to_view(const boden::layout::rect_t &rect,
                                                const boden::widget::view_t *to_view) const;
 
+    void layout();
     void layout_if_needed();
+    void layout_subtree_if_needed();
     void layout_subviews();
+
+    void update_constraints();
                                      
     void enqueue_system_event(const boden::system_event_t &event);
 

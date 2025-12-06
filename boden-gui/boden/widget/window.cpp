@@ -122,7 +122,15 @@ const boden::layout::rect_t & window_t::get_frame() const
 
 void window_t::set_frame(const boden::layout::rect_t &frame)
 {
+    if(_frame == frame)
+    {
+        return;
+    }
+
     _frame = frame;
+
+    _content_view->set_needs_layout(true);
+    _content_view->layout_if_needed();
 }
 
 void window_t::set_needs_display(bool needs)
