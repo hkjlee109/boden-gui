@@ -1,5 +1,6 @@
 #include "view.hpp"
 
+#include <boden/widget/layout/layout_x_axis_anchor.hpp>
 #include <cassert>
 
 namespace boden {
@@ -290,6 +291,11 @@ void view_t::set_tag(uint32_t tag)
     _tag = tag;
 }
 
+boden::widget::layout::layout_x_axis_anchor_ref_t view_t::get_leading_anchor() const
+{
+    return _leading_anchor;
+}
+
 const std::vector<std::shared_ptr<boden::widget::base::tracking_area_t>> & view_t::get_tracking_areas() const 
 {
     return _tracking_areas;
@@ -397,7 +403,6 @@ void view_t::layout_if_needed()
 
 void view_t::layout_subtree_if_needed()
 {
-    printf("####\n");
     layout();
 
     if(!_needs_layout)
@@ -442,6 +447,7 @@ void view_t::init()
 void view_t::init(const boden::layout::rect_t &frame)
 {
     _layer = boden::widget::layer::layer_t::alloc({0, 0, frame.size.width, frame.size.height});
+    _leading_anchor = boden::widget::layout::layout_x_axis_anchor_t::alloc();
 }
 
 } // widget

@@ -1,5 +1,6 @@
 #include "main_view_controller.hpp"
 
+#include <boden/widget/layout/layout_x_axis_anchor.hpp>
 #include <miro/theme/color.hpp>
 
 namespace miro {
@@ -34,6 +35,14 @@ void main_view_controller_t::load_view()
     _zoom_ctrl->set_zoom_delegate(this);
     _view->add_subview(_zoom_ctrl->get_view());
     add_child_view_controller(_zoom_ctrl);
+}
+
+void main_view_controller_t::view_did_load()
+{
+    _canvas_ctrl
+        ->get_view()
+        ->get_leading_anchor()
+        ->constraint_equal_to_anchor(_view->get_leading_anchor());
 }
 
 void main_view_controller_t::did_tool_select(boden::widget::view_controller_ref_t sender,

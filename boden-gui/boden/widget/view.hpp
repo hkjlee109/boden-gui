@@ -12,6 +12,11 @@ namespace boden::widget::base {
 class tracking_area_t;
 } // boden::widget::base 
 
+namespace boden::widget::layout {
+class layout_x_axis_anchor_t;
+using layout_x_axis_anchor_ref_t = std::shared_ptr<boden::widget::layout::layout_x_axis_anchor_t>;
+} // boden::widget::layout 
+
 namespace boden {
 namespace widget {
 
@@ -67,6 +72,8 @@ public:
     uint32_t get_tag() const;
     void set_tag(uint32_t tag);
 
+    boden::widget::layout::layout_x_axis_anchor_ref_t get_leading_anchor() const;
+
     const std::vector<std::shared_ptr<boden::widget::base::tracking_area_t>> & get_tracking_areas() const;
 
     void add_subview(boden::widget::view_ref_t view);
@@ -104,6 +111,8 @@ protected:
     std::weak_ptr<boden::widget::window_t> _window;
 
     std::shared_ptr<boden::widget::layer::layer_t> _layer;
+
+    boden::widget::layout::layout_x_axis_anchor_ref_t _leading_anchor;
     
     std::vector<std::shared_ptr<boden::widget::base::tracking_area_t>> _tracking_areas;
 

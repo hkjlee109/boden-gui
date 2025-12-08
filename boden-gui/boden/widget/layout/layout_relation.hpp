@@ -4,7 +4,7 @@
 
 namespace boden {
 namespace widget {
-namespace base {
+namespace layout {
 
 enum class layout_relation_t : int32_t 
 {
@@ -13,6 +13,6 @@ enum class layout_relation_t : int32_t
     greater_or_equal = 1
 };
 
-} // base
+} // layout
 } // widget
 } // boden

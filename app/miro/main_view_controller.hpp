@@ -20,6 +20,7 @@ public:
     ~main_view_controller_t();
     
     void load_view() override;
+    void view_did_load() override;
     
     void did_tool_select(boden::widget::view_controller_ref_t sender,
                          miro::tool_type_t type) override;

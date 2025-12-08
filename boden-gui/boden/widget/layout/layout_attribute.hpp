@@ -4,7 +4,7 @@
 
 namespace boden {
 namespace widget {
-namespace base {
+namespace layout {
 
 enum class layout_attribute_t : int32_t 
 {
@@ -21,6 +21,6 @@ enum class layout_attribute_t : int32_t
     center_y
 };
 
-} // base
+} // layout
 } // widget
 } // boden
