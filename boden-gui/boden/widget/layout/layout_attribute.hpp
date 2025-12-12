@@ -8,7 +8,6 @@ namespace layout {
 
 enum class layout_attribute_t : int32_t 
 {
-    none = 0,
     left,
     right,
     top,

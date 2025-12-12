@@ -130,7 +130,6 @@ void window_t::set_frame(const boden::layout::rect_t &frame)
     _frame = frame;
 
     _content_view->set_frame(frame);
-    _content_view->set_needs_layout(true);
     _content_view->layout_if_needed();
 }
 

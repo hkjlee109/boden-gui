@@ -42,7 +42,8 @@ void main_view_controller_t::view_did_load()
     _canvas_ctrl
         ->get_view()
         ->get_leading_anchor()
-        ->constraint_equal_to_anchor(_view->get_leading_anchor());
+        ->constraint_equal_to_anchor(_view->get_leading_anchor())
+        ->set_active(true);
 }
 
 void main_view_controller_t::did_tool_select(boden::widget::view_controller_ref_t sender,

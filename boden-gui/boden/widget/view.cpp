@@ -1,6 +1,7 @@
 #include "view.hpp"
 
 #include <boden/widget/layout/layout_x_axis_anchor.hpp>
+#include <boden/utils/memory.hpp>
 #include <cassert>
 
 namespace boden {
@@ -207,7 +208,7 @@ const std::vector<boden::widget::view_ref_t> & view_t::get_subviews() const
     return _subviews;
 }
 
-std::shared_ptr<const boden::widget::view_t> view_t::get_superview() const 
+boden::widget::view_ref_t view_t::get_superview() const 
 {
     return _superview.lock();
 }
@@ -335,6 +336,16 @@ void view_t::remove_from_superview()
     }
 }
 
+void view_t::add_constraint(boden::widget::layout::layout_constraint_ref_t constraint)
+{
+    _constraints.insert(constraint);
+}
+
+void view_t::remove_constraint(boden::widget::layout::layout_constraint_ref_t constraint)
+{
+    _constraints.erase(constraint);
+}
+
 void view_t::add_tracking_area(std::shared_ptr<boden::widget::base::tracking_area_t> area)
 {
     if(std::find(_tracking_areas.begin(), _tracking_areas.end(), area) == _tracking_areas.end()) 
@@ -380,14 +391,21 @@ boden::layout::rect_t view_t::convert_rect_to_view(const boden::layout::rect_t &
 
 void view_t::layout()
 {
-    auto superview = _superview.lock();
-    if(!superview)
+    std::unordered_map<boden::widget::view_ref_t,
+                       boden::layout::rect_t,
+                       boden::utils::shared_ptr_hash,
+                       boden::utils::shared_ptr_equal> map;
+
+    for(const auto& constraint : _constraints) 
     {
-        return;
+        auto first_frame = constraint->get_first_item()->get_frame();
+        auto second_view = constraint->get_second_item();
+
+        if(second_view) 
+        {
+            map[second_view] = boden::layout::rect_t{};
+        }
     }
-
-    auto superview_frame = superview->get_frame();
-
 }
 
 void view_t::layout_if_needed()
@@ -396,21 +414,20 @@ void view_t::layout_if_needed()
     {
         return;
     }
-
     _needs_layout = false;
-    layout_subtree_if_needed();
+
+    layout();
 }
 
 void view_t::layout_subtree_if_needed()
 {
-    layout();
-
     if(!_needs_layout)
     {
         return;
     }
-    
     _needs_layout = false;
+    
+    layout();
 
     for(auto subview : _subviews)
     {
@@ -442,12 +459,15 @@ void view_t::enqueue_system_event(const boden::system_event_t &event)
 void view_t::init()
 {
     _layer = boden::widget::layer::layer_t::alloc();
+    _leading_anchor = boden::widget::layout::layout_x_axis_anchor_t::alloc(shared_from_this(), 
+                                                                           boden::widget::layout::layout_attribute_t::leading);
 }
 
 void view_t::init(const boden::layout::rect_t &frame)
 {
     _layer = boden::widget::layer::layer_t::alloc({0, 0, frame.size.width, frame.size.height});
-    _leading_anchor = boden::widget::layout::layout_x_axis_anchor_t::alloc();
+    _leading_anchor = boden::widget::layout::layout_x_axis_anchor_t::alloc(shared_from_this(), 
+                                                                           boden::widget::layout::layout_attribute_t::leading);
 }
 
 } // widget

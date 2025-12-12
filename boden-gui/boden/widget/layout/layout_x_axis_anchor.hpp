@@ -14,16 +14,15 @@ using layout_x_axis_anchor_ref_t = std::shared_ptr<boden::widget::layout::layout
 class layout_x_axis_anchor_t : public layout_anchor_t<layout_x_axis_anchor_t>
 {
 public:
-    static layout_x_axis_anchor_ref_t alloc();
+    static layout_x_axis_anchor_ref_t alloc(boden::widget::view_ref_t view, boden::widget::layout::layout_attribute_t attr);
     
-    layout_x_axis_anchor_t();
+    layout_x_axis_anchor_t(boden::widget::view_ref_t view, boden::widget::layout::layout_attribute_t attr);
     virtual ~layout_x_axis_anchor_t();
 
 protected:
     void init() override;
 
 private:
-
 };
 
 } // layout

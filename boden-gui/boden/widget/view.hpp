@@ -6,6 +6,7 @@
 #include <boden/widget/window.hpp>
 #include <boden/layout/rect.hpp>
 #include <boden/system_event.hpp>
+#include <unordered_set>
 #include <vector>
 
 namespace boden::widget::base {
@@ -13,7 +14,9 @@ class tracking_area_t;
 } // boden::widget::base 
 
 namespace boden::widget::layout {
+class layout_constraint_t;
 class layout_x_axis_anchor_t;
+using layout_constraint_ref_t = std::shared_ptr<boden::widget::layout::layout_constraint_t>;
 using layout_x_axis_anchor_ref_t = std::shared_ptr<boden::widget::layout::layout_x_axis_anchor_t>;
 } // boden::widget::layout 
 
@@ -21,6 +24,7 @@ namespace boden {
 namespace widget {
 
 using view_ref_t = std::shared_ptr<boden::widget::view_t>;
+using view_wref_t = std::weak_ptr<boden::widget::view_t>;
 
 class view_t : public boden::widget::base::responder_t, 
                public std::enable_shared_from_this<boden::widget::view_t>
@@ -55,7 +59,7 @@ public:
 
     const std::vector<boden::widget::view_ref_t> & get_subviews() const;
 
-    std::shared_ptr<const boden::widget::view_t> get_superview() const;
+    boden::widget::view_ref_t get_superview() const;
     void set_superview(boden::widget::view_ref_t view);
 
     std::shared_ptr<const boden::widget::view_t> get_view_with_tag(uint32_t tag) const;
@@ -80,6 +84,9 @@ public:
     void remove_subview(boden::widget::view_ref_t view);
     void remove_from_superview();
     
+    void add_constraint(boden::widget::layout::layout_constraint_ref_t constraint);
+    void remove_constraint(boden::widget::layout::layout_constraint_ref_t constraint);
+
     void add_tracking_area(std::shared_ptr<boden::widget::base::tracking_area_t> area);
     void remove_tracking_area(std::shared_ptr<boden::widget::base::tracking_area_t> area);
 
@@ -114,6 +121,8 @@ protected:
 
     boden::widget::layout::layout_x_axis_anchor_ref_t _leading_anchor;
     
+    std::unordered_set<boden::widget::layout::layout_constraint_ref_t> _constraints;
+
     std::vector<std::shared_ptr<boden::widget::base::tracking_area_t>> _tracking_areas;
 
     virtual void init();
