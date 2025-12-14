@@ -130,7 +130,7 @@ void window_t::set_frame(const boden::layout::rect_t &frame)
     _frame = frame;
 
     _content_view->set_frame(frame);
-    _content_view->layout_if_needed();
+    _content_view->layout_subtree_if_needed();
 }
 
 void window_t::set_needs_display(bool needs)
