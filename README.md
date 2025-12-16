@@ -4,10 +4,15 @@ Cross platform retained-mode GUI framework.
 [Click to watch the video:](https://www.youtube.com/watch?v=vQg3jZ5Dae8)
 [![Watch the video](https://img.youtube.com/vi/vQg3jZ5Dae8/maxresdefault.jpg)](https://www.youtube.com/watch?v=vQg3jZ5Dae8)
 
-- [Design Overview](#design-overview)
-    - [Goals](#goals)
-    - [Core Components](#core-components)
+[Click to watch the video:](https://www.youtube.com/watch?v=2Slia4A-cnk)
+[![Watch the video](https://img.youtube.com/vi/2Slia4A-cnk/maxresdefault.jpg)](https://www.youtube.com/watch?v=2Slia4A-cnk)
 
+- [Design Overview](#design-overview)
+    - [Core Components](#core-components)
+- [Supported Platforms](#supported-platforms)
+- [Build](#build)
+    - [Build OSX Project](#build-osx-project)
+    - [Build WWW Project](#build-www-project)
 
 ## Design Overview
 
@@ -31,13 +36,13 @@ The framework intentionally references Apples AppKit’s design patterns to redu
 
     layer_t represents a rendering surface associated with a view and corresponds to a separate GPU texture. It caches rendered content for efficient redraws and can be independently invalidated and updated.
 
-### Supported platforms
+## Supported Platforms
 - OSX (Metal)
 - WWW (WebGL)
 - Windows (TBD)
 - Android (TBD)
 
-### Build GUI library
+## Build
 ```
 git pull
 git submodule update --init --recursive
@@ -50,11 +55,11 @@ make
 ctest -V
 ```
 
-### Build osx
+### Build OSX Project
 Prerequisite: Xcode
 Open Xcode project in `projects/osx` folder and click run.
 
-### Build www
+### Build WWW Project
 ```
 git pull;git submodule update --init
 cd projects/www
