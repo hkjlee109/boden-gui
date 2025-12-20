@@ -1,6 +1,9 @@
 #include "view.hpp"
 
-#include <boden/widget/layout/layout_x_axis_anchor.hpp>
+#include <boden/widget/layout/dimension.hpp>
+#include <boden/widget/layout/solver.hpp>
+#include <boden/widget/layout/x_axis_anchor.hpp>
+#include <boden/widget/layout/y_axis_anchor.hpp>
 #include <boden/utils/memory.hpp>
 #include <cassert>
 
@@ -292,9 +295,34 @@ void view_t::set_tag(uint32_t tag)
     _tag = tag;
 }
 
-boden::widget::layout::layout_x_axis_anchor_ref_t view_t::get_leading_anchor() const
+boden::widget::layout::y_axis_anchor_ref_t view_t::get_top_anchor() const
+{
+    return _top_anchor;
+}
+
+boden::widget::layout::x_axis_anchor_ref_t view_t::get_leading_anchor() const
 {
     return _leading_anchor;
+}
+
+boden::widget::layout::x_axis_anchor_ref_t view_t::get_trailing_anchor() const
+{
+    return _trailing_anchor;
+}
+
+boden::widget::layout::y_axis_anchor_ref_t view_t::get_bottom_anchor() const
+{
+    return _bottom_anchor;
+}
+
+boden::widget::layout::dimension_ref_t view_t::get_width_anchor() const
+{
+    return _width_anchor;
+}
+
+boden::widget::layout::dimension_ref_t view_t::get_height_anchor() const
+{
+    return _height_anchor;
 }
 
 const std::vector<std::shared_ptr<boden::widget::base::tracking_area_t>> & view_t::get_tracking_areas() const 
@@ -336,12 +364,12 @@ void view_t::remove_from_superview()
     }
 }
 
-void view_t::add_constraint(boden::widget::layout::layout_constraint_ref_t constraint)
+void view_t::add_constraint(boden::widget::layout::constraint_ref_t constraint)
 {
     _constraints.insert(constraint);
 }
 
-void view_t::remove_constraint(boden::widget::layout::layout_constraint_ref_t constraint)
+void view_t::remove_constraint(boden::widget::layout::constraint_ref_t constraint)
 {
     _constraints.erase(constraint);
 }
@@ -391,19 +419,14 @@ boden::layout::rect_t view_t::convert_rect_to_view(const boden::layout::rect_t &
 
 void view_t::layout()
 {
-    std::unordered_map<boden::widget::view_ref_t,
-                       boden::layout::rect_t,
-                       boden::utils::shared_ptr_hash,
-                       boden::utils::shared_ptr_equal> map;
+    _solver->solve(_constraints);
 
-    for(const auto& constraint : _constraints) 
+    for(auto subview : _subviews)
     {
-        auto first_frame = constraint->get_first_item()->get_frame();
-        auto second_view = constraint->get_second_item();
-
-        if(second_view) 
+        boden::layout::rect_t frame;
+        if(_solver->collect_frame(subview, frame))
         {
-            map[second_view] = boden::layout::rect_t{};
+            subview->set_frame(frame);
         }
     }
 }
@@ -459,15 +482,41 @@ void view_t::enqueue_system_event(const boden::system_event_t &event)
 void view_t::init()
 {
     _layer = boden::widget::layer::layer_t::alloc();
-    _leading_anchor = boden::widget::layout::layout_x_axis_anchor_t::alloc(shared_from_this(), 
-                                                                           boden::widget::layout::layout_attribute_t::leading);
+
+    _top_anchor = boden::widget::layout::y_axis_anchor_t::alloc(shared_from_this(), 
+                                                                boden::widget::layout::attribute_t::top);
+    _leading_anchor = boden::widget::layout::x_axis_anchor_t::alloc(shared_from_this(), 
+                                                                    boden::widget::layout::attribute_t::leading);
+    _trailing_anchor = boden::widget::layout::x_axis_anchor_t::alloc(shared_from_this(), 
+                                                                     boden::widget::layout::attribute_t::trailing);
+    _bottom_anchor = boden::widget::layout::y_axis_anchor_t::alloc(shared_from_this(), 
+                                                                   boden::widget::layout::attribute_t::bottom);
+    _width_anchor = boden::widget::layout::dimension_t::alloc(shared_from_this(), 
+                                                              boden::widget::layout::attribute_t::width);
+    _height_anchor = boden::widget::layout::dimension_t::alloc(shared_from_this(), 
+                                                               boden::widget::layout::attribute_t::height);
+
+    _solver = std::make_shared<boden::widget::layout::solver_t>();
 }
 
 void view_t::init(const boden::layout::rect_t &frame)
 {
     _layer = boden::widget::layer::layer_t::alloc({0, 0, frame.size.width, frame.size.height});
-    _leading_anchor = boden::widget::layout::layout_x_axis_anchor_t::alloc(shared_from_this(), 
-                                                                           boden::widget::layout::layout_attribute_t::leading);
+
+    _top_anchor = boden::widget::layout::y_axis_anchor_t::alloc(shared_from_this(), 
+                                                                boden::widget::layout::attribute_t::top);
+    _leading_anchor = boden::widget::layout::x_axis_anchor_t::alloc(shared_from_this(), 
+                                                                    boden::widget::layout::attribute_t::leading);
+    _trailing_anchor = boden::widget::layout::x_axis_anchor_t::alloc(shared_from_this(), 
+                                                                     boden::widget::layout::attribute_t::trailing);
+    _bottom_anchor = boden::widget::layout::y_axis_anchor_t::alloc(shared_from_this(), 
+                                                                   boden::widget::layout::attribute_t::bottom);
+    _width_anchor = boden::widget::layout::dimension_t::alloc(shared_from_this(), 
+                                                              boden::widget::layout::attribute_t::width);
+    _height_anchor = boden::widget::layout::dimension_t::alloc(shared_from_this(), 
+                                                               boden::widget::layout::attribute_t::height);
+
+    _solver = std::make_shared<boden::widget::layout::solver_t>();
 }
 
 } // widget

@@ -6,7 +6,7 @@ namespace boden {
 namespace widget {
 namespace layout {
 
-enum class layout_attribute_t : int32_t 
+enum class attribute_t : int32_t 
 {
     left,
     right,

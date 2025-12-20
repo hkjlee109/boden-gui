@@ -1,8 +1,8 @@
 #pragma once
 
 #include <boden/builder.hpp>
-#include <boden/widget/layer/layer.hpp>
 #include <boden/widget/base/responder.hpp>
+#include <boden/widget/layer/layer.hpp>
 #include <boden/widget/window.hpp>
 #include <boden/layout/rect.hpp>
 #include <boden/system_event.hpp>
@@ -14,10 +14,19 @@ class tracking_area_t;
 } // boden::widget::base 
 
 namespace boden::widget::layout {
-class layout_constraint_t;
-class layout_x_axis_anchor_t;
-using layout_constraint_ref_t = std::shared_ptr<boden::widget::layout::layout_constraint_t>;
-using layout_x_axis_anchor_ref_t = std::shared_ptr<boden::widget::layout::layout_x_axis_anchor_t>;
+class constraint_t;
+using constraint_ref_t = std::shared_ptr<boden::widget::layout::constraint_t>;
+
+class dimension_t;
+using dimension_ref_t = std::shared_ptr<boden::widget::layout::dimension_t>;
+
+class solver_t;
+
+class x_axis_anchor_t;
+using x_axis_anchor_ref_t = std::shared_ptr<boden::widget::layout::x_axis_anchor_t>;
+
+class y_axis_anchor_t;
+using y_axis_anchor_ref_t = std::shared_ptr<boden::widget::layout::y_axis_anchor_t>;
 } // boden::widget::layout 
 
 namespace boden {
@@ -76,7 +85,12 @@ public:
     uint32_t get_tag() const;
     void set_tag(uint32_t tag);
 
-    boden::widget::layout::layout_x_axis_anchor_ref_t get_leading_anchor() const;
+    boden::widget::layout::y_axis_anchor_ref_t get_top_anchor() const;
+    boden::widget::layout::x_axis_anchor_ref_t get_leading_anchor() const;
+    boden::widget::layout::x_axis_anchor_ref_t get_trailing_anchor() const;
+    boden::widget::layout::y_axis_anchor_ref_t get_bottom_anchor() const;
+    boden::widget::layout::dimension_ref_t get_width_anchor() const;
+    boden::widget::layout::dimension_ref_t get_height_anchor() const;
 
     const std::vector<std::shared_ptr<boden::widget::base::tracking_area_t>> & get_tracking_areas() const;
 
@@ -84,8 +98,8 @@ public:
     void remove_subview(boden::widget::view_ref_t view);
     void remove_from_superview();
     
-    void add_constraint(boden::widget::layout::layout_constraint_ref_t constraint);
-    void remove_constraint(boden::widget::layout::layout_constraint_ref_t constraint);
+    void add_constraint(boden::widget::layout::constraint_ref_t constraint);
+    void remove_constraint(boden::widget::layout::constraint_ref_t constraint);
 
     void add_tracking_area(std::shared_ptr<boden::widget::base::tracking_area_t> area);
     void remove_tracking_area(std::shared_ptr<boden::widget::base::tracking_area_t> area);
@@ -119,9 +133,14 @@ protected:
 
     std::shared_ptr<boden::widget::layer::layer_t> _layer;
 
-    boden::widget::layout::layout_x_axis_anchor_ref_t _leading_anchor;
-    
-    std::unordered_set<boden::widget::layout::layout_constraint_ref_t> _constraints;
+    boden::widget::layout::y_axis_anchor_ref_t _top_anchor;
+    boden::widget::layout::x_axis_anchor_ref_t _leading_anchor;
+    boden::widget::layout::x_axis_anchor_ref_t _trailing_anchor;
+    boden::widget::layout::y_axis_anchor_ref_t _bottom_anchor;
+    boden::widget::layout::dimension_ref_t _width_anchor;
+    boden::widget::layout::dimension_ref_t _height_anchor;
+
+    std::unordered_set<boden::widget::layout::constraint_ref_t> _constraints;
 
     std::vector<std::shared_ptr<boden::widget::base::tracking_area_t>> _tracking_areas;
 
@@ -129,6 +148,8 @@ protected:
     virtual void init(const boden::layout::rect_t &frame);
 
 private:
+    std::shared_ptr<boden::widget::layout::solver_t> _solver;
+
     void create_layer_texture();
 };
 

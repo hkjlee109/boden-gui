@@ -1,6 +1,8 @@
 #include "main_view_controller.hpp"
 
-#include <boden/widget/layout/layout_x_axis_anchor.hpp>
+#include <boden/widget/layout/dimension.hpp>
+#include <boden/widget/layout/x_axis_anchor.hpp>
+#include <boden/widget/layout/y_axis_anchor.hpp>
 #include <miro/theme/color.hpp>
 
 namespace miro {
@@ -39,11 +41,41 @@ void main_view_controller_t::load_view()
 
 void main_view_controller_t::view_did_load()
 {
-    _canvas_ctrl
-        ->get_view()
-        ->get_leading_anchor()
-        ->constraint_equal_to_anchor(_view->get_leading_anchor())
-        ->set_active(true);
+    auto canvas_view = _canvas_ctrl->get_view();
+    
+    canvas_view->get_top_anchor()
+               ->constraint_equal_to_anchor(_view->get_top_anchor())
+               ->set_active(true);
+    
+    canvas_view->get_leading_anchor()
+               ->constraint_equal_to_anchor(_view->get_leading_anchor())
+               ->set_active(true);
+    
+    canvas_view->get_trailing_anchor()
+               ->constraint_equal_to_anchor(_view->get_trailing_anchor())
+               ->set_active(true);
+    
+    canvas_view->get_bottom_anchor()
+               ->constraint_equal_to_anchor(_view->get_bottom_anchor())
+               ->set_active(true);
+    
+    auto zoom_view = _zoom_ctrl->get_view();
+    
+    zoom_view->get_trailing_anchor()
+               ->constraint_equal_to_anchor(_view->get_trailing_anchor(), -20)
+               ->set_active(true);
+    
+    zoom_view->get_bottom_anchor()
+               ->constraint_equal_to_anchor(_view->get_bottom_anchor(), -20)
+               ->set_active(true);
+    
+    zoom_view->get_width_anchor()
+               ->constraint_equal_to_constant(100)
+               ->set_active(true);
+    
+    zoom_view->get_height_anchor()
+               ->constraint_equal_to_constant(48)
+               ->set_active(true);
 }
 
 void main_view_controller_t::did_tool_select(boden::widget::view_controller_ref_t sender,

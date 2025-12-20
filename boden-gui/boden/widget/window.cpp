@@ -198,6 +198,7 @@ void window_t::system(const boden::system_event_t &system_event)
         case (uint32_t)boden::system_event_type_t::frame_change:
             float width = std::any_cast<float>(system_event.params.at("width"));
             float height = std::any_cast<float>(system_event.params.at("height"));
+            printf("# boden::system_event_type_t::frame_change %f %f\n", width, height);
             set_frame({0, 0, width, height});
             break;
     }

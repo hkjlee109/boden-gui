@@ -52,10 +52,11 @@ osx_backend_t::osx_backend_t(MTL::Device *device, platform::osx_queue_t &queue, 
     _renderer = std::make_unique<platform::mtl_renderer_t>(device);
     _renderer->set_texture_manager(&_mtl_texture_manager);
     
-    _window = std::make_shared<miro::main_window_t>(boden::layout::rect_t{0, 0, 640, 480});
+    _window = std::make_shared<miro::main_window_t>();
     _window->set_backend(this);
     _window->set_texture_manager(&_mtl_texture_manager);
     _window->set_content_view_controller(std::make_shared<miro::main_view_controller_t>());
+    _window->set_frame(boden::layout::rect_t{0, 0, (float)_provider.displaySize.width,  (float)_provider.displaySize.height});
     _window->order_front();
 }
 
