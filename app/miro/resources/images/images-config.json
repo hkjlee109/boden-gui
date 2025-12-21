@@ -12,9 +12,9 @@
         "type": "svg",
         "scale": 2
     },
-    "pencil": {
+    "pen": {
         "path": "images",
-        "name": "pencil",
+        "name": "pen",
         "type": "png",
         "scale": 1
     },

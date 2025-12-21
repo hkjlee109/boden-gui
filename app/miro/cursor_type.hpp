@@ -8,6 +8,8 @@ enum class cursor_type_t : uint8_t
     arrow,
     pointing_hand,
     open_hand,
+    sticky,
+    pen,
 };
 
 } // miro

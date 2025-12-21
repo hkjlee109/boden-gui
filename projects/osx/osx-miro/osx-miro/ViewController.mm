@@ -167,6 +167,16 @@
             _cursor = [NSCursor openHandCursor];
             break;
             
+        case (uint8_t)miro::cursor_type_t::sticky:
+            _cursor = [[NSCursor alloc] initWithImage:[NSImage imageNamed:@"cursor-sticky"]
+                                              hotSpot:NSMakePoint(0, 0)];
+            break;
+            
+        case (uint8_t)miro::cursor_type_t::pen:
+            _cursor = [[NSCursor alloc] initWithImage:[NSImage imageNamed:@"cursor-pen"]
+                                              hotSpot:NSMakePoint(0, 0)];
+            break;
+            
         default:
             _cursor = [NSCursor arrowCursor];
             break;

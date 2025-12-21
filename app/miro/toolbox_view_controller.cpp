@@ -39,7 +39,7 @@ void toolbox_view_controller_t::on_action_button_click(void *sender)
             cursor_type = miro::cursor_type_t::open_hand;
             break;
         case miro::tool_type_t::pen:
-            cursor_type = miro::cursor_type_t::open_hand;
+            cursor_type = miro::cursor_type_t::pen;
             _pen->set_selected(true);
             break;
         case miro::tool_type_t::selector:
@@ -47,7 +47,7 @@ void toolbox_view_controller_t::on_action_button_click(void *sender)
             _selector->set_selected(true);
             break;
         case miro::tool_type_t::sticky:
-            cursor_type = miro::cursor_type_t::open_hand;
+            cursor_type = miro::cursor_type_t::sticky;
             _sticky->set_selected(true);
             break;
         case miro::tool_type_t::text:
@@ -122,7 +122,7 @@ void toolbox_view_controller_t::view_did_load()
     
     _pen = miro::widget::action_button_t::alloc({4, 136, 40, 40});
     _pen->get_layer()->set_background_color(miro::theme::color::background);
-    _pen->set_image(std::make_unique<boden::widget::base::image_t>("pencil"));
+    _pen->set_image(std::make_unique<boden::widget::base::image_t>("pen"));
     _pen->set_image_edge_insets(boden::layout::edge_insets_t(8, 8, 8, 8));
     _pen->set_image_scaling(boden::widget::base::image_scaling_t::proportionally_down);
     _pen->set_content_tint_color({0x00, 0x00, 0x00, 0xFF});
