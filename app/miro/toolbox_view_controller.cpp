@@ -16,15 +16,22 @@ toolbox_view_controller_t::~toolbox_view_controller_t()
 
 void toolbox_view_controller_t::on_action_button_click(void *sender)
 {
+    auto view = static_cast<boden::widget::view_t*>(sender);
+    auto button = dynamic_cast<miro::widget::action_button_t *>(view);
+
+    if(!button)
+    {
+        return;
+    }
+    
+    auto type = button->is_selected() ? miro::tool_type_t::none
+                                      : static_cast<miro::tool_type_t>(button->get_tag());
+    miro::cursor_type_t cursor_type;
+    
     _pen->set_selected(false);
     _selector->set_selected(false);
     _sticky->set_selected(false);
     _text->set_selected(false);
-
-    auto view = static_cast<boden::widget::view_t*>(sender);
-    auto type = static_cast<miro::tool_type_t>(view->get_tag());
-
-    miro::cursor_type_t cursor_type;
     
     switch(type)
     {

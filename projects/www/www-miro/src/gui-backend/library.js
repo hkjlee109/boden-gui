@@ -633,6 +633,24 @@ addToLibrary({
         Module.gpuTextureMap.delete(handle);
     },
     
+    em_set_cursor: function(type) {
+        let worker = Module.worker;
+        worker.postMessage({
+            type: 'set_cursor',
+            arg1: type
+        });
+        return;
+    },
+
+    em_set_cursor_override: function(type) {
+        let worker = Module.worker;
+        worker.postMessage({
+            type: 'set_cursor_override',
+            arg1: type
+        });
+        return;
+    },
+
     em_begin_text_input: function(
         text_,
         textLength,

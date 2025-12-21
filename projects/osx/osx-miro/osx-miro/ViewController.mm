@@ -192,6 +192,10 @@
             _cursorOverride = [NSCursor pointingHandCursor];
             break;
             
+        case (uint8_t)miro::cursor_type_t::open_hand:
+            _cursorOverride = [NSCursor openHandCursor];
+            break;
+            
         default:
             _cursorOverride = nil;
             break;

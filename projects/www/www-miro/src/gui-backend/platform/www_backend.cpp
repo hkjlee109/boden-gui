@@ -192,6 +192,20 @@ void www_backend_t::process_system_event_if_needed()
         boden::system_event_t event = *event_;
         switch(event.type)
         {
+            case (uint32_t)boden::system_event_type_t::set_cursor:
+            {
+                auto type = std::any_cast<uint8_t>(event.params.at("type"));
+                _render_view_provider->set_cursor(type);
+                break;
+            }
+                    
+            case (uint32_t)boden::system_event_type_t::set_cursor_override:
+            {
+                auto type = std::any_cast<uint8_t>(event.params.at("type"));
+                _render_view_provider->set_cursor_override(type);
+                break;
+            }
+
             case (uint32_t)boden::system_event_type_t::text_input_begin:
             {
                 auto text = std::any_cast<const std::string &>(event.params.at("text"));

@@ -10,6 +10,8 @@ const Workspace: FC<{}> = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const workerRef = useRef<Worker | null>(null);
   const { width, height } = useWindowSize();
+  const cursorRef = useRef<string>("grab");
+  const cursorOverrideRef = useRef<string | null>(null);
 
   const { dispatchDisplayScale, dispatchDisplaySize } = useDispatchDisplayEvents(workerRef);
   const { 
@@ -34,6 +36,55 @@ const Workspace: FC<{}> = () => {
       { type: 'module' }
     );
 
+    worker.onmessage = (event: MessageEvent) => {
+      const { type, arg1, arg2, arg3, arg4, arg5 } = event.data;
+
+      switch(type) {
+        case 'set_cursor': 
+          console.log("##");
+          switch(arg1) {
+            case 0: // none
+              cursorRef.current = "default";
+              break;
+            case 1: // arrow
+              cursorRef.current = "default";
+              break;
+            case 2: // pointing hand
+              cursorRef.current = "pointer";
+              break;
+            case 3: // open hand
+              cursorRef.current = "grab";
+              break;
+            default:
+              cursorRef.current = "default";
+              break;
+          }
+          document.body.style.cursor = cursorOverrideRef.current ?? cursorRef.current;
+          break;
+        
+        case 'set_cursor_override': 
+          switch(arg1) {
+            case 0: // none
+              cursorOverrideRef.current = null;
+              break;
+            case 1: // arrow
+              cursorOverrideRef.current = "default";
+              break;
+            case 2: // pointing hand
+              cursorOverrideRef.current = "pointer";
+              break;
+            case 3: // open hand
+              cursorOverrideRef.current = "grab";
+              break;
+            default:
+              cursorOverrideRef.current = null;
+              break;
+          }
+          document.body.style.cursor = cursorOverrideRef.current ?? cursorRef.current;
+          break;
+      }
+    };
+
     worker.postMessage({ 
       type: 'init', 
       arg1: offscreen,
@@ -50,9 +101,22 @@ const Workspace: FC<{}> = () => {
   }, []); 
 
   useEffect(() => {
+    document.body.style.cursor = cursorOverrideRef.current ?? cursorRef.current;
+  }, []);
+
+  useEffect(() => {
     const mq = window.matchMedia(`(resolution: ${window.devicePixelRatio}dppx)`);
     mq.addEventListener("change", dispatchDisplayScale);
     return () => mq.removeEventListener("change", dispatchDisplayScale);
+  }, []);
+  
+  useEffect(() => {
+    const canvas = canvasRef.current!;
+    canvas.addEventListener("wheel", dispatchScrollWheel, { passive: false });
+
+    return () => {
+      canvas.removeEventListener("wheel", dispatchScrollWheel);
+    };
   }, []);
 
   useEffect(() => {
@@ -67,15 +131,6 @@ const Workspace: FC<{}> = () => {
       window.removeEventListener('keyup', dispatchKeyUp);
     };
   }, [dispatchKeyDown, dispatchKeyUp]);
-
-  useEffect(() => {
-    const canvas = canvasRef.current!;
-    canvas.addEventListener("wheel", dispatchScrollWheel, { passive: false });
-
-    return () => {
-      canvas.removeEventListener("wheel", dispatchScrollWheel);
-    };
-  }, []);
 
   return (
     <div className="w-screen h-screen bg-[#f2f2f2]">

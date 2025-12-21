@@ -6,6 +6,10 @@ namespace platform {
 
 extern "C" {
 
+extern void em_set_cursor(uint8_t type);
+
+extern void em_set_cursor_override(uint8_t type);
+
 extern void em_begin_text_input(const char* text,
                                   size_t length,
                                   float x,
@@ -23,6 +27,16 @@ render_view_provider_t::render_view_provider_t()
 
 render_view_provider_t::~render_view_provider_t()
 {
+}
+
+void render_view_provider_t::set_cursor(uint8_t type)
+{
+    em_set_cursor(type);
+}
+
+void render_view_provider_t::set_cursor_override(uint8_t type)
+{
+    em_set_cursor_override(type);
 }
 
 void render_view_provider_t::begin_text_input(const std::string &text, const boden::layout::rect_t &rect)
