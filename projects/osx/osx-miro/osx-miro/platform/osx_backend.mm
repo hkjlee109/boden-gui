@@ -8,6 +8,7 @@
 #include <fstream>
 #include <iostream>
 #include <memory>
+#include <miro/cursor_type.hpp>
 #include <miro/main_view_controller.hpp>
 #include <sstream>
 
@@ -172,6 +173,24 @@ int osx_backend_t::main()
             boden::system_event_t event = *event_;
             switch(event.type)
             {
+                case (uint32_t)boden::system_event_type_t::set_cursor:
+                {
+                    auto type = std::any_cast<uint8_t>(event.params.at("type"));
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [_provider setCursor:type];
+                    });
+                    break;
+                }
+                    
+                case (uint32_t)boden::system_event_type_t::set_cursor_override:
+                {
+                    auto type = std::any_cast<uint8_t>(event.params.at("type"));
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [_provider setCursorOverride:type];
+                    });
+                    break;
+                }
+                    
                 case (uint32_t)boden::system_event_type_t::text_input_begin:
                 {
                     auto text_ = std::any_cast<const std::string &>(event.params.at("text"));

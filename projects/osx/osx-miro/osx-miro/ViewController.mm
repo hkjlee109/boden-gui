@@ -7,6 +7,8 @@
 #import <boden/event.hpp>
 #import <boden/system_event.hpp>
 
+#import <miro/cursor_type.hpp>
+
 @interface ViewController() <NSWindowDelegate, MTKViewDelegate, ViewDelegate, OverlayTextInputViewDelegate, RenderViewProvider>
 
 @end
@@ -16,6 +18,8 @@
     platform::osx_queue_t *_queue;
 
     OverlayTextInputView *_textView;
+    NSCursor *_cursor;
+    NSCursor *_cursorOverride;
 }
 
 - (instancetype)initWithDevice:(id<MTLDevice>)device
@@ -24,6 +28,8 @@
     if(self) {
         _device = device;
         _queue = queue;
+        _cursor = [NSCursor openHandCursor];
+        _cursorOverride = nil;
     }
     return self;
 }
@@ -51,6 +57,10 @@
     _textView.backgroundColor = [NSColor clearColor];
     _textView.textColor = [NSColor labelColor];
     [self.view addSubview:_textView];
+    
+    View *view = (View *)self.view;
+    view.cursor = _cursor;
+    [view.window invalidateCursorRectsForView:view];
 }
 
 - (void)viewWillAppear {
@@ -136,6 +146,60 @@
 
 - (CGSize)displaySize { 
     return self.view.bounds.size;
+}
+
+- (void)setCursor:(UInt8)type {
+    switch(type)
+    {
+        case (uint8_t)miro::cursor_type_t::none:
+            _cursor = [NSCursor arrowCursor];
+            break;
+            
+        case (uint8_t)miro::cursor_type_t::arrow:
+            _cursor = [NSCursor arrowCursor];
+            break;
+            
+        case (uint8_t)miro::cursor_type_t::pointing_hand:
+            _cursor = [NSCursor pointingHandCursor];
+            break;
+            
+        case (uint8_t)miro::cursor_type_t::open_hand:
+            _cursor = [NSCursor openHandCursor];
+            break;
+            
+        default:
+            _cursor = [NSCursor arrowCursor];
+            break;
+    }
+    
+    View *view = (View *)self.view;
+    view.cursor = _cursorOverride ? _cursorOverride : _cursor;
+    [view.window invalidateCursorRectsForView:view];
+}
+
+- (void)setCursorOverride:(UInt8)type {
+    switch(type)
+    {
+        case (uint8_t)miro::cursor_type_t::none:
+            _cursorOverride = nil;
+            break;
+            
+        case (uint8_t)miro::cursor_type_t::arrow:
+            _cursorOverride = [NSCursor arrowCursor];
+            break;
+            
+        case (uint8_t)miro::cursor_type_t::pointing_hand:
+            _cursorOverride = [NSCursor pointingHandCursor];
+            break;
+            
+        default:
+            _cursorOverride = nil;
+            break;
+    }
+
+    View *view = (View *)self.view;
+    view.cursor = _cursorOverride ? _cursorOverride : _cursor;
+    [view.window invalidateCursorRectsForView:view];
 }
 
 - (void)setNeedsDisplay:(BOOL)flag {

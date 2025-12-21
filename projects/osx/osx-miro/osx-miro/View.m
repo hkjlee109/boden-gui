@@ -43,6 +43,12 @@
     }
 }
 
+- (void)resetCursorRects {
+    NSLog(@"# resetCursorRects");
+    [super resetCursorRects];
+    [self addCursorRect:self.bounds cursor:self.cursor ?: [NSCursor arrowCursor]];
+}
+
 - (void)viewDidChangeBackingProperties {
     [super viewDidChangeBackingProperties];
     

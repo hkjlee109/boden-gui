@@ -1,53 +1,65 @@
-#include "tool_button.hpp"
+#include "action_button.hpp"
 
+#include <miro/cursor_type.hpp>
 #include <miro/theme/color.hpp>
 
 namespace miro {
 namespace widget {
 
-std::shared_ptr<tool_button_t> tool_button_t::alloc(const boden::layout::rect_t &frame)
+std::shared_ptr<action_button_t> action_button_t::alloc(const boden::layout::rect_t &frame)
 {
-    auto instance = std::make_shared<tool_button_t>(frame);
+    auto instance = std::make_shared<action_button_t>(frame);
     instance->init(frame);
     return instance;
 }
 
-tool_button_t::tool_button_t()
+action_button_t::action_button_t()
     : boden::widget::button_t(),
       _mouse_entered{false},
       _selected{false}
 {
 }
 
-tool_button_t::tool_button_t(const boden::layout::rect_t &frame)
+action_button_t::action_button_t(const boden::layout::rect_t &frame)
     : boden::widget::button_t(frame),
       _mouse_entered{false},
       _selected{false}
 {
 }
 
-tool_button_t::~tool_button_t()
+action_button_t::~action_button_t()
 {
 }
 
-void tool_button_t::mouse_entered(const boden::event_t &ev)
+void action_button_t::mouse_entered(const boden::event_t &ev)
 {
     _mouse_entered = true;
     update_background_color();
+
+    boden::system_event_t event;
+    event.type = static_cast<uint32_t>(boden::system_event_type_t::set_cursor_override);
+    event.params["type"] = static_cast<uint8_t>(miro::cursor_type_t::pointing_hand);
+    enqueue_system_event(event);
+
 }
 
-void tool_button_t::mouse_exited(const boden::event_t &ev)
+void action_button_t::mouse_exited(const boden::event_t &ev)
 {
     _mouse_entered = false;
     update_background_color();
+    
+    boden::system_event_t event;
+    event.type = static_cast<uint32_t>(boden::system_event_type_t::set_cursor_override);
+    event.params["type"] = static_cast<uint8_t>(miro::cursor_type_t::none);
+    enqueue_system_event(event);
 }
 
-bool tool_button_t::is_selected() const
+bool action_button_t::is_selected() const
 {
     return _selected;
 }
     
-void tool_button_t::set_selected(bool selected)
+void action_button_t::set_selected(bool selected)
 {
     _selected = selected;
     set_content_tint_color(_selected ? miro::theme::color::secondary
@@ -56,7 +68,7 @@ void tool_button_t::set_selected(bool selected)
     update_background_color();
 }
 
-void tool_button_t::set_tracking_enabled(bool enabled)
+void action_button_t::set_tracking_enabled(bool enabled)
 {
     if(enabled)
     {
@@ -74,7 +86,7 @@ void tool_button_t::set_tracking_enabled(bool enabled)
     }
 }
 
-void tool_button_t::update_background_color()
+void action_button_t::update_background_color()
 {
     if(_mouse_entered)
     {
@@ -92,7 +104,7 @@ void tool_button_t::update_background_color()
     set_needs_display(true);
 }
 
-void tool_button_t::init(const boden::layout::rect_t &frame)
+void action_button_t::init(const boden::layout::rect_t &frame)
 {
     boden::widget::button_t::init(frame);
     _layer->set_background_color({0x00, 0xFF, 0x00, 0xFF});

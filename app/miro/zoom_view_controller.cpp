@@ -39,7 +39,7 @@ void zoom_view_controller_t::load_view()
 
 void zoom_view_controller_t::view_did_load()
 {
-    _zoom_in = miro::widget::hover_button_t::alloc({8, 4, 40, 40});
+    _zoom_in = miro::widget::action_button_t::alloc({8, 4, 40, 40});
     _zoom_in->get_layer()->set_background_color(miro::theme::color::control_background);
     _zoom_in->set_image(std::make_unique<boden::widget::base::image_t>("minus"));
     _zoom_in->set_image_edge_insets(boden::layout::edge_insets_t(8, 8, 8, 8));
@@ -51,7 +51,7 @@ void zoom_view_controller_t::view_did_load()
                          boden::widget::control_event_t::mouse_down);
     _view->add_subview(_zoom_in);
 
-    _zoom_out = miro::widget::hover_button_t::alloc({52, 4, 40, 40});
+    _zoom_out = miro::widget::action_button_t::alloc({52, 4, 40, 40});
     _zoom_out->get_layer()->set_background_color(miro::theme::color::control_background);
     _zoom_out->set_image(std::make_unique<boden::widget::base::image_t>("plus"));
     _zoom_out->set_image_edge_insets(boden::layout::edge_insets_t(8, 8, 8, 8));

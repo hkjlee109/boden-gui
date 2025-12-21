@@ -3,7 +3,7 @@
 #include <boden/layout/rect.hpp>
 #include <boden/widget/view_controller.hpp>
 #include <memory>
-#include <miro/widget/hover_button.hpp>
+#include <miro/widget/action_button.hpp>
 
 namespace miro {
 
@@ -34,8 +34,8 @@ private:
     miro::zoom_delegate_t *_zoom_delegate;
     
     uint8_t _zoom_index;
-    std::shared_ptr<miro::widget::hover_button_t> _zoom_in;
-    std::shared_ptr<miro::widget::hover_button_t> _zoom_out;
+    std::shared_ptr<miro::widget::action_button_t> _zoom_in;
+    std::shared_ptr<miro::widget::action_button_t> _zoom_out;
     
     void init();
 };

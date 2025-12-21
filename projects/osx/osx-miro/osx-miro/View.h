@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface View : MTKView
 
 @property (nonatomic, weak) id<ViewDelegate> viewDelegate;
+@property (nonatomic, strong) NSCursor *cursor;
 
 @end
 
