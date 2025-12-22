@@ -5,6 +5,7 @@ import {
   useDispatchMouseEvents 
 } from '@frontend/packages/worker';
 import { useWindowSize } from '@frontend/packages/utils';
+import { Pen, Sticky } from "@frontend/assets/images"; 
 
 const Workspace: FC<{}> = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -41,7 +42,6 @@ const Workspace: FC<{}> = () => {
 
       switch(type) {
         case 'set_cursor': 
-          console.log("##");
           switch(arg1) {
             case 0: // none
               cursorRef.current = "default";
@@ -55,6 +55,12 @@ const Workspace: FC<{}> = () => {
             case 3: // open hand
               cursorRef.current = "grab";
               break;
+            case 4: // sticky
+              cursorRef.current = `url(${Sticky}) 12 12, auto`;
+              break;
+            case 5: // pen
+              cursorRef.current = `url(${Pen}) 12 12, auto`;
+              break;
             default:
               cursorRef.current = "default";
               break;
@@ -67,14 +73,8 @@ const Workspace: FC<{}> = () => {
             case 0: // none
               cursorOverrideRef.current = null;
               break;
-            case 1: // arrow
-              cursorOverrideRef.current = "default";
-              break;
             case 2: // pointing hand
               cursorOverrideRef.current = "pointer";
-              break;
-            case 3: // open hand
-              cursorOverrideRef.current = "grab";
               break;
             default:
               cursorOverrideRef.current = null;
@@ -109,7 +109,7 @@ const Workspace: FC<{}> = () => {
     mq.addEventListener("change", dispatchDisplayScale);
     return () => mq.removeEventListener("change", dispatchDisplayScale);
   }, []);
-  
+
   useEffect(() => {
     const canvas = canvasRef.current!;
     canvas.addEventListener("wheel", dispatchScrollWheel, { passive: false });
