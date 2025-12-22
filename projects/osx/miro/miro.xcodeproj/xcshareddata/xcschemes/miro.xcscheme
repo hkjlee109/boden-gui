@@ -16,9 +16,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "BF9757F12D6C7871000E9A16"
-               BuildableName = "osx-miro.app"
-               BlueprintName = "osx-miro"
-               ReferencedContainer = "container:osx-miro.xcodeproj">
+               BuildableName = "miro.app"
+               BlueprintName = "miro"
+               ReferencedContainer = "container:miro.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "BF9757F12D6C7871000E9A16"
-            BuildableName = "osx-miro.app"
-            BlueprintName = "osx-miro"
-            ReferencedContainer = "container:osx-miro.xcodeproj">
+            BuildableName = "miro.app"
+            BlueprintName = "miro"
+            ReferencedContainer = "container:miro.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "BF9757F12D6C7871000E9A16"
-            BuildableName = "osx-miro.app"
-            BlueprintName = "osx-miro"
-            ReferencedContainer = "container:osx-miro.xcodeproj">
+            BuildableName = "miro.app"
+            BlueprintName = "miro"
+            ReferencedContainer = "container:miro.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

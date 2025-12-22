@@ -52,7 +52,7 @@
 		BF54B3AA2E697D0100F7D4F9 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
 		BF85A4562ED9D06B006D93D7 /* selection_layer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = selection_layer.hpp; sourceTree = "<group>"; };
 		BF85A4572ED9D06B006D93D7 /* selection_layer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = selection_layer.cpp; sourceTree = "<group>"; };
-		BF9757F22D6C7871000E9A16 /* osx-ppt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "osx-ppt.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF9757F22D6C7871000E9A16 /* ppt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ppt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF9759C82D6C9DA6000E9A16 /* libboden-gui.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboden-gui.a"; path = "../../../build/lib/libboden-gui.a"; sourceTree = "<group>"; };
 		BFC989BB2E92A01C00566F80 /* rectangle.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = rectangle.hpp; sourceTree = "<group>"; };
 		BFC989BC2E92A01C00566F80 /* rectangle.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = rectangle.cpp; sourceTree = "<group>"; };
@@ -74,9 +74,9 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		BF9757F42D6C7871000E9A16 /* osx-ppt */ = {
+		BF9757F42D6C7871000E9A16 /* ppt */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "osx-ppt";
+			path = ppt;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -172,7 +172,7 @@
 		BF9757E92D6C7871000E9A16 = {
 			isa = PBXGroup;
 			children = (
-				BF9757F42D6C7871000E9A16 /* osx-ppt */,
+				BF9757F42D6C7871000E9A16 /* ppt */,
 				BF17A67B2D73419000477794 /* ppt */,
 				BF9759C72D6C9DA6000E9A16 /* Frameworks */,
 				BF9757F32D6C7871000E9A16 /* Products */,
@@ -182,7 +182,7 @@
 		BF9757F32D6C7871000E9A16 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				BF9757F22D6C7871000E9A16 /* osx-ppt.app */,
+				BF9757F22D6C7871000E9A16 /* ppt.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -226,9 +226,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		BF9757F12D6C7871000E9A16 /* osx-ppt */ = {
+		BF9757F12D6C7871000E9A16 /* ppt */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = BF9758052D6C7873000E9A16 /* Build configuration list for PBXNativeTarget "osx-ppt" */;
+			buildConfigurationList = BF9758052D6C7873000E9A16 /* Build configuration list for PBXNativeTarget "ppt" */;
 			buildPhases = (
 				BF9757EE2D6C7871000E9A16 /* Sources */,
 				BF9757EF2D6C7871000E9A16 /* Frameworks */,
@@ -239,13 +239,13 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				BF9757F42D6C7871000E9A16 /* osx-ppt */,
+				BF9757F42D6C7871000E9A16 /* ppt */,
 			);
-			name = "osx-ppt";
+			name = ppt;
 			packageProductDependencies = (
 			);
 			productName = "boden-gui-osx";
-			productReference = BF9757F22D6C7871000E9A16 /* osx-ppt.app */;
+			productReference = BF9757F22D6C7871000E9A16 /* ppt.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -262,7 +262,7 @@
 					};
 				};
 			};
-			buildConfigurationList = BF9757ED2D6C7871000E9A16 /* Build configuration list for PBXProject "osx-ppt" */;
+			buildConfigurationList = BF9757ED2D6C7871000E9A16 /* Build configuration list for PBXProject "ppt" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -276,7 +276,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				BF9757F12D6C7871000E9A16 /* osx-ppt */,
+				BF9757F12D6C7871000E9A16 /* ppt */,
 			);
 		};
 /* End PBXProject section */
@@ -444,7 +444,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "osx-ppt/osx-ppt.entitlements";
+				CODE_SIGN_ENTITLEMENTS = ppt/ppt.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -467,7 +467,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../../../build/lib";
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.kartoffelsoft.osx-ppt";
+				PRODUCT_BUNDLE_IDENTIFIER = com.kartoffelsoft.ppt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 			};
@@ -478,7 +478,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "osx-ppt/osx-ppt.entitlements";
+				CODE_SIGN_ENTITLEMENTS = ppt/ppt.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -501,7 +501,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../../../build/lib";
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.kartoffelsoft.osx-ppt";
+				PRODUCT_BUNDLE_IDENTIFIER = com.kartoffelsoft.ppt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 			};
@@ -510,7 +510,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		BF9757ED2D6C7871000E9A16 /* Build configuration list for PBXProject "osx-ppt" */ = {
+		BF9757ED2D6C7871000E9A16 /* Build configuration list for PBXProject "ppt" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BF9758032D6C7873000E9A16 /* Debug */,
@@ -519,7 +519,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		BF9758052D6C7873000E9A16 /* Build configuration list for PBXNativeTarget "osx-ppt" */ = {
+		BF9758052D6C7873000E9A16 /* Build configuration list for PBXNativeTarget "ppt" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BF9758062D6C7873000E9A16 /* Debug */,

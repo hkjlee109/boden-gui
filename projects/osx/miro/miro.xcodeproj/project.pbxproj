@@ -47,7 +47,8 @@
 		BF85A5802EE1DC16006D93D7 /* selector.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = selector.png; sourceTree = "<group>"; };
 		BF85A6042EF83A42006D93D7 /* cursor_type.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = cursor_type.hpp; sourceTree = "<group>"; };
 		BF85A6382EF8A4DB006D93D7 /* pen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pen.png; sourceTree = "<group>"; };
-		BF9757F22D6C7871000E9A16 /* osx-miro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "osx-miro.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF85A6582EF96137006D93D7 /* miro.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = miro.xcodeproj; sourceTree = "<group>"; };
+		BF9757F22D6C7871000E9A16 /* miro.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = miro.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF9759C82D6C9DA6000E9A16 /* libboden-gui.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libboden-gui.a"; path = "../../../build/lib/libboden-gui.a"; sourceTree = "<group>"; };
 		BFBF0CFC2ED0AD5600B7DB3B /* zoom_view_controller.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = zoom_view_controller.hpp; sourceTree = "<group>"; };
 		BFD5A9A82ECE76350057F6C7 /* grid_layer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = grid_layer.hpp; sourceTree = "<group>"; };
@@ -70,9 +71,9 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		BF9757F42D6C7871000E9A16 /* osx-miro */ = {
+		BF9757F42D6C7871000E9A16 /* miro */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "osx-miro";
+			path = miro;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -93,10 +94,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BF85A6592EF96137006D93D7 /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
+			sourceTree = "<group>";
+		};
 		BF9757E92D6C7871000E9A16 = {
 			isa = PBXGroup;
 			children = (
-				BF9757F42D6C7871000E9A16 /* osx-miro */,
+				BF9757F42D6C7871000E9A16 /* miro */,
 				BFF225712EA108FF00D13EA4 /* miro */,
 				BF9759C72D6C9DA6000E9A16 /* Frameworks */,
 				BF9757F32D6C7871000E9A16 /* Products */,
@@ -106,7 +112,7 @@
 		BF9757F32D6C7871000E9A16 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				BF9757F22D6C7871000E9A16 /* osx-miro.app */,
+				BF9757F22D6C7871000E9A16 /* miro.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -219,9 +225,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		BF9757F12D6C7871000E9A16 /* osx-miro */ = {
+		BF9757F12D6C7871000E9A16 /* miro */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = BF9758052D6C7873000E9A16 /* Build configuration list for PBXNativeTarget "osx-miro" */;
+			buildConfigurationList = BF9758052D6C7873000E9A16 /* Build configuration list for PBXNativeTarget "miro" */;
 			buildPhases = (
 				BF9757EE2D6C7871000E9A16 /* Sources */,
 				BF9757EF2D6C7871000E9A16 /* Frameworks */,
@@ -232,13 +238,13 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				BF9757F42D6C7871000E9A16 /* osx-miro */,
+				BF9757F42D6C7871000E9A16 /* miro */,
 			);
-			name = "osx-miro";
+			name = miro;
 			packageProductDependencies = (
 			);
 			productName = "boden-gui-osx";
-			productReference = BF9757F22D6C7871000E9A16 /* osx-miro.app */;
+			productReference = BF9757F22D6C7871000E9A16 /* miro.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -256,7 +262,7 @@
 					};
 				};
 			};
-			buildConfigurationList = BF9757ED2D6C7871000E9A16 /* Build configuration list for PBXProject "osx-miro" */;
+			buildConfigurationList = BF9757ED2D6C7871000E9A16 /* Build configuration list for PBXProject "miro" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -268,9 +274,15 @@
 			preferredProjectObjectVersion = 77;
 			productRefGroup = BF9757F32D6C7871000E9A16 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = BF85A6592EF96137006D93D7 /* Products */;
+					ProjectRef = BF85A6582EF96137006D93D7 /* miro.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
-				BF9757F12D6C7871000E9A16 /* osx-miro */,
+				BF9757F12D6C7871000E9A16 /* miro */,
 			);
 		};
 /* End PBXProject section */
@@ -438,7 +450,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = "osx-miro/osx-miro.entitlements";
+				CODE_SIGN_ENTITLEMENTS = miro/miro.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -461,7 +473,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../../../build/lib";
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.kartoffelsoft.osx-miro";
+				PRODUCT_BUNDLE_IDENTIFIER = com.kartoffelsoft.miro;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -475,7 +487,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = "osx-miro/osx-miro.entitlements";
+				CODE_SIGN_ENTITLEMENTS = miro/miro.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
@@ -498,7 +510,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../../../build/lib";
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.kartoffelsoft.osx-miro";
+				PRODUCT_BUNDLE_IDENTIFIER = com.kartoffelsoft.miro;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 6.0;
@@ -508,7 +520,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		BF9757ED2D6C7871000E9A16 /* Build configuration list for PBXProject "osx-miro" */ = {
+		BF9757ED2D6C7871000E9A16 /* Build configuration list for PBXProject "miro" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BF9758032D6C7873000E9A16 /* Debug */,
@@ -517,7 +529,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		BF9758052D6C7873000E9A16 /* Build configuration list for PBXNativeTarget "osx-miro" */ = {
+		BF9758052D6C7873000E9A16 /* Build configuration list for PBXNativeTarget "miro" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BF9758062D6C7873000E9A16 /* Debug */,

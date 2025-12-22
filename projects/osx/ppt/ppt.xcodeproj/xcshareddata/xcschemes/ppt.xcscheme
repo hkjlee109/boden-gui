@@ -16,9 +16,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "BF9757F12D6C7871000E9A16"
-               BuildableName = "osx-ppt.app"
-               BlueprintName = "osx-ppt"
-               ReferencedContainer = "container:osx-ppt.xcodeproj">
+               BuildableName = "ppt.app"
+               BlueprintName = "ppt"
+               ReferencedContainer = "container:ppt.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "BF9757F12D6C7871000E9A16"
-            BuildableName = "osx-ppt.app"
-            BlueprintName = "osx-ppt"
-            ReferencedContainer = "container:osx-ppt.xcodeproj">
+            BuildableName = "ppt.app"
+            BlueprintName = "ppt"
+            ReferencedContainer = "container:ppt.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "BF9757F12D6C7871000E9A16"
-            BuildableName = "osx-ppt.app"
-            BlueprintName = "osx-ppt"
-            ReferencedContainer = "container:osx-ppt.xcodeproj">
+            BuildableName = "ppt.app"
+            BlueprintName = "ppt"
+            ReferencedContainer = "container:ppt.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
