@@ -13,6 +13,9 @@ enum class system_event_type_t : uint32_t
     text_input_end,
     text_input_commit,
     
+    set_cursor,
+    set_cursor_override,
+    
     backing_properties_change,
     frame_change
 };

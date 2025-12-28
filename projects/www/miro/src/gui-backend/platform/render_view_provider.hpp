@@ -1,0 +1,21 @@
+#pragma once
+
+#include <boden/layout/rect.hpp>
+#include <string>
+
+namespace platform {
+
+class render_view_provider_t
+{
+public:
+    render_view_provider_t();
+    ~render_view_provider_t();
+
+    void set_cursor(uint8_t type);
+    void set_cursor_override(uint8_t type);
+
+    void begin_text_input(const std::string &text, const boden::layout::rect_t &rect);
+    void end_text_input();
+};
+
+} // platform

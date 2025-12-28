@@ -29,6 +29,10 @@ void main_view_controller_t::load_view()
     add_child_view_controller(_canvas_ctrl);
 }
 
+void main_view_controller_t::view_did_load()
+{
+}
+
 void main_view_controller_t::did_tool_select(boden::widget::view_controller_ref_t sender,
                                              ppt::shape_type_t shape_type)
 {
